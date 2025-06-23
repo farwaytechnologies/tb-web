@@ -6,6 +6,7 @@ import Home from '../Pages/Home';
 import About from '../Pages/About';
 import Courses from '../Pages/Courses';
 import Contact from '../Pages/Contact';
+import CourseDetail from '../Pages/CourseDetails';
 
 function PagesRoute() {
   return (
@@ -14,6 +15,9 @@ function PagesRoute() {
       <Route path="/about" element={<About />} />
       <Route path="/courses" element={<Courses />} />
       <Route path="/contact" element={<Contact />} />
+
+
+     <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}
     </Routes>
   );
 }

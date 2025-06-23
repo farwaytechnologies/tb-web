@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "React for Beginners",
+    "description": "Learn React from scratch with hands-on examples.",
+    "price": 999,
+    "image": "https://via.placeholder.com/300x180?text=React+Course"
+  },
+  {
+    "id": 2,
+    "title": "Advanced JavaScript",
+    "description": "Deep dive into modern JavaScript concepts and ES6+ features.",
+    "price": 1199,
+    "image": "https://via.placeholder.com/300x180?text=JavaScript+Course"
+  },
+  {
+    "id": 3,
+    "title": "Web Design Essentials",
+    "description": "Master HTML, CSS, and responsive design.",
+    "price": 899,
+    "image": "https://via.placeholder.com/300x180?text=Web+Design"
+  },
+  {
+    "id": 4,
+    "title": "Node.js & Express",
+    "description": "Backend development with Node.js and Express framework.",
+    "price": 1299,
+    "image": "https://via.placeholder.com/300x180?text=Node+Course"
+  }
+]
