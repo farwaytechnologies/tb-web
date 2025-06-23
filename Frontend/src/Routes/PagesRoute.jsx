@@ -8,6 +8,7 @@ import Courses from '../Pages/Courses';
 import Contact from '../Pages/Contact';
 import CourseDetail from '../Pages/CourseDetails';
 import CourseModules from '../Pages/CourseModule';
+import Login from '../Pages/Login';
 
 
 function PagesRoute() {
@@ -21,6 +22,8 @@ function PagesRoute() {
 
      <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}
      <Route path="/courses/:id/modules" element={<CourseModules/>} />
+
+     <Route path='/login' element={<Login/>}/>
 
     </Routes>
   );

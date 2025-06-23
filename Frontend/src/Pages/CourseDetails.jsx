@@ -21,7 +21,7 @@ function CourseDetail() {
 
   return (
     <div className="techborg-course-detail">
-      {/* Header Split */}
+      {/* Header Section */}
       <section className="techborg-course-header">
         <div className="course-image">
           <img src={course.image} alt={course.title} />
@@ -36,16 +36,18 @@ function CourseDetail() {
             <li><strong>Price:</strong> ₹{course.price}</li>
           </ul>
 
-          <div className="course-actions">
-            <button className="techborg-enroll-btn">Enroll Now</button>
-            <Link to={`/courses/${course.id}/modules`} className="techborg-modules-btn">
-              View Module Videos
+          <div className="techborg-course-buttons">
+            <Link to="/login" className="techborg-enroll-btn">
+              Enroll Now
+            </Link>
+            <Link to={`/courses/${id}/modules`} className="techborg-module-btn">
+              View Modules
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Video */}
+      {/* Video Section */}
       <section className="techborg-course-video">
         <h2>Course Preview</h2>
         <div className="video-wrapper">
@@ -59,7 +61,7 @@ function CourseDetail() {
         </div>
       </section>
 
-      {/* Learnings + Description */}
+      {/* Content Section */}
       <section className="techborg-course-body">
         <div className="course-learnings">
           <h2>What You'll Learn</h2>
@@ -75,7 +77,7 @@ function CourseDetail() {
         </div>
       </section>
 
-      {/* Back */}
+      {/* Footer */}
       <section className="techborg-course-footer">
         <Link to="/courses">← Back to All Courses</Link>
       </section>

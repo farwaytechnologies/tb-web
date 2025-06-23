@@ -63,35 +63,48 @@
   margin-top: 20px;
 }
 
-/* === Buttons === */
-.techborg-enroll-btn,
-.techborg-modules-btn {
-  display: inline-block;
-  margin-right: 12px;
-  background-color: #38bdf8;
-  color: #0f172a;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.3s ease;
-  text-decoration: none;
+.techborg-course-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
 }
 
-.techborg-enroll-btn:hover,
-.techborg-modules-btn:hover {
+.techborg-enroll-btn,
+.techborg-module-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.techborg-enroll-btn {
+  background-color: #38bdf8;
+  color: #0f172a;
+}
+
+.techborg-enroll-btn:hover {
   background-color: #0ea5e9;
-  color: white;
-  transform: scale(1.03);
+  color: #ffffff;
+}
+
+.techborg-module-btn {
+  background-color: #1e293b;
+  border: 1px solid #38bdf8;
+  color: #38bdf8;
+}
+
+.techborg-module-btn:hover {
+  background-color: #334155;
+  color: #ffffff;
 }
 
 /* === Video === */
 .techborg-course-video {
   padding: 40px 20px;
-  max-width: 1100px;
+  max-width: 900px;
   margin: auto;
 }
 
