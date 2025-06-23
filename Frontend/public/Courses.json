@@ -3,28 +3,120 @@
     "id": 1,
     "title": "React for Beginners",
     "description": "Learn React from scratch with hands-on examples.",
+    "detailedDescription": "This beginner-friendly course introduces you to React fundamentals like components, JSX, props, and state. You'll build small projects and gain real-world experience creating interactive UIs.",
+    "modules": [
+      "Introduction to React",
+      "JSX and Components",
+      "Props and State",
+      "Event Handling",
+      "Conditional Rendering",
+      "Project: Task Tracker"
+    ],
     "price": 999,
-    "image": "https://via.placeholder.com/300x180?text=React+Course"
+    "image": "https://via.placeholder.com/300x180?text=React+Course",
+    "video": "https://www.youtube.com/embed/dGcsHMXbSOA",
+    "duration": "6 weeks",
+    "level": "Beginner",
+    "instructor": "John Doe"
   },
   {
     "id": 2,
     "title": "Advanced JavaScript",
     "description": "Deep dive into modern JavaScript concepts and ES6+ features.",
+    "detailedDescription": "Go beyond the basics and master closures, async/await, the event loop, and advanced object manipulation. This course is ideal for developers looking to sharpen their JS skills.",
+    "modules": [
+      "Scopes and Closures",
+      "Asynchronous JavaScript",
+      "ES6+ Syntax",
+      "Object-Oriented JS",
+      "Error Handling",
+      "Project: Weather App"
+    ],
     "price": 1199,
-    "image": "https://via.placeholder.com/300x180?text=JavaScript+Course"
+    "image": "https://via.placeholder.com/300x180?text=JavaScript+Course",
+    "video": "https://www.youtube.com/embed/PoRJizFvM7s",
+    "duration": "5 weeks",
+    "level": "Intermediate",
+    "instructor": "Sarah Lee"
   },
   {
     "id": 3,
     "title": "Web Design Essentials",
     "description": "Master HTML, CSS, and responsive design.",
+    "detailedDescription": "This course walks you through the foundations of HTML and CSS. Learn to design visually appealing and responsive websites that look great on all devices.",
+    "modules": [
+      "HTML Basics",
+      "CSS Fundamentals",
+      "Flexbox & Grid",
+      "Responsive Design",
+      "UI Design Tips",
+      "Project: Portfolio Site"
+    ],
     "price": 899,
-    "image": "https://via.placeholder.com/300x180?text=Web+Design"
+    "image": "https://via.placeholder.com/300x180?text=Web+Design",
+    "video": "https://www.youtube.com/embed/UB1O30fR-EE",
+    "duration": "4 weeks",
+    "level": "Beginner",
+    "instructor": "Emma Watson"
   },
   {
     "id": 4,
     "title": "Node.js & Express",
     "description": "Backend development with Node.js and Express framework.",
+    "detailedDescription": "Learn to build scalable backend APIs using Node.js and Express. This course covers routing, middleware, database connections, and REST API development.",
+    "modules": [
+      "Node.js Introduction",
+      "Setting up Express",
+      "Routing & Middleware",
+      "MongoDB Integration",
+      "Authentication & JWT",
+      "Project: Blog API"
+    ],
     "price": 1299,
-    "image": "https://via.placeholder.com/300x180?text=Node+Course"
+    "image": "https://via.placeholder.com/300x180?text=Node+Course",
+    "video": "https://www.youtube.com/embed/Oe421EPjeBE",
+    "duration": "6 weeks",
+    "level": "Intermediate",
+    "instructor": "Michael Scott"
+  },
+  {
+    "id": 5,
+    "title": "Full Stack Development",
+    "description": "Build complete web applications using MERN stack.",
+    "detailedDescription": "Combine frontend and backend knowledge to build full stack web apps using MongoDB, Express, React, and Node.js. You'll complete a real-world capstone project by the end.",
+    "modules": [
+      "Intro to MERN Stack",
+      "React Refresher",
+      "Express & MongoDB",
+      "API Integration",
+      "Authentication",
+      "Capstone Project: Social App"
+    ],
+    "price": 1499,
+    "image": "https://via.placeholder.com/300x180?text=Full+Stack+Course",
+    "video": "https://www.youtube.com/embed/7CqJlxBYj-M",
+    "duration": "8 weeks",
+    "level": "Advanced",
+    "instructor": "Jane Smith"
+  },
+  {
+    "id": 6,
+    "title": "UI/UX Design Fundamentals",
+    "description": "Learn design principles and tools to create user-friendly interfaces.",
+    "detailedDescription": "Understand the core principles of design, wireframing, and prototyping. This course also covers popular design tools like Figma and Adobe XD.",
+    "modules": [
+      "Design Thinking",
+      "User Research",
+      "Wireframing & Mockups",
+      "Color & Typography",
+      "Prototyping in Figma",
+      "Project: App UI Design"
+    ],
+    "price": 1099,
+    "image": "https://via.placeholder.com/300x180?text=UI+UX+Design",
+    "video": "https://www.youtube.com/embed/3Y1W7uWz8nU",
+    "duration": "4 weeks",
+    "level": "Beginner",
+    "instructor": "David Kim"
   }
 ]

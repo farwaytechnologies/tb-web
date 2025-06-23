@@ -1,7 +1,7 @@
 .techborg-navbar {
-  background-color: #000000;
+  background-color: #ffffff;
   padding: 1rem 2rem;
-  color: #ffffff;
+  color: #000000;
 }
 
 .navbar-container {
@@ -15,7 +15,7 @@
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
 }
 
@@ -26,7 +26,7 @@
 }
 
 .nav-links a {
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
   transition: color 0.3s;
 }
