@@ -12,6 +12,23 @@
       "Conditional Rendering",
       "Project: Task Tracker"
     ],
+    "modulesVideos": [
+      {
+        "title": "Introduction to React",
+        "video": "https://www.youtube.com/embed/Tn6-PIqc4UM",
+        "description": "Overview of what React is and why it matters."
+      },
+      {
+        "title": "JSX and Components",
+        "video": "https://www.youtube.com/embed/3e1GHCA3GP0",
+        "description": "Learn JSX syntax and functional components."
+      },
+      {
+        "title": "Props and State",
+        "video": "https://www.youtube.com/embed/MhkGQAoc7bc",
+        "description": "Understand passing data with props and managing local state."
+      }
+    ],
     "price": 999,
     "image": "https://via.placeholder.com/300x180?text=React+Course",
     "video": "https://www.youtube.com/embed/dGcsHMXbSOA",
@@ -31,6 +48,18 @@
       "Object-Oriented JS",
       "Error Handling",
       "Project: Weather App"
+    ],
+    "modulesVideos": [
+      {
+        "title": "Scopes and Closures",
+        "video": "https://www.youtube.com/embed/1JsJx1x35c0",
+        "description": "Dive deep into scope chains and closures in JavaScript."
+      },
+      {
+        "title": "Async JS & Promises",
+        "video": "https://www.youtube.com/embed/DHvZLI7Db8E",
+        "description": "Master asynchronous programming and Promises."
+      }
     ],
     "price": 1199,
     "image": "https://via.placeholder.com/300x180?text=JavaScript+Course",
@@ -52,6 +81,18 @@
       "UI Design Tips",
       "Project: Portfolio Site"
     ],
+    "modulesVideos": [
+      {
+        "title": "HTML Basics",
+        "video": "https://www.youtube.com/embed/qz0aGYrrlhU",
+        "description": "Learn the foundation of HTML for creating structure."
+      },
+      {
+        "title": "CSS Fundamentals",
+        "video": "https://www.youtube.com/embed/1Rs2ND1ryYc",
+        "description": "Understand how to style elements with CSS."
+      }
+    ],
     "price": 899,
     "image": "https://via.placeholder.com/300x180?text=Web+Design",
     "video": "https://www.youtube.com/embed/UB1O30fR-EE",
@@ -71,6 +112,18 @@
       "MongoDB Integration",
       "Authentication & JWT",
       "Project: Blog API"
+    ],
+    "modulesVideos": [
+      {
+        "title": "Intro to Node.js",
+        "video": "https://www.youtube.com/embed/TlB_eWDSMt4",
+        "description": "Understand Node.js runtime and use cases."
+      },
+      {
+        "title": "Express Setup",
+        "video": "https://www.youtube.com/embed/L72fhGm1tfE",
+        "description": "Setup and configure Express with Node.js."
+      }
     ],
     "price": 1299,
     "image": "https://via.placeholder.com/300x180?text=Node+Course",
@@ -92,6 +145,18 @@
       "Authentication",
       "Capstone Project: Social App"
     ],
+    "modulesVideos": [
+      {
+        "title": "MERN Stack Overview",
+        "video": "https://www.youtube.com/embed/7CqJlxBYj-M",
+        "description": "What is the MERN stack and how it works."
+      },
+      {
+        "title": "Connecting MongoDB",
+        "video": "https://www.youtube.com/embed/fBNz5xF-Kx4",
+        "description": "Setup and connect your Node app with MongoDB."
+      }
+    ],
     "price": 1499,
     "image": "https://via.placeholder.com/300x180?text=Full+Stack+Course",
     "video": "https://www.youtube.com/embed/7CqJlxBYj-M",
@@ -111,6 +176,18 @@
       "Color & Typography",
       "Prototyping in Figma",
       "Project: App UI Design"
+    ],
+    "modulesVideos": [
+      {
+        "title": "Intro to UI/UX",
+        "video": "https://www.youtube.com/embed/3Y1W7uWz8nU",
+        "description": "Introduction to design thinking and user-centric design."
+      },
+      {
+        "title": "Figma Basics",
+        "video": "https://www.youtube.com/embed/jwCmIBJ8Jtc",
+        "description": "Learn the basics of designing in Figma."
+      }
     ],
     "price": 1099,
     "image": "https://via.placeholder.com/300x180?text=UI+UX+Design",

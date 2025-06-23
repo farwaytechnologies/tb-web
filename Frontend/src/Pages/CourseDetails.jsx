@@ -35,6 +35,13 @@ function CourseDetail() {
             <li><strong>Duration:</strong> {course.duration}</li>
             <li><strong>Price:</strong> ₹{course.price}</li>
           </ul>
+
+          <div className="course-actions">
+            <button className="techborg-enroll-btn">Enroll Now</button>
+            <Link to={`/courses/${course.id}/modules`} className="techborg-modules-btn">
+              View Module Videos
+            </Link>
+          </div>
         </div>
       </section>
 
