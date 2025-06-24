@@ -10,6 +10,8 @@ import CourseDetail from '../Pages/CourseDetails';
 import CourseModules from '../Pages/CourseModule';
 import Login from '../Pages/Login';
 import Innovation from '../Pages/Inoovation';
+import UserDashboard from '../Pages/UserDashbord';
+import AdminDashboard from '../Pages/AdminDashbord';
 
 
 function PagesRoute() {
@@ -25,8 +27,11 @@ function PagesRoute() {
      <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}
      <Route path="/courses/:id/modules" element={<CourseModules/>} />
 
-     <Route path='/login' element={<Login/>}/>
+      <Route path="/user/dashboard" element={<UserDashboard/>} />
+      <Route path="/admin/dashboard" element={<AdminDashboard/>} />
 
+     <Route path='/login' element={<Login/>}/>
+     
     </Routes>
   );
 }

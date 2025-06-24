@@ -3,6 +3,7 @@ import '../Styles/PagesStyle/Login.css';
 
 function Login() {
   const [isSignup, setIsSignup] = useState(false);
+  const [role, setRole] = useState('student');
 
   const toggleForm = () => setIsSignup(!isSignup);
 
@@ -13,10 +14,21 @@ function Login() {
 
         <form className="auth-form">
           {isSignup && (
-            <div className="auth-field">
-              <label>Full Name</label>
-              <input type="text" placeholder="John Doe" required />
-            </div>
+            <>
+              <div className="auth-field">
+                <label>Full Name</label>
+                <input type="text" placeholder="John Doe" required />
+              </div>
+
+              <div className="auth-field">
+                <label>Role</label>
+                <select value={role} onChange={(e) => setRole(e.target.value)} className="auth-select" required>
+                  <option value="student">Student</option>
+                  <option value="tutor">Tutor</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+            </>
           )}
 
           <div className="auth-field">

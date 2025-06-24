@@ -1,0 +1,19 @@
+.user-dashboard {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  color: #1f2937;
+}
+
+.user-dashboard h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.user-dashboard-section {
+  background: #f9fafb;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}

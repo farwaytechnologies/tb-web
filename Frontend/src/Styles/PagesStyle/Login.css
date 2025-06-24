@@ -77,3 +77,18 @@
   cursor: pointer;
   margin-left: 5px;
 }
+.auth-select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background-color: #0f172a;
+  color: #f1f5f9;
+  font-size: 1rem;
+}
+
+.auth-select:focus {
+  outline: none;
+  border-color: #4a7abe;
+  box-shadow: 0 0 0 2px rgba(74, 122, 190, 0.2);
+}
