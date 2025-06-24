@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Robotics",
+    "image": "/assets/images/23390.jpg",
+    "link": "/robotics"
+  },
+  {
+    "id": 2,
+    "title": "Drones",
+    "image": "/assets/images/265.jpg",
+    "link": "/drones"
+  },
+  {
+    "id": 3,
+    "title": "AI",
+    "image": "/assets/images/124669.jpg",
+    "link": "/ai"
+  },
+  {
+    "id": 4,
+    "title": "Blockchain",
+    "image": "/assets/images/2910154_442.jpg",
+    "link": "/blockchain"
+  }
+]

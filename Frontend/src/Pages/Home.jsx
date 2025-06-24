@@ -1,6 +1,7 @@
 import React from 'react';
 import '../Styles/PagesStyle/Home.css';
 import { Link } from 'react-router-dom';
+import HomeWhyUs from '../Home/HomeWhyUs';
 
 function Home() {
   return (
@@ -32,11 +33,12 @@ function Home() {
           </div>
         </div>
       </section>
+      <HomeWhyUs/>
 
       {/* Call to Action */}
       <section className="cta-section">
         <h2>Ready to start your tech journey?</h2>
-        <Link to="/signup" className="cta-btn">Get Started</Link>
+        <Link to="/login" className="cta-btn">Get Started</Link>
       </section>
     </div>
   );

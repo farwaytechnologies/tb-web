@@ -9,6 +9,7 @@ import Contact from '../Pages/Contact';
 import CourseDetail from '../Pages/CourseDetails';
 import CourseModules from '../Pages/CourseModule';
 import Login from '../Pages/Login';
+import Innovation from '../Pages/Inoovation';
 
 
 function PagesRoute() {
@@ -18,6 +19,7 @@ function PagesRoute() {
       <Route path="/about" element={<About />} />
       <Route path="/courses" element={<Courses />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/innovation" element={<Innovation/>} />
 
 
      <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}

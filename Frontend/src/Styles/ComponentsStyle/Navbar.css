@@ -1,9 +1,11 @@
-.techborg-navbar {
+/* Navbar Wrapper */
+.navbar-wrapper {
   background-color: #000000;
   padding: 1rem 2rem;
   color: #ffffff;
 }
 
+/* Container */
 .navbar-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -12,25 +14,75 @@
   justify-content: space-between;
 }
 
-.logo {
+/* Logo */
+.navbar-logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: hsl(0, 0%, 100%);
+  color: #ffffff;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.nav-links {
+.navbar-logo:hover {
+  color: #4a7abe;
+}
+
+/* Nav links on the left */
+.navbar-links {
   list-style: none;
   display: flex;
   gap: 1.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-links a {
+.navbar-links a {
   color: #ffffff;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
 }
 
-.nav-links a:hover {
+.navbar-links a:hover {
+  color: #4a7abe;
+}
+
+.navbar-links li {
+  display: flex;
+  align-items: center;
+}
+
+/* Right-side login + GitHub */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Login Button */
+.navbar-login-btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  color: #ffffff;
+  transition: background 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.navbar-login-btn:hover {
+  background-color: #000000;
+  color: #4a7abe;
+}
+
+/* GitHub Icon */
+.navbar-github-icon {
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.navbar-github-icon:hover {
   color: #4a7abe;
 }

@@ -1,0 +1,103 @@
+.homewhyus-wrapper {
+  background-color: #f9fafb;
+  padding: 100px 20px;
+  color: #1e2a38;
+}
+
+.homewhyus-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.homewhyus-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 60px;
+}
+
+.homewhyus-heading {
+  flex: 1;
+  min-width: 280px;
+}
+
+.homewhyus-heading h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.homewhyus-underline {
+  width: 60px;
+  height: 4px;
+  background-color: #3b82f6;
+  border-radius: 4px;
+}
+
+.homewhyus-subtext {
+  flex: 1;
+  min-width: 280px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+/* === Card Row === */
+.homewhyus-cards {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+  justify-content: center;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.homewhyus-cards::-webkit-scrollbar {
+  display: none;
+}
+
+/* === Card Styling === */
+.homewhyus-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 300px;
+  max-width: 320px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.homewhyus-card:hover {
+  transform: translateY(-6px);
+}
+
+.homewhyus-image {
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.homewhyus-tag {
+  font-size: 0.75rem;
+  color: #6366f1;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.homewhyus-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.homewhyus-desc {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
