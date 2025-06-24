@@ -37,14 +37,14 @@
 /* Features Section */
 .features-section {
   padding: 60px 20px;
-  background: #f7f9fc;
+   background: linear-gradient(135deg, #62a8ef, #854ef4);
   text-align: center;
 }
 
 .features-section h2 {
   font-size: 2rem;
   margin-bottom: 2rem;
-  color: #1e2a38;
+  color: #ffffff;
 }
 
 .features {
@@ -69,7 +69,7 @@
 
 /* CTA Section */
 .cta-section {
-  background-color: #1e2a38;
+   background: linear-gradient(120deg, #1e2a38, #2b4d7e);
   color: white;
   padding: 60px 20px;
   text-align: center;

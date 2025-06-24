@@ -13,38 +13,36 @@ function CourseModules() {
       .then((data) => {
         const selected = data.find((c) => String(c.id) === id);
         setCourse(selected);
-        setSelectedVideo(selected?.modulesVideos?.[0]); // Load first module by default
+        setSelectedVideo(selected?.modulesVideos?.[0]);
       });
   }, [id]);
 
   if (!course || !course.modulesVideos) {
-    return <div className="modules-loading">Loading modules...</div>;
+    return <div className="course-modules-loading">Loading modules...</div>;
   }
 
   return (
-    <div className="modules-wrapper">
-      <div className="modules-header">
+    <div className="course-modules-wrapper">
+      <div className="course-modules-header">
         <h1>{course.title}</h1>
         <p>{course.modulesVideos.length} Modules</p>
       </div>
 
-      <div className="modules-main-content">
-        {/* Left - Module List */}
-        <div className="modules-sidebar">
+      <div className="course-modules-main-content">
+        <aside className="course-modules-sidebar">
           {course.modulesVideos.map((module, index) => (
             <div
               key={index}
-              className={`module-list-item ${selectedVideo?.title === module.title ? 'active' : ''}`}
+              className={`course-module-list-item ${selectedVideo?.title === module.title ? 'active' : ''}`}
               onClick={() => setSelectedVideo(module)}
             >
               <h4>{index + 1}. {module.title}</h4>
             </div>
           ))}
-        </div>
+        </aside>
 
-        {/* Right - Video Player */}
-        <div className="modules-video-area">
-          <div className="main-video-wrapper">
+        <section className="course-modules-video-area">
+          <div className="course-main-video-wrapper">
             <iframe
               src={selectedVideo?.video}
               title={selectedVideo?.title}
@@ -53,13 +51,15 @@ function CourseModules() {
               allowFullScreen
             ></iframe>
           </div>
-          <h2>{selectedVideo?.title}</h2>
-          <p>{selectedVideo?.description}</p>
-        </div>
+          <div className="course-video-content">
+            <h2>{selectedVideo?.title}</h2>
+            <p>{selectedVideo?.description}</p>
+          </div>
+        </section>
       </div>
 
-      <div className="modules-back">
-        <Link to="/dashboard">← Back to Dashboard</Link>
+      <div className="course-modules-back">
+        <Link to="/courses">← Back to Dashboard</Link>
       </div>
     </div>
   );
