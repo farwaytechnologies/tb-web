@@ -10,8 +10,9 @@ import CourseDetail from '../Pages/CourseDetails';
 import CourseModules from '../Pages/CourseModule';
 import Login from '../Pages/Login';
 import Innovation from '../Pages/Inoovation';
-import UserDashboard from '../Pages/UserDashbord';
-import AdminDashboard from '../Pages/AdminDashbord';
+import UserDashboard from '../Dashboard/UserDashbord';
+import AdminDashboard from '../Dashboard/AdminDashbord';
+import TutorDashboard from '../Dashboard/TutorDashbord';
 
 
 function PagesRoute() {
@@ -29,6 +30,7 @@ function PagesRoute() {
 
       <Route path="/user/dashboard" element={<UserDashboard/>} />
       <Route path="/admin/dashboard" element={<AdminDashboard/>} />
+      <Route path='/tutor/dashboard'element={<TutorDashboard/>}/>
 
      <Route path='/login' element={<Login/>}/>
      

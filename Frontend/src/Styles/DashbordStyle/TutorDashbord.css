@@ -1,0 +1,16 @@
+.techborg-tutor-dashboard {
+  padding: 60px 30px;
+  background: #ecfdf5;
+  color: #065f46;
+  min-height: 100vh;
+}
+
+.techborg-tutor-dashboard h1 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #10b981;
+}
+
+.techborg-tutor-dashboard p {
+  font-size: 1.1rem;
+}
