@@ -1,3 +1,4 @@
+/* === Container === */
 .auth-container {
   background: linear-gradient(135deg, #62a8ef, #854ef4);
   min-height: 100vh;
@@ -8,6 +9,7 @@
   padding: 20px;
 }
 
+/* === Auth Box === */
 .auth-box {
   background-color: #1e293b;
   padding: 40px;
@@ -24,6 +26,7 @@
   color: #38bdf8;
 }
 
+/* === Form === */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -37,7 +40,8 @@
   display: block;
 }
 
-.auth-field input {
+.auth-field input,
+.auth-select {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -45,8 +49,17 @@
   background-color: #0f172a;
   color: #f1f5f9;
   font-size: 1rem;
+  transition: border-color 0.3s;
 }
 
+.auth-select:focus,
+.auth-field input:focus {
+  outline: none;
+  border-color: #4a7abe;
+  box-shadow: 0 0 0 2px rgba(74, 122, 190, 0.3);
+}
+
+/* === Button === */
 .auth-button {
   background-color: #38bdf8;
   border: none;
@@ -64,6 +77,7 @@
   color: #ffffff;
 }
 
+/* === Toggle Text === */
 .auth-toggle {
   margin-top: 20px;
   text-align: center;
@@ -77,18 +91,10 @@
   cursor: pointer;
   margin-left: 5px;
 }
-.auth-select {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #334155;
-  background-color: #0f172a;
-  color: #f1f5f9;
-  font-size: 1rem;
-}
 
-.auth-select:focus {
-  outline: none;
-  border-color: #4a7abe;
-  box-shadow: 0 0 0 2px rgba(74, 122, 190, 0.2);
+/* === Responsive === */
+@media screen and (max-width: 480px) {
+  .auth-box {
+    padding: 30px 20px;
+  }
 }
