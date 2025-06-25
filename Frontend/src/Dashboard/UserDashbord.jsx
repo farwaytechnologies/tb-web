@@ -1,90 +1,141 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/DashbordStyle/UserDashbord.css';
 
-function UserDashboard() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
+export default function UserDashboard() {
+  // Load user from localStorage on mount
+  const stored = JSON.parse(localStorage.getItem('user')) || {};
+  const [user, setUser] = useState(stored);
+  const [form, setForm] = useState(stored);
   const [editing, setEditing] = useState(false);
-  const [formData, setFormData] = useState(user);
-  const [profilePic, setProfilePic] = useState(user.profilePic || '');
+  const [preview, setPreview] = useState(stored.profilePic || '/default-profile.png');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  // Keep form in sync if user changes externally
+  useEffect(() => {
+    setForm(user);
+    if (user.profilePic) setPreview(user.profilePic);
+  }, [user]);
+
+  const handleChange = e => {
+    setForm(f => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  const handleProfilePicChange = (e) => {
+  const handleFile = e => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePic(reader.result);
-        setFormData(prev => ({ ...prev, profilePic: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+      setForm(f => ({ ...f, profilePic: reader.result }));
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSave = async () => {
+    setError(''); 
+    setLoading(true);
     try {
       const res = await fetch(`http://localhost:8000/api/auth/update/${user.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(form),
       });
       const data = await res.json();
-      if (res.ok) {
-        setUser(data.user);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        setEditing(false);
-      } else {
-        alert(data.message);
-      }
+      if (!res.ok) throw new Error(data.message || 'Update failed');
+      setUser(data.user);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setEditing(false);
     } catch (err) {
-      console.error('Error updating user:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    setFormData(user);
-  }, [user]);
 
   return (
     <div className="techborg-user-dashboard">
       <div className="techborg-profile-card">
         <div className="techborg-profile-img-wrapper">
-          <img
-            src={profilePic || '/default-profile.png'}
-            alt="Profile"
-            className="techborg-profile-img"
-          />
+          <img src={preview} alt="Profile" className="techborg-profile-img" />
           {editing && (
-            <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFile}
+              className="techborg-profile-file"
+            />
           )}
         </div>
 
         <div className="techborg-profile-info">
           <h2>{user.name}</h2>
-          <p className="techborg-user-role">{user.role}</p>
+          <p className="techborg-user-role">{user.role.toUpperCase()}</p>
+
+          {error && <p className="techborg-error">{error}</p>}
 
           {editing ? (
             <div className="techborg-profile-form">
-              <input name="title" value={formData.title || ''} onChange={handleChange} placeholder="Title" />
-              <input name="firstName" value={formData.firstName || ''} onChange={handleChange} placeholder="First Name" />
-              <input name="middleName" value={formData.middleName || ''} onChange={handleChange} placeholder="Middle Name" />
-              <input name="lastName" value={formData.lastName || ''} onChange={handleChange} placeholder="Last Name" />
-              <input name="gender" value={formData.gender || ''} onChange={handleChange} placeholder="Gender" />
-              <button onClick={handleSave} className="techborg-save-btn">Save</button>
+              <input
+                name="name"
+                value={form.name || ''}
+                onChange={handleChange}
+                placeholder="Full Name"
+              />
+              <input
+                name="title"
+                value={form.title || ''}
+                onChange={handleChange}
+                placeholder="Title"
+              />
+              <input
+                name="firstName"
+                value={form.firstName || ''}
+                onChange={handleChange}
+                placeholder="First Name"
+              />
+              <input
+                name="middleName"
+                value={form.middleName || ''}
+                onChange={handleChange}
+                placeholder="Middle Name"
+              />
+              <input
+                name="lastName"
+                value={form.lastName || ''}
+                onChange={handleChange}
+                placeholder="Last Name"
+              />
+              <input
+                name="gender"
+                value={form.gender || ''}
+                onChange={handleChange}
+                placeholder="Gender"
+              />
+              <button
+                onClick={handleSave}
+                className="techborg-save-btn"
+                disabled={loading}
+              >
+                {loading ? 'Saving…' : 'Save Changes'}
+              </button>
             </div>
           ) : (
             <div className="techborg-profile-fields">
-              <p><strong>Title:</strong> {user.title || 'N/A'}</p>
-              <p><strong>First Name:</strong> {user.firstName || 'N/A'}</p>
-              <p><strong>Middle Name:</strong> {user.middleName || 'N/A'}</p>
-              <p><strong>Last Name:</strong> {user.lastName || 'N/A'}</p>
-              <p><strong>Gender:</strong> {user.gender || 'N/A'}</p>
+              <p><strong>Name:</strong> {user.name}</p>
+              <p><strong>Title:</strong> {user.title || '—'}</p>
+              <p><strong>First Name:</strong> {user.firstName || '—'}</p>
+              <p><strong>Middle Name:</strong> {user.middleName || '—'}</p>
+              <p><strong>Last Name:</strong> {user.lastName || '—'}</p>
+              <p><strong>Gender:</strong> {user.gender || '—'}</p>
             </div>
           )}
 
-          <button className="techborg-edit-btn" onClick={() => setEditing(!editing)}>
+          <button
+            className="techborg-edit-btn"
+            onClick={() => setEditing(e => !e)}
+            disabled={loading}
+          >
             {editing ? 'Cancel' : 'Edit Profile'}
           </button>
         </div>
@@ -92,5 +143,3 @@ function UserDashboard() {
     </div>
   );
 }
-
-export default UserDashboard;
