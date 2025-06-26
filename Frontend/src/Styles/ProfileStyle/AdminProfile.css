@@ -1,0 +1,78 @@
+.admin-profile-full {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffffff, #4ec5f4);
+  padding: 40px;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+  color: #1e293b;
+}
+
+.admin-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.admin-profile-header img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #3b82f6;
+  object-fit: cover;
+}
+
+.admin-profile-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.admin-profile-header p {
+  margin-top: 6px;
+  font-size: 1rem;
+  color: #64748b;
+}
+
+.admin-profile-form {
+  max-width: 800px;
+  width: 100%;
+}
+
+.admin-profile-form label {
+  display: block;
+  margin: 20px 0 8px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.admin-profile-form input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  font-size: 1rem;
+}
+
+.admin-profile-form p {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #334155;
+}
+
+.admin-profile-form button {
+  margin-top: 24px;
+  padding: 12px 20px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.admin-profile-form button:hover {
+  background-color: #2563eb;
+}

@@ -86,18 +86,19 @@ function Navbar() {
               </div>
               {dropdownOpen && (
                 <div className="dropdown-menu">
-                  <Link
-                    to={
-                      user.role === 'admin'
-                        ? '/admin/dashboard'
-                        : user.role === 'tutor'
-                        ? '/tutor/dashboard'
-                        : '/user/dashboard'
-                    }
-                    onClick={() => setDropdownOpen(false)}
-                  >
-                    My Profile
-                  </Link>
+              <Link
+  to={
+    user.role === 'admin'
+      ? '/admin-profile'
+      : user.role === 'tutor'
+      ? '/tutor-profile'
+      : '/user-profile'
+  }
+  onClick={() => setDropdownOpen(false)}
+>
+  My Profile
+</Link>
+
                   <Link to="/change-password" onClick={() => setDropdownOpen(false)}>Change Password</Link>
                   <Link to="/certificates" onClick={() => setDropdownOpen(false)}>Certificates</Link>
                   <Link to="/digital-key" onClick={() => setDropdownOpen(false)}>Digital Key</Link>

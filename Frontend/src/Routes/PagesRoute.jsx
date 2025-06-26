@@ -13,6 +13,9 @@ import Innovation from '../Pages/Inoovation';
 import UserDashboard from '../Dashboard/UserDashbord';
 import AdminDashboard from '../Dashboard/AdminDashbord';
 import TutorDashboard from '../Dashboard/TutorDashbord';
+import AdminProfile from '../Profile/AdminProfile';
+import TutorProfile from '../Profile/TutorProfile';
+import UserProfile from '../Profile/UserProfile';
 
 
 function PagesRoute() {
@@ -31,6 +34,12 @@ function PagesRoute() {
       <Route path="/user/dashboard" element={<UserDashboard/>} />
       <Route path="/admin/dashboard" element={<AdminDashboard/>} />
       <Route path='/tutor/dashboard'element={<TutorDashboard/>}/>
+
+
+      <Route path="/admin-profile" element={<AdminProfile/>} />
+      <Route path="/tutor-profile" element={<TutorProfile/>} />
+      <Route path="/user-profile" element={<UserProfile/>} />
+
 
      <Route path='/login' element={<Login/>}/>
      
