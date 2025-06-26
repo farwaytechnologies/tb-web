@@ -54,6 +54,22 @@ function Navbar() {
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">TechBorg</Link>
 
+        {/* Dashboard Link */}
+        {user && (
+          <Link
+            to={
+              user.role === 'admin'
+                ? '/admin/dashboard'
+                : user.role === 'tutor'
+                ? '/tutor/dashboard'
+                : '/user/dashboard'
+            }
+            className="navbar-dashboard-link"
+          >
+            Dashboard
+          </Link>
+        )}
+
         <ul className="navbar-links">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/courses">Courses</Link></li>
@@ -86,25 +102,23 @@ function Navbar() {
               </div>
               {dropdownOpen && (
                 <div className="dropdown-menu">
-              <Link
-  to={
-    user.role === 'admin'
-      ? '/admin-profile'
-      : user.role === 'tutor'
-      ? '/tutor-profile'
-      : '/user-profile'
-  }
-  onClick={() => setDropdownOpen(false)}
->
-  My Profile
-</Link>
-
+                  <Link
+                    to={
+                      user.role === 'admin'
+                        ? '/admin-profile'
+                        : user.role === 'tutor'
+                        ? '/tutor-profile'
+                        : '/user-profile'
+                    }
+                    onClick={() => setDropdownOpen(false)}
+                  >
+                    My Profile
+                  </Link>
                   <Link to="/change-password" onClick={() => setDropdownOpen(false)}>Change Password</Link>
                   <Link to="/certificates" onClick={() => setDropdownOpen(false)}>Certificates</Link>
-                  <Link to="/digital-key" onClick={() => setDropdownOpen(false)}>Digital Key</Link>
                   <Link to="/exam" onClick={() => setDropdownOpen(false)}>Exam</Link>
                   <Link to="/invoices" onClick={() => setDropdownOpen(false)}>Invoices</Link>
-                  <Link to="/support" onClick={() => setDropdownOpen(false)}>Support Requests</Link>
+                  <Link to="/settings" onClick={() => setDropdownOpen(false)}>Settings</Link>
                   <button onClick={handleLogout} className="logout-link">Logout</button>
                 </div>
               )}
