@@ -66,7 +66,7 @@ function Navbar() {
             }
             className="navbar-dashboard-link"
           >
-            Dashboard
+            Learning Platform
           </Link>
         )}
 
@@ -114,7 +114,6 @@ function Navbar() {
                   >
                     My Profile
                   </Link>
-                  <Link to="/change-password" onClick={() => setDropdownOpen(false)}>Change Password</Link>
                   <Link to="/certificates" onClick={() => setDropdownOpen(false)}>Certificates</Link>
                   <Link to="/exam" onClick={() => setDropdownOpen(false)}>Exam</Link>
                   <Link to="/invoices" onClick={() => setDropdownOpen(false)}>Invoices</Link>
