@@ -1,145 +1,84 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Styles/DashbordStyle/UserDashbord.css';
+import { FaUserEdit, FaCertificate, FaBookOpen, FaLifeRing } from 'react-icons/fa';
 
-export default function UserDashboard() {
-  // Load user from localStorage on mount
-  const stored = JSON.parse(localStorage.getItem('user')) || {};
-  const [user, setUser] = useState(stored);
-  const [form, setForm] = useState(stored);
-  const [editing, setEditing] = useState(false);
-  const [preview, setPreview] = useState(stored.profilePic || '/default-profile.png');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+function UserDashboard() {
+  const [user, setUser] = useState({});
 
-  // Keep form in sync if user changes externally
   useEffect(() => {
-    setForm(user);
-    if (user.profilePic) setPreview(user.profilePic);
-  }, [user]);
-
-  const handleChange = e => {
-    setForm(f => ({ ...f, [e.target.name]: e.target.value }));
-  };
-
-  const handleFile = e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-      setForm(f => ({ ...f, profilePic: reader.result }));
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleSave = async () => {
-    setError(''); 
-    setLoading(true);
-    try {
-      const res = await fetch(`http://localhost:8000/api/auth/update/${user.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Update failed');
-      setUser(data.user);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      setEditing(false);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const stored = JSON.parse(localStorage.getItem('user'));
+    if (stored) setUser(stored);
+  }, []);
 
   return (
-    <div className="techborg-user-dashboard">
-      <div className="techborg-profile-card">
-        <div className="techborg-profile-img-wrapper">
-          <img src={preview} alt="Profile" className="techborg-profile-img" />
-          {editing && (
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFile}
-              className="techborg-profile-file"
-            />
-          )}
+    <div className="user-dashboard-container">
+      {/* Header */}
+      <div className="user-dashboard-header">
+        <div className="user-dashboard-user-info">
+          <img
+            src={user.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`}
+            alt="User"
+            className="user-dashboard-avatar"
+          />
+          <div>
+            <h2>Hello, {user.name}</h2>
+            <p className="user-dashboard-role">Student Dashboard</p>
+          </div>
         </div>
+      </div>
 
-        <div className="techborg-profile-info">
-          <h2>{user.name}</h2>
-          <p className="techborg-user-role">{user.role.toUpperCase()}</p>
+      {/* Stats */}
+      <div className="user-dashboard-stats-grid">
+        <div className="user-dashboard-stat-card">
+          <h3>4</h3>
+          <p>Courses Enrolled</p>
+        </div>
+        <div className="user-dashboard-stat-card">
+          <h3>12</h3>
+          <p>Lessons Completed</p>
+        </div>
+        <div className="user-dashboard-stat-card">
+          <h3>2</h3>
+          <p>Certificates Earned</p>
+        </div>
+        <div className="user-dashboard-stat-card">
+          <h3>1</h3>
+          <p>Upcoming Exams</p>
+        </div>
+      </div>
 
-          {error && <p className="techborg-error">{error}</p>}
+      {/* Quick Actions */}
+      <div className="user-dashboard-quick-actions">
+        <h3>Quick Actions</h3>
+        <div className="user-dashboard-action-grid">
+          <a href="/user-profile" className="user-dashboard-action-card">
+            <FaUserEdit size={24} />
+            <span>My Profile</span>
+          </a>
+          <a href="/courses" className="user-dashboard-action-card">
+            <FaBookOpen size={24} />
+            <span>Start Learning</span>
+          </a>
+          <a href="/certificates" className="user-dashboard-action-card">
+            <FaCertificate size={24} />
+            <span>Certificates</span>
+          </a>
+          <a href="/support" className="user-dashboard-action-card">
+            <FaLifeRing size={24} />
+            <span>Support</span>
+          </a>
+        </div>
+      </div>
 
-          {editing ? (
-            <div className="techborg-profile-form">
-              <input
-                name="name"
-                value={form.name || ''}
-                onChange={handleChange}
-                placeholder="Full Name"
-              />
-              <input
-                name="title"
-                value={form.title || ''}
-                onChange={handleChange}
-                placeholder="Title"
-              />
-              <input
-                name="firstName"
-                value={form.firstName || ''}
-                onChange={handleChange}
-                placeholder="First Name"
-              />
-              <input
-                name="middleName"
-                value={form.middleName || ''}
-                onChange={handleChange}
-                placeholder="Middle Name"
-              />
-              <input
-                name="lastName"
-                value={form.lastName || ''}
-                onChange={handleChange}
-                placeholder="Last Name"
-              />
-              <input
-                name="gender"
-                value={form.gender || ''}
-                onChange={handleChange}
-                placeholder="Gender"
-              />
-              <button
-                onClick={handleSave}
-                className="techborg-save-btn"
-                disabled={loading}
-              >
-                {loading ? 'Saving…' : 'Save Changes'}
-              </button>
-            </div>
-          ) : (
-            <div className="techborg-profile-fields">
-              <p><strong>Name:</strong> {user.name}</p>
-              <p><strong>Title:</strong> {user.title || '—'}</p>
-              <p><strong>First Name:</strong> {user.firstName || '—'}</p>
-              <p><strong>Middle Name:</strong> {user.middleName || '—'}</p>
-              <p><strong>Last Name:</strong> {user.lastName || '—'}</p>
-              <p><strong>Gender:</strong> {user.gender || '—'}</p>
-            </div>
-          )}
-
-          <button
-            className="techborg-edit-btn"
-            onClick={() => setEditing(e => !e)}
-            disabled={loading}
-          >
-            {editing ? 'Cancel' : 'Edit Profile'}
-          </button>
+      {/* Announcement */}
+      <div className="user-dashboard-announcement">
+        <h3>Announcements</h3>
+        <div className="user-dashboard-announcement-box">
+          <p>🚀 New course on AI Tools has been launched. Enroll now!</p>
         </div>
       </div>
     </div>
   );
 }
+
+export default UserDashboard;
