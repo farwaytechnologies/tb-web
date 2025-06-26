@@ -16,6 +16,7 @@ import TutorDashboard from '../Dashboard/TutorDashbord';
 import AdminProfile from '../Profile/AdminProfile';
 import TutorProfile from '../Profile/TutorProfile';
 import UserProfile from '../Profile/UserProfile';
+import Settings from '../Pages/Settings';
 
 
 function PagesRoute() {
@@ -39,6 +40,8 @@ function PagesRoute() {
       <Route path="/admin-profile" element={<AdminProfile/>} />
       <Route path="/tutor-profile" element={<TutorProfile/>} />
       <Route path="/user-profile" element={<UserProfile/>} />
+
+      <Route path='/settings'element={<Settings/>}/>
 
 
      <Route path='/login' element={<Login/>}/>
