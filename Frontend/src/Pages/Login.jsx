@@ -52,6 +52,9 @@ function Login() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
 
+        // ✅ Dispatch login event to update Navbar
+        window.dispatchEvent(new Event('userLoggedIn'));
+
         // Redirect based on role
         const role = data.user.role;
         if (role === 'admin') navigate('/admin/dashboard');

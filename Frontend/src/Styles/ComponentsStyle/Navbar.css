@@ -86,3 +86,48 @@
 .navbar-github-icon:hover {
   color: #4a7abe;
 }
+
+/* ========== USER INFO ========== */
+
+/* Logged-in user display */
+.navbar-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Profile pin circle */
+.profile-pin {
+  background-color: #4a7abe;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* User name text */
+.navbar-username {
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* Logout button */
+.logout-btn {
+  background-color: transparent;
+  border: 1px solid #4a7abe;
+  color: #4a7abe;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #4a7abe;
+  color: white;
+}
