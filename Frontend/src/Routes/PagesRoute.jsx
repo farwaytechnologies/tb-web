@@ -17,6 +17,7 @@ import AdminProfile from '../Profile/AdminProfile';
 import TutorProfile from '../Profile/TutorProfile';
 import UserProfile from '../Profile/UserProfile';
 import Settings from '../Pages/Settings';
+import Blog from '../Pages/Blog';
 
 
 function PagesRoute() {
@@ -27,6 +28,7 @@ function PagesRoute() {
       <Route path="/courses" element={<Courses />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/innovation" element={<Innovation/>} />
+      <Route path="/blog" element={<Blog/>} />
 
 
      <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}

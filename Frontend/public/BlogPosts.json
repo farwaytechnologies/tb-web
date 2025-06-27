@@ -1,0 +1,58 @@
+[
+  {
+    "id": "react-hooks-guide",
+    "title": "Mastering React Hooks",
+    "summary": "Explore useState, useEffect, useContext, and more with hands-on examples.",
+    "image": "/images/blog/react-hooks.jpg",
+    "date": "2024-04-10"
+  },
+  {
+    "id": "mern-stack",
+    "title": "Understanding the MERN Stack",
+    "summary": "Dive into MongoDB, Express, React, and Node.js for full-stack development.",
+    "image": "/images/blog/mern-stack.jpg",
+    "date": "2024-04-15"
+  },
+  {
+    "id": "css-grid-flexbox",
+    "title": "CSS Grid vs Flexbox",
+    "summary": "Compare the layout powers of Grid and Flexbox and when to use each.",
+    "image": "/images/blog/css-layouts.jpg",
+    "date": "2024-04-20"
+  },
+  {
+    "id": "jwt-auth-node",
+    "title": "JWT Authentication in Node.js",
+    "summary": "Implement secure authentication using JSON Web Tokens and Express.",
+    "image": "/images/blog/jwt-auth.jpg",
+    "date": "2024-04-25"
+  },
+  {
+    "id": "nextjs-vs-react",
+    "title": "Next.js vs React: What to Choose?",
+    "summary": "Learn the key differences between Next.js and plain React for your projects.",
+    "image": "/images/blog/nextjs-vs-react.jpg",
+    "date": "2024-04-30"
+  },
+  {
+    "id": "typescript-for-beginners",
+    "title": "TypeScript for Beginners",
+    "summary": "Add type safety to your JavaScript codebase with this TypeScript intro.",
+    "image": "/images/blog/typescript.jpg",
+    "date": "2024-05-05"
+  },
+  {
+    "id": "responsive-ui-tips",
+    "title": "Tips for Building Responsive UI",
+    "summary": "Make your UI look great on all devices using CSS media queries and more.",
+    "image": "/images/blog/responsive-ui.jpg",
+    "date": "2024-05-10"
+  },
+  {
+    "id": "mongodb-basics",
+    "title": "Getting Started with MongoDB",
+    "summary": "Understand collections, documents, and querying in MongoDB.",
+    "image": "/images/blog/mongodb.jpg",
+    "date": "2024-05-15"
+  }
+]
