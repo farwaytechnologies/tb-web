@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "title": "Introduction to Cyber Security",
+    "image": "/certs/cybersecurity.jpg",
+    "date": "15 Oct 2022"
+  },
+  {
+    "id": "2",
+    "title": "CEH (V12) - Certified Ethical Hacker Training",
+    "image": "/certs/ceh.jpg",
+    "date": "28 Nov 2022"
+  },
+  {
+    "id": "3",
+    "title": "CompTIA Security+ (SY0-601)",
+    "image": "/certs/comptia.jpg",
+    "date": "21 Jan 2023"
+  },
+  {
+    "id": "4",
+    "title": "Ethical Hacking Essentials",
+    "image": "/certs/ethical-hacking.jpg",
+    "date": "23 Jan 2023"
+  },
+  {
+    "id": "5",
+    "title": "Web Application Security",
+    "image": "/certs/web-security.jpg",
+    "date": "10 Mar 2023"
+  },
+  {
+    "id": "6",
+    "title": "Network Security Fundamentals",
+    "image": "/certs/network-security.jpg",
+    "date": "12 Apr 2023"
+  },
+  {
+    "id": "7",
+    "title": "Digital Forensics Basics",
+    "image": "/certs/forensics.jpg",
+    "date": "30 May 2023"
+  },
+  {
+    "id": "8",
+    "title": "Penetration Testing Expert",
+    "image": "/certs/penetration-testing.jpg",
+    "date": "18 Jun 2023"
+  }
+]

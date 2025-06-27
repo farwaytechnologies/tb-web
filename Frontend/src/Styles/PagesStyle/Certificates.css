@@ -1,0 +1,67 @@
+.techborg-certificates-page {
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #62a8ef, #854ef4);
+  min-height: 100vh;
+}
+
+.techborg-certificates-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #1e2a38;
+  font-weight: 700;
+}
+
+.techborg-certificates-count {
+  text-align: center;
+  color: #4a4a4a;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.techborg-certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.techborg-certificates-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.techborg-certificates-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+}
+
+.techborg-certificates-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.techborg-certificates-card h3 {
+  font-size: 1.1rem;
+  color: #1e2a38;
+  margin: 8px 0;
+}
+
+.techborg-certificates-date {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.techborg-certificates-loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  grid-column: 1 / -1;
+}
