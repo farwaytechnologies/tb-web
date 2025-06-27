@@ -1,109 +1,137 @@
 import React, { useEffect, useState } from 'react';
-import SettingsLayout from '../Layout/SettingsLayout';
 import '../Styles/PagesStyle/SettingStyle.css';
 
 export default function Settings() {
-  const [user, setUser] = useState({});
-  const [form, setForm] = useState({});
-  const [preview, setPreview] = useState('');
-  
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const [form, setForm] = useState(storedUser || {});
+  const [passwords, setPasswords] = useState({ currentPassword: '', newPassword: '' });
+  const [preferences, setPreferences] = useState({ language: '', theme: '' });
+  const [privacy, setPrivacy] = useState({ showProfile: true, emailNotifications: true });
+  const [message, setMessage] = useState('');
+
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('user'));
-    if (stored) {
-      setUser(stored);
-      setForm(stored);
-      setPreview(stored.profilePic || '');
+    if (storedUser) {
+      setPreferences({
+        language: storedUser.language || '',
+        theme: storedUser.theme || '',
+      });
+      setPrivacy({
+        showProfile: storedUser.showProfile ?? true,
+        emailNotifications: storedUser.emailNotifications ?? true,
+      });
     }
-  }, []);
+  }, [storedUser]);
 
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleFormChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handlePasswordChange = (e) => setPasswords({ ...passwords, [e.target.name]: e.target.value });
+  const handlePrefChange = (e) => setPreferences({ ...preferences, [e.target.name]: e.target.value });
+  const handlePrivacyChange = (e) => setPrivacy({ ...privacy, [e.target.name]: e.target.checked });
+
+  const updateProfile = async () => {
+    const res = await fetch(`http://localhost:8000/api/auth/update/${form.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setMessage('Profile updated');
+    }
   };
 
-  const handleFile = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-      setForm((prev) => ({ ...prev, profilePic: reader.result }));
-    };
-    reader.readAsDataURL(file);
+  const updatePassword = async () => {
+    const res = await fetch('http://localhost:8000/api/auth/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: form.email, ...passwords }),
+    });
+    const data = await res.json();
+    setMessage(data.message);
   };
 
-  const saveProfile = () => {
-    // PUT request to /api/auth/update/:id
+  const savePreferences = async () => {
+    const res = await fetch(`http://localhost:8000/api/auth/preferences/${form.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(preferences),
+    });
+    const data = await res.json();
+    setMessage(data.message);
   };
 
-  const updatePassword = () => {
-    // POST request to /api/auth/change-password
+  const savePrivacy = async () => {
+    const res = await fetch(`http://localhost:8000/api/auth/privacy/${form.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(privacy),
+    });
+    const data = await res.json();
+    setMessage(data.message);
   };
 
-  const deactivateAccount = () => {
-    // PATCH to /api/auth/deactivate/:id
-  };
-
-  const deleteAccount = () => {
-    // DELETE /api/auth/delete/:id
+  const deleteAccount = async () => {
+    if (window.confirm('Are you sure you want to delete your account?')) {
+      await fetch(`http://localhost:8000/api/auth/delete/${form.id}`, {
+        method: 'DELETE',
+      });
+      localStorage.clear();
+      window.location.href = '/';
+    }
   };
 
   return (
-    <SettingsLayout user={user}>
-      {/* Profile Settings */}
-      <div className="techborg-settings-section">
-        <h3>Profile Info</h3>
-        <div className="techborg-settings-profile">
-          <img
-            src={preview || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`}
-            alt="Preview"
-            className="techborg-settings-avatar"
-          />
-          <input type="file" onChange={handleFile} />
-        </div>
-        <input
-          name="name"
-          type="text"
-          value={form.name || ''}
-          onChange={handleChange}
-          placeholder="Full Name"
-        />
-        <input
-          name="email"
-          type="email"
-          value={form.email || ''}
-          disabled
-        />
-        <button onClick={saveProfile} className="techborg-settings-btn">Save Changes</button>
+    <div className="settings-page">
+      <h2 className="settings-title">Account Settings</h2>
+      {message && <p className="settings-success">{message}</p>}
+
+      <div className="settings-card">
+        <h3 className="settings-heading">Profile Info</h3>
+        <input name="name" value={form.name || ''} onChange={handleFormChange} placeholder="Name" />
+        <input name="title" value={form.title || ''} onChange={handleFormChange} placeholder="Title" />
+        <input name="gender" value={form.gender || ''} onChange={handleFormChange} placeholder="Gender" />
+        <button onClick={updateProfile} className="settings-btn">Save Profile</button>
       </div>
 
-      {/* Role-specific fields */}
-      {user.role === 'tutor' && (
-        <div className="techborg-settings-section">
-          <h3>Tutor Details</h3>
-          <input
-            name="specialization"
-            placeholder="Specialization"
-            value={form.specialization || ''}
-            onChange={handleChange}
-          />
-        </div>
-      )}
-
-      {/* Change Password */}
-      <div className="techborg-settings-section">
-        <h3>Change Password</h3>
-        <input type="password" placeholder="Current Password" />
-        <input type="password" placeholder="New Password" />
-        <input type="password" placeholder="Confirm Password" />
-        <button onClick={updatePassword} className="techborg-settings-btn">Update Password</button>
+      <div className="settings-card">
+        <h3 className="settings-heading">Password & Security</h3>
+        <input type="password" name="currentPassword" placeholder="Current Password" onChange={handlePasswordChange} />
+        <input type="password" name="newPassword" placeholder="New Password" onChange={handlePasswordChange} />
+        <button onClick={updatePassword} className="settings-btn">Change Password</button>
       </div>
 
-      {/* Danger Zone */}
-      <div className="techborg-settings-section danger-zone">
-        <h3>Danger Zone</h3>
-        <button onClick={deactivateAccount} className="techborg-deactivate-btn">Deactivate Account</button>
-        <button onClick={deleteAccount} className="techborg-delete-btn">Delete Account</button>
+      <div className="settings-card">
+        <h3 className="settings-heading">Preferences</h3>
+        <select name="language" value={preferences.language} onChange={handlePrefChange}>
+          <option value="">Select Language</option>
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+        </select>
+        <select name="theme" value={preferences.theme} onChange={handlePrefChange}>
+          <option value="">Select Theme</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+        <button onClick={savePreferences} className="settings-btn">Save Preferences</button>
       </div>
-    </SettingsLayout>
+
+      <div className="settings-card">
+        <h3 className="settings-heading">Privacy Settings</h3>
+        <label>
+          <input type="checkbox" name="showProfile" checked={privacy.showProfile} onChange={handlePrivacyChange} />
+          Show Profile Publicly
+        </label>
+        <label>
+          <input type="checkbox" name="emailNotifications" checked={privacy.emailNotifications} onChange={handlePrivacyChange} />
+          Receive Email Notifications
+        </label>
+        <button onClick={savePrivacy} className="settings-btn">Save Privacy Settings</button>
+      </div>
+
+      <div className="settings-card danger-zone">
+        <h3 className="settings-heading">Danger Zone</h3>
+        <button onClick={deleteAccount} className="settings-delete-btn">Delete My Account</button>
+      </div>
+    </div>
   );
 }
