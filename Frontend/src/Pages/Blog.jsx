@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../Styles/PagesStyle/Blog.css';
 
 function Blog() {
@@ -17,14 +18,14 @@ function Blog() {
       <div className="techborg-blog-grid">
         {posts.length > 0 ? (
           posts.map((post) => (
-            <div className="techborg-blog-card" key={post.id}>
+            <Link to={`/blog/${post.id}`} className="techborg-blog-card" key={post.id}>
               <img src={post.image} alt={post.title} className="techborg-blog-image" />
               <div className="techborg-blog-content">
                 <h2>{post.title}</h2>
                 <p>{post.description}</p>
                 <p className="techborg-blog-date">{post.date}</p>
               </div>
-            </div>
+            </Link>
           ))
         ) : (
           <p className="techborg-blog-loading">Loading blog posts...</p>

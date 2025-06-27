@@ -18,6 +18,7 @@ import TutorProfile from '../Profile/TutorProfile';
 import UserProfile from '../Profile/UserProfile';
 import Settings from '../Pages/Settings';
 import Blog from '../Pages/Blog';
+import BlogDetails from '../Pages/BlogDetails';
 
 
 function PagesRoute() {
@@ -29,6 +30,8 @@ function PagesRoute() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/innovation" element={<Innovation/>} />
       <Route path="/blog" element={<Blog/>} />
+      <Route path="/blog/:id" element={<BlogDetails/>} />
+
 
 
      <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}

@@ -1,0 +1,51 @@
+.techborg-blog-details-page {
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #62a8ef, #854ef4);
+  min-height: 100vh;
+  align-items: center;
+
+}
+
+.techborg-blog-details-container {
+  max-width: 850px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+}
+
+.techborg-blog-details-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.techborg-blog-details-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.techborg-blog-details-date {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.techborg-blog-details-content p {
+  font-size: 1.1rem;
+  color: #374151;
+  line-height: 1.8;
+  margin-bottom: 18px;
+}
+
+.techborg-blog-details-loading {
+  text-align: center;
+  padding: 100px 0;
+  font-size: 1.2rem;
+  color: #666;
+}
