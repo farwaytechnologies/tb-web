@@ -20,6 +20,7 @@ import Settings from '../Pages/Settings';
 import Blog from '../Pages/Blog';
 import BlogDetails from '../Pages/BlogDetails';
 import Certificates from '../Pages/Certificates';
+import Invoice from '../Pages/Invoice';
 
 
 function PagesRoute() {
@@ -48,9 +49,9 @@ function PagesRoute() {
       <Route path="/user-profile" element={<UserProfile/>} />
 
       <Route path='/settings'element={<Settings/>}/>
-      
       <Route path='/certificates'element={<Certificates/>}/>
-      
+      <Route path="/invoices" element={<Invoice/>} />
+
       
 
 

@@ -1,0 +1,59 @@
+.techborg-invoice-page {
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #62a8ef, #854ef4);
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.techborg-invoice-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.techborg-invoice-sub {
+  color: #475569;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+.techborg-invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border: 1px solid #e3e7ec;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.techborg-invoice-table th,
+.techborg-invoice-table td {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.techborg-invoice-table th {
+  background: rgb(218, 218, 218);
+  color: #333;
+  font-weight: 600;
+}
+
+.techborg-invoice-table tr:not(:last-child) {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.techborg-invoice-table a {
+  color: #3b82f6;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.techborg-invoice-loading {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}

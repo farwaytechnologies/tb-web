@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "userId": "abc123",
+    "orderNumber": "CSTM_PARTIAL_SUBS_C00FKETZ82",
+    "date": "Mon, 30 May, 2022",
+    "amount": 48060.35,
+    "invoiceUrl": "/invoices/invoice1.pdf"
+  },
+  {
+    "id": "2",
+    "userId": "abc123",
+    "orderNumber": "CSTM_PARTIAL_FIRST_CPJFRI1EHBQ",
+    "date": "Mon, 30 May, 2022",
+    "amount": 8500.00,
+    "invoiceUrl": "/invoices/invoice2.pdf"
+  },
+  {
+    "id": "3",
+    "userId": "def456",
+    "orderNumber": "COURSE_PURCHASE_3XYZ789",
+    "date": "Tue, 15 Jun, 2023",
+    "amount": 12000.00,
+    "invoiceUrl": "/invoices/invoice3.pdf"
+  }
+]
