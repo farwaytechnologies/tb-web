@@ -6,23 +6,14 @@ const User = require('../models/User');
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: 'User already exists' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role,
-    });
-
+    const newUser = new User({ name, email, password: hashedPassword, role });
     await newUser.save();
     res.status(201).json({ message: 'User registered successfully' });
-
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -32,7 +23,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const user = await User.findOne({ email });
     if (!user)
       return res.status(400).json({ message: 'Invalid email or password' });
@@ -60,15 +50,14 @@ exports.login = async (req, res) => {
         middleName: user.middleName,
         lastName: user.lastName,
         profilePic: user.profilePic || '',
-      },
+      }
     });
-
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-// UPDATE
+// UPDATE PROFILE
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -78,9 +67,7 @@ exports.updateUser = async (req, res) => {
 
     const updated = await User.findByIdAndUpdate(
       id,
-      {
-        name, title, gender, firstName, middleName, lastName, profilePic,
-      },
+      { name, title, gender, firstName, middleName, lastName, profilePic },
       { new: true }
     );
 
@@ -100,10 +87,69 @@ exports.updateUser = async (req, res) => {
         middleName: updated.middleName,
         lastName: updated.lastName,
         profilePic: updated.profilePic || '',
-      },
+      }
     });
-
   } catch (err) {
     res.status(500).json({ message: 'Update failed' });
+  }
+};
+
+// CHANGE PASSWORD
+exports.changePassword = async (req, res) => {
+  const { email, currentPassword, newPassword } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: 'User not found' });
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch)
+      return res.status(400).json({ message: 'Incorrect current password' });
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+    res.json({ message: 'Password updated' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// SAVE PREFERENCES
+exports.savePreferences = async (req, res) => {
+  try {
+    const { language, theme } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { language, theme },
+      { new: true }
+    );
+    res.json({ message: 'Preferences saved', user });
+  } catch (err) {
+    res.status(500).json({ message: 'Error saving preferences' });
+  }
+};
+
+// SAVE PRIVACY SETTINGS
+exports.savePrivacy = async (req, res) => {
+  try {
+    const { showProfile, emailNotifications } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { showProfile, emailNotifications },
+      { new: true }
+    );
+    res.json({ message: 'Privacy settings saved', user });
+  } catch (err) {
+    res.status(500).json({ message: 'Error saving privacy settings' });
+  }
+};
+
+// DELETE ACCOUNT
+exports.deleteAccount = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Account deleted' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting account' });
   }
 };

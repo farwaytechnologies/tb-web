@@ -1,14 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, updateUser } = require('../controllers/authController');
+const {
+  register,
+  login,
+  updateUser,
+  changePassword,
+  savePreferences,
+  savePrivacy,
+  deleteAccount
+} = require('../controllers/authController');
 
-// User Registration
+// Public
 router.post('/register', register);
-
-// User Login
 router.post('/login', login);
 
-// 🆕 Update User Profile
+// Settings
 router.put('/update/:id', updateUser);
+router.post('/change-password', changePassword);
+router.put('/preferences/:id', savePreferences);
+router.put('/privacy/:id', savePrivacy);
+router.delete('/delete/:id', deleteAccount);
 
 module.exports = router;
