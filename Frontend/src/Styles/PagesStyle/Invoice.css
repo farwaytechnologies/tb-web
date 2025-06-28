@@ -1,6 +1,6 @@
 .techborg-invoice-page {
   padding: 60px 20px;
-  background: linear-gradient(135deg, #62a8ef, #854ef4);
+   background: linear-gradient(135deg, #62a8ef, #854ef4);
   min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -37,7 +37,7 @@
 }
 
 .techborg-invoice-table th {
-  background: rgb(218, 218, 218);
+  background-color: #f2f4f7;
   color: #333;
   font-weight: 600;
 }
