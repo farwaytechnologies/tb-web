@@ -6,19 +6,31 @@ function CourseModules() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/Courses.json')
-      .then((res) => res.json())
+    fetch(`http://localhost:8000/api/courses/${id}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch course data');
+        return res.json();
+      })
       .then((data) => {
-        const selected = data.find((c) => String(c.id) === id);
-        setCourse(selected);
-        setSelectedVideo(selected?.modulesVideos?.[0]);
+        setCourse(data);
+        setSelectedVideo(data?.modulesVideos?.[0]);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error loading course:', err);
+        setLoading(false);
       });
   }, [id]);
 
-  if (!course || !course.modulesVideos) {
+  if (loading) {
     return <div className="course-modules-loading">Loading modules...</div>;
+  }
+
+  if (!course || !course.modulesVideos?.length) {
+    return <div className="course-modules-empty">No modules available for this course.</div>;
   }
 
   return (
@@ -29,6 +41,7 @@ function CourseModules() {
       </div>
 
       <div className="course-modules-main-content">
+        {/* Sidebar - Module List */}
         <aside className="course-modules-sidebar">
           {course.modulesVideos.map((module, index) => (
             <div
@@ -41,6 +54,7 @@ function CourseModules() {
           ))}
         </aside>
 
+        {/* Main Video Area */}
         <section className="course-modules-video-area">
           <div className="course-main-video-wrapper">
             <iframe
@@ -59,7 +73,7 @@ function CourseModules() {
       </div>
 
       <div className="course-modules-back">
-        <Link to="/courses">← Back to Dashboard</Link>
+        <Link to="/courses">← Back to All Courses</Link>
       </div>
     </div>
   );

@@ -5,19 +5,31 @@ import '../Styles/PagesStyle/CourseDetails.css';
 function CourseDetail() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/Courses.json')
-      .then((res) => res.json())
+    setLoading(true);
+    fetch(`http://localhost:8000/api/courses/${id}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Course not found');
+        }
+        return res.json();
+      })
       .then((data) => {
-        const selected = data.find((c) => String(c.id) === id);
-        setCourse(selected);
+        setCourse(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
       });
   }, [id]);
 
-  if (!course) {
-    return <div className="techborg-course-loading">Loading...</div>;
-  }
+  if (loading) return <div className="techborg-course-loading">Loading...</div>;
+  if (error) return <div className="techborg-course-error">Error: {error}</div>;
+  if (!course) return null;
 
   return (
     <div className="techborg-course-detail">
@@ -48,29 +60,34 @@ function CourseDetail() {
       </section>
 
       {/* Video Section */}
-      <section className="techborg-course-video">
-        <h2>Course Preview</h2>
-        <div className="video-wrapper">
-          <iframe
-            src={course.video}
-            title="Course Preview"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-      </section>
+      {course.video && (
+        <section className="techborg-course-video">
+          <h2>Course Preview</h2>
+          <div className="video-wrapper">
+            <iframe
+              src={course.video}
+              title="Course Preview"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </section>
+      )}
 
       {/* Content Section */}
       <section className="techborg-course-body">
-        <div className="course-learnings">
-          <h2>What You'll Learn</h2>
-          <ul>
-            {course.modules.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
+        {course.modules && (
+          <div className="course-learnings">
+            <h2>What You'll Learn</h2>
+            <ul>
+              {course.modules.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <div className="course-description">
           <h2>Course Overview</h2>
           <p>{course.detailedDescription}</p>
