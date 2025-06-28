@@ -12,9 +12,7 @@ function CourseDetail() {
     setLoading(true);
     fetch(`http://localhost:8000/api/courses/${id}`)
       .then((res) => {
-        if (!res.ok) {
-          throw new Error('Course not found');
-        }
+        if (!res.ok) throw new Error('Course not found');
         return res.json();
       })
       .then((data) => {
@@ -33,7 +31,6 @@ function CourseDetail() {
 
   return (
     <div className="techborg-course-detail">
-      {/* Header Section */}
       <section className="techborg-course-header">
         <div className="course-image">
           <img src={course.image} alt={course.title} />
@@ -59,7 +56,6 @@ function CourseDetail() {
         </div>
       </section>
 
-      {/* Video Section */}
       {course.video && (
         <section className="techborg-course-video">
           <h2>Course Preview</h2>
@@ -75,14 +71,15 @@ function CourseDetail() {
         </section>
       )}
 
-      {/* Content Section */}
       <section className="techborg-course-body">
         {course.modules && (
           <div className="course-learnings">
             <h2>What You'll Learn</h2>
             <ul>
-              {course.modules.map((item, index) => (
-                <li key={index}>{item}</li>
+              {course.modules.map((mod, index) => (
+                <li key={index}>
+                  {mod.name} ({mod.videos?.length || 0} videos)
+                </li>
               ))}
             </ul>
           </div>
@@ -94,7 +91,6 @@ function CourseDetail() {
         </div>
       </section>
 
-      {/* Footer */}
       <section className="techborg-course-footer">
         <Link to="/courses">← Back to All Courses</Link>
       </section>

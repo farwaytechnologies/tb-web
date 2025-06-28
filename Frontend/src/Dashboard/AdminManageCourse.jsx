@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../Styles/DashbordStyle/AdminManageCourse.css';
 
-
 function AdminManageCourses() {
   const [courses, setCourses] = useState([]);
   const [formData, setFormData] = useState({
@@ -14,12 +13,18 @@ function AdminManageCourses() {
     duration: '',
     level: '',
     instructor: '',
+    modules: [
+      {
+        name: '',
+        videos: [{ title: '', video: '', description: '' }]
+      }
+    ]
   });
 
   useEffect(() => {
     fetch('http://localhost:8000/api/courses')
-      .then((res) => res.json())
-      .then((data) => setCourses(data));
+      .then(res => res.json())
+      .then(data => setCourses(data));
   }, []);
 
   const handleDelete = async (id) => {
@@ -27,7 +32,7 @@ function AdminManageCourses() {
     if (!confirm) return;
 
     await fetch(`http://localhost:8000/api/courses/${id}`, { method: 'DELETE' });
-    setCourses(courses.filter((c) => c._id !== id));
+    setCourses(courses.filter(c => c._id !== id));
   };
 
   const handleAdd = async () => {
@@ -48,7 +53,53 @@ function AdminManageCourses() {
       duration: '',
       level: '',
       instructor: '',
+      modules: [
+        {
+          name: '',
+          videos: [{ title: '', video: '', description: '' }]
+        }
+      ]
     });
+  };
+
+  const handleModuleNameChange = (value, index) => {
+    const updated = [...formData.modules];
+    updated[index].name = value;
+    setFormData({ ...formData, modules: updated });
+  };
+
+  const addModule = () => {
+    setFormData({
+      ...formData,
+      modules: [...formData.modules, {
+        name: '',
+        videos: [{ title: '', video: '', description: '' }]
+      }]
+    });
+  };
+
+  const removeModule = (index) => {
+    const updated = [...formData.modules];
+    updated.splice(index, 1);
+    setFormData({ ...formData, modules: updated });
+  };
+
+  const handleVideoChange = (modIdx, vidIdx, field, value) => {
+    const updatedModules = [...formData.modules];
+    updatedModules[modIdx].videos[vidIdx][field] = value;
+    setFormData({ ...formData, modules: updatedModules });
+  };
+
+  const addVideo = (modIdx) => {
+    const updatedModules = [...formData.modules];
+    updatedModules[modIdx].videos.push({ title: '', video: '', description: '' });
+    setFormData({ ...formData, modules: updatedModules });
+  };
+
+  const removeVideo = (modIdx, vidIdx) => {
+    const updatedModules = [...formData.modules];
+    updatedModules[modIdx].videos.splice(vidIdx, 1);
+    setFormData({ ...formData, modules: updatedModules });
   };
 
   return (
@@ -60,13 +111,13 @@ function AdminManageCourses() {
           onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
         <input type="text" placeholder="Short Description" value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
-        <input type="text" placeholder="Detailed Description" value={formData.detailedDescription}
+        <textarea placeholder="Detailed Description" value={formData.detailedDescription}
           onChange={(e) => setFormData({ ...formData, detailedDescription: e.target.value })} />
         <input type="number" placeholder="Price" value={formData.price}
           onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
         <input type="text" placeholder="Image URL" value={formData.image}
           onChange={(e) => setFormData({ ...formData, image: e.target.value })} />
-        <input type="text" placeholder="Video URL" value={formData.video}
+        <input type="text" placeholder="Course Video URL" value={formData.video}
           onChange={(e) => setFormData({ ...formData, video: e.target.value })} />
         <input type="text" placeholder="Duration" value={formData.duration}
           onChange={(e) => setFormData({ ...formData, duration: e.target.value })} />
@@ -74,7 +125,59 @@ function AdminManageCourses() {
           onChange={(e) => setFormData({ ...formData, level: e.target.value })} />
         <input type="text" placeholder="Instructor" value={formData.instructor}
           onChange={(e) => setFormData({ ...formData, instructor: e.target.value })} />
-        <button onClick={handleAdd}>Add Course</button>
+
+        {/* Modules with Videos */}
+        <div className="section-group">
+          <h4>Modules & Videos</h4>
+          {formData.modules.map((mod, idx) => (
+            <div key={idx} className="module-group">
+              <div className="flex-between">
+                <input
+                  type="text"
+                  placeholder={`Module ${idx + 1} Name`}
+                  value={mod.name}
+                  onChange={(e) => handleModuleNameChange(e.target.value, idx)}
+                />
+                {formData.modules.length > 1 && (
+                  <button className="remove-btn" onClick={() => removeModule(idx)}>Remove Module</button>
+                )}
+              </div>
+
+              <div className="section-group nested">
+                <h5>Videos for {mod.name || `Module ${idx + 1}`}</h5>
+                {mod.videos.map((vid, vidx) => (
+                  <div className="video-group" key={vidx}>
+                    <input
+                      type="text"
+                      placeholder="Video Title"
+                      value={vid.title}
+                      onChange={(e) => handleVideoChange(idx, vidx, 'title', e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Video URL"
+                      value={vid.video}
+                      onChange={(e) => handleVideoChange(idx, vidx, 'video', e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Video Description"
+                      value={vid.description}
+                      onChange={(e) => handleVideoChange(idx, vidx, 'description', e.target.value)}
+                    />
+                    {mod.videos.length > 1 && (
+                      <button className="remove-btn" onClick={() => removeVideo(idx, vidx)}>Remove Video</button>
+                    )}
+                  </div>
+                ))}
+                <button onClick={() => addVideo(idx)} className="add-btn">+ Add Video</button>
+              </div>
+            </div>
+          ))}
+          <button onClick={addModule} className="add-btn">+ Add Module</button>
+        </div>
+
+        <button className="submit-btn" onClick={handleAdd}>Add Course</button>
       </div>
 
       <div className="techborg-admin-course-grid">

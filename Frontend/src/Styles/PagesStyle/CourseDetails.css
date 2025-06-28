@@ -4,7 +4,7 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* === Header Split === */
+/* === Header === */
 .techborg-course-header {
   display: flex;
   flex-wrap: wrap;
@@ -59,10 +59,6 @@
   margin-bottom: 10px;
 }
 
-.course-actions {
-  margin-top: 20px;
-}
-
 .techborg-course-buttons {
   display: flex;
   gap: 15px;
@@ -101,7 +97,7 @@
   color: #ffffff;
 }
 
-/* === Video === */
+/* === Video Section === */
 .techborg-course-video {
   padding: 40px 20px;
   max-width: 900px;
@@ -130,7 +126,7 @@
   border: none;
 }
 
-/* === Body Split (Learnings + Description) === */
+/* === Course Body === */
 .techborg-course-body {
   display: flex;
   flex-wrap: wrap;
@@ -184,11 +180,12 @@
   color: #0ea5e9;
 }
 
-/* === Loader === */
-.techborg-course-loading {
+/* === Loader & Error === */
+.techborg-course-loading,
+.techborg-course-error {
   text-align: center;
   padding: 80px 20px;
-  color: #94a3b8;
+  color: #f8fafc;
   font-size: 1.2rem;
 }
 
@@ -200,13 +197,16 @@
   }
 
   .course-summary h1 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
   .techborg-enroll-btn,
-  .techborg-modules-btn {
-    display: block;
+  .techborg-module-btn {
     width: 100%;
-    margin-bottom: 10px;
+  }
+
+  .techborg-course-buttons {
+    flex-direction: column;
+    gap: 10px;
   }
 }
