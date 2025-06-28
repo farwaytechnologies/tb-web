@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true
-  },
+  title: { type: String, required: true },
   description: String,
   detailedDescription: String,
   image: String,
@@ -14,15 +11,16 @@ const courseSchema = new mongoose.Schema({
   level: String,
   instructor: String,
 
-  // Array of strings for module names
-  modules: [String],
-
-  // Array of objects for video modules
-  modulesVideos: [
+  modules: [
     {
-      title: String,
-      video: String,
-      description: String
+      name: { type: String, required: true },
+      videos: [
+        {
+          title: { type: String, required: true },
+          video: { type: String, required: true },
+          description: String
+        }
+      ]
     }
   ],
 
