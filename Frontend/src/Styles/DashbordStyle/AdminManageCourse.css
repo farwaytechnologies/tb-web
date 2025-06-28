@@ -1,0 +1,113 @@
+.techborg-admin-course-page {
+  padding: 40px 20px;
+  background-color: #f4f7fc;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.techborg-admin-course-page h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #1e2a38;
+}
+
+/* === Form === */
+.techborg-course-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+}
+
+.techborg-course-form input,
+.techborg-course-form textarea {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+}
+
+.techborg-course-form textarea {
+  grid-column: span 2;
+  resize: vertical;
+}
+
+.techborg-course-form button {
+  padding: 12px 20px;
+  background-color: #4a7abe;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  grid-column: span 2;
+  transition: background 0.3s ease;
+}
+
+.techborg-course-form button:hover {
+  background-color: #365b94;
+}
+
+/* === Course Grid === */
+.techborg-admin-course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* === Individual Card === */
+.techborg-admin-course-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+}
+
+.techborg-admin-course-card:hover {
+  transform: translateY(-5px);
+}
+
+.techborg-admin-course-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.techborg-admin-course-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  color: #1e2a38;
+}
+
+.techborg-admin-course-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.techborg-admin-course-card button {
+  margin-top: auto;
+  padding: 10px 16px;
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.techborg-admin-course-card button:hover {
+  background-color: #c8212e;
+}

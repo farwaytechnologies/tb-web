@@ -22,6 +22,7 @@ import BlogDetails from '../Pages/BlogDetails';
 import Certificates from '../Pages/Certificates';
 import Invoice from '../Pages/Invoice';
 import Exam from '../Pages/Exam'
+import AdminManageCourses from '../Dashboard/AdminManageCourse';
 
 function PagesRoute() {
   return (
@@ -42,6 +43,9 @@ function PagesRoute() {
       <Route path="/user/dashboard" element={<UserDashboard/>} />
       <Route path="/admin/dashboard" element={<AdminDashboard/>} />
       <Route path='/tutor/dashboard'element={<TutorDashboard/>}/>
+
+
+      <Route path="/admin/courses" element={<AdminManageCourses/> } /> 
 
 
       <Route path="/admin-profile" element={<AdminProfile/>} />
