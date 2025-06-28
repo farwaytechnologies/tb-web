@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "title": "Network Security Assessment",
+    "course": "Cybersecurity Basics",
+    "date": "2025-07-10",
+    "duration": "60 mins"
+  },
+  {
+    "id": "2",
+    "title": "Advanced Ethical Hacking",
+    "course": "Ethical Hacking Mastery",
+    "date": "2025-07-14",
+    "duration": "90 mins"
+  },
+  {
+    "id": "3",
+    "title": "Security+ Certification Practice",
+    "course": "CompTIA Security+",
+    "date": "2025-07-18",
+    "duration": "75 mins"
+  }
+]

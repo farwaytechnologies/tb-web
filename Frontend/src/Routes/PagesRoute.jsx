@@ -21,7 +21,7 @@ import Blog from '../Pages/Blog';
 import BlogDetails from '../Pages/BlogDetails';
 import Certificates from '../Pages/Certificates';
 import Invoice from '../Pages/Invoice';
-
+import Exam from '../Pages/Exam'
 
 function PagesRoute() {
   return (
@@ -51,6 +51,7 @@ function PagesRoute() {
       <Route path='/settings'element={<Settings/>}/>
       <Route path='/certificates'element={<Certificates/>}/>
       <Route path="/invoices" element={<Invoice/>} />
+      <Route path='/exam'element={<Exam/>}/>
 
       
 
