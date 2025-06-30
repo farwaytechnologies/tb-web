@@ -23,6 +23,8 @@ import Certificates from '../Pages/Certificates';
 import Invoice from '../Pages/Invoice';
 import Exam from '../Pages/Exam'
 import AdminManageCourses from '../Dashboard/AdminManageCourse';
+import AdminManageUser from '../Dashboard/AdminManageUser';
+import AdminManageBlogs from '../Dashboard/AdminManageBlogs';
 
 function PagesRoute() {
   return (
@@ -46,6 +48,8 @@ function PagesRoute() {
 
 
       <Route path="/admin/courses" element={<AdminManageCourses/> } /> 
+      <Route path="/admin/users" element={<AdminManageUser/>} />
+      <Route path="/admin/blogs" element={<AdminManageBlogs />} />
 
 
       <Route path="/admin-profile" element={<AdminProfile/>} />

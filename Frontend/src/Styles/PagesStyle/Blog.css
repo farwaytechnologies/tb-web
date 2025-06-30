@@ -1,81 +1,105 @@
-.techborg-blog-page {
-  padding: 60px 20px;
-  background: linear-gradient(135deg, #ffd5ec, #dfe9f3);
+/* Container */
+.techborg-blog-container {
+
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f9fafd;
   min-height: 100vh;
 }
 
+/* Title */
 .techborg-blog-title {
-  text-align: center;
-  font-size: 2.8rem;
-  color: #1f2937;
-  margin-bottom: 50px;
+  font-size: 32px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  color: #2b3c4e;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
+/* Grid Layout */
 .techborg-blog-grid {
   display: grid;
-  gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  max-width: 1200px;
-  margin: 0 auto;
+  gap: 24px;
 }
 
-/* === Blog Card === */
+/* Blog Card with fixed height */
 .techborg-blog-card {
-  background: #ffffff;
-  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   text-decoration: none;
   color: inherit;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
-  border: 1px solid #f3f4f6;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  height: 360px;
-}
-
-.techborg-blog-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
-}
-
-.techborg-blog-content {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.techborg-blog-card h2 {
-  font-size: 1.3rem;
-  color: #111827;
-  margin-bottom: 10px;
-}
-
-.techborg-blog-card p {
-  font-size: 0.95rem;
-  color: #4b5563;
-  margin: 4px 0;
-}
-
-.techborg-blog-date {
-  margin-top: auto;
-  font-size: 0.85rem;
-  color: #6b7280;
+  height: 420px; /* ✅ Fixed height */
 }
 
 .techborg-blog-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
+/* Image */
+.techborg-blog-card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+/* Card Body */
+.techborg-blog-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Title */
+.techborg-blog-card-body h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2a37;
+  margin-bottom: 10px;
+  line-height: 1.4;
+  height: 48px; /* ✅ Force title area height */
+  overflow: hidden;
+}
+
+/* Description */
+.techborg-blog-card-body p {
+  font-size: 14px;
+  color: #4a5568;
+  flex-grow: 1;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+/* Date */
+.techborg-blog-card-date {
+  font-size: 13px;
+  color: #7a7f87;
+  margin-top: auto;
+}
+
+/* Loading */
 .techborg-blog-loading {
   text-align: center;
-  font-size: 1.2rem;
-  color: #555;
-  grid-column: 1 / -1;
+  font-size: 18px;
+  color: #4a7abe;
+  padding: 60px 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .techborg-blog-card {
+    height: 400px;
+  }
+
+  .techborg-blog-card-img {
+    height: 150px;
+  }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/DashbordStyle/AdminDashbord.css';
-import { FaUsers, FaBook, FaUserShield, FaChartBar } from 'react-icons/fa';
+import { FaUsers, FaBook, FaUserShield, FaChartBar, FaBlog } from 'react-icons/fa';
 
 export default function AdminDashboard() {
   const [admin, setAdmin] = useState({});
@@ -62,6 +62,10 @@ export default function AdminDashboard() {
           <a href="/admin/users" className="techborg-admin-action-btn">Manage Users</a>
           <a href="/admin/courses" className="techborg-admin-action-btn">Manage Courses</a>
           <a href="/admin/tutors" className="techborg-admin-action-btn">Manage Tutors</a>
+          <a href="/admin/blogs" className="techborg-admin-action-btn">
+            <FaBlog style={{ marginRight: '8px' }} />
+            Manage Blogs
+          </a>
           <a href="/admin/settings" className="techborg-admin-action-btn">Platform Settings</a>
         </div>
       </div>
