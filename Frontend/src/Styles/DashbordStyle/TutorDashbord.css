@@ -1,16 +1,103 @@
-.techborg-tutor-dashboard {
-  padding: 60px 30px;
-  background: #ecfdf5;
-  color: #065f46;
+/* Container */
+.techborg-tutor-dashboard-container {
+  padding: 2rem;
+  background-color: #f4f7fa;
   min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.techborg-tutor-dashboard h1 {
-  font-size: 2.2rem;
-  margin-bottom: 15px;
-  color: #10b981;
+/* Header */
+.techborg-tutor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
-.techborg-tutor-dashboard p {
-  font-size: 1.1rem;
+.techborg-tutor-header h2 {
+  font-size: 2rem;
+  margin-bottom: 0.2rem;
+  color: #333;
+}
+
+.techborg-tutor-role {
+  color: #4a7abe;
+  font-weight: 600;
+}
+
+.techborg-tutor-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid #4a7abe;
+  object-fit: cover;
+}
+
+/* Stats Section */
+.techborg-tutor-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.techborg-tutor-card {
+  flex: 1 1 250px;
+  background-color: #fff;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.techborg-tutor-card:hover {
+  transform: translateY(-5px);
+}
+
+.techborg-tutor-card h3 {
+  font-size: 1.8rem;
+  margin: 0.5rem 0;
+  color: #222;
+}
+
+.techborg-tutor-card p {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Actions Section */
+.techborg-tutor-actions {
+  margin-top: 2rem;
+}
+
+.techborg-tutor-actions h3 {
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.3rem;
+}
+
+.techborg-tutor-action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.techborg-tutor-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #4a7abe;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.9rem 1.2rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+.techborg-tutor-action-btn:hover {
+  background-color: #3b6aa4;
 }
