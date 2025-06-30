@@ -5,9 +5,8 @@ const {
   login,
   updateUser,
   changePassword,
-  savePreferences,
-  savePrivacy,
-  deleteAccount
+  deleteAccount,
+  getAllUsers
 } = require('../controllers/authController');
 
 // Public
@@ -17,8 +16,9 @@ router.post('/login', login);
 // Settings
 router.put('/update/:id', updateUser);
 router.post('/change-password', changePassword);
-router.put('/preferences/:id', savePreferences);
-router.put('/privacy/:id', savePrivacy);
 router.delete('/delete/:id', deleteAccount);
+
+// Admin
+router.get('/users', getAllUsers); // Only accessible by admin (add middleware if needed)
 
 module.exports = router;

@@ -57,6 +57,16 @@ exports.login = async (req, res) => {
   }
 };
 
+// GET ALL USERS (Admin only)
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('-password');
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching users' });
+  }
+};
+
 // UPDATE PROFILE
 exports.updateUser = async (req, res) => {
   try {
@@ -114,35 +124,6 @@ exports.changePassword = async (req, res) => {
   }
 };
 
-// SAVE PREFERENCES
-exports.savePreferences = async (req, res) => {
-  try {
-    const { language, theme } = req.body;
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { language, theme },
-      { new: true }
-    );
-    res.json({ message: 'Preferences saved', user });
-  } catch (err) {
-    res.status(500).json({ message: 'Error saving preferences' });
-  }
-};
-
-// SAVE PRIVACY SETTINGS
-exports.savePrivacy = async (req, res) => {
-  try {
-    const { showProfile, emailNotifications } = req.body;
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { showProfile, emailNotifications },
-      { new: true }
-    );
-    res.json({ message: 'Privacy settings saved', user });
-  } catch (err) {
-    res.status(500).json({ message: 'Error saving privacy settings' });
-  }
-};
 
 // DELETE ACCOUNT
 exports.deleteAccount = async (req, res) => {
