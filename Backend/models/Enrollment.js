@@ -31,13 +31,18 @@ const enrollmentSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  status: {
+    type: String,
+    enum: ['Pending', 'Accepted', 'Rejected'],
+    default: 'Pending'
+  },
   enrolledAt: {
     type: Date,
     default: Date.now
   }
 });
 
-// Optional: prevent duplicate enrollments for same user & course
+// Prevent duplicate enrollments
 enrollmentSchema.index({ userId: 1, courseId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Enrollment', enrollmentSchema);

@@ -21,6 +21,9 @@ exports.createEnrollment = async (req, res) => {
     const savedEnrollment = await newEnrollment.save();
     res.status(201).json(savedEnrollment);
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({ error: 'You have already enrolled in this course.' });
+    }
     console.error('Enrollment error:', err);
     res.status(500).json({ error: 'Server error while enrolling.' });
   }
@@ -38,5 +41,28 @@ exports.getAllEnrollments = async (req, res) => {
   } catch (err) {
     console.error('Fetch enrollments error:', err);
     res.status(500).json({ error: 'Failed to fetch enrollments.' });
+  }
+};
+
+// Update status (Accept/Reject)
+exports.updateEnrollmentStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!['Accepted', 'Rejected'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status value' });
+    }
+
+    const updated = await Enrollment.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!updated) return res.status(404).json({ error: 'Enrollment not found' });
+
+    res.json(updated);
+  } catch (err) {
+    console.error('Update status error:', err);
+    res.status(500).json({ error: 'Failed to update enrollment status' });
   }
 };
