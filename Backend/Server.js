@@ -4,9 +4,11 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+
 const authRoutes = require('./routes/auth');
 const courseRoutes = require('./routes/courseRoutes');
-const blogRoutes = require('./routes/blogRoutes'); // ✅ Import Blog Routes
+const blogRoutes = require('./routes/blogRoutes');
+const enrollmentRoutes = require('./routes/enrollmentRoutes'); // ✅ Import Enrollment Routes
 
 dotenv.config(); // Load environment variables from .env
 
@@ -18,10 +20,13 @@ if (!process.env.MONGO_URI) {
   process.exit(1);
 }
 
-// MongoDB Connection (cleaned for driver v4+)
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ Connected to MongoDB Atlas'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err));
+// MongoDB Connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('✅ Connected to MongoDB Atlas'))
+.catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // Middleware
 app.use(cors());
@@ -31,14 +36,15 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
-app.use('/api/blogs', blogRoutes); // ✅ Use Blog Routes
+app.use('/api/blogs', blogRoutes);
+app.use('/api/enrollments', enrollmentRoutes); // ✅ Use Enrollment Routes
 
 // Health Check Route
 app.get('/', (req, res) => {
   res.send('✅ LMS API is running');
 });
 
-// Error Handler
+// Global Error Handler
 app.use((err, req, res, next) => {
   console.error('❌ Internal Server Error:', err);
   res.status(500).json({ message: 'Internal server error' });
