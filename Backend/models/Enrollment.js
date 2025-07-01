@@ -19,11 +19,13 @@ const enrollmentSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    lowercase: true
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email']
   },
   phone: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   message: {
     type: String,
@@ -34,5 +36,8 @@ const enrollmentSchema = new mongoose.Schema({
     default: Date.now
   }
 });
+
+// Optional: prevent duplicate enrollments for same user & course
+enrollmentSchema.index({ userId: 1, courseId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Enrollment', enrollmentSchema);
