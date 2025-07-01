@@ -25,6 +25,7 @@ import Exam from '../Pages/Exam'
 import AdminManageCourses from '../Dashboard/AdminManageCourse';
 import AdminManageUser from '../Dashboard/AdminManageUser';
 import AdminManageBlogs from '../Dashboard/AdminManageBlogs';
+import EnrollmentForm from '../Pages/EnrollmentForm';
 
 function PagesRoute() {
   return (
@@ -65,6 +66,7 @@ function PagesRoute() {
 
 
      <Route path='/login' element={<Login/>}/>
+     <Route path="/enroll" element={<EnrollmentForm/>} />
      
     </Routes>
   );

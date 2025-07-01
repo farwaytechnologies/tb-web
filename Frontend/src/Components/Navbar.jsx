@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub, FaBars, FaTimes } from 'react-icons/fa';
 import { MdAccountCircle } from 'react-icons/md';
 import '../Styles/ComponentsStyle/Navbar.css';
 
 function Navbar() {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef();
 
@@ -45,16 +46,15 @@ function Navbar() {
     navigate('/login');
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const toggleMobileMenu = () => setMenuOpen(!menuOpen);
+  const closeMobileMenu = () => setMenuOpen(false);
 
   return (
     <nav className="navbar-wrapper">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">TechBorg</Link>
+        <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>TechBorg</Link>
 
-        {/* Dashboard Link */}
         {user && (
           <Link
             to={
@@ -65,70 +65,69 @@ function Navbar() {
                 : '/user/dashboard'
             }
             className="navbar-dashboard-link"
+            onClick={closeMobileMenu}
           >
             Learning Platform
           </Link>
         )}
 
-        <ul className="navbar-links">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/courses">Courses</Link></li>
-          <li><Link to="/innovation">Innovation</Link></li>
-           <li><Link to="/blog">Blog</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
-          <li>
-            <a
-              href="https://github.com/techborg"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="navbar-github-icon"
-              title="GitHub"
-            >
-              <FaGithub size={16} />
-            </a>
-          </li>
-        </ul>
+        <div className="navbar-right-wrapper">
+          {/* Hamburger Icon */}
+          <div className="navbar-hamburger" onClick={toggleMobileMenu}>
+            {menuOpen ? <FaTimes /> : <FaBars />}
+          </div>
 
-        <div className="navbar-right">
-          {user ? (
-            <div className="navbar-user-info" ref={dropdownRef}>
-              <div className="nav-user-dropdown" onClick={toggleDropdown}>
-                <img
-                  src={user.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`}
-                  alt="profile"
-                  className="profile-img"
-                />
-                <span className="navbar-username">{user.name}</span>
-              </div>
-              {dropdownOpen && (
-                <div className="dropdown-menu">
-                  <Link
-                    to={
-                      user.role === 'admin'
-                        ? '/admin-profile'
-                        : user.role === 'tutor'
-                        ? '/tutor-profile'
-                        : '/user-profile'
-                    }
-                    onClick={() => setDropdownOpen(false)}
-                  >
-                    My Profile
-                  </Link>
-                  <Link to="/certificates" onClick={() => setDropdownOpen(false)}>Certificates</Link>
-                  <Link to="/exam" onClick={() => setDropdownOpen(false)}>Exam</Link>
-                  <Link to="/invoices" onClick={() => setDropdownOpen(false)}>Invoices</Link>
-                  <Link to="/settings" onClick={() => setDropdownOpen(false)}>Settings</Link>
-                  <button onClick={handleLogout} className="logout-link">Logout</button>
+          <ul className={`navbar-links ${menuOpen ? 'active' : ''}`}>
+            <li><Link to="/" onClick={closeMobileMenu}>Home</Link></li>
+            <li><Link to="/courses" onClick={closeMobileMenu}>Courses</Link></li>
+            <li><Link to="/innovation" onClick={closeMobileMenu}>Innovation</Link></li>
+            <li><Link to="/blog" onClick={closeMobileMenu}>Blog</Link></li>
+            <li><Link to="/about" onClick={closeMobileMenu}>About</Link></li>
+            <li><Link to="/contact" onClick={closeMobileMenu}>Contact</Link></li>
+            <li>
+              <a
+                href="https://github.com/techborg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="navbar-github-icon"
+                onClick={closeMobileMenu}
+              >
+                <FaGithub size={16} />
+              </a>
+            </li>
+          </ul>
+
+          <div className="navbar-right">
+            {user ? (
+              <div className="navbar-user-info" ref={dropdownRef}>
+                <div className="nav-user-dropdown" onClick={toggleDropdown}>
+                  <img
+                    src={user.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`}
+                    alt="profile"
+                    className="profile-img"
+                  />
+                  <span className="navbar-username">{user.name}</span>
                 </div>
-              )}
-            </div>
-          ) : (
-            <Link to="/login" className="navbar-login-btn">
-              <MdAccountCircle size={18} style={{ marginRight: '6px' }} />
-              Login
-            </Link>
-          )}
+                {dropdownOpen && (
+                  <div className="dropdown-menu">
+                    <Link to={user.role === 'admin' ? '/admin-profile' : user.role === 'tutor' ? '/tutor-profile' : '/user-profile'} onClick={() => setDropdownOpen(false)}>
+                      My Profile
+                    </Link>
+                    <Link to="/certificates" onClick={() => setDropdownOpen(false)}>Certificates</Link>
+                    <Link to="/exam" onClick={() => setDropdownOpen(false)}>Exam</Link>
+                    <Link to="/invoices" onClick={() => setDropdownOpen(false)}>Invoices</Link>
+                    <Link to="/settings" onClick={() => setDropdownOpen(false)}>Settings</Link>
+                    <button onClick={handleLogout} className="logout-link">Logout</button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/login" className="navbar-login-btn">
+                <MdAccountCircle size={18} style={{ marginRight: '6px' }} />
+                Login
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </nav>

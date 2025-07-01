@@ -46,9 +46,15 @@ function CourseDetail() {
           </ul>
 
           <div className="techborg-course-buttons">
-            <Link to="/login" className="techborg-enroll-btn">
-              Enroll Now
-            </Link>
+            {localStorage.getItem('user') ? (
+              <Link to={'/enroll'} className="techborg-enroll-btn">
+                Enroll Now
+              </Link>
+            ) : (
+              <Link to="/login" className="techborg-enroll-btn">
+                Enroll Now
+              </Link>
+            )}
             <Link to={`/courses/${id}/modules`} className="techborg-module-btn">
               View Modules
             </Link>
