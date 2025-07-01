@@ -42,7 +42,7 @@ const enrollmentSchema = new mongoose.Schema({
   }
 });
 
-// Prevent duplicate enrollments
+// Prevent duplicate enrollments for same user and course
 enrollmentSchema.index({ userId: 1, courseId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Enrollment', enrollmentSchema);

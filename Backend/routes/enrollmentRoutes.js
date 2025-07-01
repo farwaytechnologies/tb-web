@@ -3,16 +3,20 @@ const router = express.Router();
 const {
   createEnrollment,
   getAllEnrollments,
-  updateEnrollmentStatus
+  updateEnrollmentStatus,
+  deleteEnrollment
 } = require('../controllers/enrollmentController');
 
-// Student: Enroll in course
+// POST - Student enrolls
 router.post('/', createEnrollment);
 
-// Admin: Get all enrollments
+// GET - Admin views all
 router.get('/', getAllEnrollments);
 
-// Admin: Update status (accept/reject)
+// PUT - Admin updates status
 router.put('/:id/status', updateEnrollmentStatus);
+
+// DELETE - Admin deletes enrollment
+router.delete('/:id', deleteEnrollment);
 
 module.exports = router;

@@ -29,7 +29,7 @@ exports.createEnrollment = async (req, res) => {
   }
 };
 
-// Get all enrollments (Admin use)
+// Get all enrollments (Admin)
 exports.getAllEnrollments = async (req, res) => {
   try {
     const enrollments = await Enrollment.find()
@@ -44,7 +44,7 @@ exports.getAllEnrollments = async (req, res) => {
   }
 };
 
-// Update status (Accept/Reject)
+// Update enrollment status (Accept/Reject)
 exports.updateEnrollmentStatus = async (req, res) => {
   try {
     const { status } = req.body;
@@ -58,11 +58,28 @@ exports.updateEnrollmentStatus = async (req, res) => {
       { new: true }
     );
 
-    if (!updated) return res.status(404).json({ error: 'Enrollment not found' });
+    if (!updated) {
+      return res.status(404).json({ error: 'Enrollment not found' });
+    }
 
     res.json(updated);
   } catch (err) {
     console.error('Update status error:', err);
     res.status(500).json({ error: 'Failed to update enrollment status' });
+  }
+};
+
+// Delete an enrollment (optional)
+exports.deleteEnrollment = async (req, res) => {
+  try {
+    const deleted = await Enrollment.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Enrollment not found' });
+    }
+
+    res.json({ message: 'Enrollment deleted successfully' });
+  } catch (err) {
+    console.error('Delete enrollment error:', err);
+    res.status(500).json({ error: 'Failed to delete enrollment' });
   }
 };
