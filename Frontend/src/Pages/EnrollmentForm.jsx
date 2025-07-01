@@ -33,19 +33,21 @@ const EnrollmentForm = () => {
     e.preventDefault();
 
     const user = JSON.parse(localStorage.getItem('user'));
-    if (!user) {
+    if (!user || !user.id) {
       alert('Please login to enroll in a course.');
       return;
     }
 
     const payload = {
-      userId: user._id,
+      userId: user.id, // ✅ must match "id" key from login
       courseId: formData.course,
       fullName: formData.name,
       email: formData.email,
       phone: formData.phone,
       message: formData.message || ''
     };
+
+    console.log('🔍 Submitting enrollment with payload:', payload);
 
     try {
       const res = await fetch('http://localhost:8000/api/enrollments', {
@@ -59,7 +61,7 @@ const EnrollmentForm = () => {
         throw new Error(errorData.error || 'Enrollment failed');
       }
 
-      alert('Enrollment submitted successfully!');
+      alert('✅ Enrollment submitted successfully!');
       setFormData({
         name: '',
         email: '',
