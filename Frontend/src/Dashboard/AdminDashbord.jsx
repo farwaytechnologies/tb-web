@@ -66,7 +66,7 @@ export default function AdminDashboard() {
             <FaBlog style={{ marginRight: '8px' }} />
             Manage Blogs
           </a>
-          <a href="/admin/settings" className="techborg-admin-action-btn">Platform Settings</a>
+          <a href="/admin/enrollments" className="techborg-admin-action-btn">Enrollment List</a>
         </div>
       </div>
     </div>

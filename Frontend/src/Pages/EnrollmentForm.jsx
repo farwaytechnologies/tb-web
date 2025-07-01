@@ -7,6 +7,7 @@ const EnrollmentForm = () => {
     email: '',
     phone: '',
     course: '',
+    message: ''
   });
 
   const [courses, setCourses] = useState([]);
@@ -19,6 +20,7 @@ const EnrollmentForm = () => {
       .catch((err) => console.error('Error fetching courses:', err));
   }, []);
 
+  // Handle input change
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -26,19 +28,49 @@ const EnrollmentForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  // Handle form submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Enrollment Data:', formData);
 
-    // You can send formData to backend here if needed
-    // Example:
-    // fetch('http://localhost:8000/api/enrollments', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(formData)
-    // });
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      alert('Please login to enroll in a course.');
+      return;
+    }
 
-    alert('Enrollment submitted!');
+    const payload = {
+      userId: user._id,
+      courseId: formData.course,
+      fullName: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message || ''
+    };
+
+    try {
+      const res = await fetch('http://localhost:8000/api/enrollments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Enrollment failed');
+      }
+
+      alert('Enrollment submitted successfully!');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        course: '',
+        message: ''
+      });
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+      console.error('Enrollment error:', err);
+    }
   };
 
   return (
@@ -101,6 +133,17 @@ const EnrollmentForm = () => {
               </option>
             ))}
           </select>
+        </div>
+
+        <div className="enroll-form-group">
+          <label htmlFor="message">Message (optional)</label>
+          <textarea
+            id="message"
+            name="message"
+            className="enroll-textarea"
+            value={formData.message}
+            onChange={handleChange}
+          ></textarea>
         </div>
 
         <button type="submit" className="enroll-submit-btn">
