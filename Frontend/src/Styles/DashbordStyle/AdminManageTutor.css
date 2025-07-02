@@ -1,17 +1,17 @@
-.admin-user-container {
+.admin-tutor-container {
   padding: 2rem;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f8fc;
+  background-color: #fdfefe;
   min-height: 100vh;
 }
 
-.admin-user-container h2 {
+.admin-tutor-container h2 {
   margin-bottom: 1.5rem;
-  color: #333;
+  color: #2c3e50;
 }
 
-/* Table styling */
-.admin-user-table {
+/* Table Styling */
+.admin-tutor-table {
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
@@ -20,21 +20,21 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-.admin-user-table th,
-.admin-user-table td {
+.admin-tutor-table th,
+.admin-tutor-table td {
   padding: 14px 20px;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #ddd;
 }
 
-.admin-user-table th {
+.admin-tutor-table th {
   background-color: #4a7abe;
   color: #fff;
   font-weight: 600;
 }
 
-/* Avatar */
-.admin-user-avatar {
+/* Avatar Styling */
+.admin-tutor-avatar {
   width: 40px;
   height: 40px;
   object-fit: cover;
@@ -43,7 +43,7 @@
 }
 
 /* Delete Button */
-.admin-delete-btn {
+.admin-tutor-delete-btn {
   background-color: #e74c3c;
   color: white;
   border: none;
@@ -54,6 +54,6 @@
   transition: background 0.3s ease;
 }
 
-.admin-delete-btn:hover {
+.admin-tutor-delete-btn:hover {
   background-color: #c0392b;
 }

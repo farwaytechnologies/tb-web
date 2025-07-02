@@ -12,7 +12,10 @@ export default function AdminManageUser() {
         if (!res.ok) throw new Error('Failed to fetch users');
         return res.json();
       })
-      .then(data => setUsers(data))
+      .then(data => {
+        const studentsOnly = data.filter(user => user.role === 'student');
+        setUsers(studentsOnly);
+      })
       .catch(err => console.error('Error fetching users:', err))
       .finally(() => setLoading(false));
   };
@@ -38,13 +41,13 @@ export default function AdminManageUser() {
 
   return (
     <div className="admin-user-container">
-      <h2>All Registered Users</h2>
+      <h2>All Registered Students</h2>
       {loading ? (
         <p>Fetching user data...</p>
       ) : users.length === 0 ? (
-        <p>No users found.</p>
+        <p>No students found.</p>
       ) : (
-        <table className="user-table">
+        <table className="admin-user-table">
           <thead>
             <tr>
               <th>Profile</th>
@@ -62,7 +65,7 @@ export default function AdminManageUser() {
                   <img
                     src={user.profilePic || '/default-profile.png'}
                     alt="Profile"
-                    className="user-avatar"
+                    className="admin-user-avatar"
                   />
                 </td>
                 <td>{user.name}</td>
@@ -72,7 +75,7 @@ export default function AdminManageUser() {
                 <td>
                   <button
                     onClick={() => handleDelete(user._id)}
-                    className="delete-btn"
+                    className="admin-delete-btn"
                   >
                     Delete
                   </button>
