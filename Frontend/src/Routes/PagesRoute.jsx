@@ -27,6 +27,7 @@ import AdminManageUser from '../Dashboard/AdminManageUser';
 import AdminManageBlogs from '../Dashboard/AdminManageBlogs';
 import EnrollmentForm from '../Pages/EnrollmentForm';
 import AdminManageEnrollments from '../Dashboard/AdminManageEnrollments';
+import AdminManageTutor from '../Dashboard/AdminManageTutor';
 
 function PagesRoute() {
   return (
@@ -52,6 +53,7 @@ function PagesRoute() {
       <Route path="/admin/courses" element={<AdminManageCourses/> } /> 
       <Route path="/admin/users" element={<AdminManageUser/>} />
       <Route path="/admin/blogs" element={<AdminManageBlogs />} />
+       <Route path="/admin/tutors" element={<AdminManageTutor/>} />
 
 
       <Route path="/admin-profile" element={<AdminProfile/>} />

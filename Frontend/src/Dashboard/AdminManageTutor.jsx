@@ -7,7 +7,7 @@ function AdminManageTutor() {
 
   const fetchTutors = () => {
     setLoading(true);
-    fetch('http://localhost:8000/api/auth/user')
+    fetch('http://localhost:8000/api/auth/users')
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch users');
         return res.json();
