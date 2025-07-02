@@ -28,6 +28,8 @@ import AdminManageBlogs from '../Dashboard/AdminManageBlogs';
 import EnrollmentForm from '../Pages/EnrollmentForm';
 import AdminManageEnrollments from '../Dashboard/AdminManageEnrollments';
 import AdminManageTutor from '../Dashboard/AdminManageTutor';
+import TutorManageBlog from '../Dashboard/TutorManageBlog';
+import TutorManageCourse from '../Dashboard/TutorManageCourse';
 
 function PagesRoute() {
   return (
@@ -53,14 +55,18 @@ function PagesRoute() {
       <Route path="/admin/courses" element={<AdminManageCourses/> } /> 
       <Route path="/admin/users" element={<AdminManageUser/>} />
       <Route path="/admin/blogs" element={<AdminManageBlogs />} />
-       <Route path="/admin/tutors" element={<AdminManageTutor/>} />
+      <Route path="/admin/tutors" element={<AdminManageTutor/>} />
+      <Route path="/admin/enrollments" element={<AdminManageEnrollments/>} />
+
+      <Route path="/tutor/blogs" element={<TutorManageBlog/>} />
+      <Route path="/tutor/courses" element={<TutorManageCourse/> } /> 
+
 
 
       <Route path="/admin-profile" element={<AdminProfile/>} />
       <Route path="/tutor-profile" element={<TutorProfile/>} />
       <Route path="/user-profile" element={<UserProfile/>} />
-      <Route path="/admin/enrollments" element={<AdminManageEnrollments/>} />
-
+     
 
       <Route path='/settings'element={<Settings/>}/>
       <Route path='/certificates'element={<Certificates/>}/>

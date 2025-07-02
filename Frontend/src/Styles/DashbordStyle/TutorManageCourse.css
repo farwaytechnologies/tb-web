@@ -1,0 +1,180 @@
+/* TutorManageCourse.css */
+
+.techborg-tutor-course-page {
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: auto;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fefefe;
+}
+
+.techborg-tutor-course-page h2 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #1c3d73;
+  text-align: center;
+  border-bottom: 2px solid #4a7abe;
+  padding-bottom: 10px;
+}
+
+.techborg-tutor-course-form {
+  background: #f9f9f9;
+  padding: 25px;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  margin-bottom: 50px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.techborg-tutor-course-form input,
+.techborg-tutor-course-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.techborg-tutor-course-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.section-group {
+  margin-top: 25px;
+  padding: 16px;
+  border: 1px dashed #aaa;
+  background-color: #f0f8ff;
+  border-radius: 8px;
+}
+
+.section-group h4,
+.section-group h5 {
+  margin-bottom: 14px;
+  color: #234b74;
+  font-weight: 600;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.module-group,
+.video-group {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e1e1e1;
+}
+
+.nested {
+  background: #f5faff;
+  border-left: 4px solid #4a7abe;
+  margin-top: 12px;
+  padding: 12px;
+}
+
+.add-btn,
+.remove-btn,
+.submit-btn {
+  background-color: #4a7abe;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.remove-btn {
+  background-color: #d9534f;
+}
+
+.add-btn:hover,
+.submit-btn:hover {
+  background-color: #3868a6;
+}
+
+.remove-btn:hover {
+  background-color: #c9302c;
+}
+
+.techborg-tutor-course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.techborg-tutor-course-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.techborg-tutor-course-card:hover {
+  transform: translateY(-4px);
+}
+
+.techborg-tutor-course-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.techborg-tutor-course-card h3 {
+  margin: 8px 0 4px;
+  color: #1e3a5f;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.techborg-tutor-course-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.techborg-tutor-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  gap: 8px;
+}
+
+.techborg-tutor-actions button {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #4a7abe;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.techborg-tutor-actions button:hover {
+  background-color: #3b5d99;
+}
+
+.techborg-tutor-empty {
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+  margin-top: 30px;
+}

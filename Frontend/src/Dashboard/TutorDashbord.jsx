@@ -54,10 +54,10 @@ export default function TutorDashboard() {
       <div className="techborg-tutor-actions">
         <h3>Quick Actions</h3>
         <div className="techborg-tutor-action-grid">
-          <a href="/admin/courses" className="techborg-tutor-action-btn">
+          <a href="/tutor/courses" className="techborg-tutor-action-btn">
             Manage Courses
           </a>
-          <a href="/admin/blogs" className="techborg-tutor-action-btn">
+          <a href="/tutor/blogs" className="techborg-tutor-action-btn">
             <FaBlog style={{ marginRight: '8px' }} />
             Manage Blogs
           </a>
