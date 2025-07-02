@@ -46,6 +46,36 @@ function AdminManageEnrollments() {
     }
   };
 
+  const downloadCSV = () => {
+    if (enrollments.length === 0) return;
+
+    const header = [
+      "Full Name", "Email", "Phone", "Course", "Status", "Message", "Enrolled At"
+    ];
+
+    const rows = enrollments.map(e => [
+      `"${e.fullName}"`,
+      `"${e.email}"`,
+      `"${e.phone}"`,
+      `"${e.courseId?.title || ''}"`,
+      `"${e.status}"`,
+      `"${e.message || ''}"`,
+      `"${new Date(e.enrolledAt).toLocaleString()}"`
+    ]);
+
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [header, ...rows].map(e => e.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "enrollments.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (loading) {
     return <div className="admin-enrollments-loading">Loading...</div>;
   }
@@ -53,6 +83,7 @@ function AdminManageEnrollments() {
   return (
     <div className="admin-enrollments-container">
       <h2>Manage Enrollments</h2>
+      <button className="btn-download" onClick={downloadCSV}>Download CSV</button>
       {enrollments.length === 0 ? (
         <p>No enrollments found.</p>
       ) : (
