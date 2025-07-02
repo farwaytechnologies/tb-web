@@ -129,10 +129,10 @@ export default function TutorManageBlog() {
   if (!form) return <p>Loading form...</p>;
 
   return (
-    <div className="techborg-tutor-blog-container">
-      <h2 className="techborg-tutor-blog-heading">Manage Your Blogs</h2>
+    <div className="techborg-tutor-manage-blog-container">
+      <h2 className="techborg-tutor-manage-blog-heading">Manage Your Blogs</h2>
 
-      <form className="techborg-tutor-blog-form" onSubmit={handleSubmit}>
+      <form className="techborg-tutor-manage-blog-form" onSubmit={handleSubmit}>
         <input name="title" placeholder="Title" value={form.title} onChange={handleInput} required />
         <input name="description" placeholder="Short Description" value={form.description} onChange={handleInput} required />
         <input name="image" placeholder="Cover Image URL" value={form.image} onChange={handleInput} />
@@ -161,7 +161,7 @@ export default function TutorManageBlog() {
 
         <label>Detailed Sections</label>
         {form.detailedSections.map((section, i) => (
-          <div key={i} className="techborg-tutor-blog-section">
+          <div key={i} className="techborg-tutor-manage-blog-section">
             <input
               placeholder="Heading"
               value={section.heading}
@@ -197,15 +197,15 @@ export default function TutorManageBlog() {
         <button type="submit">{editId ? 'Update Blog' : 'Create Blog'}</button>
       </form>
 
-      <div className="techborg-tutor-blog-list">
+      <div className="techborg-tutor-manage-blog-list">
         {blogs.map((blog) => (
-          <div key={blog._id} className="techborg-tutor-blog-card">
+          <div key={blog._id} className="techborg-tutor-manage-blog-card">
             <img src={blog.image} alt={blog.title} />
-            <div className="techborg-tutor-blog-details">
+            <div className="techborg-tutor-manage-blog-details">
               <h3>{blog.title}</h3>
               <p>{blog.description}</p>
               <p><small>{new Date(blog.createdAt).toLocaleDateString()}</small></p>
-              <div className="techborg-tutor-blog-actions">
+              <div className="techborg-tutor-manage-blog-actions">
                 <button onClick={() => handleEdit(blog)}>Edit</button>
                 <button onClick={() => handleDelete(blog._id, blog.author)}>Delete</button>
               </div>

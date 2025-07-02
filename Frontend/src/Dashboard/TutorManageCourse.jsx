@@ -134,10 +134,10 @@ function TutorManageCourses() {
   };
 
   return (
-    <div className="techborg-tutor-course-page">
+    <div className="techborg-tutor-manage-course-page">
       <h2>Your Courses</h2>
 
-      <div className="techborg-tutor-course-form">
+      <div className="techborg-tutor-manage-course-form">
         <input type="text" placeholder="Title" value={formData.title}
           onChange={(e) => handleInputChange('title', e.target.value)} />
         <input type="text" placeholder="Short Description" value={formData.description}
@@ -155,11 +155,11 @@ function TutorManageCourses() {
         <input type="text" placeholder="Level" value={formData.level}
           onChange={(e) => handleInputChange('level', e.target.value)} />
 
-        <div className="section-group">
+        <div className="techborg-tutor-manage-course-section-group">
           <h4>Modules & Videos</h4>
           {formData.modules.map((mod, idx) => (
-            <div key={idx} className="module-group">
-              <div className="flex-between">
+            <div key={idx} className="techborg-tutor-manage-course-module-group">
+              <div className="techborg-tutor-manage-course-flex-between">
                 <input
                   type="text"
                   placeholder={`Module ${idx + 1} Name`}
@@ -167,14 +167,14 @@ function TutorManageCourses() {
                   onChange={(e) => handleModuleNameChange(e.target.value, idx)}
                 />
                 {formData.modules.length > 1 && (
-                  <button className="remove-btn" onClick={() => removeModule(idx)}>Remove Module</button>
+                  <button className="techborg-tutor-manage-course-remove-btn" onClick={() => removeModule(idx)}>Remove Module</button>
                 )}
               </div>
 
-              <div className="section-group nested">
+              <div className="techborg-tutor-manage-course-section-group techborg-tutor-manage-course-nested">
                 <h5>Videos for {mod.name || `Module ${idx + 1}`}</h5>
                 {mod.videos.map((vid, vidx) => (
-                  <div className="video-group" key={vidx}>
+                  <div className="techborg-tutor-manage-course-video-group" key={vidx}>
                     <input
                       type="text"
                       placeholder="Video Title"
@@ -194,37 +194,37 @@ function TutorManageCourses() {
                       onChange={(e) => handleVideoChange(idx, vidx, 'description', e.target.value)}
                     />
                     {mod.videos.length > 1 && (
-                      <button className="remove-btn" onClick={() => removeVideo(idx, vidx)}>Remove Video</button>
+                      <button className="techborg-tutor-manage-course-remove-btn" onClick={() => removeVideo(idx, vidx)}>Remove Video</button>
                     )}
                   </div>
                 ))}
-                <button onClick={() => addVideo(idx)} className="add-btn">+ Add Video</button>
+                <button onClick={() => addVideo(idx)} className="techborg-tutor-manage-course-add-btn">+ Add Video</button>
               </div>
             </div>
           ))}
-          <button onClick={addModule} className="add-btn">+ Add Module</button>
+          <button onClick={addModule} className="techborg-tutor-manage-course-add-btn">+ Add Module</button>
         </div>
 
-        <button className="submit-btn" onClick={handleAddOrUpdate}>
+        <button className="techborg-tutor-manage-course-submit-btn" onClick={handleAddOrUpdate}>
           {editId ? 'Update Course' : 'Add Course'}
         </button>
       </div>
 
-      <div className="techborg-tutor-course-grid">
+      <div className="techborg-tutor-manage-course-grid">
         {courses.map((course) => (
-          <div className="techborg-tutor-course-card" key={course._id}>
+          <div className="techborg-tutor-manage-course-card" key={course._id}>
             <img src={course.image} alt={course.title} />
             <h3>{course.title}</h3>
             <p>{course.description}</p>
             <p>₹{course.price}</p>
-            <div className="techborg-tutor-actions">
+            <div className="techborg-tutor-manage-course-actions">
               <button onClick={() => handleEdit(course)}>Edit</button>
               <button onClick={() => handleDelete(course._id)}>Delete</button>
             </div>
           </div>
         ))}
         {courses.length === 0 && (
-          <p className="techborg-tutor-empty">You haven't added any courses yet.</p>
+          <p className="techborg-tutor-manage-course-empty">You haven't added any courses yet.</p>
         )}
       </div>
     </div>
