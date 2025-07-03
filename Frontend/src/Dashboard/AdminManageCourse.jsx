@@ -3,6 +3,7 @@ import '../Styles/DashbordStyle/AdminManageCourse.css';
 
 function AdminManageCourses() {
   const [courses, setCourses] = useState([]);
+  const [editId, setEditId] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -43,6 +44,28 @@ function AdminManageCourses() {
     });
     const newCourse = await res.json();
     setCourses([...courses, newCourse]);
+    resetForm();
+  };
+
+  const handleEdit = (course) => {
+    setFormData(course);
+    setEditId(course._id);
+  };
+
+  const handleUpdate = async () => {
+    const res = await fetch(`http://localhost:8000/api/courses/${editId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+
+    const updatedCourse = await res.json();
+    setCourses(courses.map(c => c._id === editId ? updatedCourse : c));
+    resetForm();
+    setEditId(null);
+  };
+
+  const resetForm = () => {
     setFormData({
       title: '',
       description: '',
@@ -126,7 +149,6 @@ function AdminManageCourses() {
         <input type="text" placeholder="Instructor" value={formData.instructor}
           onChange={(e) => setFormData({ ...formData, instructor: e.target.value })} />
 
-        {/* Modules with Videos */}
         <div className="section-group">
           <h4>Modules & Videos</h4>
           {formData.modules.map((mod, idx) => (
@@ -177,7 +199,11 @@ function AdminManageCourses() {
           <button onClick={addModule} className="add-btn">+ Add Module</button>
         </div>
 
-        <button className="submit-btn" onClick={handleAdd}>Add Course</button>
+        {editId ? (
+          <button className="submit-btn" onClick={handleUpdate}>Update Course</button>
+        ) : (
+          <button className="submit-btn" onClick={handleAdd}>Add Course</button>
+        )}
       </div>
 
       <div className="techborg-admin-course-grid">
@@ -185,8 +211,13 @@ function AdminManageCourses() {
           <div className="techborg-admin-course-card" key={course._id}>
             <img src={course.image} alt={course.title} />
             <h3>{course.title}</h3>
-            <p>{course.description}</p>
             <p>₹{course.price}</p>
+            <button
+              style={{ backgroundColor: '#4a7abe', marginBottom: '8px' }}
+              onClick={() => handleEdit(course)}
+            >
+              Edit
+            </button>
             <button onClick={() => handleDelete(course._id)}>Delete</button>
           </div>
         ))}
