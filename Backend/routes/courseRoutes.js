@@ -11,6 +11,9 @@ router.get('/', courseController.getAllCourses);
 // GET - Fetch a single course
 router.get('/:id', courseController.getCourseById);
 
+// PUT - ✅ Update a course
+router.put('/:id', courseController.updateCourse); // <-- Add this line
+
 // DELETE - Delete a course
 router.delete('/:id', courseController.deleteCourse);
 
