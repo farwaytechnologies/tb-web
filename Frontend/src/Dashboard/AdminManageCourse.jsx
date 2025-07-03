@@ -59,7 +59,7 @@ function AdminManageCourses() {
   };
 
   const handleAdd = async () => {
-    if (isNaN(formData.price)) {
+    if (formData.price === '' || isNaN(Number(formData.price))) {
       alert('Please enter a valid price.');
       return;
     }
@@ -80,12 +80,15 @@ function AdminManageCourses() {
   };
 
   const handleEdit = (course) => {
-    setFormData({ ...course });
+    setFormData({
+      ...course,
+      price: course.price.toString()
+    });
     setEditId(course._id);
   };
 
   const handleUpdate = async () => {
-    if (isNaN(formData.price)) {
+    if (formData.price === '' || isNaN(Number(formData.price))) {
       alert('Please enter a valid price.');
       return;
     }
@@ -162,11 +165,20 @@ function AdminManageCourses() {
           onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
         <textarea placeholder="Detailed Description" value={formData.detailedDescription}
           onChange={(e) => setFormData({ ...formData, detailedDescription: e.target.value })} />
-        <input type="number" placeholder="Price" value={formData.price}
-          onChange={(e) =>
-            setFormData({ ...formData, price: e.target.valueAsNumber || 0 })
-          }
+        
+        {/* ✅ Price input field FIXED */}
+        <input
+          type="text"
+          placeholder="Price"
+          value={formData.price}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (/^\d*\.?\d*$/.test(val) || val === '') {
+              setFormData({ ...formData, price: val });
+            }
+          }}
         />
+
         <input type="text" placeholder="Image URL" value={formData.image}
           onChange={(e) => setFormData({ ...formData, image: e.target.value })} />
         <input type="text" placeholder="Course Video URL" value={formData.video}

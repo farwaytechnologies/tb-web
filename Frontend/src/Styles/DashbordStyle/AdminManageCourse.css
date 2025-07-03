@@ -37,6 +37,13 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  font-family: inherit;
+}
+
+.techborg-course-form input[type="text"]::-webkit-inner-spin-button,
+.techborg-course-form input[type="text"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .techborg-course-form textarea {
@@ -195,7 +202,7 @@
   transition: background 0.2s ease;
 }
 
-/* Edit Button style if not inline */
+/* Edit Button */
 .techborg-admin-course-card button:first-of-type {
   background-color: #4a7abe;
   color: white;
@@ -205,7 +212,7 @@
   background-color: #365b94;
 }
 
-/* Delete Button style */
+/* Delete Button */
 .techborg-admin-course-card button:last-of-type {
   background-color: #e63946;
   color: white;
