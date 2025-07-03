@@ -72,6 +72,12 @@ export default function TutorManageBlog() {
     });
   };
 
+  const removeDetailedSection = (index) => {
+    const updated = [...form.detailedSections];
+    updated.splice(index, 1);
+    setForm({ ...form, detailedSections: updated });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const method = editId ? 'PUT' : 'POST';
@@ -162,11 +168,22 @@ export default function TutorManageBlog() {
         <label>Detailed Sections</label>
         {form.detailedSections.map((section, i) => (
           <div key={i} className="techborg-tutor-manage-blog-section">
-            <input
-              placeholder="Heading"
-              value={section.heading}
-              onChange={(e) => handleDetailedSectionChange(i, 'heading', e.target.value)}
-            />
+            <div className="techborg-tutor-manage-blog-section-header">
+              <input
+                placeholder="Heading"
+                value={section.heading}
+                onChange={(e) => handleDetailedSectionChange(i, 'heading', e.target.value)}
+              />
+              {form.detailedSections.length > 1 && (
+                <button
+                  type="button"
+                  className="techborg-tutor-manage-blog-delete-section"
+                  onClick={() => removeDetailedSection(i)}
+                >
+                  Delete Section
+                </button>
+              )}
+            </div>
             <textarea
               placeholder="Text"
               value={section.text}
