@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../Styles/DashbordStyle/AdminDashbord.css';
-import { FaUsers, FaBook, FaUserShield, FaChartBar, FaBlog } from 'react-icons/fa';
+import { FaUsers, FaBook, FaUserShield, FaBlog, FaCheckCircle } from 'react-icons/fa';
 
 export default function AdminDashboard() {
   const [admin, setAdmin] = useState({});
   const [userCount, setUserCount] = useState(0);
   const [courseCount, setCourseCount] = useState(0);
   const [tutorCount, setTutorCount] = useState(0);
+  const [blogCount, setBlogCount] = useState(0);
+  const [enrollmentCount, setEnrollmentCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,20 +20,25 @@ export default function AdminDashboard() {
       setAdmin(stored);
     }
 
-    // Fetch all counts
     const fetchStats = async () => {
       try {
-        const [usersRes, coursesRes] = await Promise.all([
+        const [usersRes, coursesRes, blogsRes, enrollmentsRes] = await Promise.all([
           fetch('http://localhost:8000/api/auth/users'),
-          fetch('http://localhost:8000/api/courses')
+          fetch('http://localhost:8000/api/courses'),
+          fetch('http://localhost:8000/api/blogs'),
+          fetch('http://localhost:8000/api/enrollments')
         ]);
 
         const users = await usersRes.json();
         const courses = await coursesRes.json();
+        const blogs = await blogsRes.json();
+        const enrollments = await enrollmentsRes.json();
 
         setUserCount(users.length);
         setTutorCount(users.filter(u => u.role === 'tutor').length);
         setCourseCount(courses.length);
+        setBlogCount(blogs.length);
+        setEnrollmentCount(enrollments.length);
       } catch (error) {
         console.error('Error fetching admin stats:', error);
       }
@@ -42,7 +49,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="techborg-admin-dashboard-container">
-      {/* Header */}
       <div className="techborg-admin-header">
         <div>
           <h2>Welcome, {admin.name}</h2>
@@ -55,7 +61,7 @@ export default function AdminDashboard() {
         />
       </div>
 
-      {/* Stats */}
+      {/* Stats Cards */}
       <div className="techborg-admin-stats">
         <div className="techborg-admin-card">
           <FaUsers size={28} />
@@ -73,9 +79,14 @@ export default function AdminDashboard() {
           <p>Tutors</p>
         </div>
         <div className="techborg-admin-card">
-          <FaChartBar size={28} />
-          <h3>99.9%</h3>
-          <p>Platform Uptime</p>
+          <FaBlog size={28} />
+          <h3>{blogCount}</h3>
+          <p>Total Blogs</p>
+        </div>
+        <div className="techborg-admin-card">
+          <FaCheckCircle size={28} />
+          <h3>{enrollmentCount}</h3>
+          <p>Enrolled Students</p>
         </div>
       </div>
 
