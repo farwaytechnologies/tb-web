@@ -4,6 +4,7 @@ import '../Styles/DashbordStyle/AdminManageCourse.css';
 function AdminManageCourses() {
   const [courses, setCourses] = useState([]);
   const [editId, setEditId] = useState(null);
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -28,43 +29,6 @@ function AdminManageCourses() {
       .then(data => setCourses(data));
   }, []);
 
-  const handleDelete = async (id) => {
-    const confirm = window.confirm('Are you sure you want to delete this course?');
-    if (!confirm) return;
-
-    await fetch(`http://localhost:8000/api/courses/${id}`, { method: 'DELETE' });
-    setCourses(courses.filter(c => c._id !== id));
-  };
-
-  const handleAdd = async () => {
-    const res = await fetch('http://localhost:8000/api/courses', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
-    const newCourse = await res.json();
-    setCourses([...courses, newCourse]);
-    resetForm();
-  };
-
-  const handleEdit = (course) => {
-    setFormData(course);
-    setEditId(course._id);
-  };
-
-  const handleUpdate = async () => {
-    const res = await fetch(`http://localhost:8000/api/courses/${editId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
-
-    const updatedCourse = await res.json();
-    setCourses(courses.map(c => c._id === editId ? updatedCourse : c));
-    resetForm();
-    setEditId(null);
-  };
-
   const resetForm = () => {
     setFormData({
       title: '',
@@ -83,6 +47,68 @@ function AdminManageCourses() {
         }
       ]
     });
+    setEditId(null);
+  };
+
+  const handleDelete = async (id) => {
+    const confirm = window.confirm('Are you sure you want to delete this course?');
+    if (!confirm) return;
+
+    await fetch(`http://localhost:8000/api/courses/${id}`, { method: 'DELETE' });
+    setCourses(courses.filter(c => c._id !== id));
+  };
+
+  const handleAdd = async () => {
+    if (isNaN(formData.price)) {
+      alert('Please enter a valid price.');
+      return;
+    }
+
+    const newForm = {
+      ...formData,
+      price: Number(formData.price),
+    };
+
+    const res = await fetch('http://localhost:8000/api/courses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newForm),
+    });
+    const newCourse = await res.json();
+    setCourses([...courses, newCourse]);
+    resetForm();
+  };
+
+  const handleEdit = (course) => {
+    setFormData({ ...course });
+    setEditId(course._id);
+  };
+
+  const handleUpdate = async () => {
+    if (isNaN(formData.price)) {
+      alert('Please enter a valid price.');
+      return;
+    }
+
+    const { _id, ...rest } = formData;
+    const dataToSend = {
+      ...rest,
+      price: Number(rest.price)
+    };
+
+    const res = await fetch(`http://localhost:8000/api/courses/${editId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dataToSend),
+    });
+
+    if (res.ok) {
+      const updated = await res.json();
+      setCourses(courses.map(c => c._id === editId ? updated : c));
+      resetForm();
+    } else {
+      alert('Failed to update course');
+    }
   };
 
   const handleModuleNameChange = (value, index) => {
@@ -137,7 +163,10 @@ function AdminManageCourses() {
         <textarea placeholder="Detailed Description" value={formData.detailedDescription}
           onChange={(e) => setFormData({ ...formData, detailedDescription: e.target.value })} />
         <input type="number" placeholder="Price" value={formData.price}
-          onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
+          onChange={(e) =>
+            setFormData({ ...formData, price: e.target.valueAsNumber || 0 })
+          }
+        />
         <input type="text" placeholder="Image URL" value={formData.image}
           onChange={(e) => setFormData({ ...formData, image: e.target.value })} />
         <input type="text" placeholder="Course Video URL" value={formData.video}
@@ -211,7 +240,7 @@ function AdminManageCourses() {
           <div className="techborg-admin-course-card" key={course._id}>
             <img src={course.image} alt={course.title} />
             <h3>{course.title}</h3>
-            <p>₹{course.price}</p>
+            <p>₹{Number(course.price).toFixed(2)}</p>
             <button
               style={{ backgroundColor: '#4a7abe', marginBottom: '8px' }}
               onClick={() => handleEdit(course)}
