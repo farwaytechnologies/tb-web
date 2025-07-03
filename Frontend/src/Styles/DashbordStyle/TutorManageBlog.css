@@ -1,116 +1,167 @@
-.techborg-tutor-manage-blog-container {
+.techborg-tutor-blog-container {
+  margin: auto;
   padding: 2rem;
-  background-color: #f7f9fc;
+  background-color: #f5f7fb;
   font-family: 'Segoe UI', sans-serif;
-  min-height: 100vh;
 }
 
-.techborg-tutor-manage-blog-heading {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: #2c3e50;
-  text-align: center;
-}
-
-.techborg-tutor-manage-blog-form {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 8px;
+.techborg-tutor-blog-heading {
+  font-size: 2rem;
+  color: #4a7abe;
   margin-bottom: 2rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* FORM STYLING */
+.techborg-tutor-blog-form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1.2rem;
+  margin-bottom: 3rem;
 }
 
-.techborg-tutor-manage-blog-form input,
-.techborg-tutor-manage-blog-form textarea {
-  padding: 10px;
+.techborg-tutor-blog-form input,
+.techborg-tutor-blog-form textarea {
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.techborg-tutor-blog-form input:focus,
+.techborg-tutor-blog-form textarea:focus {
+  border-color: #4a7abe;
+  outline: none;
+}
+
+.techborg-tutor-blog-form textarea {
+  min-height: 90px;
   resize: vertical;
 }
 
-.techborg-tutor-manage-blog-form button {
-  padding: 10px 14px;
-  background: #4a7abe;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.techborg-tutor-blog-form label {
+  font-weight: 600;
+  color: #333;
+  margin-top: 0.8rem;
+  margin-bottom: -0.4rem;
 }
 
-.techborg-tutor-manage-blog-form button:hover {
-  background-color: #3a639e;
-}
-
-.techborg-tutor-manage-blog-section {
-  margin-top: 1rem;
+/* Section block inside form */
+.techborg-tutor-blog-section {
+  background: #eef3f8;
   padding: 1rem;
-  border: 1px dashed #ccc;
-  border-radius: 6px;
-  background-color: #f0f8ff;
-}
-
-.techborg-tutor-manage-blog-section-header {
+  border-radius: 12px;
+  margin-top: 1rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 0.8rem;
+  border: 1px solid #cbd4e1;
 }
 
-.techborg-tutor-manage-blog-delete-section {
-  background: #e74c3c;
-  color: #fff;
+/* Buttons */
+.techborg-tutor-blog-form button {
+  background-color: #4a7abe;
+  color: white;
+  padding: 0.9rem;
+  font-weight: bold;
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: background 0.3s ease;
+  width: fit-content;
+  margin-top: 1rem;
 }
 
-.techborg-tutor-manage-blog-delete-section:hover {
-  background-color: #c0392b;
+.techborg-tutor-blog-form button:hover {
+  background-color: #3c6399;
 }
 
-.techborg-tutor-manage-blog-list {
+/* BLOG LIST DISPLAY */
+.techborg-tutor-blog-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
-.techborg-tutor-manage-blog-card {
-  background: #fff;
-  border-radius: 8px;
+.techborg-tutor-blog-card {
+  background-color: #ffffff;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s;
+  display: flex;
+  flex-direction: column;
 }
 
-.techborg-tutor-manage-blog-card img {
+.techborg-tutor-blog-card:hover {
+  transform: translateY(-5px);
+}
+
+.techborg-tutor-blog-card img {
   width: 100%;
-  height: 160px;
+  height: 180px;
   object-fit: cover;
 }
 
-.techborg-tutor-manage-blog-details {
+.techborg-tutor-blog-details {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.techborg-tutor-manage-blog-actions {
-  margin-top: 10px;
+.techborg-tutor-blog-details h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0;
+}
+
+.techborg-tutor-blog-details p {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0;
+}
+
+.techborg-tutor-blog-actions {
   display: flex;
   justify-content: space-between;
+  margin-top: 0.8rem;
 }
 
-.techborg-tutor-manage-blog-actions button {
-  background-color: #3498db;
-  color: white;
+.techborg-tutor-blog-actions button {
+  flex: 1;
+  padding: 0.6rem;
+  margin-right: 0.5rem;
+  background-color: #e6e6e6;
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 0.9rem;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.techborg-tutor-manage-blog-actions button:hover {
-  background-color: #2980b9;
+.techborg-tutor-blog-actions button:hover {
+  background-color: #d0d0d0;
+}
+
+.techborg-tutor-blog-actions button:last-child {
+  margin-right: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .techborg-tutor-blog-form,
+  .techborg-tutor-blog-card {
+    padding: 1rem;
+  }
+
+  .techborg-tutor-blog-form input,
+  .techborg-tutor-blog-form textarea {
+    font-size: 0.95rem;
+  }
 }

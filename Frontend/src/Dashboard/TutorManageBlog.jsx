@@ -2,49 +2,43 @@ import React, { useEffect, useState } from 'react';
 import '../Styles/DashbordStyle/TutorManageBlog.css';
 
 export default function TutorManageBlog() {
+  const currentTutor = localStorage.getItem('userName') || 'Tutor';
   const [blogs, setBlogs] = useState([]);
-  const [form, setForm] = useState(null);
+  const [form, setForm] = useState(getInitialForm());
   const [editId, setEditId] = useState(null);
 
-  const currentTutor = localStorage.getItem('userName') || 'Tutor';
-
-  const getInitialForm = () => ({
-    title: '',
-    description: '',
-    content: '',
-    author: currentTutor,
-    image: '',
-    images: [''],
-    category: '',
-    tags: [''],
-    detailedSections: [
-      {
-        heading: '',
-        text: '',
-        list: [''],
-        tips: ['']
-      }
-    ]
-  });
+  function getInitialForm() {
+    return {
+      title: '',
+      description: '',
+      content: '',
+      author: currentTutor,
+      image: '',
+      images: [''],
+      category: '',
+      tags: [''],
+      detailedSections: [
+        {
+          heading: '',
+          text: '',
+          list: [''],
+          tips: ['']
+        }
+      ]
+    };
+  }
 
   useEffect(() => {
-    setForm(getInitialForm());
-    fetchTutorBlogs();
-  }, []);
-
-  const fetchTutorBlogs = () => {
     fetch('http://localhost:8000/api/blogs')
       .then((res) => res.json())
-      .then((data) => {
-        const myBlogs = data.filter(blog => blog.author === currentTutor);
-        setBlogs(myBlogs);
+      .then((all) => {
+        const tutorBlogs = all.filter(b => b.author === currentTutor);
+        setBlogs(tutorBlogs);
       })
       .catch(console.error);
-  };
+  }, []);
 
-  const handleInput = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleInput = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleArrayChange = (e, index, field) => {
     const updated = [...form[field]];
@@ -65,17 +59,8 @@ export default function TutorManageBlog() {
   const addDetailedSection = () => {
     setForm({
       ...form,
-      detailedSections: [
-        ...form.detailedSections,
-        { heading: '', text: '', list: [''], tips: [''] }
-      ]
+      detailedSections: [...form.detailedSections, { heading: '', text: '', list: [''], tips: [''] }]
     });
-  };
-
-  const removeDetailedSection = (index) => {
-    const updated = [...form.detailedSections];
-    updated.splice(index, 1);
-    setForm({ ...form, detailedSections: updated });
   };
 
   const handleSubmit = (e) => {
@@ -88,57 +73,60 @@ export default function TutorManageBlog() {
     fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, author: currentTutor })
+      body: JSON.stringify(form)
     })
       .then(() => {
         setEditId(null);
         setForm(getInitialForm());
-        fetchTutorBlogs();
+        return fetch('http://localhost:8000/api/blogs');
+      })
+      .then((res) => res.json())
+      .then((all) => {
+        const tutorBlogs = all.filter(b => b.author === currentTutor);
+        setBlogs(tutorBlogs);
       })
       .catch(console.error);
   };
 
   const handleEdit = (blog) => {
-    if (blog.author !== currentTutor) return;
-
     setForm({
-      title: blog.title || '',
-      description: blog.description || '',
-      content: blog.content || '',
-      author: blog.author || currentTutor,
-      image: blog.image || '',
-      images: blog.images?.length ? blog.images : [''],
-      category: blog.category || '',
-      tags: blog.tags?.length ? blog.tags : [''],
-      detailedSections: blog.detailedSections?.length
-        ? blog.detailedSections.map(section => ({
-            heading: section.heading || '',
-            text: section.text || '',
-            list: section.list?.length ? section.list : [''],
-            tips: section.tips?.length ? section.tips : ['']
+      title: blog.title,
+      description: blog.description,
+      content: blog.content,
+      author: blog.author,
+      image: blog.image,
+      images: blog.images.length ? blog.images : [''],
+      category: blog.category,
+      tags: blog.tags.length ? blog.tags : [''],
+      detailedSections: blog.detailedSections.length
+        ? blog.detailedSections.map(sec => ({
+            heading: sec.heading || '',
+            text: sec.text || '',
+            list: sec.list.length ? sec.list : [''],
+            tips: sec.tips.length ? sec.tips : ['']
           }))
         : [{ heading: '', text: '', list: [''], tips: [''] }]
     });
-
     setEditId(blog._id);
   };
 
-  const handleDelete = (id, author) => {
-    if (author !== currentTutor) return;
-    if (!window.confirm('Delete your blog?')) return;
-
+  const handleDelete = (id) => {
+    if (!window.confirm('Are you sure?')) return;
     fetch(`http://localhost:8000/api/blogs/${id}`, { method: 'DELETE' })
-      .then(() => fetchTutorBlogs())
+      .then(() => fetch('http://localhost:8000/api/blogs'))
+      .then((res) => res.json())
+      .then((all) => {
+        const tutorBlogs = all.filter(b => b.author === currentTutor);
+        setBlogs(tutorBlogs);
+      })
       .catch(console.error);
   };
 
-  if (!form) return <p>Loading form...</p>;
-
   return (
-    <div className="techborg-tutor-manage-blog-container">
-      <h2 className="techborg-tutor-manage-blog-heading">Manage Your Blogs</h2>
+    <div className="techborg-tutor-blog-container">
+      <h2 className="techborg-tutor-blog-heading">Manage Your Blogs</h2>
 
-      <form className="techborg-tutor-manage-blog-form" onSubmit={handleSubmit}>
+      <form className="techborg-tutor-blog-form" onSubmit={handleSubmit}>
         <input name="title" placeholder="Title" value={form.title} onChange={handleInput} required />
         <input name="description" placeholder="Short Description" value={form.description} onChange={handleInput} required />
         <input name="image" placeholder="Cover Image URL" value={form.image} onChange={handleInput} />
@@ -167,23 +155,12 @@ export default function TutorManageBlog() {
 
         <label>Detailed Sections</label>
         {form.detailedSections.map((section, i) => (
-          <div key={i} className="techborg-tutor-manage-blog-section">
-            <div className="techborg-tutor-manage-blog-section-header">
-              <input
-                placeholder="Heading"
-                value={section.heading}
-                onChange={(e) => handleDetailedSectionChange(i, 'heading', e.target.value)}
-              />
-              {form.detailedSections.length > 1 && (
-                <button
-                  type="button"
-                  className="techborg-tutor-manage-blog-delete-section"
-                  onClick={() => removeDetailedSection(i)}
-                >
-                  Delete Section
-                </button>
-              )}
-            </div>
+          <div key={i} className="techborg-tutor-blog-section">
+            <input
+              placeholder="Heading"
+              value={section.heading}
+              onChange={(e) => handleDetailedSectionChange(i, 'heading', e.target.value)}
+            />
             <textarea
               placeholder="Text"
               value={section.text}
@@ -214,17 +191,17 @@ export default function TutorManageBlog() {
         <button type="submit">{editId ? 'Update Blog' : 'Create Blog'}</button>
       </form>
 
-      <div className="techborg-tutor-manage-blog-list">
+      <div className="techborg-tutor-blog-list">
         {blogs.map((blog) => (
-          <div key={blog._id} className="techborg-tutor-manage-blog-card">
+          <div key={blog._id} className="techborg-tutor-blog-card">
             <img src={blog.image} alt={blog.title} />
-            <div className="techborg-tutor-manage-blog-details">
+            <div className="techborg-tutor-blog-details">
               <h3>{blog.title}</h3>
               <p>{blog.description}</p>
               <p><small>{new Date(blog.createdAt).toLocaleDateString()}</small></p>
-              <div className="techborg-tutor-manage-blog-actions">
+              <div className="techborg-tutor-blog-actions">
                 <button onClick={() => handleEdit(blog)}>Edit</button>
-                <button onClick={() => handleDelete(blog._id, blog.author)}>Delete</button>
+                <button onClick={() => handleDelete(blog._id)}>Delete</button>
               </div>
             </div>
           </div>
