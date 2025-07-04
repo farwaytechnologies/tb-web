@@ -99,23 +99,25 @@ export default function AdminDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="techborg-admin-actions">
-        <h3>Quick Actions</h3>
-        <div className="techborg-admin-action-grid">
-          <Link to="/admin/users" className="techborg-admin-action-btn">Manage Users</Link>
-          <Link to="/admin/courses" className="techborg-admin-action-btn">Manage Courses</Link>
-          <Link to="/admin/tutors" className="techborg-admin-action-btn">Manage Tutors</Link>
-          <Link to="/admin/blogs" className="techborg-admin-action-btn">
-            <FaBlog style={{ marginRight: '8px' }} />
-            Manage Blogs
-          </Link>
-          <Link to="/admin/enrollments" className="techborg-admin-action-btn">Enrollment List</Link>
-          <Link to="/admin/innovations" className="techborg-admin-action-btn">
-            <FaLightbulb style={{ marginRight: '8px' }} />
-            Manage Innovations
-          </Link>
-        </div>
-      </div>
+   <div className="techborg-admin-action-grid">
+  <Link to="/admin/users" className="techborg-admin-action-btn">Manage Users</Link>
+  <Link to="/admin/courses" className="techborg-admin-action-btn">Manage Courses</Link>
+  <Link to="/admin/tutors" className="techborg-admin-action-btn">Manage Tutors</Link>
+  <Link to="/admin/manage-admins" className="techborg-admin-action-btn">
+    <FaUserShield style={{ marginRight: '8px' }} />
+    Manage Admins
+  </Link>
+  <Link to="/admin/blogs" className="techborg-admin-action-btn">
+    <FaBlog style={{ marginRight: '8px' }} />
+    Manage Blogs
+  </Link>
+  <Link to="/admin/enrollments" className="techborg-admin-action-btn">Enrollment List</Link>
+  <Link to="/admin/innovations" className="techborg-admin-action-btn">
+    <FaLightbulb style={{ marginRight: '8px' }} />
+    Manage Innovations
+  </Link>
+</div>
+
     </div>
   );
 }

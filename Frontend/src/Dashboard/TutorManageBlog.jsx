@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import '../Styles/DashbordStyle/TutorManageBlog.css';
 
 export default function TutorManageBlog() {
-  const currentTutor = localStorage.getItem('userName') || 'Tutor';
+  const user = JSON.parse(localStorage.getItem('user'));
+  const currentTutor = user?.name || 'Tutor';
   const [blogs, setBlogs] = useState([]);
   const [form, setForm] = useState(getInitialForm());
   const [editId, setEditId] = useState(null);
@@ -32,13 +33,19 @@ export default function TutorManageBlog() {
     fetch('http://localhost:8000/api/blogs')
       .then((res) => res.json())
       .then((all) => {
-        const tutorBlogs = all.filter(b => b.author === currentTutor);
+        const tutorBlogs = all.filter((b) => b.author === currentTutor);
         setBlogs(tutorBlogs);
       })
       .catch(console.error);
-  }, []);
+  }, [currentTutor]);
 
-  const handleInput = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleInput = (e) => {
+    const updatedForm = { ...form, [e.target.name]: e.target.value };
+    if (e.target.name === 'title' || e.target.name === 'description') {
+      updatedForm.author = currentTutor; // ensure author is always set
+    }
+    setForm(updatedForm);
+  };
 
   const handleArrayChange = (e, index, field) => {
     const updated = [...form[field]];
@@ -73,7 +80,7 @@ export default function TutorManageBlog() {
     fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form)
+      body: JSON.stringify({ ...form, author: currentTutor }) // enforce author
     })
       .then(() => {
         setEditId(null);
@@ -82,7 +89,7 @@ export default function TutorManageBlog() {
       })
       .then((res) => res.json())
       .then((all) => {
-        const tutorBlogs = all.filter(b => b.author === currentTutor);
+        const tutorBlogs = all.filter((b) => b.author === currentTutor);
         setBlogs(tutorBlogs);
       })
       .catch(console.error);
