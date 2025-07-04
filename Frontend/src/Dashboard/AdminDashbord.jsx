@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../Styles/DashbordStyle/AdminDashbord.css';
-import { FaUsers, FaBook, FaUserShield, FaBlog, FaCheckCircle } from 'react-icons/fa';
+import {
+  FaUsers,
+  FaBook,
+  FaUserShield,
+  FaBlog,
+  FaCheckCircle,
+  FaLightbulb
+} from 'react-icons/fa';
 
 export default function AdminDashboard() {
   const [admin, setAdmin] = useState({});
@@ -49,6 +56,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="techborg-admin-dashboard-container">
+      {/* Header */}
       <div className="techborg-admin-header">
         <div>
           <h2>Welcome, {admin.name}</h2>
@@ -66,7 +74,7 @@ export default function AdminDashboard() {
         <div className="techborg-admin-card">
           <FaUsers size={28} />
           <h3>{userCount}</h3>
-          <p>Registered Users</p>
+          <p>Registered Student Users</p>
         </div>
         <div className="techborg-admin-card">
           <FaBook size={28} />
@@ -90,7 +98,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Actions */}
+      {/* Quick Actions */}
       <div className="techborg-admin-actions">
         <h3>Quick Actions</h3>
         <div className="techborg-admin-action-grid">
@@ -102,6 +110,10 @@ export default function AdminDashboard() {
             Manage Blogs
           </Link>
           <Link to="/admin/enrollments" className="techborg-admin-action-btn">Enrollment List</Link>
+          <Link to="/admin/innovations" className="techborg-admin-action-btn">
+            <FaLightbulb style={{ marginRight: '8px' }} />
+            Manage Innovations
+          </Link>
         </div>
       </div>
     </div>

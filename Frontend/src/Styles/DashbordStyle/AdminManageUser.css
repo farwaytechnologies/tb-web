@@ -34,7 +34,7 @@
 }
 
 /* Avatar */
-.admin-user-avatar {
+.admin-user-avatar{
   width: 40px;
   height: 40px;
   object-fit: cover;

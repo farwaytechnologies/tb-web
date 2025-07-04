@@ -2,81 +2,82 @@ import React, { useEffect, useState } from 'react';
 import '../Styles/PagesStyle/SettingStyle.css';
 
 export default function Settings() {
-  const storedUser = JSON.parse(localStorage.getItem('user'));
-  const [form, setForm] = useState(storedUser || {});
+  const [form, setForm] = useState({});
   const [passwords, setPasswords] = useState({ currentPassword: '', newPassword: '' });
-  const [preferences, setPreferences] = useState({ language: '', theme: '' });
-  const [privacy, setPrivacy] = useState({ showProfile: true, emailNotifications: true });
   const [message, setMessage] = useState('');
 
+  // Fetch user from localStorage on mount
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser) {
-      setPreferences({
-        language: storedUser.language || '',
-        theme: storedUser.theme || '',
-      });
-      setPrivacy({
-        showProfile: storedUser.showProfile ?? true,
-        emailNotifications: storedUser.emailNotifications ?? true,
-      });
+      setForm(storedUser);
     }
-  }, [storedUser]);
+  }, []);
 
-  const handleFormChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const handlePasswordChange = (e) => setPasswords({ ...passwords, [e.target.name]: e.target.value });
-  const handlePrefChange = (e) => setPreferences({ ...preferences, [e.target.name]: e.target.value });
-  const handlePrivacyChange = (e) => setPrivacy({ ...privacy, [e.target.name]: e.target.checked });
+  const handleFormChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handlePasswordChange = (e) => {
+    setPasswords({ ...passwords, [e.target.name]: e.target.value });
+  };
 
   const updateProfile = async () => {
-    const res = await fetch(`http://localhost:8000/api/auth/update/${form.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      localStorage.setItem('user', JSON.stringify(data.user));
-      setMessage('Profile updated');
+    try {
+      const res = await fetch(`http://localhost:8000/api/auth/update/${form.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setMessage('Profile updated successfully');
+      } else {
+        setMessage(data.message || 'Failed to update profile');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      setMessage('Something went wrong while updating profile');
     }
   };
 
   const updatePassword = async () => {
-    const res = await fetch('http://localhost:8000/api/auth/change-password', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: form.email, ...passwords }),
-    });
-    const data = await res.json();
-    setMessage(data.message);
-  };
+    try {
+      const res = await fetch('http://localhost:8000/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email, ...passwords }),
+      });
 
-  const savePreferences = async () => {
-    const res = await fetch(`http://localhost:8000/api/auth/preferences/${form.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(preferences),
-    });
-    const data = await res.json();
-    setMessage(data.message);
-  };
-
-  const savePrivacy = async () => {
-    const res = await fetch(`http://localhost:8000/api/auth/privacy/${form.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(privacy),
-    });
-    const data = await res.json();
-    setMessage(data.message);
+      const data = await res.json();
+      setMessage(data.message || 'Password change failed');
+    } catch (error) {
+      console.error('Error updating password:', error);
+      setMessage('Something went wrong while changing password');
+    }
   };
 
   const deleteAccount = async () => {
-    if (window.confirm('Are you sure you want to delete your account?')) {
-      await fetch(`http://localhost:8000/api/auth/delete/${form.id}`, {
+    const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`http://localhost:8000/api/auth/delete/${form.id}`, {
         method: 'DELETE',
       });
-      localStorage.clear();
-      window.location.href = '/';
+
+      if (res.ok) {
+        localStorage.clear();
+        window.location.href = '/';
+      } else {
+        const data = await res.json();
+        setMessage(data.message || 'Failed to delete account');
+      }
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      setMessage('Something went wrong while deleting account');
     }
   };
 
@@ -87,45 +88,42 @@ export default function Settings() {
 
       <div className="settings-card">
         <h3 className="settings-heading">Profile Info</h3>
-        <input name="name" value={form.name || ''} onChange={handleFormChange} placeholder="Name" />
-        <input name="title" value={form.title || ''} onChange={handleFormChange} placeholder="Title" />
-        <input name="gender" value={form.gender || ''} onChange={handleFormChange} placeholder="Gender" />
+        <input
+          name="name"
+          value={form.name || ''}
+          onChange={handleFormChange}
+          placeholder="Name"
+        />
+        <input
+          name="title"
+          value={form.title || ''}
+          onChange={handleFormChange}
+          placeholder="Title"
+        />
+        <input
+          name="gender"
+          value={form.gender || ''}
+          onChange={handleFormChange}
+          placeholder="Gender"
+        />
         <button onClick={updateProfile} className="settings-btn">Save Profile</button>
       </div>
 
       <div className="settings-card">
         <h3 className="settings-heading">Password & Security</h3>
-        <input type="password" name="currentPassword" placeholder="Current Password" onChange={handlePasswordChange} />
-        <input type="password" name="newPassword" placeholder="New Password" onChange={handlePasswordChange} />
+        <input
+          type="password"
+          name="currentPassword"
+          placeholder="Current Password"
+          onChange={handlePasswordChange}
+        />
+        <input
+          type="password"
+          name="newPassword"
+          placeholder="New Password"
+          onChange={handlePasswordChange}
+        />
         <button onClick={updatePassword} className="settings-btn">Change Password</button>
-      </div>
-
-      <div className="settings-card">
-        <h3 className="settings-heading">Preferences</h3>
-        <select name="language" value={preferences.language} onChange={handlePrefChange}>
-          <option value="">Select Language</option>
-          <option value="en">English</option>
-          <option value="hi">Hindi</option>
-        </select>
-        <select name="theme" value={preferences.theme} onChange={handlePrefChange}>
-          <option value="">Select Theme</option>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-        <button onClick={savePreferences} className="settings-btn">Save Preferences</button>
-      </div>
-
-      <div className="settings-card">
-        <h3 className="settings-heading">Privacy Settings</h3>
-        <label>
-          <input type="checkbox" name="showProfile" checked={privacy.showProfile} onChange={handlePrivacyChange} />
-          Show Profile Publicly
-        </label>
-        <label>
-          <input type="checkbox" name="emailNotifications" checked={privacy.emailNotifications} onChange={handlePrivacyChange} />
-          Receive Email Notifications
-        </label>
-        <button onClick={savePrivacy} className="settings-btn">Save Privacy Settings</button>
       </div>
 
       <div className="settings-card danger-zone">

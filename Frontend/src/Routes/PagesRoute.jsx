@@ -30,6 +30,8 @@ import AdminManageEnrollments from '../Dashboard/AdminManageEnrollments';
 import AdminManageTutor from '../Dashboard/AdminManageTutor';
 import TutorManageBlog from '../Dashboard/TutorManageBlog';
 import TutorManageCourse from '../Dashboard/TutorManageCourse';
+import InnovationDetail from '../Pages/InnovationDetail';
+import AdminManageInnovation from '../Dashboard/AdminManageInnovation';
 
 function PagesRoute() {
   return (
@@ -41,6 +43,8 @@ function PagesRoute() {
       <Route path="/innovation" element={<Innovation/>} />
       <Route path="/blog" element={<Blog/>} />
       <Route path="/blog/:id" element={<BlogDetails/>} />
+      <Route path="/innovation/:id" element={<InnovationDetail/>} />
+
 
 
 
@@ -57,6 +61,7 @@ function PagesRoute() {
       <Route path="/admin/blogs" element={<AdminManageBlogs />} />
       <Route path="/admin/tutors" element={<AdminManageTutor/>} />
       <Route path="/admin/enrollments" element={<AdminManageEnrollments/>} />
+      <Route path="/admin/innovations" element={<AdminManageInnovation/>} />
 
       <Route path="/tutor/blogs" element={<TutorManageBlog/>} />
       <Route path="/tutor/courses" element={<TutorManageCourse/> } /> 

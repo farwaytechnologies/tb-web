@@ -61,7 +61,7 @@ export default function AdminManageUser() {
           <tbody>
             {users.map(user => (
               <tr key={user._id}>
-                <td>
+                <td className='admin-user-avatar-b'>
                   <img
                     src={user.profilePic || '/default-profile.png'}
                     alt="Profile"

@@ -1,0 +1,154 @@
+.techborg-admin-innovation-page {
+  padding: 40px 20px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f7faff;
+  min-height: 100vh;
+}
+
+.techborg-admin-innovation-page h2 {
+  font-size: 2rem;
+  color: #1c3d73;
+  margin-bottom: 25px;
+  border-left: 5px solid #4a7abe;
+  padding-left: 12px;
+}
+
+/* === Vertical Form === */
+.techborg-admin-innovation-form {
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.techborg-admin-innovation-form input,
+.techborg-admin-innovation-form textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #d4dce6;
+  font-size: 0.95rem;
+  background-color: #fdfdfd;
+  transition: border-color 0.3s ease;
+}
+
+.techborg-admin-innovation-form input:focus,
+.techborg-admin-innovation-form textarea:focus {
+  border-color: #4a7abe;
+  outline: none;
+}
+
+.techborg-admin-innovation-form button {
+  padding: 14px;
+  background-color: #4a7abe;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.techborg-admin-innovation-form button:hover {
+  background-color: #3b639d;
+}
+
+/* === Innovation List Cards === */
+.techborg-admin-innovation-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* === Individual Card === */
+.techborg-admin-innovation-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+  border: 1px solid #e3eaf2;
+}
+
+.techborg-admin-innovation-card:hover {
+  transform: translateY(-4px);
+}
+
+.techborg-admin-innovation-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.techborg-admin-innovation-card-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.techborg-admin-innovation-card-content h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1c3d73;
+  margin-bottom: 4px;
+}
+
+.techborg-admin-innovation-card-content p {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.techborg-admin-innovation-card-content small {
+  font-size: 0.8rem;
+  color: #777;
+  margin-bottom: 12px;
+}
+
+/* === Actions === */
+.techborg-admin-innovation-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.techborg-admin-innovation-actions button {
+  flex: 1;
+  padding: 10px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.techborg-admin-innovation-actions .delete {
+  background-color: #e14b4b;
+  color: #fff;
+}
+
+.techborg-admin-innovation-actions .delete:hover {
+  background-color: #c73434;
+}
+
+.techborg-admin-innovation-actions button:not(.delete) {
+  background-color: #4a7abe;
+  color: #fff;
+}
+
+.techborg-admin-innovation-actions button:not(.delete):hover {
+  background-color: #3b639d;
+}

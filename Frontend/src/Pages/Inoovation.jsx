@@ -6,9 +6,9 @@ function Innovation() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch dummy data from public folder
+  // Fetch backend API instead of public JSON
   useEffect(() => {
-    fetch('/innovation.json')
+    fetch('http://localhost:8000/api/innovations')
       .then((res) => res.json())
       .then((data) => {
         setItems(data);
@@ -30,11 +30,13 @@ function Innovation() {
       </div>
 
       {loading ? (
-        <p style={{ textAlign: 'center', color: '#fff' }}>Loading innovations...</p>
+        <p className="innovation-loading">Loading innovations...</p>
+      ) : items.length === 0 ? (
+        <p className="innovation-loading">No innovations found.</p>
       ) : (
         <div className="innovation-grid">
           {items.map((item) => (
-            <div className="innovation-card" key={item.id}>
+            <div className="innovation-card" key={item._id}>
               <img
                 src={item.image}
                 alt={item.title}
@@ -42,7 +44,7 @@ function Innovation() {
               />
               <h2 className="innovation-card-title">{item.title}</h2>
               <div className="innovation-card-footer">
-                <Link to={item.link} className="innovation-link">
+                <Link to={`/innovation/${item._id}`} className="innovation-link">
                   Learn More
                   <svg
                     fill="none"
