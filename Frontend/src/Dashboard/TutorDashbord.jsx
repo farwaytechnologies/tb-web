@@ -122,7 +122,7 @@ export default function TutorDashboard() {
             <FaBlog style={{ marginRight: '8px' }} />
             Manage Blogs
           </Link>
-          <Link to="/admin/users" className="techborg-tutor-action-btn">
+          <Link to="/tutor/students" className="techborg-tutor-action-btn">
             <FaUsers style={{ marginRight: '8px' }} />
             Manage Students
           </Link>
