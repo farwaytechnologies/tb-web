@@ -35,6 +35,7 @@ import AdminManageInnovation from '../Dashboard/AdminManageInnovation';
 import AdminManageAdmin from '../Dashboard/AdminManageAdmin';
 import TutorManageStudents from '../Dashboard/TutorManageStudents';
 import Support from '../Pages/Support';
+import Notifications from '../Pages/Notifications';
 
 function PagesRoute() {
   return (
@@ -48,6 +49,8 @@ function PagesRoute() {
       <Route path="/blog/:id" element={<BlogDetails/>} />
       <Route path="/innovation/:id" element={<InnovationDetail/>} />
       <Route path="/support" element={<Support/>} />
+      <Route path="/notifications" element={<Notifications />} />
+
 
 
 

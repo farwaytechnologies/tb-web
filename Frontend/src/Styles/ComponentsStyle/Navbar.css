@@ -77,11 +77,21 @@
   color: #4a7abe;
 }
 
-.navbar-github-icon {
-  color: #ffffff;
-  transition: color 0.3s ease;
+/* Notification Icon */
+.navbar-notification-icon-wrapper {
+  display: flex;
+  align-items: center;
 }
-.navbar-github-icon:hover {
+
+.navbar-notification-icon {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+.navbar-notification-icon:hover {
   color: #4a7abe;
 }
 

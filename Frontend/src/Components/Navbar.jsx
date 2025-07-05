@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaGithub, FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaBell } from 'react-icons/fa';
 import { MdAccountCircle } from 'react-icons/md';
 import '../Styles/ComponentsStyle/Navbar.css';
 
@@ -72,7 +72,6 @@ function Navbar() {
         )}
 
         <div className="navbar-right-wrapper">
-          {/* Hamburger Icon */}
           <div className="navbar-hamburger" onClick={toggleMobileMenu}>
             {menuOpen ? <FaTimes /> : <FaBars />}
           </div>
@@ -84,16 +83,10 @@ function Navbar() {
             <li><Link to="/blog" onClick={closeMobileMenu}>Blog</Link></li>
             <li><Link to="/about" onClick={closeMobileMenu}>About</Link></li>
             <li><Link to="/contact" onClick={closeMobileMenu}>Contact</Link></li>
-            <li>
-              <a
-                href="https://github.com/techborg"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="navbar-github-icon"
-                onClick={closeMobileMenu}
-              >
-                <FaGithub size={16} />
-              </a>
+            <li className="navbar-notification-icon-wrapper">
+              <Link to="/notifications" onClick={closeMobileMenu} className="navbar-notification-icon">
+                <FaBell size={18} />
+              </Link>
             </li>
           </ul>
 
