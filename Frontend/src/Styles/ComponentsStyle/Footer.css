@@ -1,26 +1,94 @@
 .techborg-footer {
   background-color: #000000;
-  color: #ffffff;
-  padding: 1.5rem 2rem;
-  text-align: center;
+  color: #fff;
+  padding: 2.5rem 1rem;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .footer-container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
-.footer-links {
-  margin-top: 0.5rem;
+/* Brand */
+.footer-brand h3 {
+  font-size: 1.8rem;
+  color: #4a7abe;
+  margin-bottom: 0.5rem;
 }
 
-.footer-links a {
-  color: #ffffff;
-  margin: 0 0.5rem;
+.footer-brand p {
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+/* Navigation Columns */
+.footer-nav-columns {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.footer-link-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.footer-link-group a {
+  color: #ccc;
   text-decoration: none;
+  font-size: 0.95rem;
   transition: color 0.3s;
 }
 
-.footer-links a:hover {
+.footer-link-group a:hover {
+  color: #fff;
+}
+
+/* Social Icons */
+.footer-social {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-social a {
+  color: #ccc;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.footer-social a:hover {
   color: #4a7abe;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-nav-columns {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    margin: 1.5rem 0;
+  }
+
+  .footer-link-group {
+    align-items: center;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
 }

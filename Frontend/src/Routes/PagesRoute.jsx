@@ -34,6 +34,7 @@ import InnovationDetail from '../Pages/InnovationDetail';
 import AdminManageInnovation from '../Dashboard/AdminManageInnovation';
 import AdminManageAdmin from '../Dashboard/AdminManageAdmin';
 import TutorManageStudents from '../Dashboard/TutorManageStudents';
+import Support from '../Pages/Support';
 
 function PagesRoute() {
   return (
@@ -46,6 +47,7 @@ function PagesRoute() {
       <Route path="/blog" element={<Blog/>} />
       <Route path="/blog/:id" element={<BlogDetails/>} />
       <Route path="/innovation/:id" element={<InnovationDetail/>} />
+      <Route path="/support" element={<Support/>} />
 
 
 
