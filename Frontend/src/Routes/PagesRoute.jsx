@@ -36,6 +36,16 @@ import AdminManageAdmin from '../Dashboard/AdminManageAdmin';
 import TutorManageStudents from '../Dashboard/TutorManageStudents';
 import Support from '../Pages/Support';
 import Notifications from '../Pages/Notifications';
+import AdminManageCms from '../Dashboard/AdminManageCms';
+import HomeCms from '../AdminCms/HomeCms';
+import AboutCms from '../AdminCms/AboutCms';
+import ContactCms from '../AdminCms/ContactCms';
+import SupportCms from '../AdminCms/SupportCms';
+import PrivacyCms from '../AdminCms/PrivacyCms';
+import TermCondCms from '../AdminCms/TermCondCms';
+
+
+
 
 function PagesRoute() {
   return (
@@ -63,6 +73,7 @@ function PagesRoute() {
       <Route path='/tutor/dashboard'element={<TutorDashboard/>}/>
 
 
+
       <Route path="/admin/courses" element={<AdminManageCourses/> } /> 
       <Route path="/admin/users" element={<AdminManageUser/>} />
       <Route path="/admin/blogs" element={<AdminManageBlogs />} />
@@ -70,6 +81,16 @@ function PagesRoute() {
       <Route path="/admin/manage-admins" element={<AdminManageAdmin/>} />
       <Route path="/admin/enrollments" element={<AdminManageEnrollments/>} />
       <Route path="/admin/innovations" element={<AdminManageInnovation/>} />
+      <Route path="/admin/manage-cms" element={<AdminManageCms />} />
+
+
+
+        <Route path="/admin/edit-home" element={<HomeCms />} />
+        <Route path="/admin/edit-about" element={<AboutCms/>} />
+        <Route path="/admin/edit-contact" element={<ContactCms />} />
+        <Route path="/admin/edit-support" element={<SupportCms />} />
+        <Route path="/admin/edit-privacy-policy" element={<PrivacyCms />} />
+        <Route path="/admin/edit-terms" element={<TermCondCms />} />
 
       <Route path="/tutor/blogs" element={<TutorManageBlog/>} />
       <Route path="/tutor/courses" element={<TutorManageCourse/> } /> 

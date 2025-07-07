@@ -1,4 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+}.nqc-vh{
+min-height: 100vh;
+background: linear-gradient(135deg, #62a8ef, #854ef4);
 }

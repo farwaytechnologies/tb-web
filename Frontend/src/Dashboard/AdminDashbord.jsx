@@ -132,6 +132,10 @@ export default function AdminDashboard() {
           <FaLightbulb style={{ marginRight: '8px' }} />
           Manage Innovations
         </Link>
+        <Link to="/admin/manage-cms" className="techborg-admin-action-btn">
+          <FaCheckCircle style={{ marginRight: '8px' }} />
+          Manage CMS
+        </Link>
       </div>
     </div>
   );
