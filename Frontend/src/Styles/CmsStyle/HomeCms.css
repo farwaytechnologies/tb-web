@@ -1,0 +1,114 @@
+.homecms-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.homecms-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #4a7abe;
+  font-size: 1.8rem;
+}
+
+.cms-section {
+  margin-bottom: 30px;
+}
+
+.cms-section label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.cms-section input,
+.cms-section textarea {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.cms-section input:focus,
+.cms-section textarea:focus {
+  border-color: #4a7abe;
+  outline: none;
+}
+
+/* Feature Cards */
+.feature-block {
+  background: #f5f7fa;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  position: relative;
+}
+
+.feature-block input,
+.feature-block textarea {
+  margin-bottom: 10px;
+}
+
+.add-btn,
+.remove-btn {
+  background-color: #e0e0e0;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 6px;
+  margin-right: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background-color: #cfd8dc;
+}
+
+.remove-btn {
+  color: #d32f2f;
+}
+
+.remove-btn:hover {
+  background-color: #ffcdd2;
+}
+
+/* Submit */
+.submit-btn {
+  background-color: #4a7abe;
+  color: white;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  display: block;
+  transition: background 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #345e9e;
+}
+
+/* Success or Error Message */
+.cms-message {
+  margin-top: 25px;
+  padding: 10px 15px;
+  text-align: center;
+  background-color: #e3f2fd;
+  color: #0d47a1;
+  border-radius: 8px;
+  font-weight: 500;
+}

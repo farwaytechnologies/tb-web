@@ -2,6 +2,14 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 100px 0;
+  font-size: 1.5rem;
+  color: #4a7abe;
+}
+
 /* Hero Section */
 .hero-section {
   background: linear-gradient(120deg, #1e2a38, #2b4d7e);
@@ -37,7 +45,7 @@
 /* Features Section */
 .features-section {
   padding: 60px 20px;
-   background: linear-gradient(135deg, #62a8ef, #854ef4);
+  background: linear-gradient(135deg, #62a8ef, #854ef4);
   text-align: center;
 }
 
@@ -67,9 +75,14 @@
   color: #4a7abe;
 }
 
+.feature-card p {
+  color: #555;
+  font-size: 0.95rem;
+}
+
 /* CTA Section */
 .cta-section {
-   background: linear-gradient(120deg, #1e2a38, #2b4d7e);
+  background: linear-gradient(120deg, #1e2a38, #2b4d7e);
   color: white;
   padding: 60px 20px;
   text-align: center;
