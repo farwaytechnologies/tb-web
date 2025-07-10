@@ -5,7 +5,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
-// Load environment variables
+// Load environment variables from .env
 dotenv.config();
 
 const app = express();
@@ -16,7 +16,7 @@ if (!process.env.MONGO_URI) {
   process.exit(1);
 }
 
-// ✅ MongoDB Connection
+// ✅ Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -34,14 +34,16 @@ const authRoutes = require('./routes/auth');
 const courseRoutes = require('./routes/courseRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
-const innovationRoutes = require('./routes/innovationRoutes'); // ✅ NEW
+const innovationRoutes = require('./routes/innovationRoutes');
+const homeContentRoutes = require('./routes/homeContentRoutes'); // ✅ Added HomeContent API
 
 // ✅ API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
-app.use('/api/innovations', innovationRoutes); // ✅ NEW
+app.use('/api/innovations', innovationRoutes);
+app.use('/api/home', homeContentRoutes); // ✅ Home content route
 
 // ✅ Health Check
 app.get('/', (req, res) => {
