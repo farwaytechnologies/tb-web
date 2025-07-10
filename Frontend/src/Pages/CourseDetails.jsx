@@ -58,6 +58,10 @@ function CourseDetail() {
             <Link to={`/courses/${id}/modules`} className="techborg-module-btn">
               View Modules
             </Link>
+            <Link to={`/courses/${id}/content`} className="techborg-module-btn">
+  Read Learning Material
+</Link>
+
           </div>
         </div>
       </section>

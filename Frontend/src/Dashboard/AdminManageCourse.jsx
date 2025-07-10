@@ -9,6 +9,7 @@ function AdminManageCourses() {
     title: '',
     description: '',
     detailedDescription: '',
+    learningContent: '', // ✅ Added field
     price: '',
     image: '',
     video: '',
@@ -34,6 +35,7 @@ function AdminManageCourses() {
       title: '',
       description: '',
       detailedDescription: '',
+      learningContent: '', // ✅ Reset field
       price: '',
       image: '',
       video: '',
@@ -74,6 +76,7 @@ function AdminManageCourses() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newForm),
     });
+
     const newCourse = await res.json();
     setCourses([...courses, newCourse]);
     resetForm();
@@ -161,12 +164,22 @@ function AdminManageCourses() {
       <div className="techborg-course-form">
         <input type="text" placeholder="Title" value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+
         <input type="text" placeholder="Short Description" value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+
         <textarea placeholder="Detailed Description" value={formData.detailedDescription}
           onChange={(e) => setFormData({ ...formData, detailedDescription: e.target.value })} />
-        
-        {/* ✅ Price input field FIXED */}
+
+        {/* ✅ New Learning Content Field */}
+        <textarea
+          placeholder="Learning Content (text or HTML)"
+          value={formData.learningContent}
+          className="techborg-course-textarea"
+          rows="6"
+          onChange={(e) => setFormData({ ...formData, learningContent: e.target.value })}
+        />
+
         <input
           type="text"
           placeholder="Price"
@@ -181,12 +194,16 @@ function AdminManageCourses() {
 
         <input type="text" placeholder="Image URL" value={formData.image}
           onChange={(e) => setFormData({ ...formData, image: e.target.value })} />
+
         <input type="text" placeholder="Course Video URL" value={formData.video}
           onChange={(e) => setFormData({ ...formData, video: e.target.value })} />
+
         <input type="text" placeholder="Duration" value={formData.duration}
           onChange={(e) => setFormData({ ...formData, duration: e.target.value })} />
+
         <input type="text" placeholder="Level" value={formData.level}
           onChange={(e) => setFormData({ ...formData, level: e.target.value })} />
+
         <input type="text" placeholder="Instructor" value={formData.instructor}
           onChange={(e) => setFormData({ ...formData, instructor: e.target.value })} />
 

@@ -43,6 +43,7 @@ import ContactCms from '../AdminCms/ContactCms';
 import SupportCms from '../AdminCms/SupportCms';
 import PrivacyCms from '../AdminCms/PrivacyCms';
 import TermCondCms from '../AdminCms/TermCondCms';
+import CourseTextContent from '../Pages/CourseTextContent';
 
 
 
@@ -62,11 +63,10 @@ function PagesRoute() {
       <Route path="/notifications" element={<Notifications />} />
 
 
-
-
-
      <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}
      <Route path="/courses/:id/modules" element={<CourseModules/>} />
+     <Route path="/courses/:id/content" element={<CourseTextContent />} />
+
 
       <Route path="/user/dashboard" element={<UserDashboard/>} />
       <Route path="/admin/dashboard" element={<AdminDashboard/>} />
