@@ -10,6 +10,7 @@ const courseSchema = new mongoose.Schema({
   duration: String,
   level: String,
   instructor: String,
+  learningContent :String ,
 
   modules: [
     {
