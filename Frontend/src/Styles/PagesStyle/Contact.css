@@ -1,29 +1,29 @@
-
-/* ===== Contact.css ===== */
-/* Save in src/Styles/PagesStyle/Contact.css */
-.techborg-contact-page {
-  background: linear-gradient(135deg, #62a8ef, #854ef4);
-  padding: 60px 20px;
+.techborg-contact-container {
   min-height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  color: #0f172a;
+  background-color: #f0f4f8;
+  padding: 20px;
+}
+
+.techborg-contact-box {
+  background: #fff;
+  padding: 30px;
+  max-width: 500px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .techborg-contact-title {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .techborg-contact-form {
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -31,28 +31,49 @@
 
 .techborg-input,
 .techborg-textarea {
-  padding: 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  padding: 12px 16px;
   font-size: 1rem;
-  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.techborg-input:focus,
+.techborg-textarea:focus {
+  border-color: #4a7abe;
 }
 
 .techborg-textarea {
-  resize: vertical;
   min-height: 120px;
+  resize: vertical;
 }
 
 .techborg-submit-btn {
-  background-color: #0ea5e9;
+  background-color: #4a7abe;
   color: white;
+  font-size: 1rem;
   border: none;
   padding: 12px;
-  font-weight: bold;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .techborg-submit-btn:hover {
-  background-color: #0284c7;
+  background-color: #3a639c;
+}
+
+.techborg-success-message {
+  margin-top: 15px;
+  color: green;
+  font-weight: 500;
+  text-align: center;
+}
+
+.techborg-error-message {
+  margin-top: 15px;
+  color: red;
+  font-weight: 500;
+  text-align: center;
 }

@@ -44,6 +44,7 @@ import SupportCms from '../AdminCms/SupportCms';
 import PrivacyCms from '../AdminCms/PrivacyCms';
 import TermCondCms from '../AdminCms/TermCondCms';
 import CourseTextContent from '../Pages/CourseTextContent';
+import AdminViewContact from '../Dashboard/AdminViewContact';
 
 
 
@@ -91,6 +92,8 @@ function PagesRoute() {
         <Route path="/admin/edit-support" element={<SupportCms />} />
         <Route path="/admin/edit-privacy-policy" element={<PrivacyCms />} />
         <Route path="/admin/edit-terms" element={<TermCondCms />} />
+        <Route path="/admin/view-contact" element={<AdminViewContact/>} />
+
 
       <Route path="/tutor/blogs" element={<TutorManageBlog/>} />
       <Route path="/tutor/courses" element={<TutorManageCourse/> } /> 

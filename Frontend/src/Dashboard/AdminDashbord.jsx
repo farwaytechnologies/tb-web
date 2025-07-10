@@ -136,6 +136,10 @@ export default function AdminDashboard() {
           <FaCheckCircle style={{ marginRight: '8px' }} />
           Manage CMS
         </Link>
+        <Link to="/admin/view-contact" className="techborg-admin-action-btn">
+          <FaUsers style={{ marginRight: '8px' }} />
+          View Contact Messages
+        </Link>
       </div>
     </div>
   );
