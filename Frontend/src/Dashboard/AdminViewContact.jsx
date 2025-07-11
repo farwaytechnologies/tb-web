@@ -6,38 +6,54 @@ function AdminViewContact() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const token = localStorage.getItem('token');
-
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await fetch('http://localhost:8000/api/contact', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.message || 'Failed to fetch');
-        }
-
-        if (!Array.isArray(data)) {
-          throw new Error('Invalid response from server');
-        }
-
-        setMessages(data);
-      } catch (err) {
-        console.error('❌ Error:', err.message);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchMessages();
-  }, [token]);
+  }, []);
+
+  const fetchMessages = async () => {
+    try {
+      const res = await fetch('http://localhost:8000/api/contact');
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message || 'Failed to fetch messages.');
+      if (!Array.isArray(data)) throw new Error('Invalid response from server.');
+
+      setMessages(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this message?');
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`http://localhost:8000/api/contact/${id}`, {
+        method: 'DELETE',
+      });
+
+      const contentType = res.headers.get('content-type');
+
+      let responseMessage = '';
+      if (contentType && contentType.includes('application/json')) {
+        const json = await res.json();
+        responseMessage = json.message;
+      } else {
+        responseMessage = await res.text();
+      }
+
+      if (!res.ok) throw new Error(responseMessage || 'Failed to delete message.');
+
+      alert('Message deleted successfully!');
+      setMessages(messages.filter(msg => msg._id !== id));
+    } catch (err) {
+      console.error('❌ Delete error:', err);
+      alert('Error deleting message: ' + err.message);
+    }
+  };
 
   return (
     <div className="admin-view-contact-container">
@@ -59,6 +75,7 @@ function AdminViewContact() {
               <th>Phone</th>
               <th>Message</th>
               <th>Date</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -70,6 +87,14 @@ function AdminViewContact() {
                 <td>{msg.phone || 'N/A'}</td>
                 <td>{msg.message}</td>
                 <td>{new Date(msg.createdAt).toLocaleString()}</td>
+                <td>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(msg._id)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
