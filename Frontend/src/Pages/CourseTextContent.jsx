@@ -29,10 +29,29 @@ export default function CourseTextContent() {
         {course.title} - Learning Material
       </h1>
 
-      <div
-        className="techborg-course-text-content"
-        dangerouslySetInnerHTML={{ __html: course.learningContent }}
-      />
+      {course.modules?.map((module, index) => (
+        <div key={index} className="techborg-course-module">
+          <h2 className="techborg-course-module-title">{module.name}</h2>
+
+          {module.learningContent?.length > 0 ? (
+            module.learningContent.map((content, idx) => (
+              <div key={idx} className="techborg-course-content-block">
+                {content.heading && <h3>{content.heading}</h3>}
+                {content.paragraph && <p>{content.paragraph}</p>}
+                {content.image && (
+                  <img
+                    src={`http://localhost:8000/uploads/${content.image}`}
+                    alt={content.heading || `Module ${index + 1} Image`}
+                    className="techborg-course-content-image"
+                  />
+                )}
+              </div>
+            ))
+          ) : (
+            <p>No learning content available for this module.</p>
+          )}
+        </div>
+      ))}
 
       <Link to={`/courses/${id}`} className="techborg-course-text-back-btn">
         ← Back to Course Details

@@ -1,49 +1,41 @@
-.techborg-course-text-wrapper {
-  padding: 2rem;
-  margin: 0 auto;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+.techborg-course-module {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
   min-height: 100vh;
+  background-color: #f9f9f9;
+  
 }
 
-.techborg-course-text-title {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: #1d3557;
+.techborg-course-module-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #264653;
   border-bottom: 2px solid #4a7abe;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
 }
 
-.techborg-course-text-content {
-  font-size: 1rem;
-  line-height: 1.8;
-  color: #333333;
-  white-space: pre-line;
+.techborg-course-content-block {
+  margin-bottom: 1.5rem;
 }
 
-.techborg-course-text-loading,
-.techborg-course-text-error {
-  text-align: center;
+.techborg-course-content-block h3 {
   font-size: 1.2rem;
-  margin-top: 3rem;
-  color: #ff4d4d;
+  margin-bottom: 0.5rem;
+  color: #1d3557;
 }
 
-.techborg-course-text-back-btn {
-  display: inline-block;
-  margin-top: 2rem;
-  font-weight: 500;
-  color: #4a7abe;
-  text-decoration: none;
-  border: 1px solid #4a7abe;
-  padding: 0.5rem 1rem;
+.techborg-course-content-block p {
+  font-size: 1rem;
+  color: #333333;
+  line-height: 1.6;
+}
+
+.techborg-course-content-image {
+  max-width: 100%;
+  height: auto;
+  margin-top: 1rem;
   border-radius: 6px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.techborg-course-text-back-btn:hover {
-  background-color: #4a7abe;
-  color: #ffffff;
+  border: 1px solid #ccc;
 }

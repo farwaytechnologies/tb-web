@@ -9,7 +9,6 @@ function AdminManageCourses() {
     title: '',
     description: '',
     detailedDescription: '',
-    learningContent: '', // ✅ Added field
     price: '',
     image: '',
     video: '',
@@ -19,7 +18,8 @@ function AdminManageCourses() {
     modules: [
       {
         name: '',
-        videos: [{ title: '', video: '', description: '' }]
+        videos: [{ title: '', video: '', description: '' }],
+        learningContent: [{ heading: '', paragraph: '', image: '' }]
       }
     ]
   });
@@ -35,7 +35,6 @@ function AdminManageCourses() {
       title: '',
       description: '',
       detailedDescription: '',
-      learningContent: '', // ✅ Reset field
       price: '',
       image: '',
       video: '',
@@ -45,7 +44,8 @@ function AdminManageCourses() {
       modules: [
         {
           name: '',
-          videos: [{ title: '', video: '', description: '' }]
+          videos: [{ title: '', video: '', description: '' }],
+          learningContent: [{ heading: '', paragraph: '', image: '' }]
         }
       ]
     });
@@ -128,7 +128,8 @@ function AdminManageCourses() {
       ...formData,
       modules: [...formData.modules, {
         name: '',
-        videos: [{ title: '', video: '', description: '' }]
+        videos: [{ title: '', video: '', description: '' }],
+        learningContent: [{ heading: '', paragraph: '', image: '' }]
       }]
     });
   };
@@ -157,6 +158,24 @@ function AdminManageCourses() {
     setFormData({ ...formData, modules: updatedModules });
   };
 
+  const handleLearningContentChange = (modIdx, lcIdx, field, value) => {
+    const updatedModules = [...formData.modules];
+    updatedModules[modIdx].learningContent[lcIdx][field] = value;
+    setFormData({ ...formData, modules: updatedModules });
+  };
+
+  const addLearningContent = (modIdx) => {
+    const updatedModules = [...formData.modules];
+    updatedModules[modIdx].learningContent.push({ heading: '', paragraph: '', image: '' });
+    setFormData({ ...formData, modules: updatedModules });
+  };
+
+  const removeLearningContent = (modIdx, lcIdx) => {
+    const updatedModules = [...formData.modules];
+    updatedModules[modIdx].learningContent.splice(lcIdx, 1);
+    setFormData({ ...formData, modules: updatedModules });
+  };
+
   return (
     <div className="techborg-admin-course-page">
       <h2>Manage Courses</h2>
@@ -171,26 +190,13 @@ function AdminManageCourses() {
         <textarea placeholder="Detailed Description" value={formData.detailedDescription}
           onChange={(e) => setFormData({ ...formData, detailedDescription: e.target.value })} />
 
-        {/* ✅ New Learning Content Field */}
-        <textarea
-          placeholder="Learning Content (text or HTML)"
-          value={formData.learningContent}
-          className="techborg-course-textarea"
-          rows="6"
-          onChange={(e) => setFormData({ ...formData, learningContent: e.target.value })}
-        />
-
-        <input
-          type="text"
-          placeholder="Price"
-          value={formData.price}
+        <input type="text" placeholder="Price" value={formData.price}
           onChange={(e) => {
             const val = e.target.value;
             if (/^\d*\.?\d*$/.test(val) || val === '') {
               setFormData({ ...formData, price: val });
             }
-          }}
-        />
+          }} />
 
         <input type="text" placeholder="Image URL" value={formData.image}
           onChange={(e) => setFormData({ ...formData, image: e.target.value })} />
@@ -208,7 +214,7 @@ function AdminManageCourses() {
           onChange={(e) => setFormData({ ...formData, instructor: e.target.value })} />
 
         <div className="section-group">
-          <h4>Modules & Videos</h4>
+          <h4>Modules</h4>
           {formData.modules.map((mod, idx) => (
             <div key={idx} className="module-group">
               <div className="flex-between">
@@ -227,30 +233,52 @@ function AdminManageCourses() {
                 <h5>Videos for {mod.name || `Module ${idx + 1}`}</h5>
                 {mod.videos.map((vid, vidx) => (
                   <div className="video-group" key={vidx}>
-                    <input
-                      type="text"
-                      placeholder="Video Title"
+                    <input type="text" placeholder="Video Title"
                       value={vid.title}
-                      onChange={(e) => handleVideoChange(idx, vidx, 'title', e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Video URL"
+                      onChange={(e) => handleVideoChange(idx, vidx, 'title', e.target.value)} />
+                    <input type="text" placeholder="Video URL"
                       value={vid.video}
-                      onChange={(e) => handleVideoChange(idx, vidx, 'video', e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Video Description"
+                      onChange={(e) => handleVideoChange(idx, vidx, 'video', e.target.value)} />
+                    <input type="text" placeholder="Video Description"
                       value={vid.description}
-                      onChange={(e) => handleVideoChange(idx, vidx, 'description', e.target.value)}
-                    />
+                      onChange={(e) => handleVideoChange(idx, vidx, 'description', e.target.value)} />
                     {mod.videos.length > 1 && (
                       <button className="remove-btn" onClick={() => removeVideo(idx, vidx)}>Remove Video</button>
                     )}
                   </div>
                 ))}
                 <button onClick={() => addVideo(idx)} className="add-btn">+ Add Video</button>
+              </div>
+
+              <div className="section-group nested">
+                <h5>Learning Content for {mod.name || `Module ${idx + 1}`}</h5>
+                {mod.learningContent.map((lc, lcIdx) => (
+                  <div className="video-group" key={lcIdx}>
+                    <input
+                      type="text"
+                      placeholder="Heading"
+                      value={lc.heading}
+                      onChange={(e) => handleLearningContentChange(idx, lcIdx, 'heading', e.target.value)}
+                    />
+                    <textarea
+                      placeholder="Paragraph"
+                      value={lc.paragraph}
+                      onChange={(e) => handleLearningContentChange(idx, lcIdx, 'paragraph', e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Image URL"
+                      value={lc.image}
+                      onChange={(e) => handleLearningContentChange(idx, lcIdx, 'image', e.target.value)}
+                    />
+                    {mod.learningContent.length > 1 && (
+                      <button className="remove-btn" onClick={() => removeLearningContent(idx, lcIdx)}>
+                        Remove Section
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button onClick={() => addLearningContent(idx)} className="add-btn">+ Add Content Block</button>
               </div>
             </div>
           ))}
