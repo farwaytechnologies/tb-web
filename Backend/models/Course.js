@@ -10,16 +10,25 @@ const courseSchema = new mongoose.Schema({
   duration: String,
   level: String,
   instructor: String,
-  learningContent :String ,
 
   modules: [
     {
       name: { type: String, required: true },
+
       videos: [
         {
           title: { type: String, required: true },
           video: { type: String, required: true },
           description: String
+        }
+      ],
+
+      // ✅ Similar structure for learning content
+      learningContent: [
+        {
+          heading: { type: String },
+          paragraph: { type: String },
+          image: { type: String }
         }
       ]
     }
