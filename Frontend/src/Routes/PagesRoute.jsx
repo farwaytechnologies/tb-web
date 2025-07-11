@@ -45,6 +45,7 @@ import PrivacyCms from '../AdminCms/PrivacyCms';
 import TermCondCms from '../AdminCms/TermCondCms';
 import CourseTextContent from '../Pages/CourseTextContent';
 import AdminViewContact from '../Dashboard/AdminViewContact';
+import AdminManageNotifications from '../Dashboard/AdminManageNotifications';
 
 
 
@@ -83,6 +84,7 @@ function PagesRoute() {
       <Route path="/admin/enrollments" element={<AdminManageEnrollments/>} />
       <Route path="/admin/innovations" element={<AdminManageInnovation/>} />
       <Route path="/admin/manage-cms" element={<AdminManageCms />} />
+      <Route path="/admin/manage-notifications" element={<AdminManageNotifications/>} />
 
 
 

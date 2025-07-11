@@ -9,7 +9,8 @@ import {
   FaCheckCircle,
   FaLightbulb,
   FaUserGraduate,
-  FaUserTie
+  FaUserTie,
+  FaBell
 } from 'react-icons/fa';
 
 export default function AdminDashboard() {
@@ -139,6 +140,11 @@ export default function AdminDashboard() {
         <Link to="/admin/view-contact" className="techborg-admin-action-btn">
           <FaUsers style={{ marginRight: '8px' }} />
           View Contact Messages
+        </Link>
+        {/* ✅ Manage Notifications Link */}
+        <Link to="/admin/manage-notifications" className="techborg-admin-action-btn">
+          <FaBell style={{ marginRight: '8px' }} />
+          Manage Notifications
         </Link>
       </div>
     </div>
