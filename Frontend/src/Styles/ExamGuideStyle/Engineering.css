@@ -2,4 +2,71 @@
   min-height: 100vh;
   padding: 2rem;
   background-color: #e8f0fe;
+  font-family: Arial, sans-serif;
+}
+
+.engineering-container h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.engineering-container p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.engineering-year-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.engineering-year-btn {
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #0a67b4;
+  border: 2px solid #0a67b4;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+}
+
+.engineering-year-btn:hover {
+  background-color: #dbe9ff;
+}
+
+.engineering-year-btn.active {
+  background-color: #0a67b4;
+  color: #fff;
+}
+
+.engineering-semester-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.engineering-semester-card {
+  background-color: #fff;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: 0.3s;
+}
+
+.engineering-semester-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.engineering-semester-card h3 {
+  color: #0a67b4;
+  margin-bottom: 8px;
+}
+
+.engineering-semester-card p {
+  font-size: 0.95rem;
+  color: #333;
 }
