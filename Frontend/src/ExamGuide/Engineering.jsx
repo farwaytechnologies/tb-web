@@ -28,7 +28,7 @@ export default function Engineering() {
       </div>
 
       <div className="engineering-semester-grid">
-        {[1, 2, 3, 4, 5, 6].map((sem) => (
+        {[1, 2, 3, 4, 5, 6,7,8].map((sem) => (
           <div key={sem} className="engineering-semester-card">
             <h3>Semester {sem}</h3>
             <p>Year: {selectedYear}</p>
