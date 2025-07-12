@@ -227,3 +227,19 @@
     margin-top: 10px;
   }
 }
+.navbar-notification-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  width: 5px;
+  height: 5px;
+  background-color: red;
+  border-radius: 50%;
+  z-index: 10;
+}

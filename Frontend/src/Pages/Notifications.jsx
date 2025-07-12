@@ -6,6 +6,7 @@ export default function Notifications() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // Fetch notifications
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
@@ -26,6 +27,22 @@ export default function Notifications() {
     };
 
     fetchNotifications();
+  }, []);
+
+  // Mark notifications as read on page load
+  useEffect(() => {
+    const markAllAsRead = async () => {
+      try {
+        await fetch('http://localhost:8000/api/notifications/mark-read', {
+          method: 'PUT',
+        });
+        window.dispatchEvent(new Event('notificationsRead')); // Clear red dot in navbar
+      } catch (err) {
+        console.error('Error marking notifications as read:', err);
+      }
+    };
+
+    markAllAsRead();
   }, []);
 
   return (

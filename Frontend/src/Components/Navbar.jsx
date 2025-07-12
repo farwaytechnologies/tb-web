@@ -8,14 +8,13 @@ function Navbar() {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hasUnread, setHasUnread] = useState(false); // NEW
   const navigate = useNavigate();
   const dropdownRef = useRef();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    if (storedUser) setUser(JSON.parse(storedUser));
 
     const handleLogin = () => {
       const updatedUser = localStorage.getItem('user');
@@ -23,9 +22,7 @@ function Navbar() {
     };
 
     window.addEventListener('userLoggedIn', handleLogin);
-    return () => {
-      window.removeEventListener('userLoggedIn', handleLogin);
-    };
+    return () => window.removeEventListener('userLoggedIn', handleLogin);
   }, []);
 
   useEffect(() => {
@@ -34,9 +31,31 @@ function Navbar() {
         setDropdownOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // ✅ Check for unread notifications
+  useEffect(() => {
+    const checkUnread = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/api/notifications');
+        const data = await res.json();
+        const hasUnread = data.some(notification => !notification.isRead);
+        setHasUnread(hasUnread);
+      } catch (err) {
+        console.error('Error fetching notifications:', err);
+      }
+    };
+    checkUnread();
+
+    // Optional: Listen for "notificationsRead" event to clear dot
+    const handleReadEvent = () => setHasUnread(false);
+    window.addEventListener('notificationsRead', handleReadEvent);
+
+    return () => {
+      window.removeEventListener('notificationsRead', handleReadEvent);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -86,6 +105,7 @@ function Navbar() {
             <li className="navbar-notification-icon-wrapper">
               <Link to="/notifications" onClick={closeMobileMenu} className="navbar-notification-icon">
                 <FaBell size={18} />
+                {hasUnread && <span className="notification-dot"></span>}
               </Link>
             </li>
           </ul>
