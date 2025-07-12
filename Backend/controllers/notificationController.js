@@ -13,13 +13,13 @@ exports.getAllNotifications = async (req, res) => {
 // POST a new notification
 exports.createNotification = async (req, res) => {
   try {
-    const { title, message, date } = req.body;
+    const { title, message, date, isRead = false } = req.body;
 
     if (!title || !message || !date) {
       return res.status(400).json({ message: 'All fields are required.' });
     }
 
-    const newNotification = new Notification({ title, message, date });
+    const newNotification = new Notification({ title, message, date, isRead });
     await newNotification.save();
 
     res.status(201).json({ message: 'Notification created successfully' });
@@ -41,5 +41,15 @@ exports.deleteNotification = async (req, res) => {
     res.status(200).json({ message: 'Notification deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete notification', error: err });
+  }
+};
+
+// PUT - Mark all notifications as read
+exports.markAllAsRead = async (req, res) => {
+  try {
+    await Notification.updateMany({ isRead: false }, { $set: { isRead: true } });
+    res.status(200).json({ message: 'All notifications marked as read.' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to mark notifications as read', error: err });
   }
 };

@@ -10,9 +10,13 @@ const notificationSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    type: String, // or type: Date
-    required: true,
+    type: Date, // Better to use Date instead of String
+    default: Date.now,
   },
+  isRead: {
+    type: Boolean,
+    default: false, // Indicates the notification is unread by default
+  }
 });
 
 module.exports = mongoose.model('Notification', notificationSchema);
