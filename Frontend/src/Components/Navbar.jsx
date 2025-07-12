@@ -8,9 +8,11 @@ function Navbar() {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [hasUnread, setHasUnread] = useState(false); // NEW
+  const [examDropdownOpen, setExamDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const dropdownRef = useRef();
+
+  const userDropdownRef = useRef();
+  const examDropdownRef = useRef();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -27,35 +29,21 @@ function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(event.target)
+      ) {
         setDropdownOpen(false);
+      }
+      if (
+        examDropdownRef.current &&
+        !examDropdownRef.current.contains(event.target)
+      ) {
+        setExamDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // ✅ Check for unread notifications
-  useEffect(() => {
-    const checkUnread = async () => {
-      try {
-        const res = await fetch('http://localhost:8000/api/notifications');
-        const data = await res.json();
-        const hasUnread = data.some(notification => !notification.isRead);
-        setHasUnread(hasUnread);
-      } catch (err) {
-        console.error('Error fetching notifications:', err);
-      }
-    };
-    checkUnread();
-
-    // Optional: Listen for "notificationsRead" event to clear dot
-    const handleReadEvent = () => setHasUnread(false);
-    window.addEventListener('notificationsRead', handleReadEvent);
-
-    return () => {
-      window.removeEventListener('notificationsRead', handleReadEvent);
-    };
   }, []);
 
   const handleLogout = () => {
@@ -66,8 +54,12 @@ function Navbar() {
   };
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-  const toggleMobileMenu = () => setMenuOpen(!menuOpen);
-  const closeMobileMenu = () => setMenuOpen(false);
+  const toggleExamDropdown = () => setExamDropdownOpen(!examDropdownOpen);
+  const closeMobileMenu = () => {
+    setMenuOpen(false);
+    setDropdownOpen(false);
+    setExamDropdownOpen(false);
+  };
 
   return (
     <nav className="navbar-wrapper">
@@ -91,46 +83,59 @@ function Navbar() {
         )}
 
         <div className="navbar-right-wrapper">
-          <div className="navbar-hamburger" onClick={toggleMobileMenu}>
+          <div className="navbar-hamburger" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <FaTimes /> : <FaBars />}
           </div>
 
-          <ul className={`navbar-links ${menuOpen ? 'active' : ''}`}>
-            <li><Link to="/" onClick={closeMobileMenu}>Home</Link></li>
-            <li><Link to="/courses" onClick={closeMobileMenu}>Courses</Link></li>
-            <li><Link to="/innovation" onClick={closeMobileMenu}>Innovation</Link></li>
-            <li><Link to="/blog" onClick={closeMobileMenu}>Blog</Link></li>
-            <li><Link to="/about" onClick={closeMobileMenu}>About</Link></li>
-            <li><Link to="/contact" onClick={closeMobileMenu}>Contact</Link></li>
+          <ul className={`navbar-links ${menuOpen ? 'navbar-links-active' : ''}`}>
+            <li><Link to="/" onClick={closeMobileMenu} className="navbar-link">Home</Link></li>
+            <li><Link to="/courses" onClick={closeMobileMenu} className="navbar-link">Courses</Link></li>
+
+            <li className="navbar-dropdown" ref={examDropdownRef}>
+              <div className="navbar-dropdown-toggle" onClick={toggleExamDropdown}>
+                Exam Guide
+              </div>
+              {examDropdownOpen && (
+                <ul className="navbar-submenu">
+                  <li><Link to="/exam-guide/polytechnic" className="navbar-link" onClick={closeMobileMenu}>Polytechnic</Link></li>
+                  <li><Link to="/exam-guide/engineering" className="navbar-link" onClick={closeMobileMenu}>Engineering</Link></li>
+                  <li><Link to="/exam-guide/degree" className="navbar-link" onClick={closeMobileMenu}>Degree</Link></li>
+                  <li><Link to="/exam-guide/pg" className="navbar-link" onClick={closeMobileMenu}>PG</Link></li>
+                </ul>
+              )}
+            </li>
+
+            <li><Link to="/innovation" onClick={closeMobileMenu} className="navbar-link">Innovation</Link></li>
+            <li><Link to="/blog" onClick={closeMobileMenu} className="navbar-link">Blog</Link></li>
+            <li><Link to="/about" onClick={closeMobileMenu} className="navbar-link">About</Link></li>
+            <li><Link to="/contact" onClick={closeMobileMenu} className="navbar-link">Contact</Link></li>
+
             <li className="navbar-notification-icon-wrapper">
               <Link to="/notifications" onClick={closeMobileMenu} className="navbar-notification-icon">
                 <FaBell size={18} />
-                {hasUnread && <span className="notification-dot"></span>}
               </Link>
             </li>
           </ul>
 
           <div className="navbar-right">
             {user ? (
-              <div className="navbar-user-info" ref={dropdownRef}>
-                <div className="nav-user-dropdown" onClick={toggleDropdown}>
+              <div className="navbar-user-info" ref={userDropdownRef}>
+                <div className="navbar-user-dropdown" onClick={toggleDropdown}>
                   <img
                     src={user.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}`}
                     alt="profile"
-                    className="profile-img"
+                    className="navbar-profile-img"
                   />
                   <span className="navbar-username">{user.name}</span>
                 </div>
                 {dropdownOpen && (
-                  <div className="dropdown-menu">
-                    <Link to={user.role === 'admin' ? '/admin-profile' : user.role === 'tutor' ? '/tutor-profile' : '/user-profile'} onClick={() => setDropdownOpen(false)}>
-                      My Profile
-                    </Link>
-                    <Link to="/certificates" onClick={() => setDropdownOpen(false)}>Certificates</Link>
-                    <Link to="/exam" onClick={() => setDropdownOpen(false)}>Exam</Link>
-                    <Link to="/invoices" onClick={() => setDropdownOpen(false)}>Invoices</Link>
-                    <Link to="/settings" onClick={() => setDropdownOpen(false)}>Settings</Link>
-                    <button onClick={handleLogout} className="logout-link">Logout</button>
+                  <div className="navbar-dropdown-menu">
+                    <Link to={user.role === 'admin' ? '/admin-profile' : user.role === 'tutor' ? '/tutor-profile' : '/user-profile'} onClick={closeMobileMenu}>My Profile</Link>
+                    <Link to="/certificates" onClick={closeMobileMenu}>Certificates</Link>
+                    <Link to="/exam" onClick={closeMobileMenu}>Exam</Link>
+                    <Link to="/invoices" onClick={closeMobileMenu}>Invoices</Link>
+                    <Link to="/settings" onClick={closeMobileMenu}>Settings</Link>
+                    <button onClick={handleLogout} className="navbar-logout-link">Logout</button>
                   </div>
                 )}
               </div>

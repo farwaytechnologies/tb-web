@@ -46,6 +46,10 @@ import TermCondCms from '../AdminCms/TermCondCms';
 import CourseTextContent from '../Pages/CourseTextContent';
 import AdminViewContact from '../Dashboard/AdminViewContact';
 import AdminManageNotifications from '../Dashboard/AdminManageNotifications';
+import Polytechnic from '../ExamGuide/Polytechnic';
+import Engineering from '../ExamGuide/Engineering';
+import Degree from '../ExamGuide/Degree';
+import PG from '../ExamGuide/PG';
 
 
 
@@ -68,6 +72,13 @@ function PagesRoute() {
      <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}
      <Route path="/courses/:id/modules" element={<CourseModules/>} />
      <Route path="/courses/:id/content" element={<CourseTextContent />} />
+
+
+
+      <Route path="/exam-guide/polytechnic" element={<Polytechnic/>} />
+      <Route path="/exam-guide/engineering" element={<Engineering/>} />
+      <Route path="/exam-guide/degree" element={<Degree/>} />
+      <Route path="/exam-guide/pg" element={<PG/>} />
 
 
       <Route path="/user/dashboard" element={<UserDashboard/>} />
