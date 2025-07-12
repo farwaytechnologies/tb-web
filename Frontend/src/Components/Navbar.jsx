@@ -99,7 +99,7 @@ function Navbar() {
                 <ul className="navbar-submenu">
                   <li><Link to="/exam-guide/polytechnic" className="navbar-link" onClick={closeMobileMenu}>Polytechnic</Link></li>
                   <li><Link to="/exam-guide/engineering" className="navbar-link" onClick={closeMobileMenu}>Engineering</Link></li>
-                  <li><Link to="/exam-guide/degree" className="navbar-link" onClick={closeMobileMenu}>Degree</Link></li>
+                  <li><Link to="/exam-guide/degree" className="navbar-link" onClick={closeMobileMenu}>UG</Link></li>
                   <li><Link to="/exam-guide/pg" className="navbar-link" onClick={closeMobileMenu}>PG</Link></li>
                 </ul>
               )}
