@@ -1,0 +1,79 @@
+.admin-applications-container {
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #f5f8fc;
+}
+
+.admin-applications-heading {
+  text-align: center;
+  font-size: 2rem;
+  color: #2a4f9c;
+  margin-bottom: 2rem;
+}
+
+.admin-applications-loading,
+.admin-applications-error,
+.admin-applications-empty {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.admin-applications-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.admin-application-card {
+  background: #fff;
+  border: 1px solid #4a7abe;
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.admin-application-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #1a3760;
+}
+
+.admin-application-card p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.admin-view-resume {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 0.8rem;
+  background-color: #4a7abe;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.admin-view-resume:hover {
+  background-color: #375e91;
+}
+
+.admin-delete-button {
+  margin-top: 0.8rem;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.admin-delete-button:hover {
+  background-color: #c62828;
+}

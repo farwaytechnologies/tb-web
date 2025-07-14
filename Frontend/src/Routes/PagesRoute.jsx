@@ -53,6 +53,7 @@ import Polytechnic from '../ExamGuide/Polytechnic';
 import Engineering from '../ExamGuide/Engineering';
 import Degree from '../ExamGuide/Degree';
 import PG from '../ExamGuide/PG';
+import AdminViewApplications from '../Dashboard/AdminViewApplications';
 
 
 
@@ -105,6 +106,7 @@ function PagesRoute() {
 
 
 
+
         <Route path="/admin/edit-home" element={<HomeCms />} />
         <Route path="/admin/edit-about" element={<AboutCms/>} />
         <Route path="/admin/edit-contact" element={<ContactCms />} />
@@ -112,6 +114,8 @@ function PagesRoute() {
         <Route path="/admin/edit-privacy-policy" element={<PrivacyCms />} />
         <Route path="/admin/edit-terms" element={<TermCondCms />} />
         <Route path="/admin/view-contact" element={<AdminViewContact/>} />
+        <Route path="/admin/applications" element={<AdminViewApplications />} />
+
 
 
       <Route path="/tutor/blogs" element={<TutorManageBlog/>} />
