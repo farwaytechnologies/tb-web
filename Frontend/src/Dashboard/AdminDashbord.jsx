@@ -146,6 +146,10 @@ export default function AdminDashboard() {
           <FaBell style={{ marginRight: '8px' }} />
           Manage Notifications
         </Link>
+        <Link to="/admin/add-job" className="techborg-admin-action-btn">
+          <FaBell style={{ marginRight: '8px' }} />
+          Add Job Alert
+        </Link>
       </div>
     </div>
   );

@@ -1,0 +1,167 @@
+/* Container */
+.adminjob-container {
+  min-height: 100vh;
+  background-color: #f0f4f8;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Job Form Box */
+.adminjob-box {
+  background: #ffffff;
+  padding: 2.5rem 3rem;
+  border-radius: 14px;
+  max-width: 750px;
+  width: 100%;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
+  border-left: 6px solid #4a7abe;
+  margin-bottom: 3rem;
+}
+
+.adminjob-title {
+  font-size: 1.8rem;
+  color: #2a4f9c;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Form Structure */
+.adminjob-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.adminjob-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.adminjob-field label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #333;
+}
+
+.adminjob-field input,
+.adminjob-field textarea {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border 0.2s ease;
+}
+
+.adminjob-field input:focus,
+.adminjob-field textarea:focus {
+  border-color: #4a7abe;
+  outline: none;
+}
+
+.adminjob-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.adminjob-row .adminjob-field {
+  flex: 1;
+}
+
+/* Submit Button */
+.adminjob-submit {
+  background-color: #4a7abe;
+  color: white;
+  border: none;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.adminjob-submit:hover {
+  background-color: #365f91;
+}
+
+/* Messages */
+.adminjob-success,
+.adminjob-error {
+  margin-top: 1rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+}
+
+.adminjob-success {
+  background-color: #e6f8e6;
+  color: #2e7d32;
+  border: 1px solid #b2dfdb;
+}
+
+.adminjob-error {
+  background-color: #fdecea;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+}
+
+/* Job List Section */
+.adminjob-list-section {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 2rem 2.5rem;
+  width: 100%;
+  max-width: 750px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.adminjob-subtitle {
+  font-size: 1.5rem;
+  color: #2a4f9c;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+}
+
+.adminjob-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.adminjob-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+  color: #333;
+}
+
+.adminjob-delete {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.adminjob-delete:hover {
+  background-color: #c0392b;
+}
+
+.adminjob-empty {
+  color: #888;
+  font-style: italic;
+  padding: 0.5rem;
+  text-align: center;
+}

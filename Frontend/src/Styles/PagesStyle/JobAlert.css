@@ -1,0 +1,95 @@
+/* Page-level wrapper with min-width */
+.jobalert-page {
+  min-height: 100vh;
+  background-color: #f0f4f9;
+  padding: 1rem;
+}
+
+/* Container for job cards */
+.jobalert-container {
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #f9fbff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  max-width: 900px;
+}
+
+/* Headings and messages */
+.jobalert-heading {
+  font-size: 2rem;
+  text-align: center;
+  color: #2a4f9c;
+  margin-bottom: 2rem;
+}
+
+.jobalert-loading,
+.jobalert-error,
+.jobalert-empty {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Job cards list */
+.jobalert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.jobalert-card {
+  background-color: #ffffff;
+  border: 1px solid #4a7abe;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease;
+}
+
+.jobalert-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Text inside each card */
+.jobalert-title {
+  font-size: 1.25rem;
+  color: #1a3760;
+  margin-bottom: 0.5rem;
+}
+
+.jobalert-description {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 0.75rem;
+}
+
+.jobalert-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #333;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Apply button */
+.jobalert-action {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.jobalert-apply-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #4a7abe;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.jobalert-apply-btn:hover {
+  background-color: #375e91;
+}

@@ -109,6 +109,7 @@ function Navbar() {
             <li><Link to="/blog" onClick={closeMobileMenu} className="navbar-link">Blog</Link></li>
             <li><Link to="/about" onClick={closeMobileMenu} className="navbar-link">About</Link></li>
             <li><Link to="/contact" onClick={closeMobileMenu} className="navbar-link">Contact</Link></li>
+            <li><Link to="/job-alerts" onClick={closeMobileMenu} className="navbar-link">Job Alert</Link></li>
 
             <li className="navbar-notification-icon-wrapper">
               <Link to="/notifications" onClick={closeMobileMenu} className="navbar-notification-icon">

@@ -22,6 +22,8 @@ import BlogDetails from '../Pages/BlogDetails';
 import Certificates from '../Pages/Certificates';
 import Invoice from '../Pages/Invoice';
 import Exam from '../Pages/Exam'
+import JobAlert from '../Pages/JobAlert';
+import JobApplication from '../Pages/JobApplication'
 import AdminManageCourses from '../Dashboard/AdminManageCourse';
 import AdminManageUser from '../Dashboard/AdminManageUser';
 import AdminManageBlogs from '../Dashboard/AdminManageBlogs';
@@ -33,6 +35,7 @@ import TutorManageCourse from '../Dashboard/TutorManageCourse';
 import InnovationDetail from '../Pages/InnovationDetail';
 import AdminManageInnovation from '../Dashboard/AdminManageInnovation';
 import AdminManageAdmin from '../Dashboard/AdminManageAdmin';
+import AdminAddJob from '../Dashboard/AdminAddJob'
 import TutorManageStudents from '../Dashboard/TutorManageStudents';
 import Support from '../Pages/Support';
 import Notifications from '../Pages/Notifications';
@@ -67,6 +70,7 @@ function PagesRoute() {
       <Route path="/innovation/:id" element={<InnovationDetail/>} />
       <Route path="/support" element={<Support/>} />
       <Route path="/notifications" element={<Notifications />} />
+      <Route path="/job-alerts" element={<JobAlert/>} />
 
 
      <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}
@@ -96,6 +100,8 @@ function PagesRoute() {
       <Route path="/admin/innovations" element={<AdminManageInnovation/>} />
       <Route path="/admin/manage-cms" element={<AdminManageCms />} />
       <Route path="/admin/manage-notifications" element={<AdminManageNotifications/>} />
+      <Route path="/admin/add-job" element={<AdminAddJob />} />   
+      <Route path="/apply/:jobId" element={<JobApplication />} />
 
 
 
