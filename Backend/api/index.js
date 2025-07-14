@@ -12,6 +12,5 @@ router.use('/contact', require('../routes/contactRoutes'));
 router.use('/notifications', require('../routes/notificationRoutes'));
 router.use('/about', require('../routes/aboutRoutes'));
 router.use('/jobs', require('../routes/jobRoutes'));
-router.use('/applications', require('../routes/jobApplicationRoutes')); // ✅ Job Applications
 
 module.exports = router;
