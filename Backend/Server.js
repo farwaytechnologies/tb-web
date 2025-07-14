@@ -14,8 +14,11 @@ if (!process.env.MONGO_URI) {
   process.exit(1);
 }
 
-// ✅ Connect to MongoDB (clean connection)
-mongoose.connect(process.env.MONGO_URI)
+// ✅ Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => {
     console.error('❌ MongoDB connection error:', err);
@@ -27,11 +30,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Serve uploaded files (optional)
+// ✅ Static File Serving
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ✅ Ensure folders (optional, remove if not used)
-const uploadDirs = ['uploads/about'];
+// ✅ Auto-create upload folders
+const uploadDirs = [
+  'uploads/about',
+  'uploads/resumes', // for job applications
+];
 uploadDirs.forEach(dir => {
   const fullPath = path.join(__dirname, dir);
   if (!fs.existsSync(fullPath)) {
@@ -39,16 +45,8 @@ uploadDirs.forEach(dir => {
   }
 });
 
-// ✅ Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/courses', require('./routes/courseRoutes'));
-app.use('/api/blogs', require('./routes/blogRoutes'));
-app.use('/api/enrollments', require('./routes/enrollmentRoutes'));
-app.use('/api/innovations', require('./routes/innovationRoutes'));
-app.use('/api/home', require('./routes/homeContentRoutes'));
-app.use('/api/contact', require('./routes/contactRoutes'));
-app.use('/api/notifications', require('./routes/notificationRoutes'));
-app.use('/api/about', require('./routes/aboutRoutes')); // ✅ About Page Text (no image)
+// ✅ Centralized API Entry Point
+app.use('/api', require('./api')); // <-- only change you need in future is in /api/index.js
 
 // ✅ Health Check
 app.get('/', (req, res) => {
