@@ -50,9 +50,12 @@ function Contact() {
   };
 
   return (
-    <div className="techborg-contact-container">
+    <section className="techborg-contact-container">
       <div className="techborg-contact-box">
-        <h1 className="techborg-contact-title">Contact Us</h1>
+        <h1 className="techborg-contact-title">Get in Touch</h1>
+        <p className="techborg-contact-subtitle">
+          Have a question or want to work with us? Fill out the form below and we’ll get back to you soon.
+        </p>
         <form className="techborg-contact-form" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -87,7 +90,7 @@ function Contact() {
         {responseMessage && <p className="techborg-success-message">{responseMessage}</p>}
         {error && <p className="techborg-error-message">{error}</p>}
       </div>
-    </div>
+    </section>
   );
 }
 

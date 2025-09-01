@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Styles/PagesStyle/Support.css';
 
 function Support() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/support")
+      .then(res => res.json())
+      .then(data => setCategories(data))
+      .catch(err => console.error(err));
+  }, []);
+
   return (
     <div className="techborg-support-page">
       <div className="support-hero">
@@ -10,22 +19,16 @@ function Support() {
       </div>
 
       <div className="support-categories">
-        <div className="support-card">
-          <h3>Account Issues</h3>
-          <p>Having trouble accessing your account or resetting your password?</p>
-        </div>
-        <div className="support-card">
-          <h3>Courses & Content</h3>
-          <p>Find help with course enrollment, access, and content-related questions.</p>
-        </div>
-        <div className="support-card">
-          <h3>Payments & Billing</h3>
-          <p>Learn about payment methods, refunds, and billing support.</p>
-        </div>
-        <div className="support-card">
-          <h3>Contact Us</h3>
-          <p>Still need help? Reach out to our team for personalized assistance.</p>
-        </div>
+        {categories.length > 0 ? (
+          categories.map((cat) => (
+            <div className="support-card" key={cat._id}>
+              <h3>{cat.title}</h3>
+              <p>{cat.description}</p>
+            </div>
+          ))
+        ) : (
+          <p>Loading categories...</p>
+        )}
       </div>
     </div>
   );

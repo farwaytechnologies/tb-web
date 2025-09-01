@@ -1,0 +1,82 @@
+.manage-support-page {
+  padding: 20px;
+  min-height: 100vh;
+  background: #f9f9f9;
+}
+
+.manage-support-page h1 {
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.support-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin-bottom: 30px;
+}
+
+.support-form input,
+.support-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.support-form button {
+  padding: 10px;
+  background: #0077ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.support-form button:hover {
+  background: #005fcc;
+}
+
+.support-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.support-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.support-item h3 {
+  margin: 0;
+  color: #333;
+}
+
+.support-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.support-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.support-actions button:first-child {
+  background: #ffc107;
+  color: #000;
+}
+
+.support-actions button:last-child {
+  background: #dc3545;
+  color: #fff;
+}
