@@ -34,7 +34,7 @@ function TutorProfile() {
 
   const handleSave = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/auth/update/${tutor.id}`, {
+      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/auth/update/${tutor.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

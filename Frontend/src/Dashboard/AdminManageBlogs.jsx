@@ -28,7 +28,7 @@ export default function AdminManageBlogs() {
   }
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/blogs')
+    fetch('https://tb-back-fyvj.onrender.com/api/blogs')
       .then((res) => res.json())
       .then(setBlogs)
       .catch(console.error);
@@ -68,8 +68,8 @@ export default function AdminManageBlogs() {
     e.preventDefault();
     const method = editId ? 'PUT' : 'POST';
     const url = editId
-      ? `http://localhost:8000/api/blogs/${editId}`
-      : 'http://localhost:8000/api/blogs';
+      ? `https://tb-back-fyvj.onrender.com/api/blogs/${editId}`
+      : 'https://tb-back-fyvj.onrender.com/api/blogs';
 
     fetch(url, {
       method,
@@ -79,7 +79,7 @@ export default function AdminManageBlogs() {
       .then(() => {
         setEditId(null);
         setForm(getInitialForm());
-        return fetch('http://localhost:8000/api/blogs');
+        return fetch('https://tb-back-fyvj.onrender.com/api/blogs');
       })
       .then((res) => res.json())
       .then(setBlogs)
@@ -111,8 +111,8 @@ export default function AdminManageBlogs() {
 
   const handleDelete = (id) => {
     if (!window.confirm('Are you sure?')) return;
-    fetch(`http://localhost:8000/api/blogs/${id}`, { method: 'DELETE' })
-      .then(() => fetch('http://localhost:8000/api/blogs').then((res) => res.json()))
+    fetch(`https://tb-back-fyvj.onrender.com/api/blogs/${id}`, { method: 'DELETE' })
+      .then(() => fetch('https://tb-back-fyvj.onrender.com/api/blogs').then((res) => res.json()))
       .then(setBlogs)
       .catch(console.error);
   };

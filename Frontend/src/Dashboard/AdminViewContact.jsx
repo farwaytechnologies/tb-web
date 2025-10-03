@@ -12,7 +12,7 @@ function AdminViewContact() {
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/contact');
+      const res = await fetch('https://tb-back-fyvj.onrender.com/api/contact');
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.message || 'Failed to fetch messages.');
@@ -31,7 +31,7 @@ function AdminViewContact() {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/contact/${id}`, {
+      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/contact/${id}`, {
         method: 'DELETE',
       });
 

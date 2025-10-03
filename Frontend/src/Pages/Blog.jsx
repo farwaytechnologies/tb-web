@@ -7,7 +7,7 @@ function Blog() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/blogs')
+    fetch('https://tb-back-fyvj.onrender.com/api/blogs')
       .then((res) => res.json())
       .then((data) => {
         setPosts(data);

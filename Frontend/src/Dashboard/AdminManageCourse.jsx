@@ -25,7 +25,7 @@ function AdminManageCourses() {
   });
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/courses')
+    fetch('https://tb-back-fyvj.onrender.com/api/courses')
       .then(res => res.json())
       .then(data => setCourses(data));
   }, []);
@@ -56,7 +56,7 @@ function AdminManageCourses() {
     const confirm = window.confirm('Are you sure you want to delete this course?');
     if (!confirm) return;
 
-    await fetch(`http://localhost:8000/api/courses/${id}`, { method: 'DELETE' });
+    await fetch(`https://tb-back-fyvj.onrender.com/api/courses/${id}`, { method: 'DELETE' });
     setCourses(courses.filter(c => c._id !== id));
   };
 
@@ -71,7 +71,7 @@ function AdminManageCourses() {
       price: Number(formData.price),
     };
 
-    const res = await fetch('http://localhost:8000/api/courses', {
+    const res = await fetch('https://tb-back-fyvj.onrender.com/api/courses', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newForm),
@@ -102,7 +102,7 @@ function AdminManageCourses() {
       price: Number(rest.price)
     };
 
-    const res = await fetch(`http://localhost:8000/api/courses/${editId}`, {
+    const res = await fetch(`https://tb-back-fyvj.onrender.com/api/courses/${editId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(dataToSend),

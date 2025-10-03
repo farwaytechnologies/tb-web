@@ -8,7 +8,7 @@ export default function InnovationDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/innovations/${id}`)
+    fetch(`https://tb-back-fyvj.onrender.com/api/innovations/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setInnovation(data);

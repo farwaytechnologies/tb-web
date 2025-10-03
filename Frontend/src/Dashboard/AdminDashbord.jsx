@@ -35,10 +35,10 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       try {
         const [usersRes, coursesRes, blogsRes, enrollmentsRes] = await Promise.all([
-          fetch('http://localhost:8000/api/auth/users'),
-          fetch('http://localhost:8000/api/courses'),
-          fetch('http://localhost:8000/api/blogs'),
-          fetch('http://localhost:8000/api/enrollments')
+          fetch('https://tb-back-fyvj.onrender.com/api/auth/users'),
+          fetch('https://tb-back-fyvj.onrender.com/api/courses'),
+          fetch('https://tb-back-fyvj.onrender.com/api/blogs'),
+          fetch('https://tb-back-fyvj.onrender.com/api/enrollments')
         ]);
 
         const users = await usersRes.json();

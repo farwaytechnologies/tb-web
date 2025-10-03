@@ -30,7 +30,7 @@ export default function TutorManageBlog() {
   }
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/blogs')
+    fetch('https://tb-back-fyvj.onrender.com/api/blogs')
       .then((res) => res.json())
       .then((all) => {
         const tutorBlogs = all.filter((b) => b.author === currentTutor);
@@ -74,8 +74,8 @@ export default function TutorManageBlog() {
     e.preventDefault();
     const method = editId ? 'PUT' : 'POST';
     const url = editId
-      ? `http://localhost:8000/api/blogs/${editId}`
-      : 'http://localhost:8000/api/blogs';
+      ? `https://tb-back-fyvj.onrender.com/api/blogs/${editId}`
+      : 'https://tb-back-fyvj.onrender.com/api/blogs';
 
     fetch(url, {
       method,
@@ -85,7 +85,7 @@ export default function TutorManageBlog() {
       .then(() => {
         setEditId(null);
         setForm(getInitialForm());
-        return fetch('http://localhost:8000/api/blogs');
+        return fetch('https://tb-back-fyvj.onrender.com/api/blogs');
       })
       .then((res) => res.json())
       .then((all) => {
@@ -119,8 +119,8 @@ export default function TutorManageBlog() {
 
   const handleDelete = (id) => {
     if (!window.confirm('Are you sure?')) return;
-    fetch(`http://localhost:8000/api/blogs/${id}`, { method: 'DELETE' })
-      .then(() => fetch('http://localhost:8000/api/blogs'))
+    fetch(`https://tb-back-fyvj.onrender.com/api/blogs/${id}`, { method: 'DELETE' })
+      .then(() => fetch('https://tb-back-fyvj.onrender.com/api/blogs'))
       .then((res) => res.json())
       .then((all) => {
         const tutorBlogs = all.filter(b => b.author === currentTutor);

@@ -10,7 +10,7 @@ export default function Notifications() {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/notifications');
+        const res = await fetch('https://tb-back-fyvj.onrender.com/api/notifications');
         const data = await res.json();
 
         if (!res.ok) {
@@ -33,7 +33,7 @@ export default function Notifications() {
   useEffect(() => {
     const markAllAsRead = async () => {
       try {
-        await fetch('http://localhost:8000/api/notifications/mark-read', {
+        await fetch('https://tb-back-fyvj.onrender.com/api/notifications/mark-read', {
           method: 'PUT',
         });
         window.dispatchEvent(new Event('notificationsRead')); // Clear red dot in navbar

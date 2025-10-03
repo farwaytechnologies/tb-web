@@ -7,7 +7,7 @@ function Home() {
   const [homeContent, setHomeContent] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/home')
+    fetch('https://tb-back-fyvj.onrender.com/api/home')
       .then(res => res.json())
       .then(data => setHomeContent(data))
       .catch(err => console.error("Error fetching home content:", err));

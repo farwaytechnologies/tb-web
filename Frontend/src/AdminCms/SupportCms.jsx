@@ -9,7 +9,7 @@ function AdminManageSupport() {
   // Fetch categories
   const fetchCategories = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/support");
+      const res = await fetch("https://tb-back-fyvj.onrender.com/api/support");
       const data = await res.json();
       setCategories(data);
     } catch (err) {
@@ -31,11 +31,11 @@ function AdminManageSupport() {
     e.preventDefault();
 
     try {
-      let url = "http://localhost:5000/api/support";
+      let url = "https://tb-back-fyvj.onrender.com/api/support";
       let method = "POST";
 
       if (editingId) {
-        url = `http://localhost:5000/api/support/${editingId}`;
+        url = `https://tb-back-fyvj.onrender.com/api/support/${editingId}`;
         method = "PUT";
       }
 
@@ -62,7 +62,7 @@ function AdminManageSupport() {
   // Delete category
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/support/${id}`, { method: "DELETE" });
+      await fetch(`https://tb-back-fyvj.onrender.com/api/support/${id}`, { method: "DELETE" });
       fetchCategories();
     } catch (err) {
       console.error(err);

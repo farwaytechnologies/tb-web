@@ -21,7 +21,7 @@ export default function AdminManageInnovation() {
   // Fetch all innovations
   const fetchInnovations = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/innovations');
+      const res = await fetch('https://tb-back-fyvj.onrender.com/api/innovations');
       const data = await res.json();
       setInnovations(data);
     } catch (err) {
@@ -43,8 +43,8 @@ export default function AdminManageInnovation() {
     try {
       const method = editId ? 'PUT' : 'POST';
       const url = editId
-        ? `http://localhost:8000/api/innovations/${editId}`
-        : 'http://localhost:8000/api/innovations';
+        ? `https://tb-back-fyvj.onrender.com/api/innovations/${editId}`
+        : 'https://tb-back-fyvj.onrender.com/api/innovations';
 
       const res = await fetch(url, {
         method,
@@ -72,7 +72,7 @@ export default function AdminManageInnovation() {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this innovation?')) {
       try {
-        const res = await fetch(`http://localhost:8000/api/innovations/${id}`, {
+        const res = await fetch(`https://tb-back-fyvj.onrender.com/api/innovations/${id}`, {
           method: 'DELETE',
         });
         if (res.ok) fetchInnovations();

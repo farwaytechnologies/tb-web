@@ -27,8 +27,8 @@ function Login() {
     setError('');
 
     const url = isSignup
-      ? 'http://localhost:8000/api/auth/register'
-      : 'http://localhost:8000/api/auth/login';
+      ? 'https://tb-back-fyvj.onrender.com/api/auth/register'
+      : 'https://tb-back-fyvj.onrender.com/api/auth/login';
 
     const payload = isSignup
       ? formData
