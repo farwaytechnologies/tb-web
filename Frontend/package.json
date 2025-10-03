@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+
     "lint": "eslint .",
     "preview": "vite preview",
-    "build": "vite build",
-  "start": "serve -s dist -l $PORT"
+  "dev": "vite",
+  "build": "vite build",
+  "start": "vite preview --port $PORT --host"
   },
   "dependencies": {
     "react": "^19.1.0",
