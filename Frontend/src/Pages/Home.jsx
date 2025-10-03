@@ -13,27 +13,60 @@ function Home() {
       .catch(err => console.error("Error fetching home content:", err));
   }, []);
 
-  if (!homeContent) return <div className="loading">Loading...</div>;
+  if (!homeContent) {
+    return (
+      <div className="loading">
+        <div className="loader-spinner"></div>
+        <p>Loading amazing content...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="techborg-home">
       {/* Hero Section */}
       <section className="hero-section">
+        <div className="hero-background">
+          <div className="gradient-orb orb-1"></div>
+          <div className="gradient-orb orb-2"></div>
+          <div className="gradient-orb orb-3"></div>
+        </div>
         <div className="hero-content">
-          <h1>{homeContent.heroTitle}</h1>
-          <p>{homeContent.heroSubtitle}</p>
-          <Link to="/courses" className="hero-btn">Browse Courses</Link>
+          <div className="hero-badge">🚀 Start Your Tech Journey</div>
+          <h1 className="hero-title">
+            {homeContent.heroTitle}
+            <span className="title-accent">.</span>
+          </h1>
+          <p className="hero-subtitle">{homeContent.heroSubtitle}</p>
+          <div className="hero-actions">
+            <Link to="/courses" className="hero-btn primary">
+              Browse Courses
+              <svg className="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </Link>
+            <Link to="/about" className="hero-btn secondary">Learn More</Link>
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
       <section className="features-section">
-        <h2>Why Learn with TechBorg?</h2>
-        <div className="features">
+        <div className="section-header">
+          <span className="section-badge">Why Choose Us</span>
+          <h2 className="section-title">Why Learn with TechBorg?</h2>
+          <p className="section-subtitle">Everything you need to accelerate your tech career</p>
+        </div>
+        <div className="features-grid">
           {homeContent.features?.map((feature, index) => (
             <div className="feature-card" key={index}>
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
+              <div className="feature-icon">
+                <div className="icon-bg"></div>
+                <span className="feature-number">{String(index + 1).padStart(2, '0')}</span>
+              </div>
+              <h3 className="feature-title">{feature.title}</h3>
+              <p className="feature-description">{feature.description}</p>
+              <div className="feature-shine"></div>
             </div>
           ))}
         </div>
@@ -43,8 +76,23 @@ function Home() {
 
       {/* Call to Action */}
       <section className="cta-section">
-        <h2>{homeContent.ctaText}</h2>
-        <Link to={homeContent.ctaLink} className="cta-btn">{homeContent.ctaButtonText}</Link>
+        <div className="cta-container">
+          <div className="cta-content">
+            <h2 className="cta-title">{homeContent.ctaText}</h2>
+            <p className="cta-subtitle">Join thousands of learners transforming their careers</p>
+            <Link to={homeContent.ctaLink} className="cta-btn">
+              {homeContent.ctaButtonText}
+              <svg className="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </Link>
+          </div>
+          <div className="cta-visual">
+            <div className="floating-card card-1"></div>
+            <div className="floating-card card-2"></div>
+            <div className="floating-card card-3"></div>
+          </div>
+        </div>
       </section>
     </div>
   );
