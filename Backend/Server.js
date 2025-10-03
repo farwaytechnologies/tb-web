@@ -7,12 +7,8 @@ const fs = require('fs');
 
 dotenv.config();
 
-const express = require("express");
-const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Backend is live 🚀");
-});
+const app = express();
 
 
 // ✅ Check MONGO_URI
