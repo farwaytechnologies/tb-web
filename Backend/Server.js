@@ -7,6 +7,13 @@ const fs = require('fs');
 
 dotenv.config();
 
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Backend is live 🚀");
+});
+
 
 // ✅ Check MONGO_URI
 if (!process.env.MONGO_URI) {
@@ -59,17 +66,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Internal Server Error' });
 });
 
-
-
-const express = require("express");
-const app = express();
-
-app.get("/", (req, res) => {
-  res.send("Backend is live 🚀");
-});
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
-
