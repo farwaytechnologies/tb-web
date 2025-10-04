@@ -9,7 +9,7 @@ function BlogDetails() {
   const [readingTime, setReadingTime] = useState(0);
 
   useEffect(() => {
-    fetch(`https://tb-back-fyvj.onrender.com/api/blogs/${id}`)
+    fetch(`VITE_API_URL/api/blogs/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setPost(data);

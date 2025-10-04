@@ -11,7 +11,7 @@ function AboutCms() {
 
   // Fetch current About content
   useEffect(() => {
-    fetch('https://tb-back-fyvj.onrender.com/api/about')
+    fetch('VITE_API_URL/api/about')
       .then(res => res.json())
       .then(data => {
         setForm({
@@ -36,7 +36,7 @@ function AboutCms() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch('https://tb-back-fyvj.onrender.com/api/about', {
+    fetch('VITE_API_URL/api/about', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),

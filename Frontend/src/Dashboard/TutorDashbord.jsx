@@ -34,10 +34,10 @@ export default function TutorDashboard() {
   const fetchTutorStats = async (tutorId) => {
     try {
       const [coursesRes, blogsRes, usersRes, enrollmentsRes] = await Promise.all([
-        fetch(`https://tb-back-fyvj.onrender.com/api/courses`),
-        fetch(`https://tb-back-fyvj.onrender.com/api/blogs?tutorId=${tutorId}`),
-        fetch(`https://tb-back-fyvj.onrender.com/api/auth/users`),
-        fetch(`https://tb-back-fyvj.onrender.com/api/enrollments`)
+        fetch(`VITE_API_URL/api/courses`),
+        fetch(`VITE_API_URL/api/blogs?tutorId=${tutorId}`),
+        fetch(`VITE_API_URL/api/auth/users`),
+        fetch(`VITE_API_URL/api/enrollments`)
       ]);
 
       const allCourses = await coursesRes.json();

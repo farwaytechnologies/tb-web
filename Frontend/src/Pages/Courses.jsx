@@ -7,7 +7,7 @@ function Courses() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://tb-back-fyvj.onrender.com/api/courses')
+    fetch('VITE_API_URL/api/courses')
       .then((res) => res.json())
       .then((data) => {
         setCourses(data);

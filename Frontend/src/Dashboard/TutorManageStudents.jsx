@@ -8,7 +8,7 @@ export default function TutorManageStudents() {
   const fetchStudents = async () => {
     setLoading(true);
     try {
-      const res = await fetch('https://tb-back-fyvj.onrender.com/api/auth/users');
+      const res = await fetch('VITE_API_URL/api/auth/users');
       if (!res.ok) throw new Error('Failed to fetch users');
       const data = await res.json();
       const studentUsers = data.filter(user => user.role === 'student');

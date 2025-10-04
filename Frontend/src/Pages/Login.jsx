@@ -27,8 +27,8 @@ function Login() {
     setError('');
 
     const url = isSignup
-      ? 'https://tb-back-fyvj.onrender.com/api/auth/register'
-      : 'https://tb-back-fyvj.onrender.com/api/auth/login';
+      ? 'VITE_API_URL/api/auth/register'
+      : 'VITE_API_URL/api/auth/login';
 
     const payload = isSignup
       ? formData

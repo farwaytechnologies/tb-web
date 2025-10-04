@@ -8,7 +8,7 @@ const AdminViewApplications = () => {
 
   const fetchApplications = async () => {
     try {
-      const res = await fetch('https://tb-back-fyvj.onrender.com/api/applications');
+      const res = await fetch('VITE_API_URL/api/applications');
       if (!res.ok) throw new Error('Failed to fetch applications');
       const data = await res.json();
       setApplications(data);
@@ -23,7 +23,7 @@ const AdminViewApplications = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this application?')) return;
     try {
-      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/applications/${id}`, {
+      const res = await fetch(`VITE_API_URL/api/applications/${id}`, {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error('Delete failed');
@@ -59,7 +59,7 @@ const AdminViewApplications = () => {
               <p><strong>Job ID:</strong> {app.jobId}</p>
 
               <a
-                href={`http://localhost:8000${app.resumeUrl}`}
+                href={`VITE_API_URL${app.resumeUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="admin-view-resume"

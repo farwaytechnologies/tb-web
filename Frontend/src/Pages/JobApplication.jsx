@@ -43,7 +43,7 @@ const JobApplication = () => {
     data.append('resume', formData.resume);
 
     try {
-      const res = await fetch('https://tb-back-fyvj.onrender.com/api/applications', {
+      const res = await fetch('VITE_API_URL/api/applications', {
         method: 'POST',
         body: data,
       });

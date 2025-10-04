@@ -6,7 +6,7 @@ function About() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://tb-back-fyvj.onrender.com/api/about')
+    fetch('VITE_API_URL/api/about')
       .then(res => res.json())
       .then(data => {
         setAboutData(data);

@@ -24,7 +24,7 @@ export default function Settings() {
 
   const updateProfile = async () => {
     try {
-      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/auth/update/${form.id}`, {
+      const res = await fetch(`VITE_API_URL/api/auth/update/${form.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -45,7 +45,7 @@ export default function Settings() {
 
   const updatePassword = async () => {
     try {
-      const res = await fetch('https://tb-back-fyvj.onrender.com/api/auth/change-password', {
+      const res = await fetch('VITE_API_URL/api/auth/change-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: form.email, ...passwords }),
@@ -64,7 +64,7 @@ export default function Settings() {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/auth/delete/${form.id}`, {
+      const res = await fetch(`VITE_API_URL/api/auth/delete/${form.id}`, {
         method: 'DELETE',
       });
 

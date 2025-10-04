@@ -119,8 +119,8 @@ export default function TutorManageBlog() {
 
   const handleDelete = (id) => {
     if (!window.confirm('Are you sure?')) return;
-    fetch(`https://tb-back-fyvj.onrender.com/api/blogs/${id}`, { method: 'DELETE' })
-      .then(() => fetch('https://tb-back-fyvj.onrender.com/api/blogs'))
+    fetch(`VITE_API_URL/api/blogs/${id}`, { method: 'DELETE' })
+      .then(() => fetch('VITE_API_URL/api/blogs'))
       .then((res) => res.json())
       .then((all) => {
         const tutorBlogs = all.filter(b => b.author === currentTutor);

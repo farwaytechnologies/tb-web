@@ -15,7 +15,7 @@ function HomeCms() {
 
   // Fetch existing home content on mount
   useEffect(() => {
-    fetch('https://tb-back-fyvj.onrender.com/api/home')
+    fetch('VITE_API_URL/api/home')
       .then(res => res.json())
       .then(data => {
         if (data) setForm(data);
@@ -51,7 +51,7 @@ function HomeCms() {
   // Submit form
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('https://tb-back-fyvj.onrender.com/api/home/update', {
+    fetch('VITE_API_URL/api/home/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)

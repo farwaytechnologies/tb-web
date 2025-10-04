@@ -7,7 +7,7 @@ function Home() {
   const [homeContent, setHomeContent] = useState(null);
 
   useEffect(() => {
-    fetch('https://tb-back-fyvj.onrender.com/api/home')
+    fetch('VITE_API_URL/api/home')
       .then(res => res.json())
       .then(data => setHomeContent(data))
       .catch(err => console.error("Error fetching home content:", err));

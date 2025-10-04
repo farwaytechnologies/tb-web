@@ -5,7 +5,7 @@ function Support() {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch("https://tb-back-fyvj.onrender.com/api/support")
+    fetch("VITE_API_URL/api/support")
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error(err));

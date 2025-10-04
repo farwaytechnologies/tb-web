@@ -14,7 +14,7 @@ export default function AdminManageNotifications() {
   // Fetch all notifications
   const fetchNotifications = async () => {
     try {
-      const res = await fetch('https://tb-back-fyvj.onrender.com/api/notifications');
+      const res = await fetch('VITE_API_URL/api/notifications');
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to fetch');
       setNotifications(data);
@@ -37,7 +37,7 @@ export default function AdminManageNotifications() {
     }
 
     try {
-      const res = await fetch('https://tb-back-fyvj.onrender.com/api/notifications', {
+      const res = await fetch('VITE_API_URL/api/notifications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -59,7 +59,7 @@ export default function AdminManageNotifications() {
     if (!confirm) return;
 
     try {
-      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/notifications/${id}`, {
+      const res = await fetch(`VITE_API_URL/api/notifications/${id}`, {
         method: 'DELETE',
       });
 

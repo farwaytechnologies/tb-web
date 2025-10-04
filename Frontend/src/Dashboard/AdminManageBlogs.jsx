@@ -28,7 +28,7 @@ export default function AdminManageBlogs() {
   }
 
   useEffect(() => {
-    fetch('https://tb-back-fyvj.onrender.com/api/blogs')
+    fetch('VITE_API_URL/api/blogs')
       .then((res) => res.json())
       .then(setBlogs)
       .catch(console.error);
@@ -68,8 +68,8 @@ export default function AdminManageBlogs() {
     e.preventDefault();
     const method = editId ? 'PUT' : 'POST';
     const url = editId
-      ? `https://tb-back-fyvj.onrender.com/api/blogs/${editId}`
-      : 'https://tb-back-fyvj.onrender.com/api/blogs';
+      ? `VITE_API_URL/api/blogs/${editId}`
+      : 'VITE_API_URL/api/blogs';
 
     fetch(url, {
       method,
@@ -79,7 +79,7 @@ export default function AdminManageBlogs() {
       .then(() => {
         setEditId(null);
         setForm(getInitialForm());
-        return fetch('https://tb-back-fyvj.onrender.com/api/blogs');
+        return fetch('VITE_API_URL/api/blogs');
       })
       .then((res) => res.json())
       .then(setBlogs)
@@ -111,8 +111,8 @@ export default function AdminManageBlogs() {
 
   const handleDelete = (id) => {
     if (!window.confirm('Are you sure?')) return;
-    fetch(`https://tb-back-fyvj.onrender.com/api/blogs/${id}`, { method: 'DELETE' })
-      .then(() => fetch('https://tb-back-fyvj.onrender.com/api/blogs').then((res) => res.json()))
+    fetch(`VITE_API_URL/api/blogs/${id}`, { method: 'DELETE' })
+      .then(() => fetch('VITE_API_URL/api/blogs').then((res) => res.json()))
       .then(setBlogs)
       .catch(console.error);
   };

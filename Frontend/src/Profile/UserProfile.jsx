@@ -34,7 +34,7 @@ export default function UserProfile() {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/auth/update/${user.id}`, {
+      const res = await fetch(`VITE_API_URL/api/auth/update/${user.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
