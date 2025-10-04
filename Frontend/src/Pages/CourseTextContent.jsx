@@ -8,7 +8,7 @@ export default function CourseTextContent() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`VITE_API_URL/api/courses/${id}`)
+    fetch(`https://tb-back-fyvj.onrender.com/api/courses/${id}`)
       .then(res => res.json())
       .then(data => {
         setCourse(data);
@@ -40,7 +40,7 @@ export default function CourseTextContent() {
                 {content.paragraph && <p>{content.paragraph}</p>}
                 {content.image && (
                   <img
-                    src={`VITE_API_URL/uploads/${content.image}`}
+                    src={`https://tb-back-fyvj.onrender.com/uploads/${content.image}`}
                     alt={content.heading || `Module ${index + 1} Image`}
                     className="techborg-course-content-image"
                   />

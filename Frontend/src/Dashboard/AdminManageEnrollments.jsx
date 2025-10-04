@@ -7,7 +7,7 @@ function AdminManageEnrollments() {
 
   const fetchEnrollments = async () => {
     try {
-      const res = await fetch('VITE_API_URL/api/enrollments');
+      const res = await fetch('https://tb-back-fyvj.onrender.com/api/enrollments');
       const data = await res.json();
       setEnrollments(data);
       setLoading(false);
@@ -23,7 +23,7 @@ function AdminManageEnrollments() {
 
   const updateStatus = async (id, status) => {
     try {
-      await fetch(`VITE_API_URL/api/enrollments/${id}/status`, {
+      await fetch(`https://tb-back-fyvj.onrender.com/api/enrollments/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })
@@ -37,7 +37,7 @@ function AdminManageEnrollments() {
   const deleteEnrollment = async (id) => {
     if (!window.confirm('Are you sure you want to delete this enrollment?')) return;
     try {
-      await fetch(`VITE_API_URL/api/enrollments/${id}`, {
+      await fetch(`https://tb-back-fyvj.onrender.com/api/enrollments/${id}`, {
         method: 'DELETE'
       });
       fetchEnrollments();

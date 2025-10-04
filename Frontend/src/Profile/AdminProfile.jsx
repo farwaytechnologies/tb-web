@@ -34,7 +34,7 @@ function AdminProfile() {
 
   const handleSave = async () => {
     try {
-      const res = await fetch(`VITE_API_URL/api/auth/update/${admin.id}`, {
+      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/auth/update/${admin.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

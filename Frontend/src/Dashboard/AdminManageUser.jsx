@@ -7,7 +7,7 @@ export default function AdminManageUser() {
 
   const fetchUsers = () => {
     setLoading(true);
-    fetch('VITE_API_URL/api/auth/users')
+    fetch('https://tb-back-fyvj.onrender.com/api/auth/users')
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch users');
         return res.json();
@@ -25,7 +25,7 @@ export default function AdminManageUser() {
     if (!confirm) return;
 
     try {
-      const res = await fetch(`VITE_API_URL/api/auth/delete/${id}`, {
+      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/auth/delete/${id}`, {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error('Delete failed');

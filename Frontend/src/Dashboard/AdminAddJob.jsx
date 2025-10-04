@@ -20,7 +20,7 @@ const AdminAddJob = () => {
 
   const fetchJobs = async () => {
     try {
-      const res = await fetch('VITE_API_URL/api/jobs');
+      const res = await fetch('https://tb-back-fyvj.onrender.com/api/jobs');
       const data = await res.json();
       setJobs(data);
     } catch (err) {
@@ -41,7 +41,7 @@ const AdminAddJob = () => {
     setErrorMessage('');
 
     try {
-      const res = await fetch('VITE_API_URL/api/jobs', {
+      const res = await fetch('https://tb-back-fyvj.onrender.com/api/jobs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -66,7 +66,7 @@ const AdminAddJob = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`VITE_API_URL/api/jobs/${id}`, {
+      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/jobs/${id}`, {
         method: 'DELETE',
       });
 

@@ -9,7 +9,7 @@ function CourseModules() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`VITE_API_URL/api/courses/${id}`)
+    fetch(`https://tb-back-fyvj.onrender.com/api/courses/${id}`)
       .then(res => res.json())
       .then(data => {
         setCourse(data);

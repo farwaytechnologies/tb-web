@@ -14,7 +14,7 @@ const EnrollmentForm = () => {
 
   // Fetch courses from backend
   useEffect(() => {
-    fetch('VITE_API_URL/api/courses')
+    fetch('https://tb-back-fyvj.onrender.com/api/courses')
       .then((res) => res.json())
       .then((data) => setCourses(data))
       .catch((err) => console.error('Error fetching courses:', err));
@@ -50,7 +50,7 @@ const EnrollmentForm = () => {
     console.log('🔍 Submitting enrollment with payload:', payload);
 
     try {
-      const res = await fetch('VITE_API_URL/api/enrollments', {
+      const res = await fetch('https://tb-back-fyvj.onrender.com/api/enrollments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

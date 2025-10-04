@@ -8,7 +8,7 @@ function Courses() {
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    fetch('VITE_API_URL/api/courses')
+    fetch('https://tb-back-fyvj.onrender.com/api/courses')
       .then((res) => res.json())
       .then((data) => {
         setCourses(data);
@@ -42,19 +42,19 @@ function Courses() {
       {/* Filter Section */}
       <div className="techborg-filter-section">
         <div className="techborg-filter-container">
-          <button 
+          <button
             className={`techborg-filter-btn ${filter === 'all' ? 'active' : ''}`}
             onClick={() => setFilter('all')}
           >
             All Courses
           </button>
-          <button 
+          <button
             className={`techborg-filter-btn ${filter === 'popular' ? 'active' : ''}`}
             onClick={() => setFilter('popular')}
           >
             Popular
           </button>
-          <button 
+          <button
             className={`techborg-filter-btn ${filter === 'new' ? 'active' : ''}`}
             onClick={() => setFilter('new')}
           >
@@ -73,9 +73,9 @@ function Courses() {
         ) : courses.length > 0 ? (
           <div className="techborg-courses-grid">
             {courses.map((course, index) => (
-              <Link 
-                to={`/courses/${course._id}`} 
-                className="techborg-courses-card" 
+              <Link
+                to={`/courses/${course._id}`}
+                className="techborg-courses-card"
                 key={course._id}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
@@ -90,11 +90,11 @@ function Courses() {
                   </div>
                   <div className="techborg-card-badge">Featured</div>
                 </div>
-                
+
                 <div className="techborg-card-content">
                   <h2 className="techborg-card-title">{course.title}</h2>
                   <p className="techborg-card-description">{course.description}</p>
-                  
+
                   <div className="techborg-card-footer">
                     <div className="techborg-card-meta">
                       <span className="techborg-meta-item">

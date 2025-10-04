@@ -10,7 +10,7 @@ const JobAlert = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch('VITE_API_URL/api/jobs');
+        const res = await fetch('https://tb-back-fyvj.onrender.com/api/jobs');
         if (!res.ok) throw new Error('Failed to fetch jobs');
         const data = await res.json();
         setJobs(data);

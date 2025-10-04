@@ -8,7 +8,7 @@ function Innovation() {
 
   // Fetch backend API instead of public JSON
   useEffect(() => {
-    fetch('VITE_API_URL/api/innovations')
+    fetch('https://tb-back-fyvj.onrender.com/api/innovations')
       .then((res) => res.json())
       .then((data) => {
         setItems(data);

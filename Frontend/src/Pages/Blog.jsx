@@ -7,7 +7,7 @@ function Blog() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('VITE_API_URL/api/blogs')
+    fetch('https://tb-back-fyvj.onrender.com/api/blogs')
       .then((res) => res.json())
       .then((data) => {
         setPosts(data);

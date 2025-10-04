@@ -10,7 +10,7 @@ function CourseDetail() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`VITE_API_URL/api/courses/${id}`)
+    fetch(`https://tb-back-fyvj.onrender.com/api/courses/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error('Course not found');
         return res.json();

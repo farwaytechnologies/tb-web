@@ -26,7 +26,7 @@ function Contact() {
     setResponseMessage('');
 
     try {
-      const res = await fetch('VITE_API_URL/api/contact', {
+      const res = await fetch('https://tb-back-fyvj.onrender.com/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

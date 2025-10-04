@@ -18,7 +18,7 @@ function TutorManageCourse() {
   });
 
   useEffect(() => {
-    fetch('VITE_API_URL/api/courses')
+    fetch('https://tb-back-fyvj.onrender.com/api/courses')
       .then(res => res.json())
       .then(data => setCourses(data))
       .catch(err => console.error('Fetch error:', err));
@@ -47,7 +47,7 @@ function TutorManageCourse() {
     }
 
     try {
-      const res = await fetch('VITE_API_URL/api/courses', {
+      const res = await fetch('https://tb-back-fyvj.onrender.com/api/courses', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, price: priceNum })
