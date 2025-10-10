@@ -90,6 +90,7 @@ function Navbar() {
           <ul className={`navbar-links ${menuOpen ? 'navbar-links-active' : ''}`}>
             <li><Link to="/" onClick={closeMobileMenu} className="navbar-link">Home</Link></li>
             <li><Link to="/courses" onClick={closeMobileMenu} className="navbar-link">Courses</Link></li>
+            <li><Link to="/learn" onClick={closeMobileMenu} className="navbar-link">Learn</Link></li>
 
             <li className="navbar-dropdown" ref={examDropdownRef}>
               <div className="navbar-dropdown-toggle" onClick={toggleExamDropdown}>

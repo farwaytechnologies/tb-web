@@ -18,12 +18,13 @@ import TutorProfile from '../Profile/TutorProfile';
 import UserProfile from '../Profile/UserProfile';
 import Settings from '../Pages/Settings';
 import Blog from '../Pages/Blog';
+import Learn from '../Pages/Learn';
 import BlogDetails from '../Pages/BlogDetails';
 import Certificates from '../Pages/Certificates';
 import Invoice from '../Pages/Invoice';
-import Exam from '../Pages/Exam'
+import Exam from '../Pages/Exam';
 import JobAlert from '../Pages/JobAlert';
-import JobApplication from '../Pages/JobApplication'
+import JobApplication from '../Pages/JobApplication';
 import AdminManageCourses from '../Dashboard/AdminManageCourse';
 import AdminManageUser from '../Dashboard/AdminManageUser';
 import AdminManageBlogs from '../Dashboard/AdminManageBlogs';
@@ -35,7 +36,7 @@ import TutorManageCourse from '../Dashboard/TutorManageCourse';
 import InnovationDetail from '../Pages/InnovationDetail';
 import AdminManageInnovation from '../Dashboard/AdminManageInnovation';
 import AdminManageAdmin from '../Dashboard/AdminManageAdmin';
-import AdminAddJob from '../Dashboard/AdminAddJob'
+import AdminAddJob from '../Dashboard/AdminAddJob';
 import TutorManageStudents from '../Dashboard/TutorManageStudents';
 import Support from '../Pages/Support';
 import Notifications from '../Pages/Notifications';
@@ -55,9 +56,6 @@ import Degree from '../ExamGuide/Degree';
 import PG from '../ExamGuide/PG';
 import AdminViewApplications from '../Dashboard/AdminViewApplications';
 
-
-
-
 function PagesRoute() {
   return (
     <Routes>
@@ -65,81 +63,71 @@ function PagesRoute() {
       <Route path="/about" element={<About />} />
       <Route path="/courses" element={<Courses />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/innovation" element={<Innovation/>} />
-      <Route path="/blog" element={<Blog/>} />
-      <Route path="/blog/:id" element={<BlogDetails/>} />
-      <Route path="/innovation/:id" element={<InnovationDetail/>} />
-      <Route path="/support" element={<Support/>} />
+      <Route path="/innovation" element={<Innovation />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/learn" element={<Learn />} />
+      <Route path="/blog/:id" element={<BlogDetails />} />
+      <Route path="/innovation/:id" element={<InnovationDetail />} />
+      <Route path="/support" element={<Support />} />
       <Route path="/notifications" element={<Notifications />} />
-      <Route path="/job-alerts" element={<JobAlert/>} />
-
-
-     <Route path="/courses/:id" element={<CourseDetail/>} /> {/* ✅ this is critical */}
-     <Route path="/courses/:id/modules" element={<CourseModules/>} />
-     <Route path="/courses/:id/content" element={<CourseTextContent />} />
-
-
-
-      <Route path="/exam-guide/polytechnic" element={<Polytechnic/>} />
-      <Route path="/exam-guide/engineering" element={<Engineering/>} />
-      <Route path="/exam-guide/degree" element={<Degree/>} />
-      <Route path="/exam-guide/pg" element={<PG/>} />
-
-
-      <Route path="/user/dashboard" element={<UserDashboard/>} />
-      <Route path="/admin/dashboard" element={<AdminDashboard/>} />
-      <Route path='/tutor/dashboard'element={<TutorDashboard/>}/>
-
-
-
-      <Route path="/admin/courses" element={<AdminManageCourses/> } /> 
-      <Route path="/admin/users" element={<AdminManageUser/>} />
-      <Route path="/admin/blogs" element={<AdminManageBlogs />} />
-      <Route path="/admin/tutors" element={<AdminManageTutor/>} />
-      <Route path="/admin/manage-admins" element={<AdminManageAdmin/>} />
-      <Route path="/admin/enrollments" element={<AdminManageEnrollments/>} />
-      <Route path="/admin/innovations" element={<AdminManageInnovation/>} />
-      <Route path="/admin/manage-cms" element={<AdminManageCms />} />
-      <Route path="/admin/manage-notifications" element={<AdminManageNotifications/>} />
-      <Route path="/admin/add-job" element={<AdminAddJob />} />   
+      <Route path="/job-alerts" element={<JobAlert />} />
       <Route path="/apply/:jobId" element={<JobApplication />} />
 
+      {/* Course Routes */}
+      <Route path="/courses/:id" element={<CourseDetail />} />
+      <Route path="/courses/:id/modules" element={<CourseModules />} />
+      <Route path="/courses/:id/content" element={<CourseTextContent />} />
 
+      {/* Exam Guide */}
+      <Route path="/exam-guide/polytechnic" element={<Polytechnic />} />
+      <Route path="/exam-guide/engineering" element={<Engineering />} />
+      <Route path="/exam-guide/degree" element={<Degree />} />
+      <Route path="/exam-guide/pg" element={<PG />} />
 
+      {/* Dashboards */}
+      <Route path="/user/dashboard" element={<UserDashboard />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/tutor/dashboard" element={<TutorDashboard />} />
 
-        <Route path="/admin/edit-home" element={<HomeCms />} />
-        <Route path="/admin/edit-about" element={<AboutCms/>} />
-        <Route path="/admin/edit-contact" element={<ContactCms />} />
-        <Route path="/admin/edit-support" element={<SupportCms />} />
-        <Route path="/admin/edit-privacy-policy" element={<PrivacyCms />} />
-        <Route path="/admin/edit-terms" element={<TermCondCms />} />
-        <Route path="/admin/view-contact" element={<AdminViewContact/>} />
-        <Route path="/admin/applications" element={<AdminViewApplications />} />
+      {/* Admin Management */}
+      <Route path="/admin/courses" element={<AdminManageCourses />} />
+      <Route path="/admin/users" element={<AdminManageUser />} />
+      <Route path="/admin/blogs" element={<AdminManageBlogs />} />
+      <Route path="/admin/tutors" element={<AdminManageTutor />} />
+      <Route path="/admin/manage-admins" element={<AdminManageAdmin />} />
+      <Route path="/admin/enrollments" element={<AdminManageEnrollments />} />
+      <Route path="/admin/innovations" element={<AdminManageInnovation />} />
+      <Route path="/admin/manage-cms" element={<AdminManageCms />} />
+      <Route path="/admin/manage-notifications" element={<AdminManageNotifications />} />
+      <Route path="/admin/add-job" element={<AdminAddJob />} />
+      <Route path="/admin/view-contact" element={<AdminViewContact />} />
+      <Route path="/admin/applications" element={<AdminViewApplications />} />
 
+      {/* Admin CMS Editing */}
+      <Route path="/admin/edit-home" element={<HomeCms />} />
+      <Route path="/admin/edit-about" element={<AboutCms />} />
+      <Route path="/admin/edit-contact" element={<ContactCms />} />
+      <Route path="/admin/edit-support" element={<SupportCms />} />
+      <Route path="/admin/edit-privacy-policy" element={<PrivacyCms />} />
+      <Route path="/admin/edit-terms" element={<TermCondCms />} />
 
+      {/* Tutor Management */}
+      <Route path="/tutor/blogs" element={<TutorManageBlog />} />
+      <Route path="/tutor/courses" element={<TutorManageCourse />} />
+      <Route path="/tutor/students" element={<TutorManageStudents />} />
 
-      <Route path="/tutor/blogs" element={<TutorManageBlog/>} />
-      <Route path="/tutor/courses" element={<TutorManageCourse/> } /> 
-      <Route path="/tutor/students" element={<TutorManageStudents/>} />
+      {/* Profiles */}
+      <Route path="/admin-profile" element={<AdminProfile />} />
+      <Route path="/tutor-profile" element={<TutorProfile />} />
+      <Route path="/user-profile" element={<UserProfile />} />
 
-
-
-      <Route path="/admin-profile" element={<AdminProfile/>} />
-      <Route path="/tutor-profile" element={<TutorProfile/>} />
-      <Route path="/user-profile" element={<UserProfile/>} />
-     
-
-      <Route path='/settings'element={<Settings/>}/>
-      <Route path='/certificates'element={<Certificates/>}/>
-      <Route path="/invoices" element={<Invoice/>} />
-      <Route path='/exam'element={<Exam/>}/>
-
-      
-
-
-     <Route path='/login' element={<Login/>}/>
-     <Route path="/enroll" element={<EnrollmentForm/>} />
-     
+      {/* General Pages */}
+      <Route path="/settings" element={<Settings />} />
+      <Route path="/certificates" element={<Certificates />} />
+      <Route path="/invoices" element={<Invoice />} />
+      <Route path="/exam" element={<Exam />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/enroll" element={<EnrollmentForm />} />
     </Routes>
   );
 }
