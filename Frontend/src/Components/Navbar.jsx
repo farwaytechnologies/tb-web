@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaBars, FaTimes, FaBell } from 'react-icons/fa';
+import { FaBars, FaTimes, FaBell, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { MdAccountCircle, MdKeyboardArrowDown } from 'react-icons/md';
 import '../Styles/ComponentsStyle/Navbar.css';
 
@@ -12,7 +12,7 @@ function Navbar() {
   const [learningDropdownOpen, setLearningDropdownOpen] = useState(false);
   const [resourcesDropdownOpen, setResourcesDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [notificationCount, setNotificationCount] = useState(0); // ✅ Dynamic count
+  const [notificationCount, setNotificationCount] = useState(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,14 +21,14 @@ function Navbar() {
   const learningDropdownRef = useRef(null);
   const resourcesDropdownRef = useRef(null);
 
-  // ✅ Handle scroll effect
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ✅ Load user data
+  // Load user data
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -49,30 +49,22 @@ function Navbar() {
     return () => window.removeEventListener('userLoggedIn', handleLogin);
   }, []);
 
-  // ✅ Fetch notifications count
+  // Fetch notifications count
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const res = await fetch('https://tb-back-fyvj.onrender.com/api/notifications');
-        if (!res.ok) throw new Error('Failed to fetch notifications');
         const data = await res.json();
-
-        // handle both array or object responses
-        const count = Array.isArray(data) ? data.length : (data?.length || 0);
-        setNotificationCount(count);
-      } catch (err) {
-        console.error('Error fetching notifications:', err);
+        if (Array.isArray(data)) setNotificationCount(data.length);
+        else setNotificationCount(0);
+      } catch (error) {
+        console.error('Failed to fetch notifications:', error);
       }
     };
-
     fetchNotifications();
-
-    // Optional: refresh every 60s
-    const interval = setInterval(fetchNotifications, 60000);
-    return () => clearInterval(interval);
   }, []);
 
-  // ✅ Handle clicks outside dropdowns
+  // Handle click outside dropdowns
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) setDropdownOpen(false);
@@ -84,7 +76,7 @@ function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // ✅ Close menu on route change
+  // Close mobile menu on route change
   useEffect(() => {
     setMenuOpen(false);
     setDropdownOpen(false);
@@ -93,7 +85,6 @@ function Navbar() {
     setResourcesDropdownOpen(false);
   }, [location.pathname]);
 
-  // ✅ Logout
   const handleLogout = useCallback(() => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
@@ -102,13 +93,9 @@ function Navbar() {
     navigate('/login');
   }, [navigate]);
 
-  // ✅ Toggle helpers
   const toggleDropdown = useCallback(() => setDropdownOpen(prev => !prev), []);
   const toggleExamDropdown = useCallback(() => setExamDropdownOpen(prev => !prev), []);
-  const toggleLearningDropdown = useCallback(() => setLearningDropdownOpen(prev => !prev), []);
-  const toggleResourcesDropdown = useCallback(() => setResourcesDropdownOpen(prev => !prev), []);
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
-
   const closeMobileMenu = useCallback(() => {
     setMenuOpen(false);
     setDropdownOpen(false);
@@ -117,7 +104,6 @@ function Navbar() {
     setResourcesDropdownOpen(false);
   }, []);
 
-  // ✅ Get correct dashboard and profile links
   const getDashboardLink = () => {
     if (!user) return '/';
     switch (user.role) {
@@ -138,56 +124,50 @@ function Navbar() {
 
   const isActive = (path) => location.pathname === path;
 
-  // ✅ Render Navbar
   return (
     <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
       <div className="navbar-container">
-        {/* Logo */}
-        <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-          <span className="navbar-logo-text">Tech</span>
-          <span className="navbar-logo-accent">Borg</span>
-        </Link>
+        {/* Logo + Navigation Arrows */}
+        <div className="navbar-logo-wrapper">
+          <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
+            <span className="navbar-logo-text">Tech</span>
+            <span className="navbar-logo-accent">Borg</span>
+          </Link>
+
+          {/* Back / Forward Arrows positioned below logo */}
+          <div className="navbar-nav-controls">
+            <button className="nav-arrow" onClick={() => navigate(-1)} title="Go Back">
+              <FaArrowLeft />
+            </button>
+            <button className="nav-arrow" onClick={() => navigate(1)} title="Go Forward">
+              <FaArrowRight />
+            </button>
+          </div>
+        </div>
 
         {/* Dashboard Link */}
         {user && (
-          <Link
-            to={getDashboardLink()}
-            className="navbar-dashboard-link"
-            onClick={closeMobileMenu}
-          >
+          <Link to={getDashboardLink()} className="navbar-dashboard-link" onClick={closeMobileMenu}>
             <span className="navbar-dashboard-text">Learning Platform</span>
           </Link>
         )}
 
         {/* Hamburger */}
-        <button 
-          className="navbar-hamburger" 
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-          aria-expanded={menuOpen}
-        >
+        <button className="navbar-hamburger" onClick={toggleMenu} aria-label="Toggle menu" aria-expanded={menuOpen}>
           {menuOpen ? <FaTimes /> : <FaBars />}
         </button>
 
         {/* Navigation Links */}
         <ul className={`navbar-links ${menuOpen ? 'navbar-links-active' : ''}`}>
           <li>
-            <Link 
-              to="/" 
-              onClick={closeMobileMenu} 
-              className={`navbar-link ${isActive('/') ? 'active' : ''}`}
-            >
+            <Link to="/" onClick={closeMobileMenu} className={`navbar-link ${isActive('/') ? 'active' : ''}`}>
               Home
             </Link>
           </li>
 
           {/* Learning Dropdown */}
           <li className="navbar-dropdown" ref={learningDropdownRef}>
-            <button 
-              className="navbar-dropdown-toggle" 
-              onClick={toggleLearningDropdown}
-              aria-expanded={learningDropdownOpen}
-            >
+            <button className="navbar-dropdown-toggle" onClick={() => setLearningDropdownOpen(prev => !prev)}>
               Learning
               <MdKeyboardArrowDown className={`navbar-dropdown-icon ${learningDropdownOpen ? 'rotate' : ''}`} />
             </button>
@@ -201,11 +181,7 @@ function Navbar() {
 
           {/* Exam Guide Dropdown */}
           <li className="navbar-dropdown" ref={examDropdownRef}>
-            <button 
-              className="navbar-dropdown-toggle" 
-              onClick={toggleExamDropdown}
-              aria-expanded={examDropdownOpen}
-            >
+            <button className="navbar-dropdown-toggle" onClick={toggleExamDropdown}>
               Exam Guide
               <MdKeyboardArrowDown className={`navbar-dropdown-icon ${examDropdownOpen ? 'rotate' : ''}`} />
             </button>
@@ -219,13 +195,9 @@ function Navbar() {
             )}
           </li>
 
-          {/* ✅ Resources Dropdown */}
+          {/* Resources Dropdown */}
           <li className="navbar-dropdown" ref={resourcesDropdownRef}>
-            <button 
-              className="navbar-dropdown-toggle" 
-              onClick={toggleResourcesDropdown}
-              aria-expanded={resourcesDropdownOpen}
-            >
+            <button className="navbar-dropdown-toggle" onClick={() => setResourcesDropdownOpen(prev => !prev)}>
               Resources
               <MdKeyboardArrowDown className={`navbar-dropdown-icon ${resourcesDropdownOpen ? 'rotate' : ''}`} />
             </button>
@@ -237,35 +209,11 @@ function Navbar() {
             )}
           </li>
 
-          <li>
-            <Link 
-              to="/about" 
-              onClick={closeMobileMenu} 
-              className={`navbar-link ${isActive('/about') ? 'active' : ''}`}
-            >
-              About
-            </Link>
-          </li>
-          <li>
-            <Link 
-              to="/contact" 
-              onClick={closeMobileMenu} 
-              className={`navbar-link ${isActive('/contact') ? 'active' : ''}`}
-            >
-              Contact
-            </Link>
-          </li>
-          <li>
-            <Link 
-              to="/job-alerts" 
-              onClick={closeMobileMenu} 
-              className={`navbar-link ${isActive('/job-alerts') ? 'active' : ''}`}
-            >
-              Job Alert
-            </Link>
-          </li>
+          <li><Link to="/about" onClick={closeMobileMenu} className={`navbar-link ${isActive('/about') ? 'active' : ''}`}>About</Link></li>
+          <li><Link to="/contact" onClick={closeMobileMenu} className={`navbar-link ${isActive('/contact') ? 'active' : ''}`}>Contact</Link></li>
+          <li><Link to="/job-alerts" onClick={closeMobileMenu} className={`navbar-link ${isActive('/job-alerts') ? 'active' : ''}`}>Job Alert</Link></li>
 
-          {/* Notification (Mobile only) */}
+          {/* Notification Icon (Mobile) */}
           <li className="navbar-notification-mobile">
             <Link to="/notifications" onClick={closeMobileMenu} className="navbar-link">
               <FaBell /> Notifications ({notificationCount})
@@ -275,32 +223,24 @@ function Navbar() {
 
         {/* Right Section */}
         <div className="navbar-right">
-          {/* Notification Icon (Desktop) */}
+          {/* Notifications */}
           <Link to="/notifications" className="navbar-notification-icon" aria-label="Notifications">
             <FaBell />
-            {notificationCount > 0 && (
-              <span className="navbar-notification-badge">{notificationCount}</span>
-            )}
+            {notificationCount > 0 && <span className="navbar-notification-badge">{notificationCount}</span>}
           </Link>
 
-          {/* User Menu / Login */}
+          {/* User Menu */}
           {user ? (
             <div className="navbar-user-info" ref={userDropdownRef}>
-              <button 
-                className="navbar-user-dropdown" 
-                onClick={toggleDropdown}
-                aria-expanded={dropdownOpen}
-                aria-label="User menu"
-              >
+              <button className="navbar-user-dropdown" onClick={toggleDropdown}>
                 <img
                   src={user.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=4a7abe&color=fff`}
-                  alt={`${user.name}'s profile`}
+                  alt={user.name}
                   className="navbar-profile-img"
                 />
                 <span className="navbar-username">{user.name}</span>
                 <MdKeyboardArrowDown className={`navbar-dropdown-icon ${dropdownOpen ? 'rotate' : ''}`} />
               </button>
-              
               {dropdownOpen && (
                 <div className="navbar-dropdown-menu">
                   <Link to={getProfileLink()} onClick={closeMobileMenu}>My Profile</Link>
