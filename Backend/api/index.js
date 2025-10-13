@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Manually defined routes for clarity and control
+// Existing routes
 router.use('/auth', require('../routes/auth'));
 router.use('/courses', require('../routes/courseRoutes'));
 router.use('/blogs', require('../routes/blogRoutes'));
@@ -14,5 +14,7 @@ router.use('/about', require('../routes/aboutRoutes'));
 router.use('/jobs', require('../routes/jobRoutes'));
 router.use('/applications', require('../routes/jobApplicationRoutes')); // ✅ Job Applications
 
+// ✅ New Learn Topics Route
+router.use('/learn', require('../routes/learnRoutes')); // add this line
 
 module.exports = router;
