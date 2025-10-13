@@ -1,53 +1,66 @@
-import React from "react";
-import "../Styles/PagesStyle/Learn.css"; // or Tailwind directly
+import React, { useEffect, useState } from "react";
+import "../Styles/PagesStyle/Learn.css";
 
 const Learn = () => {
-  const courses = [
-    {
-      title: "HTML",
-      description: "Learn the structure of web pages using HTML.",
-      image: "/images/html.png",
-      link: "/learn/html",
-    },
-    {
-      title: "CSS",
-      description: "Style your websites beautifully with CSS.",
-      image: "/images/css.png",
-      link: "/learn/css",
-    },
-    {
-      title: "JavaScript",
-      description: "Add interactivity and dynamic features to your site.",
-      image: "/images/javascript.png",
-      link: "/learn/javascript",
-    },
-    {
-      title: "React",
-      description: "Build modern, scalable frontends with React.js.",
-      image: "/images/react.png",
-      link: "/learn/react",
-    },
-    {
-      title: "Python",
-      description: "Master backend logic and scripting with Python.",
-      image: "/images/python.png",
-      link: "/learn/python",
-    },
-  ];
+  const [topics, setTopics] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLearnTopics = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/learn");
+        if (!res.ok) throw new Error("Failed to fetch learn topics");
+        const data = await res.json();
+        setTopics(data);
+      } catch (error) {
+        console.error("❌ Error fetching learn topics:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLearnTopics();
+  }, []);
+
+  if (loading) {
+    return <div className="loading-text">Loading topics...</div>;
+  }
 
   return (
     <div className="learn-container">
       <h1 className="learn-heading">Learn Programming Languages</h1>
-      <p className="learn-subtext">Start your coding journey with hands-on tutorials.</p>
+      <p className="learn-subtext">
+        Explore tutorials and resources to master your favorite languages.
+      </p>
+
       <div className="courses-grid">
-        {courses.map((course, index) => (
-          <div key={index} className="course-card">
-            <img src={course.image} alt={course.title} className="course-image" />
-            <h3>{course.title}</h3>
-            <p>{course.description}</p>
-            <a href={course.link} className="learn-btn">Start Learning</a>
-          </div>
-        ))}
+        {topics.length > 0 ? (
+          topics.map((topic, index) => (
+            <div key={index} className="course-card">
+              <img
+                src={
+                  topic.image
+                    ? `http://localhost:8000/uploads/learn/${topic.image}`
+                    : "/images/default-course.png"
+                }
+                alt={topic.title}
+                className="course-image"
+              />
+              <h3>{topic.title}</h3>
+              <p>{topic.description}</p>
+              <a
+                href={topic.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="learn-btn"
+              >
+                Start Learning
+              </a>
+            </div>
+          ))
+        ) : (
+          <p className="no-courses-text">No topics available yet.</p>
+        )}
       </div>
     </div>
   );

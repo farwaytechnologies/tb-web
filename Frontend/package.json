@@ -4,14 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-
     "lint": "eslint .",
     "preview": "vite preview",
-  "dev": "vite",
-  "build": "vite build",
-  "start": "vite preview --port $PORT --host"
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite preview --port $PORT --host"
   },
   "dependencies": {
+    "lucide-react": "^0.545.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
