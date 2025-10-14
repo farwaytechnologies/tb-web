@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/PagesStyle/Login.css';
 
-function Login() {
+function TutorLogin() {
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -30,7 +30,7 @@ function Login() {
       : 'https://tb-back-fyvj.onrender.com/api/auth/login';
 
     const payload = isSignup
-      ? { ...formData, role: 'student' } // fixed role
+      ? { ...formData, role: 'tutor' }
       : { email: formData.email, password: formData.password };
 
     try {
@@ -47,9 +47,9 @@ function Login() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         window.dispatchEvent(new Event('userLoggedIn'));
-        navigate('/user/dashboard');
+        navigate('/tutor/dashboard');
       } else {
-        alert('Signup successful! You can now log in.');
+        alert('Tutor signup successful! You can now log in.');
         setIsSignup(false);
       }
     } catch (err) {
@@ -60,7 +60,7 @@ function Login() {
   return (
     <div className="auth-container">
       <div className="auth-box">
-        <h2>{isSignup ? 'Create Student Account' : 'Student Login'}</h2>
+        <h2>{isSignup ? 'Create Tutor Account' : 'Tutor Login'}</h2>
 
         {error && <p style={{ color: 'salmon' }}>{error}</p>}
 
@@ -71,7 +71,7 @@ function Login() {
               <input
                 type="text"
                 name="name"
-                placeholder="John Doe"
+                placeholder="Jane Smith"
                 value={formData.name}
                 onChange={handleChange}
                 required
@@ -84,7 +84,7 @@ function Login() {
             <input
               type="email"
               name="email"
-              placeholder="you@example.com"
+              placeholder="tutor@example.com"
               value={formData.email}
               onChange={handleChange}
               required
@@ -119,4 +119,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default TutorLogin;

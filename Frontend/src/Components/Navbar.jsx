@@ -205,6 +205,7 @@ function Navbar() {
               <ul className="navbar-submenu">
                 <li><Link to="/innovation" onClick={closeMobileMenu}>Innovation</Link></li>
                 <li><Link to="/blog" onClick={closeMobileMenu}>Blog</Link></li>
+                 <li><Link to="/news" onClick={closeMobileMenu}>News</Link></li>
               </ul>
             )}
           </li>
