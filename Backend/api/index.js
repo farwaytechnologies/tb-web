@@ -16,5 +16,6 @@ router.use('/applications', require('../routes/jobApplicationRoutes')); // ✅ J
 
 // ✅ New Learn Topics Route
 router.use('/learn', require('../routes/learnRoutes')); // add this line
+router.use('/news', require('../routes/newsRoutes')); // ✅ add this
 
 module.exports = router;
