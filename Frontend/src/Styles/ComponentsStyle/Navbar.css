@@ -587,7 +587,7 @@ html {
 .navbar-nav-controls {
   display: flex;
   gap: 6px;
-  margin-top: 4px; /* small space under logo */
+  margin-top: 10px; /* small space under logo */
 }
 
 .nav-arrow {

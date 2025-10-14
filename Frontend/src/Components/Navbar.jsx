@@ -139,9 +139,6 @@ function Navbar() {
             <button className="nav-arrow" onClick={() => navigate(-1)} title="Go Back">
               <FaArrowLeft />
             </button>
-            <button className="nav-arrow" onClick={() => navigate(1)} title="Go Forward">
-              <FaArrowRight />
-            </button>
           </div>
         </div>
 
