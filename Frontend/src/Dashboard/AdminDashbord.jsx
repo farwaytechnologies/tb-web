@@ -10,7 +10,8 @@ import {
   FaLightbulb,
   FaUserGraduate,
   FaUserTie,
-  FaBell
+  FaBell,
+  FaNewspaper
 } from 'react-icons/fa';
 
 export default function AdminDashboard() {
@@ -128,6 +129,13 @@ export default function AdminDashboard() {
           <FaBlog style={{ marginRight: '8px' }} />
           Manage Blogs
         </Link>
+
+        {/* ✅ NEW: Manage News Section */}
+        <Link to="/admin/news" className="techborg-admin-action-btn">
+          <FaNewspaper style={{ marginRight: '8px' }} />
+          Manage News
+        </Link>
+
         <Link to="/admin/enrollments" className="techborg-admin-action-btn">Enrollment List</Link>
         <Link to="/admin/innovations" className="techborg-admin-action-btn">
           <FaLightbulb style={{ marginRight: '8px' }} />
@@ -141,7 +149,6 @@ export default function AdminDashboard() {
           <FaUsers style={{ marginRight: '8px' }} />
           View Contact Messages
         </Link>
-        {/* ✅ Manage Notifications Link */}
         <Link to="/admin/manage-notifications" className="techborg-admin-action-btn">
           <FaBell style={{ marginRight: '8px' }} />
           Manage Notifications
@@ -150,7 +157,7 @@ export default function AdminDashboard() {
           <FaBell style={{ marginRight: '8px' }} />
           Add Job Alert
         </Link>
-         <Link to="/admin/applications" className="techborg-admin-action-btn">
+        <Link to="/admin/applications" className="techborg-admin-action-btn">
           <FaBell style={{ marginRight: '8px' }} />
           Admin View Applications
         </Link>

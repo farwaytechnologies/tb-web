@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaBars, FaTimes, FaBell, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaBars, FaTimes, FaBell, FaArrowLeft } from 'react-icons/fa';
 import { MdAccountCircle, MdKeyboardArrowDown } from 'react-icons/md';
 import '../Styles/ComponentsStyle/Navbar.css';
 
@@ -10,7 +10,6 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [examDropdownOpen, setExamDropdownOpen] = useState(false);
   const [learningDropdownOpen, setLearningDropdownOpen] = useState(false);
-  const [resourcesDropdownOpen, setResourcesDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -19,7 +18,6 @@ function Navbar() {
   const userDropdownRef = useRef(null);
   const examDropdownRef = useRef(null);
   const learningDropdownRef = useRef(null);
-  const resourcesDropdownRef = useRef(null);
 
   // Handle scroll effect
   useEffect(() => {
@@ -70,7 +68,6 @@ function Navbar() {
       if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) setDropdownOpen(false);
       if (examDropdownRef.current && !examDropdownRef.current.contains(event.target)) setExamDropdownOpen(false);
       if (learningDropdownRef.current && !learningDropdownRef.current.contains(event.target)) setLearningDropdownOpen(false);
-      if (resourcesDropdownRef.current && !resourcesDropdownRef.current.contains(event.target)) setResourcesDropdownOpen(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -82,7 +79,6 @@ function Navbar() {
     setDropdownOpen(false);
     setExamDropdownOpen(false);
     setLearningDropdownOpen(false);
-    setResourcesDropdownOpen(false);
   }, [location.pathname]);
 
   const handleLogout = useCallback(() => {
@@ -101,7 +97,6 @@ function Navbar() {
     setDropdownOpen(false);
     setExamDropdownOpen(false);
     setLearningDropdownOpen(false);
-    setResourcesDropdownOpen(false);
   }, []);
 
   const getDashboardLink = () => {
@@ -110,6 +105,15 @@ function Navbar() {
       case 'admin': return '/admin/dashboard';
       case 'tutor': return '/tutor/dashboard';
       default: return '/user/dashboard';
+    }
+  };
+
+  const getDashboardText = () => {
+    if (!user) return '';
+    switch (user.role) {
+      case 'admin': return 'Admin Dashboard';
+      case 'tutor': return 'Tutor Dashboard';
+      default: return 'Student Dashboard';
     }
   };
 
@@ -134,7 +138,7 @@ function Navbar() {
             <span className="navbar-logo-accent">Borg</span>
           </Link>
 
-          {/* Back / Forward Arrows positioned below logo */}
+          {/* Back Arrow */}
           <div className="navbar-nav-controls">
             <button className="nav-arrow" onClick={() => navigate(-1)} title="Go Back">
               <FaArrowLeft />
@@ -145,7 +149,7 @@ function Navbar() {
         {/* Dashboard Link */}
         {user && (
           <Link to={getDashboardLink()} className="navbar-dashboard-link" onClick={closeMobileMenu}>
-            <span className="navbar-dashboard-text">Learning Platform</span>
+            <span className="navbar-dashboard-text">{getDashboardText()}</span>
           </Link>
         )}
 
@@ -192,23 +196,9 @@ function Navbar() {
             )}
           </li>
 
-          {/* Resources Dropdown */}
-          <li className="navbar-dropdown" ref={resourcesDropdownRef}>
-            <button className="navbar-dropdown-toggle" onClick={() => setResourcesDropdownOpen(prev => !prev)}>
-              Resources
-              <MdKeyboardArrowDown className={`navbar-dropdown-icon ${resourcesDropdownOpen ? 'rotate' : ''}`} />
-            </button>
-            {resourcesDropdownOpen && (
-              <ul className="navbar-submenu">
-                <li><Link to="/innovation" onClick={closeMobileMenu}>Innovation</Link></li>
-                <li><Link to="/blog" onClick={closeMobileMenu}>Blog</Link></li>
-                 <li><Link to="/news" onClick={closeMobileMenu}>News</Link></li>
-              </ul>
-            )}
-          </li>
-
-          <li><Link to="/about" onClick={closeMobileMenu} className={`navbar-link ${isActive('/about') ? 'active' : ''}`}>About</Link></li>
-          <li><Link to="/contact" onClick={closeMobileMenu} className={`navbar-link ${isActive('/contact') ? 'active' : ''}`}>Contact</Link></li>
+          {/* Blog and News */}
+          <li><Link to="/blog" onClick={closeMobileMenu} className={`navbar-link ${isActive('/blog') ? 'active' : ''}`}>Blog</Link></li>
+          <li><Link to="/news" onClick={closeMobileMenu} className={`navbar-link ${isActive('/news') ? 'active' : ''}`}>News</Link></li>
           <li><Link to="/job-alerts" onClick={closeMobileMenu} className={`navbar-link ${isActive('/job-alerts') ? 'active' : ''}`}>Job Alert</Link></li>
 
           {/* Notification Icon (Mobile) */}
