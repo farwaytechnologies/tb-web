@@ -8,7 +8,7 @@ const Learn = () => {
   useEffect(() => {
     const fetchLearnTopics = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/learn");
+        const res = await fetch("https://tb-back-fyvj.onrender.com/api/learn");
         if (!res.ok) throw new Error("Failed to fetch learn topics");
         const data = await res.json();
         setTopics(data);
@@ -40,7 +40,7 @@ const Learn = () => {
               <img
                 src={
                   topic.image
-                    ? `http://localhost:8000/uploads/learn/${topic.image}`
+                    ? `https://tb-back-fyvj.onrender.com/uploads/learn/${topic.image}`
                     : "/images/default-course.png"
                 }
                 alt={topic.title}
