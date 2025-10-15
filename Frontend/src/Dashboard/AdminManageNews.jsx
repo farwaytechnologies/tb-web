@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/DashbordStyle/AdminManageNews.css";
 
-const API_URL = "http://localhost:8000/api/news";
+const API_URL = "https://tb-back-fyvj.onrender.com/api/news";
 
 function AdminManageNews() {
   const [newsList, setNewsList] = useState([]);
