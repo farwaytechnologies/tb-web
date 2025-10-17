@@ -197,7 +197,7 @@ function Navbar() {
           </li>
 
           {/* Blog and News */}
-          <li><Link to="/blog" onClick={closeMobileMenu} className={`navbar-link ${isActive('/blog') ? 'active' : ''}`}>Blog</Link></li>
+          <li><Link to="/blog" onClick={closeMobileMenu} className={`navbar-link ${isActive('/blog') ? 'active' : ''}`}>Blogs</Link></li>
           <li><Link to="/news" onClick={closeMobileMenu} className={`navbar-link ${isActive('/news') ? 'active' : ''}`}>News</Link></li>
           <li><Link to="/job-alerts" onClick={closeMobileMenu} className={`navbar-link ${isActive('/job-alerts') ? 'active' : ''}`}>Job Alert</Link></li>
 

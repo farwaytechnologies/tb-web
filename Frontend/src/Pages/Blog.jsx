@@ -30,7 +30,7 @@ function Blog() {
     <div className="blog-page">
       <div className="blog-hero">
         <div className="blog-hero-content">
-          <span className="blog-hero-badge">Our Blog</span>
+          <span className="blog-hero-badge">Our Blogs</span>
           <h1 className="blog-hero-title">
             Insights & <span className="gradient-text">Innovation</span>
           </h1>
