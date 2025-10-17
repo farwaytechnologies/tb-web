@@ -2,21 +2,25 @@ const express = require('express');
 const router = express.Router();
 const {
   getAllNews,
+  getNewsById,
   addNews,
   updateNews,
   deleteNews
 } = require('../controllers/newsController');
 
-// GET all news
+// ✅ GET all news
 router.get('/', getAllNews);
 
-// POST new news
+// ✅ GET a single news item by ID
+router.get('/:id', getNewsById);
+
+// ✅ POST new news
 router.post('/', addNews);
 
-// PUT update news
+// ✅ PUT update news by ID
 router.put('/:id', updateNews);
 
-// DELETE news
+// ✅ DELETE news by ID
 router.delete('/:id', deleteNews);
 
 module.exports = router;

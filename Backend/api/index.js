@@ -13,9 +13,6 @@ router.use('/notifications', require('../routes/notificationRoutes'));
 router.use('/about', require('../routes/aboutRoutes'));
 router.use('/jobs', require('../routes/jobRoutes'));
 router.use('/applications', require('../routes/jobApplicationRoutes')); // ✅ Job Applications
-
-// ✅ New Learn Topics Route
-router.use('/learn', require('../routes/learnRoutes')); // add this line
 router.use('/news', require('../routes/newsRoutes')); // ✅ add this
 
 module.exports = router;
