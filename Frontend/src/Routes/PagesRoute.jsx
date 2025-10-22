@@ -71,6 +71,7 @@ import ContactCms from '../AdminCms/ContactCms';
 import SupportCms from '../AdminCms/SupportCms';
 import PrivacyCms from '../AdminCms/PrivacyCms';
 import TermCondCms from '../AdminCms/TermCondCms';
+import LearnDetails from '../Pages/LearnDetails';
 
 
 // =============================
@@ -88,6 +89,7 @@ function PagesRoute() {
       <Route path="/innovation" element={<Innovation />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/learn" element={<Learn />} />
+      <Route path="/learn/:id" element={<LearnDetails/>} /> 
       <Route path="/news" element={<News />} />
       <Route path="/support" element={<Support />} />
       <Route path="/notifications" element={<Notifications />} />
