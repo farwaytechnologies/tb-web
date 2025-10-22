@@ -14,5 +14,7 @@ router.use('/about', require('../routes/aboutRoutes'));
 router.use('/jobs', require('../routes/jobRoutes'));
 router.use('/applications', require('../routes/jobApplicationRoutes')); // ✅ Job Applications
 router.use('/news', require('../routes/newsRoutes')); // ✅ add this
+router.use('/learn', require('../routes/learnRoutes'));
+
 
 module.exports = router;
