@@ -12,7 +12,7 @@ const LearnDetails = () => {
   useEffect(() => {
     const fetchLanguageDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/learn/${id}`);
+        const response = await fetch(`https://tb-back-fyvj.onrender.com/api/learn/${id}`);
         if (!response.ok) throw new Error("Failed to fetch language details");
         const data = await response.json();
         setLanguage(data);
@@ -76,11 +76,11 @@ const LearnDetails = () => {
       <header className="details-header">
         <Link to="/learn" className="back-btn">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path 
-              d="M12.5 15L7.5 10L12.5 5" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
+            <path
+              d="M12.5 15L7.5 10L12.5 5"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
@@ -100,7 +100,7 @@ const LearnDetails = () => {
       {/* Progress Bar */}
       <div className="progress-container">
         <div className="progress-bar">
-          <div 
+          <div
             className="progress-fill"
             style={{ width: `${((activeModule + 1) / language.modules.length) * 100}%` }}
           ></div>
@@ -127,8 +127,8 @@ const LearnDetails = () => {
       {/* Module Content */}
       <div className="modules-content">
         {language.modules.map((mod, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className={`module-card ${activeModule === index ? 'active' : ''}`}
             style={{ display: activeModule === index ? 'block' : 'none' }}
           >
@@ -142,9 +142,9 @@ const LearnDetails = () => {
 
               {mod.image && (
                 <div className="module-image-wrapper">
-                  <img 
-                    src={mod.image} 
-                    alt={mod.title} 
+                  <img
+                    src={mod.image}
+                    alt={mod.title}
                     className="module-image"
                     loading="lazy"
                   />
@@ -155,7 +155,7 @@ const LearnDetails = () => {
                 <div className="code-block-wrapper">
                   <div className="code-header">
                     <span className="code-label">Code Example</span>
-                    <button 
+                    <button
                       className="copy-btn"
                       onClick={() => copyCode(mod.codeExample)}
                       title="Copy code"
@@ -180,35 +180,35 @@ const LearnDetails = () => {
             {/* Navigation Buttons */}
             <div className="module-footer">
               {activeModule > 0 && (
-                <button 
+                <button
                   className="nav-btn prev-btn"
                   onClick={() => setActiveModule(activeModule - 1)}
                 >
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path 
-                      d="M12.5 15L7.5 10L12.5 5" 
-                      stroke="currentColor" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
+                    <path
+                      d="M12.5 15L7.5 10L12.5 5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
                   Previous
                 </button>
               )}
-              
+
               {activeModule < language.modules.length - 1 && (
-                <button 
+                <button
                   className="nav-btn next-btn"
                   onClick={() => setActiveModule(activeModule + 1)}
                 >
                   Next
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path 
-                      d="M7.5 15L12.5 10L7.5 5" 
-                      stroke="currentColor" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
+                    <path
+                      d="M7.5 15L12.5 10L7.5 5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>

@@ -10,7 +10,7 @@ const Learn = () => {
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/learn");
+        const response = await fetch("https://tb-back-fyvj.onrender.com/api/learn");
         if (!response.ok) throw new Error("Failed to fetch languages");
         const data = await response.json();
         setLanguages(data);
@@ -60,39 +60,39 @@ const Learn = () => {
 
       <div className="learn-grid">
         {languages.map((lang, index) => (
-          <div 
-            key={lang._id} 
+          <div
+            key={lang._id}
             className="learn-card"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             <div className="card-image-wrapper">
-              <img 
-                src={lang.image} 
-                alt={lang.language} 
+              <img
+                src={lang.image}
+                alt={lang.language}
                 className="learn-card-img"
                 loading="lazy"
               />
               <div className="card-overlay"></div>
             </div>
-            
+
             <div className="card-content">
               <h2 className="card-title">{lang.language}</h2>
               <p className="card-description">{lang.shortDescription}</p>
-              
+
               <Link to={`/learn/${lang._id}`} className="learn-btn">
                 <span>Start Learning</span>
-                <svg 
-                  className="btn-arrow" 
-                  width="20" 
-                  height="20" 
-                  viewBox="0 0 20 20" 
+                <svg
+                  className="btn-arrow"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
                   fill="none"
                 >
-                  <path 
-                    d="M7.5 15L12.5 10L7.5 5" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
+                  <path
+                    d="M7.5 15L12.5 10L7.5 5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
