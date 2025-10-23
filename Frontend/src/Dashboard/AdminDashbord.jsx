@@ -11,7 +11,8 @@ import {
   FaUserGraduate,
   FaUserTie,
   FaBell,
-  FaNewspaper
+  FaNewspaper,
+  FaCode
 } from 'react-icons/fa';
 
 export default function AdminDashboard() {
@@ -129,13 +130,10 @@ export default function AdminDashboard() {
           <FaBlog style={{ marginRight: '8px' }} />
           Manage Blogs
         </Link>
-
-        {/* ✅ NEW: Manage News Section */}
         <Link to="/admin/news" className="techborg-admin-action-btn">
           <FaNewspaper style={{ marginRight: '8px' }} />
           Manage News
         </Link>
-
         <Link to="/admin/enrollments" className="techborg-admin-action-btn">Enrollment List</Link>
         <Link to="/admin/innovations" className="techborg-admin-action-btn">
           <FaLightbulb style={{ marginRight: '8px' }} />
@@ -160,6 +158,12 @@ export default function AdminDashboard() {
         <Link to="/admin/applications" className="techborg-admin-action-btn">
           <FaBell style={{ marginRight: '8px' }} />
           Admin View Applications
+        </Link>
+
+        {/* ✅ NEW: Manage Learn Section */}
+        <Link to="/admin/manage-learn" className="techborg-admin-action-btn">
+          <FaCode style={{ marginRight: '8px' }} />
+          Manage Learn Section
         </Link>
       </div>
     </div>

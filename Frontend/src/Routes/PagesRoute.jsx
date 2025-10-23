@@ -72,6 +72,7 @@ import SupportCms from '../AdminCms/SupportCms';
 import PrivacyCms from '../AdminCms/PrivacyCms';
 import TermCondCms from '../AdminCms/TermCondCms';
 import LearnDetails from '../Pages/LearnDetails';
+import AdminManageLearn from '../Dashboard/AdminManageLearn';
 
 
 // =============================
@@ -131,6 +132,8 @@ function PagesRoute() {
       <Route path="/admin/view-contact" element={<AdminViewContact />} />
       <Route path="/admin/applications" element={<AdminViewApplications />} />
       <Route path="/admin/news" element={<AdminManageNews />} />
+      <Route path="/admin/manage-learn" element={<AdminManageLearn />} />
+
 
       {/* 🧾 CMS Editing */}
       <Route path="/admin/edit-home" element={<HomeCms />} />
