@@ -2,6 +2,14 @@ import React, { useEffect, useState } from 'react';
 import '../Styles/PagesStyle/Home.css';
 import { Link } from 'react-router-dom';
 import HomeWhyUs from '../Home/HomeWhyUs';
+import { Helmet } from 'react-helmet';
+<Helmet>
+  <title>TechBorg E-Learning</title>
+  <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery.
+It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
+  <meta name="keywords" content="react, seo, tutorial, java, javascirpt, cpp, python" />
+</Helmet>
+
 
 function Home() {
   const [homeContent, setHomeContent] = useState(null);
