@@ -25,7 +25,7 @@ function AdminManageAdmin() {
     if (!confirm) return;
 
     try {
-      const res = await fetch(`https://tb-back-fyvj.onrender.comL/api/auth/delete/${id}`, {
+      const res = await fetch(`https://tb-back-fyvj.onrender.com/api/auth/delete/${id}`, {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error('Delete failed');
