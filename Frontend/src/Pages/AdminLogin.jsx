@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/PagesStyle/Login.css';
 
@@ -8,9 +8,19 @@ function AdminAuth() {
     name: '',
     email: '',
     password: '',
+    adminCode: '', // 🔹 new field
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // ✅ redirect already logged-in admin
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (token && user?.role === 'admin') {
+      navigate('/admin/dashboard');
+    }
+  }, [navigate]);
 
   const toggleForm = () => {
     setIsSignup(!isSignup);
@@ -25,12 +35,20 @@ function AdminAuth() {
     e.preventDefault();
     setError('');
 
+    // 🔹 Secret admin code validation (change this to your private code)
+    const SECRET_CODE = 'ADMIN@TB2025'; 
+
+    if (formData.adminCode !== SECRET_CODE) {
+      setError('Invalid Admin Access Code.');
+      return;
+    }
+
     const url = isSignup
       ? 'https://tb-back-fyvj.onrender.com/api/auth/register'
       : 'https://tb-back-fyvj.onrender.com/api/auth/login';
 
     const payload = isSignup
-      ? { ...formData, role: 'admin' } // ✅ force admin role
+      ? { ...formData, role: 'admin' }
       : { email: formData.email, password: formData.password };
 
     try {
@@ -41,21 +59,13 @@ function AdminAuth() {
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message || 'Something went wrong');
 
       if (!isSignup) {
-        // ✅ Ensure only admin can log in
-        if (data.user.role !== 'admin') {
-          throw new Error('Access denied. Admins only.');
-        }
-
+        if (data.user.role !== 'admin') throw new Error('Access denied. Admins only.');
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-
-        // Notify app of login state
         window.dispatchEvent(new Event('userLoggedIn'));
-
         navigate('/admin/dashboard');
       } else {
         alert('Admin signup successful! You can now log in.');
@@ -107,6 +117,19 @@ function AdminAuth() {
               name="password"
               placeholder="••••••••"
               value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* 🔹 New Secret Code field */}
+          <div className="auth-field">
+            <label>Admin Access Code</label>
+            <input
+              type="password"
+              name="adminCode"
+              placeholder="Enter Secret Code"
+              value={formData.adminCode}
               onChange={handleChange}
               required
             />
