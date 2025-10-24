@@ -19,7 +19,7 @@ export default function AdminManageLearn() {
 
   const fetchLearnData = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/learn");
+      const res = await fetch("https://tb-back-fyvj.onrender.com/api/learn");
       const data = await res.json();
       setLearns(data);
     } catch (err) {
@@ -65,8 +65,8 @@ export default function AdminManageLearn() {
     try {
       const method = editingId ? "PUT" : "POST";
       const url = editingId
-        ? `http://localhost:8000/api/learn/${editingId}`
-        : "http://localhost:8000/api/learn";
+        ? `https://tb-back-fyvj.onrender.com/api/learn/${editingId}`
+        : "https://tb-back-fyvj.onrender.com/api/learn";
 
       const res = await fetch(url, {
         method,
@@ -93,7 +93,7 @@ export default function AdminManageLearn() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this course?")) return;
     try {
-      await fetch(`http://localhost:8000/api/learn/${id}`, { method: "DELETE" });
+      await fetch(`https://tb-back-fyvj.onrender.com/api/learn/${id}`, { method: "DELETE" });
       fetchLearnData();
     } catch (err) {
       console.error("Error deleting:", err);
