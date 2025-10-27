@@ -54,6 +54,7 @@ import AdminViewContact from '../Dashboard/AdminViewContact';
 import AdminViewApplications from '../Dashboard/AdminViewApplications';
 import AdminManageNews from "../Dashboard/AdminManageNews";
 
+
 // 🧠 Tutor Management
 import TutorManageBlog from '../Dashboard/TutorManageBlog';
 import TutorManageCourse from '../Dashboard/TutorManageCourse';
@@ -73,6 +74,7 @@ import PrivacyCms from '../AdminCms/PrivacyCms';
 import TermCondCms from '../AdminCms/TermCondCms';
 import LearnDetails from '../Pages/LearnDetails';
 import AdminManageLearn from '../Dashboard/AdminManageLearn';
+import VisitorAnalytics from '../Dashboard/VisitorAnalytics';
 
 
 // =============================
@@ -133,6 +135,7 @@ function PagesRoute() {
       <Route path="/admin/applications" element={<AdminViewApplications />} />
       <Route path="/admin/news" element={<AdminManageNews />} />
       <Route path="/admin/manage-learn" element={<AdminManageLearn />} />
+      <Route path="/admin/visitors" element={<VisitorAnalytics />} />
 
 
       {/* 🧾 CMS Editing */}

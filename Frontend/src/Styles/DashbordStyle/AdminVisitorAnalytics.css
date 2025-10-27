@@ -1,0 +1,91 @@
+.visitor-analytics-container {
+  padding: 40px;
+  font-family: "Inter", sans-serif;
+  color: #222;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.visitor-page-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+.visitor-summary {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.visitor-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.visitor-card h3 {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.visitor-card p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #3498db;
+}
+
+.visitor-chart-section {
+  margin: 40px auto;
+  width: 80%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.visitor-chart {
+  margin-top: 20px;
+}
+
+.visitor-table-section {
+  margin-top: 40px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.visitor-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.visitor-table th, .visitor-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.visitor-table th {
+  background: #3498db;
+  color: white;
+}
+
+.visitor-table tr:hover {
+  background: #f2f6ff;
+}
+
+.visitor-loading {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 60px;
+}

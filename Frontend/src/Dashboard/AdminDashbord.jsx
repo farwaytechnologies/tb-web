@@ -159,6 +159,11 @@ export default function AdminDashboard() {
           <FaBell style={{ marginRight: '8px' }} />
           Admin View Applications
         </Link>
+          <Link to="/admin/visitors" className="techborg-admin-action-btn">
+          <FaBell style={{ marginRight: '8px' }} />
+          Admin View Visitor Analytics
+        </Link>
+
 
         {/* ✅ NEW: Manage Learn Section */}
         <Link to="/admin/manage-learn" className="techborg-admin-action-btn">

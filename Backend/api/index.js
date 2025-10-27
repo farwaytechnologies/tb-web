@@ -13,8 +13,10 @@ router.use('/notifications', require('../routes/notificationRoutes'));
 router.use('/about', require('../routes/aboutRoutes'));
 router.use('/jobs', require('../routes/jobRoutes'));
 router.use('/applications', require('../routes/jobApplicationRoutes')); // ✅ Job Applications
-router.use('/news', require('../routes/newsRoutes')); // ✅ add this
+router.use('/news', require('../routes/newsRoutes')); // ✅ News
 router.use('/learn', require('../routes/learnRoutes'));
 
+// ✅ Add this line for visitor analytics
+router.use('/visitors', require('../routes/visitorRoutes'));
 
 module.exports = router;
