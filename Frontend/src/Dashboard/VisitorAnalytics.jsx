@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import "../Styles/DashbordStyle/AdminVisitorAnalytics.css"; // ✅ we'll style next
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "https://tb-back-fyvj.onrender.com";
 
 const VisitorAnalytics = () => {
   const [visitors, setVisitors] = useState([]);
