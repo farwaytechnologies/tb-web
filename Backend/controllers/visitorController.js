@@ -1,15 +1,21 @@
 const Visitor = require("../models/Visitor");
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args)); // ✅ ESM compatible import for node-fetch
 
 // 📍 Add a new visitor
 exports.addVisitor = async (req, res) => {
   try {
-    const ip =
+    let ip =
       req.headers["x-forwarded-for"]?.split(",")[0] ||
       req.connection.remoteAddress ||
       req.socket.remoteAddress;
 
-    // Get geolocation info using a free IP geolocation API
+    if (ip.startsWith("::ffff:")) ip = ip.replace("::ffff:", "");
+
+    // For localhost testing, use a public IP (localhost IPs can’t be geolocated)
+    if (ip === "127.0.0.1" || ip === "::1") {
+      ip = "8.8.8.8";
+    }
+
+    // ✅ Native fetch (Node 18+ has it built-in)
     const response = await fetch(`https://ipapi.co/${ip}/json/`);
     const data = await response.json();
 
@@ -20,8 +26,7 @@ exports.addVisitor = async (req, res) => {
       city: data.city || "Unknown",
     };
 
-    const newVisitor = new Visitor(visitorData);
-    await newVisitor.save();
+    const newVisitor = await Visitor.create(visitorData);
 
     res.status(201).json({
       success: true,
@@ -29,33 +34,32 @@ exports.addVisitor = async (req, res) => {
       visitor: newVisitor,
     });
   } catch (error) {
-    console.error("Visitor logging failed:", error);
+    console.error("Visitor logging failed:", error.message);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-// 📊 Get all visitors (for dashboard analytics)
+// 📊 Get all visitors
 exports.getAllVisitors = async (req, res) => {
   try {
     const visitors = await Visitor.find().sort({ createdAt: -1 });
     res.status(200).json({ success: true, visitors });
   } catch (error) {
-    console.error("Error fetching visitors:", error);
+    console.error("Error fetching visitors:", error.message);
     res.status(500).json({ success: false, message: "Failed to fetch visitors" });
   }
 };
 
-// 🌍 Get country statistics
+// 🌍 Get stats grouped by country
 exports.getVisitorStats = async (req, res) => {
   try {
     const stats = await Visitor.aggregate([
       { $group: { _id: "$country", count: { $sum: 1 } } },
       { $sort: { count: -1 } },
     ]);
-
     res.status(200).json({ success: true, stats });
   } catch (error) {
-    console.error("Error fetching visitor stats:", error);
+    console.error("Error fetching visitor stats:", error.message);
     res.status(500).json({ success: false, message: "Failed to fetch visitor stats" });
   }
 };

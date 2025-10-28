@@ -1,19 +1,22 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
 
-import Navbar from './Components/Navbar';
-import Footer from './Components/Footer';
-import PagesRout from './Routes/PagesRoute';
+import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
+import PagesRout from "./Routes/PagesRoute";
 
-// ✅ Visitor tracker function
+// ✅ Visitor tracker function using fetch
 const trackVisitor = async () => {
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
   try {
-    await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/visitors/add`, {
+    await fetch(`${apiUrl}/api/visitors/add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ timestamp: new Date().toISOString() }), // small safe payload
     });
+    console.log("✅ Visitor tracked successfully");
   } catch (error) {
-    console.error("Visitor tracking failed:", error);
+    console.error("❌ Visitor tracking failed:", error);
   }
 };
 

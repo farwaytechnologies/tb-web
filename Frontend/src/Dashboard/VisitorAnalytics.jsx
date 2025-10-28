@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
-import "../Styles/DashbordStyle/AdminVisitorAnalytics.css"; // ✅ we'll style next
+import "../Styles/DashbordStyle/AdminVisitorAnalytics.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const VisitorAnalytics = () => {
   const [visitors, setVisitors] = useState([]);
@@ -33,7 +33,14 @@ const VisitorAnalytics = () => {
     fetchVisitorData();
   }, []);
 
-  if (loading) return <div className="visitor-loading">Loading visitor data...</div>;
+  if (loading) {
+    return (
+      <div className="visitor-loading">
+        <div className="spinner" />
+        <p>Loading analytics...</p>
+      </div>
+    );
+  }
 
   const data = {
     labels: stats.map((item) => item._id),
@@ -41,32 +48,44 @@ const VisitorAnalytics = () => {
       {
         label: "Visitors by Country",
         data: stats.map((item) => item.count),
-        backgroundColor: "rgba(54, 162, 235, 0.6)",
+        backgroundColor: "rgba(99, 102, 241, 0.8)",
+        borderRadius: 6,
       },
     ],
   };
 
   return (
-    <div className="visitor-analytics-container">
-      <h2 className="visitor-page-title">🌍 Visitor Analytics Dashboard</h2>
+    <div className="analytics-container">
+      <header className="analytics-header">
+        <h1>Visitor Analytics</h1>
+        <p>Real-time insights from global visitors</p>
+      </header>
 
-      <div className="visitor-summary">
-        <div className="visitor-card">
-          <h3>Total Visitors</h3>
-          <p>{visitors.length}</p>
+      <section className="analytics-cards">
+        <div className="analytics-card">
+          <span className="card-label">Total Visitors</span>
+          <h2>{visitors.length}</h2>
         </div>
-      </div>
+        <div className="analytics-card">
+          <span className="card-label">Countries</span>
+          <h2>{stats.length}</h2>
+        </div>
+        <div className="analytics-card">
+          <span className="card-label">Latest Visitor</span>
+          <h2>{visitors[0]?.country || "—"}</h2>
+        </div>
+      </section>
 
-      <div className="visitor-chart-section">
+      <section className="chart-section">
         <h3>Visitors by Country</h3>
-        <div className="visitor-chart">
-          <Bar data={data} />
+        <div className="chart-wrapper">
+          <Bar data={data} options={{ plugins: { legend: { display: false } } }} />
         </div>
-      </div>
+      </section>
 
-      <div className="visitor-table-section">
+      <section className="table-section">
         <h3>Recent Visitors</h3>
-        <table className="visitor-table">
+        <table>
           <thead>
             <tr>
               <th>IP</th>
@@ -88,7 +107,7 @@ const VisitorAnalytics = () => {
             ))}
           </tbody>
         </table>
-      </div>
+      </section>
     </div>
   );
 };

@@ -75,6 +75,7 @@ import TermCondCms from '../AdminCms/TermCondCms';
 import LearnDetails from '../Pages/LearnDetails';
 import AdminManageLearn from '../Dashboard/AdminManageLearn';
 import VisitorAnalytics from '../Dashboard/VisitorAnalytics';
+import NewsDetail from '../Pages/NewsDetail';
 
 
 // =============================
@@ -98,6 +99,7 @@ function PagesRoute() {
       <Route path="/notifications" element={<Notifications />} />
       <Route path="/job-alerts" element={<JobAlert />} />
       <Route path="/apply/:jobId" element={<JobApplication />} />
+      <Route path="/news/:id" element={<NewsDetail />} />
 
       {/* 📘 Course Routes */}
       <Route path="/courses/:id" element={<CourseDetail />} />
