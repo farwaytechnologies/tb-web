@@ -49,7 +49,7 @@ const VisitorAnalytics = () => {
       {
         label: "Visitors by Country",
         data: stats.map((item) => item.count),
-        backgroundColor: "rgba(99, 102, 241, 0.8)",
+        backgroundColor: "rgba(72, 75, 233, 0.8)",
         borderRadius: 6,
       },
     ],
