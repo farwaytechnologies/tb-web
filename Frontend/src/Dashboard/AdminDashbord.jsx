@@ -2,18 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../Styles/DashbordStyle/AdminDashbord.css';
 import {
-  FaUsers,
-  FaBook,
-  FaUserShield,
-  FaBlog,
-  FaCheckCircle,
-  FaLightbulb,
-  FaUserGraduate,
-  FaUserTie,
-  FaBell,
-  FaNewspaper,
-  FaCode
-} from 'react-icons/fa';
+  Users,
+  BookOpen,
+  Shield,
+  FileText,
+  CheckCircle,
+  Lightbulb,
+  GraduationCap,
+  UserCog,
+  Bell,
+  Newspaper,
+  Code,
+  Briefcase,
+  MessageSquare,
+  BarChart3,
+  Settings,
+  TrendingUp
+} from 'lucide-react';
 
 export default function AdminDashboard() {
   const [admin, setAdmin] = useState({});
@@ -63,113 +68,87 @@ export default function AdminDashboard() {
     fetchStats();
   }, [navigate]);
 
+  const statsCards = [
+    { icon: Users, count: userCount, label: 'Total Users', color: '#6366f1', bgColor: '#eef2ff' },
+    { icon: GraduationCap, count: studentCount, label: 'Students', color: '#8b5cf6', bgColor: '#f3e8ff' },
+    { icon: Shield, count: tutorCount, label: 'Tutors', color: '#ec4899', bgColor: '#fce7f3' },
+    { icon: UserCog, count: adminCount, label: 'Administrators', color: '#f59e0b', bgColor: '#fef3c7' },
+    { icon: BookOpen, count: courseCount, label: 'Courses', color: '#10b981', bgColor: '#d1fae5' },
+    { icon: FileText, count: blogCount, label: 'Blog Posts', color: '#06b6d4', bgColor: '#cffafe' },
+    { icon: CheckCircle, count: enrollmentCount, label: 'Enrollments', color: '#14b8a6', bgColor: '#ccfbf1' },
+    { icon: TrendingUp, count: '98%', label: 'Success Rate', color: '#84cc16', bgColor: '#ecfccb' }
+  ];
+
+  const quickActions = [
+    { to: '/admin/users', icon: Users, label: 'Manage Users', color: '#6366f1' },
+    { to: '/admin/courses', icon: BookOpen, label: 'Manage Courses', color: '#10b981' },
+    { to: '/admin/tutors', icon: Shield, label: 'Manage Tutors', color: '#ec4899' },
+    { to: '/admin/manage-admins', icon: UserCog, label: 'Manage Admins', color: '#f59e0b' },
+    { to: '/admin/blogs', icon: FileText, label: 'Manage Blogs', color: '#06b6d4' },
+    { to: '/admin/news', icon: Newspaper, label: 'Manage News', color: '#8b5cf6' },
+    { to: '/admin/enrollments', icon: CheckCircle, label: 'Enrollment List', color: '#14b8a6' },
+    { to: '/admin/innovations', icon: Lightbulb, label: 'Manage Innovations', color: '#eab308' },
+    { to: '/admin/manage-cms', icon: Settings, label: 'Manage CMS', color: '#64748b' },
+    { to: '/admin/view-contact', icon: MessageSquare, label: 'Contact Messages', color: '#3b82f6' },
+    { to: '/admin/manage-notifications', icon: Bell, label: 'Notifications', color: '#ef4444' },
+    { to: '/admin/add-job', icon: Briefcase, label: 'Post Job Alert', color: '#f97316' },
+    { to: '/admin/applications', icon: FileText, label: 'View Applications', color: '#0ea5e9' },
+    { to: '/admin/visitors', icon: BarChart3, label: 'Visitor Analytics', color: '#a855f7' },
+    { to: '/admin/manage-learn', icon: Code, label: 'Manage Learn Section', color: '#22c55e' }
+  ];
+
   return (
-    <div className="techborg-admin-dashboard-container">
-      {/* Header */}
-      <div className="techborg-admin-header">
-        <div>
-          <h2>Welcome, {admin.name}</h2>
-          <p className="techborg-admin-role">Administrator Panel</p>
-        </div>
-        <img
-          src={admin.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(admin.name)}`}
-          alt="Admin"
-          className="techborg-admin-avatar"
-        />
-      </div>
-
-      {/* Stats Cards */}
-      <div className="techborg-admin-stats">
-        <div className="techborg-admin-card">
-          <FaUsers size={28} />
-          <h3>{userCount}</h3>
-          <p>Registered Users</p>
-        </div>
-        <div className="techborg-admin-card">
-          <FaUserGraduate size={28} />
-          <h3>{studentCount}</h3>
-          <p>Registered Students</p>
-        </div>
-        <div className="techborg-admin-card">
-          <FaUserTie size={28} />
-          <h3>{adminCount}</h3>
-          <p>Admins</p>
-        </div>
-        <div className="techborg-admin-card">
-          <FaUserShield size={28} />
-          <h3>{tutorCount}</h3>
-          <p>Tutors</p>
-        </div>
-        <div className="techborg-admin-card">
-          <FaBook size={28} />
-          <h3>{courseCount}</h3>
-          <p>Courses Offered</p>
-        </div>
-        <div className="techborg-admin-card">
-          <FaBlog size={28} />
-          <h3>{blogCount}</h3>
-          <p>Total Blogs</p>
-        </div>
-        <div className="techborg-admin-card">
-          <FaCheckCircle size={28} />
-          <h3>{enrollmentCount}</h3>
-          <p>Enrolled Students</p>
+    <div className="admin-dashboard">
+      {/* Header Section */}
+      <div className="admin-dashboard__header">
+        <div className="admin-dashboard__header-content">
+          <div className="admin-dashboard__header-text">
+            <h1 className="admin-dashboard__title">Welcome back, {admin.name}</h1>
+            <p className="admin-dashboard__subtitle">Here's what's happening with your platform today</p>
+          </div>
+          <div className="admin-dashboard__header-avatar">
+            <img
+              src={admin.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(admin.name)}&background=6366f1&color=fff&size=128`}
+              alt="Admin"
+              className="admin-dashboard__avatar"
+            />
+            <div className="admin-dashboard__status"></div>
+          </div>
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="techborg-admin-action-grid">
-        <Link to="/admin/users" className="techborg-admin-action-btn">Manage Users</Link>
-        <Link to="/admin/courses" className="techborg-admin-action-btn">Manage Courses</Link>
-        <Link to="/admin/tutors" className="techborg-admin-action-btn">Manage Tutors</Link>
-        <Link to="/admin/manage-admins" className="techborg-admin-action-btn">
-          <FaUserShield style={{ marginRight: '8px' }} />
-          Manage Admins
-        </Link>
-        <Link to="/admin/blogs" className="techborg-admin-action-btn">
-          <FaBlog style={{ marginRight: '8px' }} />
-          Manage Blogs
-        </Link>
-        <Link to="/admin/news" className="techborg-admin-action-btn">
-          <FaNewspaper style={{ marginRight: '8px' }} />
-          Manage News
-        </Link>
-        <Link to="/admin/enrollments" className="techborg-admin-action-btn">Enrollment List</Link>
-        <Link to="/admin/innovations" className="techborg-admin-action-btn">
-          <FaLightbulb style={{ marginRight: '8px' }} />
-          Manage Innovations
-        </Link>
-        <Link to="/admin/manage-cms" className="techborg-admin-action-btn">
-          <FaCheckCircle style={{ marginRight: '8px' }} />
-          Manage CMS
-        </Link>
-        <Link to="/admin/view-contact" className="techborg-admin-action-btn">
-          <FaUsers style={{ marginRight: '8px' }} />
-          View Contact Messages
-        </Link>
-        <Link to="/admin/manage-notifications" className="techborg-admin-action-btn">
-          <FaBell style={{ marginRight: '8px' }} />
-          Manage Notifications
-        </Link>
-        <Link to="/admin/add-job" className="techborg-admin-action-btn">
-          <FaBell style={{ marginRight: '8px' }} />
-          Add Job Alert
-        </Link>
-        <Link to="/admin/applications" className="techborg-admin-action-btn">
-          <FaBell style={{ marginRight: '8px' }} />
-          Admin View Applications
-        </Link>
-          <Link to="/admin/visitors" className="techborg-admin-action-btn">
-          <FaBell style={{ marginRight: '8px' }} />
-          Admin View Visitor Analytics
-        </Link>
+      {/* Stats Grid */}
+      <div className="admin-dashboard__stats">
+        {statsCards.map((stat, index) => (
+          <div key={index} className="admin-dashboard__stat-card">
+            <div className="admin-dashboard__stat-icon" style={{ backgroundColor: stat.bgColor }}>
+              <stat.icon size={24} style={{ color: stat.color }} strokeWidth={2} />
+            </div>
+            <div className="admin-dashboard__stat-content">
+              <h3 className="admin-dashboard__stat-count">{stat.count}</h3>
+              <p className="admin-dashboard__stat-label">{stat.label}</p>
+            </div>
+          </div>
+        ))}
+      </div>
 
-
-        {/* ✅ NEW: Manage Learn Section */}
-        <Link to="/admin/manage-learn" className="techborg-admin-action-btn">
-          <FaCode style={{ marginRight: '8px' }} />
-          Manage Learn Section
-        </Link>
+      {/* Quick Actions Section */}
+      <div className="admin-dashboard__actions-section">
+        <h2 className="admin-dashboard__section-title">Quick Actions</h2>
+        <div className="admin-dashboard__actions-grid">
+          {quickActions.map((action, index) => (
+            <Link
+              key={index}
+              to={action.to}
+              className="admin-dashboard__action-card"
+            >
+              <div className="admin-dashboard__action-icon" style={{ color: action.color }}>
+                <action.icon size={20} strokeWidth={2} />
+              </div>
+              <span className="admin-dashboard__action-label">{action.label}</span>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
