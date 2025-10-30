@@ -4,26 +4,26 @@ const Visitor = require("../models/Visitor");
 exports.addVisitor = async (req, res) => {
   try {
     let ip =
-      req.headers["x-forwarded-for"]?.split(",")[0] ||
-      req.connection.remoteAddress ||
-      req.socket.remoteAddress;
+      req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+      req.socket?.remoteAddress ||
+      req.connection?.remoteAddress;
 
     if (ip.startsWith("::ffff:")) ip = ip.replace("::ffff:", "");
 
-    // For localhost testing, use a public IP (localhost IPs can’t be geolocated)
     if (ip === "127.0.0.1" || ip === "::1") {
       ip = "8.8.8.8";
     }
 
-    // ✅ Native fetch (Node 18+ has it built-in)
-    const response = await fetch(`https://ipapi.co/${ip}/json/`);
-    const data = await response.json();
+    console.log("📡 Tracking visitor IP:", ip);
+
+    const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+    const geoData = await geoRes.json();
 
     const visitorData = {
       ip,
-      country: data.country_name || "Unknown",
-      region: data.region || "Unknown",
-      city: data.city || "Unknown",
+      country: geoData.country || "Unknown Country",
+      region: geoData.regionName || "Unknown Region",
+      city: geoData.city || "Unknown City",
     };
 
     const newVisitor = await Visitor.create(visitorData);
@@ -34,7 +34,7 @@ exports.addVisitor = async (req, res) => {
       visitor: newVisitor,
     });
   } catch (error) {
-    console.error("Visitor logging failed:", error.message);
+    console.error("❌ Visitor logging failed:", error.message);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
