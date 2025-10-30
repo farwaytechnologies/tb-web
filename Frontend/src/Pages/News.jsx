@@ -66,9 +66,15 @@ function News() {
   return (
     <div className="news-wrapper">
       <Helmet>
-        <title>Newsroom - TechBorg E-Learning</title>
-        <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery. It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
-        <meta name="keywords" content="react, seo, tutorial, java, javascript, cpp, python" />
+        <title>Stay Updated in Tech World - TechBorg E-Learning</title>
+        <meta 
+          name="description" 
+          content="Stay informed with the latest news, trends, and stories from the tech industry." 
+        />
+        <meta 
+          name="keywords" 
+          content="tech news, trends, technology updates, innovation, software, AI, development" 
+        />
       </Helmet>
 
       {/* Animated background blobs */}
@@ -80,18 +86,9 @@ function News() {
       <div className="news-container">
         {/* Header Section */}
         <header className="news-header">
-          <div className="header-badge">
-            <span className="status-dot"></span>
-            <span className="badge-text">Live Updates</span>
-          </div>
-          
-          <h1 className="news-title">
-            Newsroom
-            <span className="title-gradient">Stay Informed</span>
-          </h1>
-          
+          <h1 className="news-title">Stay Updated in Tech World</h1>
           <p className="news-subtitle">
-            Latest updates, stories, and announcements from the TechBorg community
+            Stay informed with the latest news, trends, and stories from the tech industry.
           </p>
         </header>
 
@@ -107,10 +104,7 @@ function News() {
               </div>
               <h2 className="section-title">All News</h2>
             </div>
-            <div className="item-count">
-              <span className="count-number">{newsList.length}</span>
-              <span className="count-label">stories</span>
-            </div>
+            {/* Removed story count section */}
           </div>
 
           {/* Stories List */}
