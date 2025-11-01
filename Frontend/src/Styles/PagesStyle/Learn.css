@@ -1,19 +1,19 @@
-/* Learn.css - Modern Styling */
+/* Learn.css - Modern Styling with Page-Specific Classes */
 
-.learn-container {
+.learnpage-container {
   min-height: 100vh;
   padding: 4rem 2rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   background-attachment: fixed;
 }
 
-.learn-header {
+.learnpage-header {
   text-align: center;
   margin-bottom: 4rem;
-  animation: fadeInDown 0.8s ease-out;
+  animation: learnpageFadeInDown 0.8s ease-out;
 }
 
-.learn-title {
+.learnpage-title {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 800;
   color: #ffffff;
@@ -21,14 +21,14 @@
   line-height: 1.2;
 }
 
-.highlight {
+.learnpage-highlight {
   background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.learn-subtitle {
+.learnpage-subtitle {
   font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.9);
   max-width: 600px;
@@ -37,7 +37,7 @@
 }
 
 /* Grid Layout */
-.learn-grid {
+.learnpage-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
@@ -46,41 +46,41 @@
 }
 
 /* Card Styling */
-.learn-card {
+.learnpage-card {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: fadeInUp 0.6s ease-out backwards;
+  animation: learnpageFadeInUp 0.6s ease-out backwards;
   display: flex;
   flex-direction: column;
 }
 
-.learn-card:hover {
+.learnpage-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-.card-image-wrapper {
+.learnpage-card-image-wrapper {
   position: relative;
   height: 200px;
   overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.learn-card-img {
+.learnpage-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.learn-card:hover .learn-card-img {
+.learnpage-card:hover .learnpage-card-img {
   transform: scale(1.1);
 }
 
-.card-overlay {
+.learnpage-card-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -90,14 +90,14 @@
 }
 
 /* Card Content */
-.card-content {
+.learnpage-card-content {
   padding: 2rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.card-title {
+.learnpage-card-title {
   font-size: 1.8rem;
   font-weight: 700;
   color: #2d3748;
@@ -108,7 +108,7 @@
   background-clip: text;
 }
 
-.card-description {
+.learnpage-card-description {
   font-size: 1rem;
   color: #4a5568;
   line-height: 1.6;
@@ -117,7 +117,7 @@
 }
 
 /* Button Styling */
-.learn-btn {
+.learnpage-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -133,21 +133,21 @@
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-.learn-btn:hover {
+.learnpage-btn:hover {
   transform: translateX(5px);
   box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
 }
 
-.btn-arrow {
+.learnpage-btn-arrow {
   transition: transform 0.3s ease;
 }
 
-.learn-btn:hover .btn-arrow {
+.learnpage-btn:hover .learnpage-btn-arrow {
   transform: translateX(5px);
 }
 
 /* Loading State */
-.loading-spinner {
+.learnpage-loading-spinner {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -156,23 +156,23 @@
   gap: 1.5rem;
 }
 
-.spinner {
+.learnpage-spinner {
   width: 60px;
   height: 60px;
   border: 4px solid rgba(255, 255, 255, 0.3);
   border-top-color: #ffffff;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: learnpageSpin 1s linear infinite;
 }
 
-.loading-spinner p {
+.learnpage-loading-text {
   color: white;
   font-size: 1.2rem;
   font-weight: 500;
 }
 
 /* Error State */
-.error-message {
+.learnpage-error-message {
   background: rgba(255, 255, 255, 0.95);
   padding: 3rem;
   border-radius: 20px;
@@ -182,19 +182,19 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
-.error-message h2 {
+.learnpage-error-title {
   color: #e53e3e;
   font-size: 2rem;
   margin-bottom: 1rem;
 }
 
-.error-message p {
+.learnpage-error-text {
   color: #4a5568;
   font-size: 1.1rem;
 }
 
 /* Empty State */
-.empty-state {
+.learnpage-empty-state {
   text-align: center;
   padding: 4rem;
   color: white;
@@ -202,7 +202,7 @@
 }
 
 /* Animations */
-@keyframes fadeInDown {
+@keyframes learnpageFadeInDown {
   from {
     opacity: 0;
     transform: translateY(-30px);
@@ -213,7 +213,7 @@
   }
 }
 
-@keyframes fadeInUp {
+@keyframes learnpageFadeInUp {
   from {
     opacity: 0;
     transform: translateY(30px);
@@ -224,7 +224,10 @@
   }
 }
 
-@keyframes spin {
+@keyframes learnpageSpin {
+  from {
+    transform: rotate(0deg);
+  }
   to {
     transform: rotate(360deg);
   }
@@ -232,34 +235,34 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .learn-container {
+  .learnpage-container {
     padding: 2rem 1rem;
   }
 
-  .learn-header {
+  .learnpage-header {
     margin-bottom: 2rem;
   }
 
-  .learn-grid {
+  .learnpage-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .card-content {
+  .learnpage-card-content {
     padding: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .learn-title {
+  .learnpage-title {
     font-size: 2rem;
   }
 
-  .learn-subtitle {
+  .learnpage-subtitle {
     font-size: 1rem;
   }
 
-  .card-title {
+  .learnpage-card-title {
     font-size: 1.5rem;
   }
 }

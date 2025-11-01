@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../Styles/PagesStyle/Learn.css";
 import { Helmet } from 'react-helmet';
-<Helmet>
-  <title>TechBorg E-Learning</title>
-  <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery.
-It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
-  <meta name="keywords" content="react, seo, tutorial, java, javascirpt, cpp, python" />
-</Helmet>
+import "../Styles/PagesStyle/Learn.css";
+
 const Learn = () => {
   const [languages, setLanguages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,10 +28,15 @@ const Learn = () => {
 
   if (loading) {
     return (
-      <div className="learn-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Loading courses...</p>
+      <div className="learnpage-container">
+        <Helmet>
+          <title>Loading - TechBorg E-Learning</title>
+          <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery. It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
+          <meta name="keywords" content="react, seo, tutorial, java, javascript, cpp, python" />
+        </Helmet>
+        <div className="learnpage-loading-spinner">
+          <div className="learnpage-spinner"></div>
+          <p className="learnpage-loading-text">Loading courses...</p>
         </div>
       </div>
     );
@@ -44,51 +44,61 @@ const Learn = () => {
 
   if (error) {
     return (
-      <div className="learn-container">
-        <div className="error-message">
-          <h2>⚠️ Oops!</h2>
-          <p>{error}</p>
+      <div className="learnpage-container">
+        <Helmet>
+          <title>Error - TechBorg E-Learning</title>
+          <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery." />
+        </Helmet>
+        <div className="learnpage-error-message">
+          <h2 className="learnpage-error-title">⚠️ Oops!</h2>
+          <p className="learnpage-error-text">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="learn-container">
-      <div className="learn-header">
-        <h1 className="learn-title">
-          Start Your <span className="highlight">Coding Journey</span>
+    <div className="learnpage-container">
+      <Helmet>
+        <title>TechBorg E-Learning</title>
+        <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery. It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
+        <meta name="keywords" content="react, seo, tutorial, java, javascript, cpp, python" />
+      </Helmet>
+
+      <div className="learnpage-header">
+        <h1 className="learnpage-title">
+          Start Your <span className="learnpage-highlight">Coding Journey</span>
         </h1>
-        <p className="learn-subtitle">
+        <p className="learnpage-subtitle">
           Master programming languages with interactive tutorials and real-world examples
         </p>
       </div>
 
-      <div className="learn-grid">
+      <div className="learnpage-grid">
         {languages.map((lang, index) => (
           <div
             key={lang._id}
-            className="learn-card"
+            className="learnpage-card"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
-            <div className="card-image-wrapper">
+            <div className="learnpage-card-image-wrapper">
               <img
                 src={lang.image}
                 alt={lang.language}
-                className="learn-card-img"
+                className="learnpage-card-img"
                 loading="lazy"
               />
-              <div className="card-overlay"></div>
+              <div className="learnpage-card-overlay"></div>
             </div>
 
-            <div className="card-content">
-              <h2 className="card-title">{lang.language}</h2>
-              <p className="card-description">{lang.shortDescription}</p>
+            <div className="learnpage-card-content">
+              <h2 className="learnpage-card-title">{lang.language}</h2>
+              <p className="learnpage-card-description">{lang.shortDescription}</p>
 
-              <Link to={`/learn/${lang._id}`} className="learn-btn">
+              <Link to={`/learn/${lang._id}`} className="learnpage-btn">
                 <span>Start Learning</span>
                 <svg
-                  className="btn-arrow"
+                  className="learnpage-btn-arrow"
                   width="20"
                   height="20"
                   viewBox="0 0 20 20"
@@ -108,8 +118,8 @@ const Learn = () => {
         ))}
       </div>
 
-      {languages.length === 0 && (
-        <div className="empty-state">
+      {languages.length === 0 && !loading && (
+        <div className="learnpage-empty-state">
           <p>No courses available at the moment. Check back soon!</p>
         </div>
       )}
