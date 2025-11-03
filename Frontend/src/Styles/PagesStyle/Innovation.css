@@ -19,7 +19,9 @@
   color: #ffffff;
   margin-bottom: 0.5rem;
 }
-
+.h{
+  height: 10px;
+}
 .innovation-subtext {
   font-size: 1.05rem;
   color: #e6e6e6;

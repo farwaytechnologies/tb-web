@@ -350,7 +350,9 @@
   .notifpage-empty-wrapper {
     padding: 3rem 2rem;
   }
-
+.h{
+  height: 10px;
+}
   .notifpage-empty-title {
     font-size: 1.5rem;
   }

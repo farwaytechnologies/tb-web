@@ -320,7 +320,9 @@
     padding: 0.875rem 1rem;
     font-size: 0.95rem;
   }
-
+.h{
+  height: 10px;
+}
   .jobapp-submit-btn {
     padding: 1rem 1.5rem;
     font-size: 1rem;

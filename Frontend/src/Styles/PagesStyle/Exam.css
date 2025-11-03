@@ -19,7 +19,9 @@
   flex-direction: column;
   gap: 24px;
 }
-
+.h{
+  height: 10px;
+}
 .techborg-exam-item {
   display: flex;
   justify-content: space-between;

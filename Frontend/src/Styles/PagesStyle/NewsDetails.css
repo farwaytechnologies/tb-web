@@ -545,7 +545,9 @@
   .nd-related-card {
     padding: 20px;
   }
-
+.h{
+  height: 10px;
+}
   .nd-related-card-title {
     font-size: 0.95rem;
   }
