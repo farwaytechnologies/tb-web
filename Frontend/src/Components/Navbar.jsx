@@ -1,7 +1,18 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaBars, FaTimes, FaBell, FaArrowLeft } from 'react-icons/fa';
-import { MdAccountCircle, MdKeyboardArrowDown } from 'react-icons/md';
+import { 
+  Menu, 
+  X, 
+  Bell, 
+  ArrowLeft, 
+  ChevronDown, 
+  User, 
+  FileText, 
+  Award, 
+  Receipt, 
+  Settings, 
+  LogOut 
+} from 'lucide-react';
 import '../Styles/ComponentsStyle/Navbar.css';
 
 function Navbar() {
@@ -91,6 +102,7 @@ function Navbar() {
 
   const toggleDropdown = useCallback(() => setDropdownOpen(prev => !prev), []);
   const toggleExamDropdown = useCallback(() => setExamDropdownOpen(prev => !prev), []);
+  const toggleLearningDropdown = useCallback(() => setLearningDropdownOpen(prev => !prev), []);
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
   const closeMobileMenu = useCallback(() => {
     setMenuOpen(false);
@@ -129,65 +141,103 @@ function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
-      <div className="navbar-container">
-        {/* Logo + Navigation Arrows */}
-        <div className="navbar-logo-wrapper">
-          <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-            <span className="navbar-logo-text">Tech</span>
-            <span className="navbar-logo-accent">Borg</span>
+    <nav className={`tb-navbar ${scrolled ? 'tb-navbar--scrolled' : ''}`}>
+      <div className="tb-navbar__container">
+        {/* Logo Section */}
+        <div className="tb-navbar__brand">
+          <Link to="/" className="tb-navbar__logo" onClick={closeMobileMenu}>
+            <span className="tb-navbar__logo-text">Tech</span>
+            <span className="tb-navbar__logo-accent">Borg</span>
           </Link>
 
-          {/* Back Arrow */}
-          <div className="navbar-nav-controls">
-            <button className="nav-arrow" onClick={() => navigate(-1)} title="Go Back">
-              <FaArrowLeft />
-            </button>
-          </div>
+          {/* Back Navigation Button */}
+          <button 
+            className="tb-navbar__back-btn" 
+            onClick={() => navigate(-1)} 
+            title="Go Back"
+            aria-label="Go back to previous page"
+          >
+            <ArrowLeft size={18} />
+          </button>
         </div>
 
-        {/* Dashboard Link */}
+        {/* Dashboard Quick Link */}
         {user && (
-          <Link to={getDashboardLink()} className="navbar-dashboard-link" onClick={closeMobileMenu}>
-            <span className="navbar-dashboard-text">{getDashboardText()}</span>
+          <Link 
+            to={getDashboardLink()} 
+            className="tb-navbar__dashboard-link" 
+            onClick={closeMobileMenu}
+          >
+            {getDashboardText()}
           </Link>
         )}
 
-        {/* Hamburger */}
-        <button className="navbar-hamburger" onClick={toggleMenu} aria-label="Toggle menu" aria-expanded={menuOpen}>
-          {menuOpen ? <FaTimes /> : <FaBars />}
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="tb-navbar__hamburger" 
+          onClick={toggleMenu} 
+          aria-label="Toggle navigation menu" 
+          aria-expanded={menuOpen}
+        >
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
         {/* Navigation Links */}
-        <ul className={`navbar-links ${menuOpen ? 'navbar-links-active' : ''}`}>
-          <li>
-            <Link to="/" onClick={closeMobileMenu} className={`navbar-link ${isActive('/') ? 'active' : ''}`}>
+        <ul className={`tb-navbar__links ${menuOpen ? 'tb-navbar__links--active' : ''}`}>
+          <li className="tb-navbar__item">
+            <Link 
+              to="/" 
+              onClick={closeMobileMenu} 
+              className={`tb-navbar__link ${isActive('/') ? 'tb-navbar__link--active' : ''}`}
+            >
               Home
             </Link>
           </li>
 
           {/* Learning Dropdown */}
-          <li className="navbar-dropdown" ref={learningDropdownRef}>
-            <button className="navbar-dropdown-toggle" onClick={() => setLearningDropdownOpen(prev => !prev)}>
+          <li className="tb-navbar__item tb-navbar__dropdown" ref={learningDropdownRef}>
+            <button 
+              className="tb-navbar__dropdown-toggle" 
+              onClick={toggleLearningDropdown}
+              aria-expanded={learningDropdownOpen}
+            >
               Learning
-              <MdKeyboardArrowDown className={`navbar-dropdown-icon ${learningDropdownOpen ? 'rotate' : ''}`} />
+              <ChevronDown 
+                size={18} 
+                className={`tb-navbar__dropdown-icon ${learningDropdownOpen ? 'tb-navbar__dropdown-icon--rotate' : ''}`} 
+              />
             </button>
             {learningDropdownOpen && (
-              <ul className="navbar-submenu">
-                <li><Link to="/courses" onClick={closeMobileMenu}>Courses</Link></li>
-                <li><Link to="/learn" onClick={closeMobileMenu}>Learn</Link></li>
+              <ul className="tb-navbar__submenu">
+                <li>
+                  <Link to="/courses" onClick={closeMobileMenu}>
+                    Courses
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/learn" onClick={closeMobileMenu}>
+                    Learn
+                  </Link>
+                </li>
               </ul>
             )}
           </li>
 
           {/* Exam Guide Dropdown */}
-          <li className="navbar-dropdown" ref={examDropdownRef}>
-            <button className="navbar-dropdown-toggle" onClick={toggleExamDropdown}>
+          <li className="tb-navbar__item tb-navbar__dropdown" ref={examDropdownRef}>
+            <button 
+              className="tb-navbar__dropdown-toggle" 
+              onClick={toggleExamDropdown}
+              aria-expanded={examDropdownOpen}
+            >
               Exam Guide
-              <MdKeyboardArrowDown className={`navbar-dropdown-icon ${examDropdownOpen ? 'rotate' : ''}`} />
+              <ChevronDown 
+                size={18} 
+                className={`tb-navbar__dropdown-icon ${examDropdownOpen ? 'tb-navbar__dropdown-icon--rotate' : ''}`} 
+              />
             </button>
             {examDropdownOpen && (
-              <ul className="navbar-submenu">
+              <ul className="tb-navbar__submenu">
                 <li><Link to="/exam-guide/polytechnic" onClick={closeMobileMenu}>Polytechnic</Link></li>
                 <li><Link to="/exam-guide/engineering" onClick={closeMobileMenu}>Engineering</Link></li>
                 <li><Link to="/exam-guide/degree" onClick={closeMobileMenu}>UG</Link></li>
@@ -196,53 +246,115 @@ function Navbar() {
             )}
           </li>
 
-          {/* Blog and News */}
-          <li><Link to="/blog" onClick={closeMobileMenu} className={`navbar-link ${isActive('/blog') ? 'active' : ''}`}>Blogs</Link></li>
-          <li><Link to="/news" onClick={closeMobileMenu} className={`navbar-link ${isActive('/news') ? 'active' : ''}`}>News</Link></li>
-          <li><Link to="/job-alerts" onClick={closeMobileMenu} className={`navbar-link ${isActive('/job-alerts') ? 'active' : ''}`}>Job Alert</Link></li>
+          <li className="tb-navbar__item">
+            <Link 
+              to="/blog" 
+              onClick={closeMobileMenu} 
+              className={`tb-navbar__link ${isActive('/blog') ? 'tb-navbar__link--active' : ''}`}
+            >
+              Blogs
+            </Link>
+          </li>
 
-          {/* Notification Icon (Mobile) */}
-          <li className="navbar-notification-mobile">
-            <Link to="/notifications" onClick={closeMobileMenu} className="navbar-link">
-              <FaBell /> Notifications ({notificationCount})
+          <li className="tb-navbar__item">
+            <Link 
+              to="/news" 
+              onClick={closeMobileMenu} 
+              className={`tb-navbar__link ${isActive('/news') ? 'tb-navbar__link--active' : ''}`}
+            >
+              News
+            </Link>
+          </li>
+
+          <li className="tb-navbar__item">
+            <Link 
+              to="/job-alerts" 
+              onClick={closeMobileMenu} 
+              className={`tb-navbar__link ${isActive('/job-alerts') ? 'tb-navbar__link--active' : ''}`}
+            >
+              Job Alert
+            </Link>
+          </li>
+
+          {/* Mobile Notification Link */}
+          <li className="tb-navbar__item tb-navbar__notification-mobile">
+            <Link to="/notifications" onClick={closeMobileMenu} className="tb-navbar__link">
+              <Bell size={18} />
+              <span>Notifications</span>
+              {notificationCount > 0 && (
+                <span className="tb-navbar__badge">{notificationCount}</span>
+              )}
             </Link>
           </li>
         </ul>
 
         {/* Right Section */}
-        <div className="navbar-right">
-          {/* Notifications */}
-          <Link to="/notifications" className="navbar-notification-icon" aria-label="Notifications">
-            <FaBell />
-            {notificationCount > 0 && <span className="navbar-notification-badge">{notificationCount}</span>}
+        <div className="tb-navbar__actions">
+          {/* Notification Bell (Desktop) */}
+          <Link 
+            to="/notifications" 
+            className="tb-navbar__notification-btn" 
+            aria-label={`Notifications (${notificationCount} unread)`}
+          >
+            <Bell size={20} />
+            {notificationCount > 0 && (
+              <span className="tb-navbar__notification-badge">{notificationCount}</span>
+            )}
           </Link>
 
-          {/* User Menu */}
+          {/* User Menu or Login */}
           {user ? (
-            <div className="navbar-user-info" ref={userDropdownRef}>
-              <button className="navbar-user-dropdown" onClick={toggleDropdown}>
+            <div className="tb-navbar__user" ref={userDropdownRef}>
+              <button 
+                className="tb-navbar__user-toggle" 
+                onClick={toggleDropdown}
+                aria-expanded={dropdownOpen}
+                aria-label="User menu"
+              >
                 <img
                   src={user.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=4a7abe&color=fff`}
                   alt={user.name}
-                  className="navbar-profile-img"
+                  className="tb-navbar__avatar"
                 />
-                <span className="navbar-username">{user.name}</span>
-                <MdKeyboardArrowDown className={`navbar-dropdown-icon ${dropdownOpen ? 'rotate' : ''}`} />
+                <span className="tb-navbar__username">{user.name}</span>
+                <ChevronDown 
+                  size={16} 
+                  className={`tb-navbar__dropdown-icon ${dropdownOpen ? 'tb-navbar__dropdown-icon--rotate' : ''}`} 
+                />
               </button>
+              
               {dropdownOpen && (
-                <div className="navbar-dropdown-menu">
-                  <Link to={getProfileLink()} onClick={closeMobileMenu}>My Profile</Link>
-                  <Link to="/certificates" onClick={closeMobileMenu}>Certificates</Link>
-                  <Link to="/exam" onClick={closeMobileMenu}>Exam</Link>
-                  <Link to="/invoices" onClick={closeMobileMenu}>Invoices</Link>
-                  <Link to="/settings" onClick={closeMobileMenu}>Settings</Link>
-                  <button onClick={handleLogout} className="navbar-logout-btn">Logout</button>
+                <div className="tb-navbar__user-menu">
+                  <Link to={getProfileLink()} onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
+                    <User size={18} />
+                    <span>My Profile</span>
+                  </Link>
+                  <Link to="/certificates" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
+                    <Award size={18} />
+                    <span>Certificates</span>
+                  </Link>
+                  <Link to="/exam" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
+                    <FileText size={18} />
+                    <span>Exam</span>
+                  </Link>
+                  <Link to="/invoices" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
+                    <Receipt size={18} />
+                    <span>Invoices</span>
+                  </Link>
+                  <Link to="/settings" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
+                    <Settings size={18} />
+                    <span>Settings</span>
+                  </Link>
+                  <button onClick={handleLogout} className="tb-navbar__user-menu-item tb-navbar__logout">
+                    <LogOut size={18} />
+                    <span>Logout</span>
+                  </button>
                 </div>
               )}
             </div>
           ) : (
-            <Link to="/login" className="navbar-login-btn">
-              <MdAccountCircle />
+            <Link to="/login" className="tb-navbar__login-btn">
+              <User size={20} />
               <span>Login</span>
             </Link>
           )}
