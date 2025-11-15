@@ -5,7 +5,6 @@ import im1 from '../assets/images/diversity.png';
 import im2 from '../assets/images/flexibility.png';
 import im3 from '../assets/images/pricing.png';
 
-
 function HomeWhyUs() {
   return (
     <section className="homewhyus-wrapper">
@@ -22,29 +21,35 @@ function HomeWhyUs() {
 
         <div className="homewhyus-cards">
           <div className="homewhyus-card">
-            <img src={im1} alt="Diverse Courses" className="homewhyus-image" />
+            <div className="homewhyus-image-container">
+              <img src={im1} alt="Diverse Courses" className="homewhyus-image" />
+            </div>
             <h3 className="homewhyus-tag">VARIETY OF COURSES</h3>
             <h2 className="homewhyus-title">Explore Diverse Topics</h2>
             <p className="homewhyus-desc">
-              From technology to arts, learn from experts in various fields.
+              From technology to arts, learn from experts in various fields and discover new passions.
             </p>
           </div>
 
           <div className="homewhyus-card">
-            <img src={im2} alt="Flexible Schedule" className="homewhyus-image" />
+            <div className="homewhyus-image-container">
+              <img src={im2} alt="Flexible Schedule" className="homewhyus-image" />
+            </div>
             <h3 className="homewhyus-tag">FLEXIBLE SCHEDULE</h3>
             <h2 className="homewhyus-title">Learn at Your Own Pace</h2>
             <p className="homewhyus-desc">
-              Fit learning into your busy schedule. Access courses anytime, anywhere.
+              Fit learning into your busy schedule. Access courses anytime, anywhere with our platform.
             </p>
           </div>
 
           <div className="homewhyus-card">
-            <img src={im3} alt="Affordable Pricing" className="homewhyus-image" />
+            <div className="homewhyus-image-container">
+              <img src={im3} alt="Affordable Pricing" className="homewhyus-image" />
+            </div>
             <h3 className="homewhyus-tag">AFFORDABLE LEARNING</h3>
             <h2 className="homewhyus-title">Competitive Pricing</h2>
             <p className="homewhyus-desc">
-              Gain access to high-quality education without the high costs.
+              Gain access to high-quality education without breaking the bank. Invest in yourself.
             </p>
           </div>
         </div>

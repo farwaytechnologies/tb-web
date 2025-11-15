@@ -1,103 +1,427 @@
+/* ===================================
+   HomeWhyUs Section - Modern Styles
+   =================================== */
+
+/* Main Wrapper */
 .homewhyus-wrapper {
-  background-color: #f9fafb;
-  padding: 100px 20px;
-  color: #1e2a38;
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Decorative Background Elements */
+.homewhyus-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  animation: float 20s ease-in-out infinite;
+}
+
+.homewhyus-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  animation: float 15s ease-in-out infinite reverse;
+}
+
+/* Container */
 .homewhyus-container {
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
+/* ===================================
+   Header Section
+   =================================== */
 .homewhyus-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 60px;
+  text-align: center;
+  margin-bottom: 4rem;
+  animation: fadeInDown 0.8s ease;
 }
 
 .homewhyus-heading {
-  flex: 1;
-  min-width: 280px;
+  margin-bottom: 1.5rem;
 }
 
 .homewhyus-heading h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 8px;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
 }
 
+/* Animated Underline */
 .homewhyus-underline {
-  width: 60px;
+  width: 80px;
   height: 4px;
-  background-color: #3b82f6;
-  border-radius: 4px;
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+  margin: 0 auto;
+  border-radius: 2px;
+  position: relative;
+  animation: expandWidth 1s ease 0.5s backwards;
+}
+
+.homewhyus-underline::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 4px;
+  background: linear-gradient(90deg, #8b5cf6 0%, #d946ef 100%);
+  left: 50%;
+  transform: translateX(-50%);
+  top: 8px;
+  border-radius: 2px;
+  animation: expandWidth 1s ease 0.7s backwards;
 }
 
 .homewhyus-subtext {
-  flex: 1;
-  min-width: 280px;
-  color: #6b7280;
-  line-height: 1.6;
-  margin-top: 10px;
+  font-size: 1.125rem;
+  color: #64748b;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
 }
 
-/* === Card Row === */
+/* ===================================
+   Cards Grid
+   =================================== */
 .homewhyus-cards {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 1.5rem;
-  justify-content: center;
-  overflow-x: auto;
-  padding-bottom: 10px;
-  scrollbar-width: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+  animation: fadeInUp 0.8s ease 0.3s backwards;
 }
 
-.homewhyus-cards::-webkit-scrollbar {
-  display: none;
-}
-
-/* === Card Styling === */
+/* ===================================
+   Individual Card
+   =================================== */
 .homewhyus-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 24px;
-  min-width: 300px;
-  max-width: 320px;
-  flex-shrink: 0;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  transition: transform 0.3s ease;
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  cursor: pointer;
 }
 
+/* Top Colored Border on Hover */
+.homewhyus-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+/* Card Hover Effects */
 .homewhyus-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-12px);
+  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.homewhyus-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* ===================================
+   Card Image
+   =================================== */
+.homewhyus-image-container {
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 80px;
+  height: 80px;
 }
 
 .homewhyus-image {
-  height: 160px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  margin-bottom: 16px;
+  transition: transform 0.4s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.homewhyus-card:hover .homewhyus-image {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* ===================================
+   Card Content
+   =================================== */
+
+/* Tag/Label */
+.homewhyus-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6366f1;
+  letter-spacing: 1.5px;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+}
+
+.homewhyus-tag::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: #6366f1;
+  transition: width 0.3s ease;
+}
+
+.homewhyus-card:hover .homewhyus-tag::after {
   width: 100%;
 }
 
-.homewhyus-tag {
-  font-size: 0.75rem;
-  color: #6366f1;
-  font-weight: 600;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-}
-
+/* Title */
 .homewhyus-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+  line-height: 1.3;
+  transition: color 0.3s ease;
 }
 
+.homewhyus-card:hover .homewhyus-title {
+  color: #6366f1;
+}
+
+/* Description */
 .homewhyus-desc {
-  font-size: 0.95rem;
-  color: #4b5563;
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ===================================
+   Animations
+   =================================== */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: inherit;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-20px) translateX(20px);
+  }
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+
+/* Tablet Landscape */
+@media (max-width: 1024px) {
+  .homewhyus-wrapper {
+    padding: 4rem 1.5rem;
+  }
+
+  .homewhyus-heading h1 {
+    font-size: 2.5rem;
+  }
+
+  .homewhyus-cards {
+    gap: 2rem;
+  }
+
+  .homewhyus-card {
+    padding: 2rem;
+  }
+}
+
+/* Tablet Portrait */
+@media (max-width: 768px) {
+  .homewhyus-wrapper {
+    padding: 3rem 1rem;
+  }
+
+  .homewhyus-heading h1 {
+    font-size: 2rem;
+  }
+
+  .homewhyus-subtext {
+    font-size: 1rem;
+  }
+
+  .homewhyus-cards {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .homewhyus-card {
+    padding: 2rem;
+  }
+
+  .homewhyus-title {
+    font-size: 1.25rem;
+  }
+
+  .homewhyus-wrapper::before,
+  .homewhyus-wrapper::after {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .homewhyus-wrapper {
+    padding: 2.5rem 1rem;
+  }
+
+  .homewhyus-header {
+    margin-bottom: 3rem;
+  }
+
+  .homewhyus-heading h1 {
+    font-size: 1.75rem;
+  }
+
+  .homewhyus-subtext {
+    font-size: 0.95rem;
+  }
+
+  .homewhyus-image-container {
+    width: 64px;
+    height: 64px;
+  }
+
+  .homewhyus-card {
+    padding: 1.5rem;
+  }
+
+  .homewhyus-title {
+    font-size: 1.125rem;
+  }
+
+  .homewhyus-desc {
+    font-size: 0.9375rem;
+  }
+}
+
+/* ===================================
+   Dark Mode Support (Optional)
+   =================================== */
+@media (prefers-color-scheme: dark) {
+  .homewhyus-wrapper {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  }
+
+  .homewhyus-heading h1 {
+    color: #f1f5f9;
+  }
+
+  .homewhyus-subtext {
+    color: #cbd5e1;
+  }
+
+  .homewhyus-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  .homewhyus-title {
+    color: #f1f5f9;
+  }
+
+  .homewhyus-desc {
+    color: #cbd5e1;
+  }
+
+  .homewhyus-card:hover {
+    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.3);
+  }
+
+  .homewhyus-card:hover .homewhyus-title {
+    color: #818cf8;
+  }
+
+  .homewhyus-tag {
+    color: #818cf8;
+  }
+
+  .homewhyus-tag::after {
+    background: #818cf8;
+  }
+}
+
+/* ===================================
+   Print Styles
+   =================================== */
+@media print {
+  .homewhyus-wrapper {
+    background: white;
+    padding: 2rem;
+  }
+
+  .homewhyus-wrapper::before,
+  .homewhyus-wrapper::after {
+    display: none;
+  }
+
+  .homewhyus-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+  }
 }
