@@ -13,6 +13,11 @@ const VisitorAnalytics = () => {
   const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch visitor data
   useEffect(() => {
@@ -33,7 +38,7 @@ const VisitorAnalytics = () => {
         const visitorsData = await visitorsRes.json();
         const statsData = await statsRes.json();
 
-        console.log("Visitors data:", visitorsData.visitors); // Debug log
+        console.log("Visitors data:", visitorsData.visitors);
         setVisitors(visitorsData.visitors || []);
         setStats(statsData.stats || []);
       } catch (error) {
@@ -46,6 +51,67 @@ const VisitorAnalytics = () => {
 
     fetchVisitorData();
   }, []);
+
+  // Filter visitors based on search term
+  const filteredVisitors = visitors.filter(v => 
+    v.ip?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    v.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    v.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    v.region?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredVisitors.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentVisitors = filteredVisitors.slice(startIndex, endIndex);
+
+  // Pagination handlers
+  const goToPage = (page) => {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)));
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+    
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pages.push(i);
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        pages.push('...');
+        pages.push(currentPage - 1);
+        pages.push(currentPage);
+        pages.push(currentPage + 1);
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
+  };
 
   if (loading) {
     return (
@@ -149,30 +215,24 @@ const VisitorAnalytics = () => {
                 }
               </Geographies>
 
-              {/* Visitor Markers with better visibility */}
               {visitors.map((visitor, index) => {
                 const lat = parseFloat(visitor.lat);
                 const lon = parseFloat(visitor.lon);
                 
-                console.log(`Visitor ${index}:`, { lat, lon, city: visitor.city, country: visitor.country }); // Debug
-                
                 if (!lat || !lon || isNaN(lat) || isNaN(lon) || 
                     lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-                  console.log(`Invalid coordinates for visitor ${index}`); // Debug
                   return null;
                 }
 
                 return (
                   <Marker key={`marker-${visitor.ip}-${index}`} coordinates={[lon, lat]}>
                     <g>
-                      {/* Outer glow */}
                       <circle
                         r={8}
                         fill="#6366f1"
                         opacity={0.3}
                         className="va-marker-glow"
                       />
-                      {/* Main marker */}
                       <circle
                         r={4}
                         fill="#6366f1"
@@ -224,17 +284,47 @@ const VisitorAnalytics = () => {
           </div>
         </section>
 
-        {/* Recent Visitors Table */}
+        {/* All Visitors Table with Pagination */}
         <section className="va-table-section">
           <div className="va-section-header">
-            <h3 className="va-section-title">Recent Visitors</h3>
-            <p className="va-section-subtitle">Last 10 visitors</p>
+            <h3 className="va-section-title">All Visitors</h3>
+            <p className="va-section-subtitle">
+              Showing {filteredVisitors.length > 0 ? startIndex + 1 : 0}-{Math.min(endIndex, filteredVisitors.length)} of {filteredVisitors.length} visitors
+            </p>
+          </div>
+
+          {/* Table Controls */}
+          <div className="va-table-controls">
+            <div className="va-search-box">
+              <input
+                type="text"
+                className="va-search-input"
+                placeholder="🔍 Search by IP, country, city, or region..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+            </div>
+            <div className="va-items-per-page">
+              <label>Show:</label>
+              <select 
+                className="va-items-select"
+                value={itemsPerPage}
+                onChange={handleItemsPerPageChange}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+                <option value={filteredVisitors.length}>All ({filteredVisitors.length})</option>
+              </select>
+            </div>
           </div>
           
           <div className="va-table-wrapper">
             <table className="va-table">
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>IP Address</th>
                   <th>Country</th>
                   <th>Region</th>
@@ -245,9 +335,10 @@ const VisitorAnalytics = () => {
                 </tr>
               </thead>
               <tbody>
-                {visitors.length > 0 ? (
-                  visitors.slice(0, 10).map((v, i) => (
+                {currentVisitors.length > 0 ? (
+                  currentVisitors.map((v, i) => (
                     <tr key={`visitor-${v.ip}-${i}`}>
+                      <td className="va-table-center">{startIndex + i + 1}</td>
                       <td className="va-table-ip">{v.ip || "—"}</td>
                       <td>{v.country || "—"}</td>
                       <td>{v.region || "—"}</td>
@@ -261,14 +352,75 @@ const VisitorAnalytics = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="va-no-data">
-                      No visitors recorded yet
+                    <td colSpan="8" className="va-no-data">
+                      {searchTerm ? `No visitors found matching "${searchTerm}"` : "No visitors recorded yet"}
                     </td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {filteredVisitors.length > 0 && (
+            <div className="va-pagination">
+              <div className="va-pagination-info">
+                Page {currentPage} of {totalPages}
+              </div>
+              
+              <div className="va-pagination-buttons">
+                <button
+                  className="va-pagination-btn"
+                  onClick={() => goToPage(1)}
+                  disabled={currentPage === 1}
+                >
+                  First
+                </button>
+                
+                <button
+                  className="va-pagination-btn"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  ← Prev
+                </button>
+
+                <div className="va-page-numbers">
+                  {getPageNumbers().map((page, index) => (
+                    page === '...' ? (
+                      <span key={`ellipsis-${index}`} className="va-pagination-ellipsis">
+                        ...
+                      </span>
+                    ) : (
+                      <button
+                        key={page}
+                        className={`va-pagination-btn ${currentPage === page ? 'active' : ''}`}
+                        onClick={() => goToPage(page)}
+                      >
+                        {page}
+                      </button>
+                    )
+                  ))}
+                </div>
+
+                <button
+                  className="va-pagination-btn"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next →
+                </button>
+
+                <button
+                  className="va-pagination-btn"
+                  onClick={() => goToPage(totalPages)}
+                  disabled={currentPage === totalPages}
+                >
+                  Last
+                </button>
+              </div>
+            </div>
+          )}
         </section>
       </div>
     </div>
