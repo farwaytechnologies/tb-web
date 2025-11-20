@@ -3,13 +3,6 @@ import '../Styles/PagesStyle/Home.css';
 import { Link } from 'react-router-dom';
 import HomeWhyUs from '../Home/HomeWhyUs';
 import { Helmet } from 'react-helmet';
-<Helmet>
-  <title>TechBorg E-Learning</title>
-  <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery.
-It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
-  <meta name="keywords" content="react, seo, tutorial, java, javascirpt, cpp, python" />
-</Helmet>
-
 
 function Home() {
   const [homeContent, setHomeContent] = useState(null);
@@ -23,86 +16,220 @@ function Home() {
 
   if (!homeContent) {
     return (
-      <div className="loading">
-        <div className="loader-spinner"></div>
-        <p>Loading amazing content...</p>
+      <div className="homepage-loading">
+        <div className="homepage-loader-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <p className="homepage-loading-text">Preparing your experience...</p>
       </div>
     );
   }
 
   return (
-    <div className="techborg-home">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-background">
-          <div className="gradient-orb orb-1"></div>
-          <div className="gradient-orb orb-2"></div>
-          <div className="gradient-orb orb-3"></div>
-        </div>
-        <div className="hero-content">
-          <div className="hero-badge">🚀 Start Your Tech Journey</div>
-          <h1 className="hero-title">
-            {homeContent.heroTitle}
-            <span className="title-accent">.</span>
-          </h1>
-          <p className="hero-subtitle">{homeContent.heroSubtitle}</p>
-          <div className="hero-actions">
-            <Link to="/courses" className="hero-btn primary">
-              Browse Courses
-              <svg className="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </Link>
-            <Link to="/about" className="hero-btn secondary">Learn More</Link>
-          </div>
-        </div>
-      </section>
+    <>
+      <Helmet>
+        <title>TechBorg E-Learning</title>
+        <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery. It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
+        <meta name="keywords" content="react, seo, tutorial, java, javascript, cpp, python" />
+      </Helmet>
 
-      {/* Features Section */}
-      <section className="features-section">
-        <div className="section-header">
-          <span className="section-badge">Why Choose Us</span>
-          <h2 className="section-title">Why Learn with TechBorg?</h2>
-          <p className="section-subtitle">Everything you need to accelerate your tech career</p>
-        </div>
-        <div className="features-grid">
-          {homeContent.features?.map((feature, index) => (
-            <div className="feature-card" key={index}>
-              <div className="feature-icon">
-                <div className="icon-bg"></div>
-                <span className="feature-number">{String(index + 1).padStart(2, '0')}</span>
-              </div>
-              <h3 className="feature-title">{feature.title}</h3>
-              <p className="feature-description">{feature.description}</p>
-              <div className="feature-shine"></div>
+      <div className="homepage-wrapper">
+        {/* Animated Background Grid */}
+        <div className="homepage-bg-grid"></div>
+        
+        {/* Hero Section */}
+        <section className="homepage-hero">
+          <div className="homepage-hero-bg">
+            <div className="homepage-gradient-sphere homepage-sphere-1"></div>
+            <div className="homepage-gradient-sphere homepage-sphere-2"></div>
+            <div className="homepage-gradient-sphere homepage-sphere-3"></div>
+            <div className="homepage-floating-particles">
+              {[...Array(20)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className="homepage-particle" 
+                  style={{
+                    '--x': `${Math.random() * 100}%`,
+                    '--y': `${Math.random() * 100}%`,
+                    '--delay': `${Math.random() * 5}s`,
+                    '--duration': `${15 + Math.random() * 10}s`
+                  }}
+                ></div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
-
-      <HomeWhyUs />
-
-      {/* Call to Action */}
-      <section className="cta-section">
-        <div className="cta-container">
-          <div className="cta-content">
-            <h2 className="cta-title">{homeContent.ctaText}</h2>
-            <p className="cta-subtitle">Join thousands of learners transforming their careers</p>
-            <Link to={homeContent.ctaLink} className="cta-btn">
-              {homeContent.ctaButtonText}
-              <svg className="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </Link>
           </div>
-          <div className="cta-visual">
-            <div className="floating-card card-1"></div>
-            <div className="floating-card card-2"></div>
-            <div className="floating-card card-3"></div>
+
+          <div className="homepage-hero-container">
+            <div className="homepage-hero-badge">
+              <span className="homepage-badge-icon">✨</span>
+              <span>Start Your Tech Journey</span>
+              <div className="homepage-badge-glow"></div>
+            </div>
+
+            <h1 className="homepage-hero-title">
+              {homeContent.heroTitle}
+              <span className="homepage-title-gradient">.</span>
+            </h1>
+
+            <p className="homepage-hero-subtitle">{homeContent.heroSubtitle}</p>
+
+            <div className="homepage-hero-actions">
+              <Link to="/courses" className="homepage-btn homepage-btn-primary">
+                <span className="homepage-btn-text">Browse Courses</span>
+                <span className="homepage-btn-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+                <div className="homepage-btn-shine"></div>
+              </Link>
+
+              <Link to="/about" className="homepage-btn homepage-btn-secondary">
+                <span className="homepage-btn-text">Learn More</span>
+                <span className="homepage-btn-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 4V16M4 10H16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                  </svg>
+                </span>
+              </Link>
+            </div>
+
+            <div className="homepage-hero-stats">
+              <div className="homepage-stat">
+                <div className="homepage-stat-number">50K+</div>
+                <div className="homepage-stat-label">Active Learners</div>
+              </div>
+              <div className="homepage-stat-divider"></div>
+              <div className="homepage-stat">
+                <div className="homepage-stat-number">200+</div>
+                <div className="homepage-stat-label">Expert Courses</div>
+              </div>
+              <div className="homepage-stat-divider"></div>
+              <div className="homepage-stat">
+                <div className="homepage-stat-number">98%</div>
+                <div className="homepage-stat-label">Success Rate</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
+
+          <div className="homepage-scroll-indicator">
+            <div className="homepage-scroll-wheel"></div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="homepage-features">
+          <div className="homepage-features-container">
+            <div className="homepage-section-header">
+              <span className="homepage-section-badge">
+                <span className="homepage-badge-dot"></span>
+                Why Choose Us
+              </span>
+              <h2 className="homepage-section-title">Why Learn with TechBorg?</h2>
+              <p className="homepage-section-description">
+                Everything you need to accelerate your tech career with cutting-edge tools and expert guidance
+              </p>
+            </div>
+
+            <div className="homepage-features-grid">
+              {homeContent.features?.map((feature, index) => (
+                <div className="homepage-feature-card" key={index}>
+                  <div className="homepage-feature-border"></div>
+                  <div className="homepage-feature-glow"></div>
+                  
+                  <div className="homepage-feature-icon-wrapper">
+                    <div className="homepage-feature-icon-bg"></div>
+                    <span className="homepage-feature-number">{String(index + 1).padStart(2, '0')}</span>
+                  </div>
+
+                  <h3 className="homepage-feature-title">{feature.title}</h3>
+                  <p className="homepage-feature-description">{feature.description}</p>
+
+                  <div className="homepage-feature-arrow">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <HomeWhyUs />
+
+        {/* Call to Action */}
+        <section className="homepage-cta">
+          <div className="homepage-cta-bg">
+            <div className="homepage-cta-gradient"></div>
+            <div className="homepage-cta-pattern"></div>
+          </div>
+
+          <div className="homepage-cta-container">
+            <div className="homepage-cta-content">
+              <div className="homepage-cta-badge">
+                <span className="homepage-cta-badge-pulse"></span>
+                Ready to Start?
+              </div>
+              
+              <h2 className="homepage-cta-title">{homeContent.ctaText}</h2>
+              <p className="homepage-cta-subtitle">
+                Join thousands of learners transforming their careers with industry-leading courses and mentorship
+              </p>
+
+              <Link to={homeContent.ctaLink} className="homepage-cta-btn">
+                <span className="homepage-cta-btn-text">{homeContent.ctaButtonText}</span>
+                <span className="homepage-cta-btn-icon">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+                <div className="homepage-cta-btn-glow"></div>
+              </Link>
+
+              <div className="homepage-cta-features">
+                <div className="homepage-cta-feature">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  No credit card required
+                </div>
+                <div className="homepage-cta-feature">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Cancel anytime
+                </div>
+                <div className="homepage-cta-feature">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M16.667 5L7.5 14.167 3.333 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  14-day free trial
+                </div>
+              </div>
+            </div>
+
+            <div className="homepage-cta-visual">
+              <div className="homepage-cta-card homepage-cta-card-1">
+                <div className="homepage-cta-card-icon">🎓</div>
+                <div className="homepage-cta-card-title">Expert Courses</div>
+              </div>
+              <div className="homepage-cta-card homepage-cta-card-2">
+                <div className="homepage-cta-card-icon">⚡</div>
+                <div className="homepage-cta-card-title">Fast Learning</div>
+              </div>
+              <div className="homepage-cta-card homepage-cta-card-3">
+                <div className="homepage-cta-card-icon">🏆</div>
+                <div className="homepage-cta-card-title">Certificates</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
 
