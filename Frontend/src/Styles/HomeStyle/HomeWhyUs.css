@@ -5,7 +5,7 @@
 /* Main Wrapper */
 .homewhyus-wrapper {
   padding: 6rem 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #4302a5 0%, #7b07ef 100%);
   position: relative;
   overflow: hidden;
 }
@@ -18,7 +18,7 @@
   right: -10%;
   width: 500px;
   height: 500px;
-  background: linear-gradient(180deg, #340c7a 0%, #53297d 50%, #501ecf 100%);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   z-index: 0;
   animation: float 20s ease-in-out infinite;
@@ -31,7 +31,7 @@
   left: -10%;
   width: 400px;
   height: 400px;
-  background: linear-gradient(180deg, #340c7a 0%, #53297d 50%, #501ecf 100%);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   z-index: 0;
   animation: float 15s ease-in-out infinite reverse;
@@ -61,7 +61,7 @@
 .homewhyus-heading h1 {
   font-size: 3rem;
   font-weight: 800;
-  color: #1e293b;
+  color: #ffffff;
   margin: 0 0 1rem 0;
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -71,7 +71,7 @@
 .homewhyus-underline {
   width: 80px;
   height: 4px;
-  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+  background: rgba(255, 255, 255, 0.9);
   margin: 0 auto;
   border-radius: 2px;
   position: relative;
@@ -83,7 +83,7 @@
   position: absolute;
   width: 40px;
   height: 4px;
-  background: linear-gradient(90deg, #8b5cf6 0%, #d946ef 100%);
+  background: rgba(255, 255, 255, 0.7);
   left: 50%;
   transform: translateX(-50%);
   top: 8px;
@@ -93,7 +93,7 @@
 
 .homewhyus-subtext {
   font-size: 1.125rem;
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.9);
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.7;
@@ -364,7 +364,7 @@
    =================================== */
 @media (prefers-color-scheme: dark) {
   .homewhyus-wrapper {
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
   }
 
   .homewhyus-heading h1 {
@@ -372,7 +372,7 @@
   }
 
   .homewhyus-subtext {
-    color: #cbd5e1;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .homewhyus-card {

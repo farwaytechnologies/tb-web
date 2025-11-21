@@ -30,7 +30,7 @@ function Login() {
       : 'https://tb-back-fyvj.onrender.com/api/auth/login';
 
     const payload = isSignup
-      ? { ...formData, role: 'student' } // fixed role
+      ? { ...formData, role: 'student' }
       : { email: formData.email, password: formData.password };
 
     try {
@@ -58,59 +58,64 @@ function Login() {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-box">
-        <h2>{isSignup ? 'Create Student Account' : 'Student Login'}</h2>
+    <div className="login-page-container">
+      <div className="login-page-box">
+        <h2 className="login-page-title">
+          {isSignup ? 'Create Student Account' : 'Student Login'}
+        </h2>
 
-        {error && <p style={{ color: 'salmon' }}>{error}</p>}
+        {error && <p className="login-page-error">{error}</p>}
 
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <form className="login-page-form" onSubmit={handleSubmit}>
           {isSignup && (
-            <div className="auth-field">
-              <label>Full Name</label>
+            <div className="login-page-field">
+              <label className="login-page-label">Full Name</label>
               <input
                 type="text"
                 name="name"
                 placeholder="John Doe"
                 value={formData.name}
                 onChange={handleChange}
+                className="login-page-input"
                 required
               />
             </div>
           )}
 
-          <div className="auth-field">
-            <label>Email</label>
+          <div className="login-page-field">
+            <label className="login-page-label">Email</label>
             <input
               type="email"
               name="email"
               placeholder="you@example.com"
               value={formData.email}
               onChange={handleChange}
+              className="login-page-input"
               required
             />
           </div>
 
-          <div className="auth-field">
-            <label>Password</label>
+          <div className="login-page-field">
+            <label className="login-page-label">Password</label>
             <input
               type="password"
               name="password"
               placeholder="••••••••"
               value={formData.password}
               onChange={handleChange}
+              className="login-page-input"
               required
             />
           </div>
 
-          <button type="submit" className="auth-button">
+          <button type="submit" className="login-page-button">
             {isSignup ? 'Sign Up' : 'Log In'}
           </button>
         </form>
 
-        <p className="auth-toggle">
-          {isSignup ? 'Already have an account?' : 'Don’t have an account?'}{' '}
-          <span onClick={toggleForm}>
+        <p className="login-page-toggle">
+          {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
+          <span className="login-page-toggle-link" onClick={toggleForm}>
             {isSignup ? 'Log In' : 'Sign Up'}
           </span>
         </p>
