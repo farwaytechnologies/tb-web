@@ -1,94 +1,284 @@
+/* ============================================
+   TechBorg Footer Styles - Footer.css
+   ============================================ */
+
+/* Main Footer Container */
 .techborg-footer {
-  background-color: #000000;
-  color: #fff;
-  padding: 2.5rem 1rem;
-  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: #ffffff;
+  padding: 4rem 2rem 2rem;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  border-top: 1px solid rgba(74, 122, 190, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-.footer-container {
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 2rem;
+.techborg-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #4a7abe 50%, 
+    transparent 100%);
 }
 
-/* Brand */
-.footer-brand h3 {
-  font-size: 1.8rem;
-  color: #4a7abe;
-  margin-bottom: 0.5rem;
+.techborg-footer__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.footer-brand p {
-  color: #ccc;
-  font-size: 0.95rem;
+/* ============================================
+   Footer Content Grid
+   ============================================ */
+
+.techborg-footer__content {
+  display: grid;
+  grid-template-columns: 1.2fr 2.8fr;
+  gap: 4rem;
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Navigation Columns */
-.footer-nav-columns {
-  display: flex;
-  gap: 3rem;
-  flex-wrap: wrap;
-}
+/* ============================================
+   Brand Section
+   ============================================ */
 
-.footer-link-group {
+.techborg-footer__brand {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 1.25rem;
 }
 
-.footer-link-group a {
-  color: #ccc;
-  text-decoration: none;
+.techborg-footer__brand-title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4a7abe 0%, #6b9fd9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.techborg-footer__brand-tagline {
   font-size: 0.95rem;
-  transition: color 0.3s;
+  color: #a0a0a0;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 280px;
 }
 
-.footer-link-group a:hover {
-  color: #fff;
-}
+/* ============================================
+   Social Links
+   ============================================ */
 
-/* Social Icons */
-.footer-social {
+.techborg-footer__social {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.techborg-footer__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #b0b0b0;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.techborg-footer__social-link:hover {
+  background: rgba(74, 122, 190, 0.15);
+  color: #4a7abe;
+  border-color: rgba(74, 122, 190, 0.3);
+  transform: translateY(-2px);
+}
+
+.techborg-footer__social-link:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   Navigation Section
+   ============================================ */
+
+.techborg-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+}
+
+.techborg-footer__nav-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.techborg-footer__nav-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.5rem 0;
+}
+
+.techborg-footer__nav-link {
+  font-size: 0.95rem;
+  color: #b0b0b0;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  position: relative;
+  width: fit-content;
+  line-height: 1.5;
+}
+
+.techborg-footer__nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #4a7abe;
+  transition: width 0.3s ease;
+}
+
+.techborg-footer__nav-link:hover {
+  color: #ffffff;
+  padding-left: 8px;
+}
+
+.techborg-footer__nav-link:hover::before {
+  width: 100%;
+}
+
+/* ============================================
+   Footer Bottom Section
+   ============================================ */
+
+.techborg-footer__bottom {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
-.footer-social a {
-  color: #ccc;
-  font-size: 1.2rem;
-  transition: color 0.3s;
+.techborg-footer__copyright {
+  font-size: 0.875rem;
+  color: #808080;
+  margin: 0;
 }
 
-.footer-social a:hover {
+.techborg-footer__bottom-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.techborg-footer__bottom-link {
+  font-size: 0.875rem;
+  color: #909090;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.techborg-footer__bottom-link:hover {
   color: #4a7abe;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .footer-container {
+.techborg-footer__separator {
+  color: #404040;
+  font-size: 0.875rem;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+/* Tablet Layout */
+@media (max-width: 1024px) {
+  .techborg-footer__content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .techborg-footer__nav {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+
+  .techborg-footer__brand {
+    max-width: 100%;
+  }
+
+  .techborg-footer__brand-tagline {
+    max-width: 100%;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 640px) {
+  .techborg-footer {
+    padding: 3rem 1.5rem 1.5rem;
+  }
+
+  .techborg-footer__content {
+    gap: 2.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .techborg-footer__brand-title {
+    font-size: 1.75rem;
+  }
+
+  .techborg-footer__nav {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .techborg-footer__nav-column {
+    gap: 0.75rem;
+  }
+
+  .techborg-footer__bottom {
     flex-direction: column;
-    align-items: center;
     text-align: center;
+    gap: 1rem;
   }
 
-  .footer-nav-columns {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.2rem;
-    margin: 1.5rem 0;
+  .techborg-footer__social {
+    justify-content: flex-start;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 380px) {
+  .techborg-footer {
+    padding: 2.5rem 1rem 1.5rem;
   }
 
-  .footer-link-group {
-    align-items: center;
+  .techborg-footer__brand-title {
+    font-size: 1.5rem;
   }
 
-  .footer-social {
-    justify-content: center;
+  .techborg-footer__social-link {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
 }
