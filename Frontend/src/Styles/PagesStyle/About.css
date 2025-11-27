@@ -1,52 +1,238 @@
-/* ===== About.css ===== */
+/* About.css - Modern About Page Styling */
 
-.techborg-about-page {
-  background: linear-gradient(135deg, #62a8ef, #854ef4);
-  padding: 60px 20px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.about-page {
   min-height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
-  color: #ffffff;
-  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
+  padding: 4rem 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.about-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ============= LOADING STATE ============= */
+.about-loading-container {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.6s ease-in-out;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.techborg-about-title {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+.about-loading-spinner {
+  margin-bottom: 1.5rem;
+  animation: spin 1s linear infinite;
 }
 
-.techborg-about-description {
+.about-spinner-icon {
+  width: 50px;
+  height: 50px;
+  color: white;
+}
+
+.about-loading-text {
   font-size: 1.1rem;
-  max-width: 800px;
-  margin: 0 auto;
-  line-height: 1.8;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
 }
 
-/* Optional loading/error styles */
-.techborg-about-loading,
-.techborg-about-error {
+/* ============= ERROR STATE ============= */
+.about-error-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  gap: 1.5rem;
+}
+
+.about-error-icon {
+  width: 60px;
+  height: 60px;
+  color: #ff6b6b;
+}
+
+.about-error-text {
   font-size: 1.2rem;
-  margin-top: 2rem;
-  color: #ffffff;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  max-width: 500px;
 }
 
-/* Fade in animation */
-@keyframes fadeIn {
+/* ============= HERO SECTION ============= */
+.about-hero {
+  text-align: center;
+  margin-bottom: 4rem;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.about-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+
+.about-highlight {
+  background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-divider {
+  width: 80px;
+  height: 5px;
+  background: linear-gradient(90deg, #ffd89b 0%, #19547b 100%);
+  margin: 0 auto;
+  border-radius: 3px;
+}
+
+/* ============= MAIN CONTENT ============= */
+.about-content {
+  animation: fadeIn 0.8s ease-out 0.2s backwards;
+}
+
+.about-section {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 2rem;
+  padding: 3rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideUp 0.6s ease-out;
+}
+
+.about-description {
+  font-size: 1.1rem;
+  color: #2d3748;
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+.about-section-title {
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+.about-section-text {
+  font-size: 1.05rem;
+  color: #4a5568;
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* ============= VALUES GRID ============= */
+.about-values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.about-value-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-value-card:hover {
+  transform: translateY(-5px);
+  border-color: #667eea;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+}
+
+.about-value-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #667eea;
+  margin-bottom: 0.75rem;
+}
+
+.about-value-text {
+  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ============= TEAM GRID ============= */
+.about-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.about-team-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-team-card:hover {
+  transform: translateY(-8px);
+  border-color: #667eea;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+}
+
+.about-team-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 900;
+  color: white;
+  margin: 0 auto 1rem;
+}
+
+.about-team-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.about-team-role {
+  font-size: 0.9rem;
+  color: #667eea;
+  font-weight: 600;
+}
+
+/* ============= ANIMATIONS ============= */
+@keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(15px);
+    transform: translateY(-40px);
   }
   to {
     opacity: 1;
@@ -54,14 +240,102 @@
   }
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .techborg-about-title {
-    font-size: 2rem;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============= RESPONSIVE DESIGN ============= */
+@media (max-width: 768px) {
+  .about-page {
+    padding: 2rem 1.25rem;
   }
 
-  .techborg-about-description {
+  .about-title {
+    font-size: 2.5rem;
+  }
+
+  .about-section {
+    padding: 2rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .about-section-title {
+    font-size: 1.5rem;
+  }
+
+  .about-description {
     font-size: 1rem;
-    padding: 15px;
+  }
+
+  .about-values-grid,
+  .about-team-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .about-title {
+    font-size: 1.75rem;
+  }
+
+  .about-section {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 1.25rem;
+  }
+
+  .about-section-title {
+    font-size: 1.3rem;
+  }
+
+  .about-description {
+    font-size: 0.95rem;
+  }
+
+  .about-values-grid,
+  .about-team-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .about-value-card,
+  .about-team-card {
+    padding: 1.5rem;
+  }
+
+  .about-team-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 1.75rem;
   }
 }

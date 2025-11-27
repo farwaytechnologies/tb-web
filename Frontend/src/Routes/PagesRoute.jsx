@@ -1,3 +1,4 @@
+// src/Routes/PagesRoute.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
@@ -54,7 +55,6 @@ import AdminViewContact from '../Dashboard/AdminViewContact';
 import AdminViewApplications from '../Dashboard/AdminViewApplications';
 import AdminManageNews from "../Dashboard/AdminManageNews";
 
-
 // 🧠 Tutor Management
 import TutorManageBlog from '../Dashboard/TutorManageBlog';
 import TutorManageCourse from '../Dashboard/TutorManageCourse';
@@ -77,6 +77,11 @@ import AdminManageLearn from '../Dashboard/AdminManageLearn';
 import VisitorAnalytics from '../Dashboard/VisitorAnalytics';
 import NewsDetail from '../Pages/NewsDetail';
 
+// ✅ Legal / Static Pages (added)
+import Privacy from '../Legal/Privacy';
+import Terms from '../Legal/Terms';
+import Cookies from '../Legal/Cookies';
+import Faq from '../Legal/Faq';
 
 // =============================
 // 🚀 Main Route Component
@@ -93,7 +98,7 @@ function PagesRoute() {
       <Route path="/innovation" element={<Innovation />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/learn" element={<Learn />} />
-      <Route path="/learn/:id" element={<LearnDetails/>} /> 
+      <Route path="/learn/:id" element={<LearnDetails />} />
       <Route path="/news" element={<News />} />
       <Route path="/support" element={<Support />} />
       <Route path="/notifications" element={<Notifications />} />
@@ -139,7 +144,6 @@ function PagesRoute() {
       <Route path="/admin/manage-learn" element={<AdminManageLearn />} />
       <Route path="/admin/visitors" element={<VisitorAnalytics />} />
 
-
       {/* 🧾 CMS Editing */}
       <Route path="/admin/edit-home" element={<HomeCms />} />
       <Route path="/admin/edit-about" element={<AboutCms />} />
@@ -169,6 +173,14 @@ function PagesRoute() {
       <Route path="/tutor-login" element={<TutorLogin />} />
       <Route path="/admin-login" element={<AdminLogin />} />
 
+      {/* 📜 Legal / Static Pages */}
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/cookies" element={<Cookies />} />
+      <Route path="/faq" element={<Faq />} />
+
+      {/* 404 fallback (optional) */}
+      {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
   );
 }

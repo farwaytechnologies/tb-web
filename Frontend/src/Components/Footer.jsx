@@ -70,22 +70,17 @@ function Footer() {
               <a href="/about" className="techborg-footer__nav-link">About Us</a>
               <a href="/contact" className="techborg-footer__nav-link">Contact</a>
               <a href="/support" className="techborg-footer__nav-link">Support</a>
-              <a href="/careers" className="techborg-footer__nav-link">Careers</a>
+              <a href="/job-alerts" className="techborg-footer__nav-link">Careers</a>
             </div>
             
-            <div className="techborg-footer__nav-column">
-              <h4 className="techborg-footer__nav-title">Resources</h4>
-              <a href="/documentation" className="techborg-footer__nav-link">Documentation</a>
-              <a href="/community" className="techborg-footer__nav-link">Community</a>
-              <a href="/faq" className="techborg-footer__nav-link">FAQ</a>
-              <a href="/tutorials" className="techborg-footer__nav-link">Tutorials</a>
-            </div>
             
             <div className="techborg-footer__nav-column">
               <h4 className="techborg-footer__nav-title">Legal</h4>
               <a href="/privacy" className="techborg-footer__nav-link">Privacy Policy</a>
               <a href="/terms" className="techborg-footer__nav-link">Terms of Service</a>
               <a href="/cookies" className="techborg-footer__nav-link">Cookie Policy</a>
+              <a href="/faq" className="techborg-footer__nav-link">FAQ</a>
+              
             </div>
           </div>
         </div>
