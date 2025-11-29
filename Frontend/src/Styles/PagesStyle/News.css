@@ -3,7 +3,7 @@
 /* Main Wrapper */
 .nws-wrapper {
   padding: 60px 20px;
-  background: linear-gradient(135deg, #62a8ef, #854ef4);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   position: relative;
   overflow: hidden;
@@ -409,7 +409,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #62a8ef, #854ef4);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 40px 20px;
 }
 

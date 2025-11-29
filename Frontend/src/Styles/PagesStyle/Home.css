@@ -456,7 +456,7 @@
 .homepage-features {
   position: relative;
   padding: 8rem 1.5rem;
-  background: linear-gradient(180deg, #000000 0%, #0a0a1e 50%, #000000 100%);
+  background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 50%, #0a0a1e 100%);
   z-index: 1;
 }
 
@@ -524,7 +524,7 @@
 
 .homepage-feature-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(17, 24, 39, 0.7), rgba(15, 23, 42, 0.7));
+   background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
   padding: 2.5rem;
   border-radius: 24px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
