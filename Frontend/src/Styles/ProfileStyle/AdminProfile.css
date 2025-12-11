@@ -1,78 +1,368 @@
+/* AdminProfile Page Styles */
 .admin-profile-full {
-  width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffffff, #4ec5f4);
-  padding: 40px;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
-  color: #1e293b;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Decorative Background */
+.admin-profile-full::before {
+  content: '';
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  top: -15%;
+  left: -10%;
+  animation: float-shape 30s infinite ease-in-out;
+}
+
+.admin-profile-full::after {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  bottom: 10%;
+  right: -5%;
+  animation: float-shape 30s infinite ease-in-out 10s;
+}
+
+@keyframes float-shape {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(50px, -50px) rotate(90deg); }
+  50% { transform: translate(-40px, 40px) rotate(180deg); }
+  75% { transform: translate(60px, 25px) rotate(270deg); }
+}
+
+/* Card Container */
+.admin-profile-full > div {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* Header Section */
 .admin-profile-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 50px 40px;
+  color: white;
   display: flex;
   align-items: center;
-  gap: 30px;
-  margin-bottom: 40px;
+  gap: 35px;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px 30px 0 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.8s ease-out;
+}
+
+.admin-profile-header::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  top: -100px;
+  right: -100px;
 }
 
 .admin-profile-header img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 3px solid #3b82f6;
+  width: 180px;
+  height: 180px;
+  border-radius: 25px;
   object-fit: cover;
+  border: 6px solid white;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  animation: scaleIn 0.8s ease-out;
+  position: relative;
+  z-index: 2;
+}
+
+.admin-profile-header > div {
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+  z-index: 2;
 }
 
 .admin-profile-header h1 {
-  margin: 0;
-  font-size: 2rem;
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0 0 15px;
+  letter-spacing: -1px;
 }
 
 .admin-profile-header p {
-  margin-top: 6px;
-  font-size: 1rem;
-  color: #64748b;
+  font-size: 16px;
+  opacity: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 700;
+  margin: 0;
 }
 
+.admin-profile-header input[type="file"] {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.admin-profile-header input[type="file"]::after {
+  content: '📷';
+  position: absolute;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 26px;
+  border: 4px solid white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Section */
 .admin-profile-form {
-  max-width: 800px;
-  width: 100%;
+  background: white;
+  padding: 50px 40px;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
 .admin-profile-form label {
   display: block;
-  margin: 20px 0 8px;
-  font-weight: 500;
-  color: #334155;
+  font-size: 14px;
+  font-weight: 700;
+  color: #667eea;
+  margin-top: 30px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.admin-profile-form label:first-child {
+  margin-top: 0;
 }
 
 .admin-profile-form input {
   width: 100%;
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
-  background: #fff;
-  font-size: 1rem;
+  padding: 16px 20px;
+  border: 2px solid #e8e8e8;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: #f9f9f9;
+  box-sizing: border-box;
+  animation: fadeInUp 0.6s ease-out backwards;
 }
 
+.admin-profile-form input:nth-of-type(1) { animation-delay: 0s; }
+.admin-profile-form input:nth-of-type(2) { animation-delay: 0.1s; }
+.admin-profile-form input:nth-of-type(3) { animation-delay: 0.2s; }
+.admin-profile-form input:nth-of-type(4) { animation-delay: 0.3s; }
+
+.admin-profile-form input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.1);
+}
+
+.admin-profile-form input:disabled {
+  background: #e8e8e8;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Display View */
 .admin-profile-form p {
-  margin: 10px 0;
-  font-size: 1rem;
-  color: #334155;
+  padding: 25px;
+  background: linear-gradient(135deg, #f9f9f9 0%, #f5f5f5 100%);
+  border-radius: 15px;
+  border-left: 5px solid #667eea;
+  margin-top: 30px;
+  margin-bottom: 0;
+  animation: slideRight 0.6s ease-out backwards;
+  transition: all 0.3s ease;
 }
 
+.admin-profile-form p:nth-of-type(1) { animation-delay: 0s; }
+.admin-profile-form p:nth-of-type(2) { animation-delay: 0.1s; }
+.admin-profile-form p:nth-of-type(3) { animation-delay: 0.2s; }
+
+.admin-profile-form p:hover {
+  transform: translateX(8px);
+  background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.admin-profile-form strong {
+  color: #667eea;
+  font-weight: 700;
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Buttons */
 .admin-profile-form button {
-  margin-top: 24px;
-  padding: 12px 20px;
-  background-color: #3b82f6;
-  color: white;
+  padding: 16px 32px;
   border: none;
-  border-radius: 6px;
-  font-weight: bold;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 25px;
+  margin-right: 15px;
+  animation: fadeIn 0.8s ease-out 0.5s both;
 }
 
-.admin-profile-form button:hover {
-  background-color: #2563eb;
+.admin-profile-form button:first-of-type {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.admin-profile-form button:first-of-type:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+}
+
+.admin-profile-form button:last-of-type {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  margin-right: 0;
+}
+
+.admin-profile-form button:last-of-type:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-profile-full {
+    padding: 20px 15px;
+  }
+
+  .admin-profile-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 35px 25px;
+    gap: 25px;
+  }
+
+  .admin-profile-header h1 {
+    font-size: 32px;
+  }
+
+  .admin-profile-header img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .admin-profile-form {
+    padding: 35px 25px;
+  }
+
+  .admin-profile-full::before,
+  .admin-profile-full::after {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-profile-header {
+    padding: 25px 20px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .admin-profile-form {
+    padding: 25px 20px;
+    border-radius: 0 0 20px 20px;
+  }
+
+  .admin-profile-header h1 {
+    font-size: 26px;
+  }
+
+  .admin-profile-header img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .admin-profile-form button {
+    width: 100%;
+    margin-right: 0;
+  }
 }
