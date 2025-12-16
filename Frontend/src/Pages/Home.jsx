@@ -6,15 +6,72 @@ import { Helmet } from 'react-helmet';
 
 function Home() {
   const [homeContent, setHomeContent] = useState(null);
+  const [stats, setStats] = useState({
+    totalStudents: 0,
+    totalCourses: 0,
+    successRate: '98%'
+  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://tb-back-fyvj.onrender.com/api/home')
-      .then(res => res.json())
-      .then(data => setHomeContent(data))
-      .catch(err => console.error("Error fetching home content:", err));
+    const fetchAllData = async () => {
+      setLoading(true);
+      try {
+        // Fetch home content from API
+        const homeRes = await fetch('https://tb-back-fyvj.onrender.com/api/home');
+        if (!homeRes.ok) throw new Error('Failed to fetch home content');
+        const homeData = await homeRes.json();
+        setHomeContent(homeData);
+
+        // Fetch total students
+        const usersRes = await fetch('https://tb-back-fyvj.onrender.com/api/auth/users');
+        if (!usersRes.ok) throw new Error('Failed to fetch users');
+        const usersData = await usersRes.json();
+        const studentCount = usersData.filter(user => user.role === 'student').length;
+
+        // Fetch total courses
+        const coursesRes = await fetch('https://tb-back-fyvj.onrender.com/api/courses');
+        if (!coursesRes.ok) throw new Error('Failed to fetch courses');
+        const coursesData = await coursesRes.json();
+        const courseCount = coursesData.length;
+
+        setStats({
+          totalStudents: studentCount,
+          totalCourses: courseCount,
+          successRate: '98%'
+        });
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        // Set default values if fetch fails
+        setStats({
+          totalStudents: 50,
+          totalCourses: 200,
+          successRate: '98%'
+        });
+        setHomeContent({
+          heroTitle: 'Master Technology, Transform Your Future',
+          heroSubtitle: 'Learn from industry experts with AI-powered personalized learning paths designed for your success',
+          features: [
+            { title: 'Expert-Led Courses', description: 'Industry professionals teaching real-world skills and best practices' },
+            { title: 'AI Powered Learning', description: 'Personalized learning paths based on your progress and goals' },
+            { title: 'Lifetime Access', description: 'Learn at your own pace with lifetime access to all course materials' },
+            { title: 'Job Assistance', description: 'Career guidance and job placement support from industry mentors' },
+            { title: 'Certifications', description: 'Industry-recognized certificates upon successful course completion' },
+            { title: 'Community Support', description: 'Active community of learners and experts ready to help' }
+          ],
+          ctaText: 'Start Your Learning Journey Today',
+          ctaLink: '/courses',
+          ctaButtonText: 'Get Started Now'
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllData();
   }, []);
 
-  if (!homeContent) {
+  if (loading) {
     return (
       <div className="homepage-loading">
         <div className="homepage-loader-ring">
@@ -28,12 +85,20 @@ function Home() {
     );
   }
 
+  if (!homeContent) {
+    return (
+      <div className="homepage-loading">
+        <p className="homepage-loading-text">Unable to load content. Please refresh the page.</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <Helmet>
-        <title>TechBorg E-Learning</title>
+        <title>TechBorg E-Learning - Master Technology Skills</title>
         <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery. It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
-        <meta name="keywords" content="react, seo, tutorial, java, javascript, cpp, python" />
+        <meta name="keywords" content="online learning, courses, programming, python, javascript, java, cpp, web development" />
       </Helmet>
 
       <div className="homepage-wrapper">
@@ -99,17 +164,17 @@ function Home() {
 
             <div className="homepage-hero-stats">
               <div className="homepage-stat">
-                <div className="homepage-stat-number">50K+</div>
+                <div className="homepage-stat-number">{stats.totalStudents}K+</div>
                 <div className="homepage-stat-label">Active Learners</div>
               </div>
               <div className="homepage-stat-divider"></div>
               <div className="homepage-stat">
-                <div className="homepage-stat-number">200+</div>
+                <div className="homepage-stat-number">{stats.totalCourses}+</div>
                 <div className="homepage-stat-label">Expert Courses</div>
               </div>
               <div className="homepage-stat-divider"></div>
               <div className="homepage-stat">
-                <div className="homepage-stat-number">98%</div>
+                <div className="homepage-stat-number">{stats.successRate}</div>
                 <div className="homepage-stat-label">Success Rate</div>
               </div>
             </div>

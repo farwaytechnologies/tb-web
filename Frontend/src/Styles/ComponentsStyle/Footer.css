@@ -8,7 +8,7 @@
   color: #ffffff;
   padding: 4rem 2rem 2rem;
   font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-  border-top: 1px solid rgba(74, 122, 190, 0.1);
+  border-top: 1px solid rgba(102, 126, 234, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -22,7 +22,7 @@
   height: 1px;
   background: linear-gradient(90deg, 
     transparent 0%, 
-    #4a7abe 50%, 
+    #667eea 50%, 
     transparent 100%);
 }
 
@@ -58,7 +58,7 @@
 .techborg-footer__brand-title {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #4a7abe 0%, #6b9fd9 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -100,9 +100,9 @@
 }
 
 .techborg-footer__social-link:hover {
-  background: rgba(74, 122, 190, 0.15);
-  color: #4a7abe;
-  border-color: rgba(74, 122, 190, 0.3);
+  background: rgba(102, 126, 234, 0.15);
+  color: #667eea;
+  border-color: rgba(102, 126, 234, 0.3);
   transform: translateY(-2px);
 }
 
@@ -152,7 +152,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #4a7abe;
+  background: #667eea;
   transition: width 0.3s ease;
 }
 
@@ -197,7 +197,7 @@
 }
 
 .techborg-footer__bottom-link:hover {
-  color: #4a7abe;
+  color: #667eea;
 }
 
 .techborg-footer__separator {
