@@ -50,6 +50,34 @@ function NewsDetail() {
     navigate(`/news/${newsId}`);
   };
 
+  const handleShare = (platform) => {
+    const title = encodeURIComponent(newsItem.title);
+    const url = encodeURIComponent(window.location.href);
+    let shareUrl = '';
+
+    switch(platform) {
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?text=${title}&url=${url}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://facebook.com/sharer/sharer.php?u=${url}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+        break;
+      case 'copy':
+        navigator.clipboard.writeText(window.location.href);
+        alert('Link copied to clipboard!');
+        return;
+      default:
+        return;
+    }
+
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
+  };
+
   if (loading) {
     return (
       <div className="nd-loading">
@@ -77,9 +105,11 @@ function NewsDetail() {
           </svg>
         </div>
         <h2 className="nd-error-title">Article Not Found</h2>
-        <p className="nd-error-message">{error || "The article you're looking for doesn't exist."}</p>
+        <p className="nd-error-message">
+          {error || "The article you're looking for doesn't exist."}
+        </p>
         <button onClick={handleBack} className="nd-error-back-btn">
-          Go Back
+          ← Go Back
         </button>
       </div>
     );
@@ -89,7 +119,12 @@ function NewsDetail() {
     <div className="nd-wrapper">
       <Helmet>
         <title>{newsItem.title} - TechBorg E-Learning</title>
-        <meta name="description" content={newsItem.content || "Read the latest news from TechBorg E-Learning"} />
+        <meta 
+          name="description" 
+          content={newsItem.content?.substring(0, 160) || "Read the latest news from TechBorg E-Learning"} 
+        />
+        <meta name="og:title" content={newsItem.title} />
+        <meta name="og:description" content={newsItem.content?.substring(0, 160)} />
       </Helmet>
 
       {/* Background decorations */}
@@ -100,7 +135,7 @@ function NewsDetail() {
 
       <div className="nd-container">
         {/* Back Button */}
-        <button onClick={handleBack} className="nd-back-button">
+        <button onClick={handleBack} className="nd-back-button" aria-label="Go back to news list">
           <svg className="nd-back-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -140,23 +175,43 @@ function NewsDetail() {
             <div className="nd-share-section">
               <span className="nd-share-label">Share this article:</span>
               <div className="nd-share-buttons">
-                <button className="nd-share-btn" aria-label="Share on Twitter">
+                <button 
+                  className="nd-share-btn" 
+                  aria-label="Share on Twitter"
+                  onClick={() => handleShare('twitter')}
+                  title="Share on Twitter"
+                >
                   <svg className="nd-share-icon" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
                   </svg>
                 </button>
-                <button className="nd-share-btn" aria-label="Share on Facebook">
+                <button 
+                  className="nd-share-btn" 
+                  aria-label="Share on Facebook"
+                  onClick={() => handleShare('facebook')}
+                  title="Share on Facebook"
+                >
                   <svg className="nd-share-icon" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
                   </svg>
                 </button>
-                <button className="nd-share-btn" aria-label="Share on LinkedIn">
+                <button 
+                  className="nd-share-btn" 
+                  aria-label="Share on LinkedIn"
+                  onClick={() => handleShare('linkedin')}
+                  title="Share on LinkedIn"
+                >
                   <svg className="nd-share-icon" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
                     <circle cx="4" cy="4" r="2" />
                   </svg>
                 </button>
-                <button className="nd-share-btn" aria-label="Copy link">
+                <button 
+                  className="nd-share-btn" 
+                  aria-label="Copy link"
+                  onClick={() => handleShare('copy')}
+                  title="Copy link to clipboard"
+                >
                   <svg className="nd-share-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
@@ -176,6 +231,13 @@ function NewsDetail() {
                   key={item._id} 
                   className="nd-related-card"
                   onClick={() => handleRelatedClick(item._id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleRelatedClick(item._id);
+                    }
+                  }}
                 >
                   <div className="nd-related-content">
                     {item.category && (
@@ -190,7 +252,14 @@ function NewsDetail() {
                       })}
                     </time>
                   </div>
-                  <button className="nd-related-link" aria-label="Read article">
+                  <button 
+                    className="nd-related-link" 
+                    aria-label={`Read: ${item.title}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRelatedClick(item._id);
+                    }}
+                  >
                     <svg className="nd-arrow-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
