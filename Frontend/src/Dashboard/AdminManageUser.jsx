@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import '../Styles/DashbordStyle/AdminManageUser.css';
+import '../Styles/DashbordStyle/AdminManageTutor.css';
 
-export default function AdminManageUser() {
-  const [users, setUsers] = useState([]);
+function AdminManageTutor() {
+  const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchUsers = () => {
+  const fetchTutors = () => {
     setLoading(true);
     fetch('https://tb-back-fyvj.onrender.com/api/auth/users')
       .then(res => {
@@ -13,15 +13,15 @@ export default function AdminManageUser() {
         return res.json();
       })
       .then(data => {
-        const studentsOnly = data.filter(user => user.role === 'student');
-        setUsers(studentsOnly);
+        const tutorUsers = data.filter(user => user.role === 'tutor');
+        setTutors(tutorUsers);
       })
-      .catch(err => console.error('Error fetching users:', err))
+      .catch(err => console.error('Error fetching tutors:', err))
       .finally(() => setLoading(false));
   };
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm('Are you sure you want to delete this user?');
+    const confirm = window.confirm('Are you sure you want to delete this tutor?');
     if (!confirm) return;
 
     try {
@@ -29,62 +29,66 @@ export default function AdminManageUser() {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error('Delete failed');
-      fetchUsers(); // refresh list after delete
+      fetchTutors();
     } catch (err) {
-      console.error('Error deleting user:', err);
+      console.error('Error deleting tutor:', err);
     }
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchTutors();
   }, []);
 
   return (
-    <div className="admin-user-container">
-      <h2>All Registered Students</h2>
+    <div className="admin-tutor-container">
+      <h2 className="admin-tutor-title">All Registered Tutors</h2>
       {loading ? (
-        <p>Fetching user data...</p>
-      ) : users.length === 0 ? (
-        <p>No students found.</p>
+        <div className="admin-tutor-loading">Fetching tutor data...</div>
+      ) : tutors.length === 0 ? (
+        <div className="admin-tutor-no-data">No tutors found.</div>
       ) : (
-        <table className="admin-user-table">
-          <thead>
-            <tr>
-              <th>Profile</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Gender</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-              <tr key={user._id}>
-                <td className='admin-user-avatar-b'>
-                  <img
-                    src={user.profilePic || '/default-profile.png'}
-                    alt="Profile"
-                    className="admin-user-avatar"
-                  />
-                </td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>{user.gender || 'N/A'}</td>
-                <td>
-                  <button
-                    onClick={() => handleDelete(user._id)}
-                    className="admin-delete-btn"
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="admin-tutor-table-wrapper">
+          <table className="admin-tutor-table">
+            <thead>
+              <tr>
+                <th>Profile</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Gender</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tutors.map(tutor => (
+                <tr key={tutor._id}>
+                  <td>
+                    <img
+                      src={tutor.profilePic || 'https://via.placeholder.com/40'}
+                      alt="Profile"
+                      className="admin-tutor-avatar"
+                    />
+                  </td>
+                  <td className="admin-tutor-cell">{tutor.name}</td>
+                  <td className="admin-tutor-cell">{tutor.email}</td>
+                  <td className="admin-tutor-cell">{tutor.role}</td>
+                  <td className="admin-tutor-cell">{tutor.gender || 'N/A'}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDelete(tutor._id)}
+                      className="admin-tutor-delete-btn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
 }
+
+export default AdminManageTutor;
