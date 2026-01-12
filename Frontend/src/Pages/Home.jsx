@@ -164,7 +164,7 @@ function Home() {
 
             <div className="homepage-hero-stats">
               <div className="homepage-stat">
-                <div className="homepage-stat-number">{stats.totalStudents}K+</div>
+                <div className="homepage-stat-number">{stats.totalStudents}+</div>
                 <div className="homepage-stat-label">Active Learners</div>
               </div>
               <div className="homepage-stat-divider"></div>
