@@ -41,49 +41,51 @@ function AdminManageAdmin() {
 
   return (
     <div className="admin-admin-container">
-      <h2>All Registered Admins</h2>
+      <h2 className="admin-admin-title">All Registered Admins</h2>
       {loading ? (
-        <p>Fetching admin data...</p>
+        <div className="admin-admin-loading">Fetching admin data...</div>
       ) : admins.length === 0 ? (
-        <p>No admins found.</p>
+        <div className="admin-admin-no-data">No admins found.</div>
       ) : (
-        <table className="admin-admin-table">
-          <thead>
-            <tr>
-              <th>Profile</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Gender</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {admins.map(admin => (
-              <tr key={admin._id}>
-                <td>
-                  <img
-                    src={admin.profilePic || '/default-profile.png'}
-                    alt="Profile"
-                    className="admin-admin-avatar"
-                  />
-                </td>
-                <td>{admin.name}</td>
-                <td>{admin.email}</td>
-                <td>{admin.role}</td>
-                <td>{admin.gender || 'N/A'}</td>
-                <td>
-                  <button
-                    onClick={() => handleDelete(admin._id)}
-                    className="admin-admin-delete-btn"
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="admin-admin-table-wrapper">
+          <table className="admin-admin-table">
+            <thead>
+              <tr>
+                <th>Profile</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Gender</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {admins.map(admin => (
+                <tr key={admin._id}>
+                  <td>
+                    <img
+                      src={admin.profilePic || '/default-profile.png'}
+                      alt="Profile"
+                      className="admin-admin-avatar"
+                    />
+                  </td>
+                  <td className="admin-admin-cell-text">{admin.name}</td>
+                  <td>{admin.email}</td>
+                  <td>{admin.role}</td>
+                  <td>{admin.gender || 'N/A'}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDelete(admin._id)}
+                      className="admin-admin-delete-btn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
