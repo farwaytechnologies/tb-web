@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import '../Styles/DashbordStyle/AdminManageTutor.css';
+import '../Styles/DashbordStyle/AdminManageUser.css';
 
-function AdminManageTutor() {
-  const [tutors, setTutors] = useState([]);
+function AdminManageUser() {
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchTutors = () => {
+  const fetchUsers = () => {
     setLoading(true);
     fetch('https://tb-back-fyvj.onrender.com/api/auth/users')
       .then(res => {
@@ -13,15 +13,15 @@ function AdminManageTutor() {
         return res.json();
       })
       .then(data => {
-        const tutorUsers = data.filter(user => user.role === 'tutor');
-        setTutors(tutorUsers);
+        // Display all users (not filtered by role)
+        setUsers(data);
       })
-      .catch(err => console.error('Error fetching tutors:', err))
+      .catch(err => console.error('Error fetching users:', err))
       .finally(() => setLoading(false));
   };
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm('Are you sure you want to delete this tutor?');
+    const confirm = window.confirm('Are you sure you want to delete this user?');
     if (!confirm) return;
 
     try {
@@ -29,26 +29,26 @@ function AdminManageTutor() {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error('Delete failed');
-      fetchTutors();
+      fetchUsers();
     } catch (err) {
-      console.error('Error deleting tutor:', err);
+      console.error('Error deleting user:', err);
     }
   };
 
   useEffect(() => {
-    fetchTutors();
+    fetchUsers();
   }, []);
 
   return (
-    <div className="admin-tutor-container">
-      <h2 className="admin-tutor-title">All Registered Tutors</h2>
+    <div className="admin-user-container">
+      <h2 className="admin-user-title">All Registered Users ({users.length})</h2>
       {loading ? (
-        <div className="admin-tutor-loading">Fetching tutor data...</div>
-      ) : tutors.length === 0 ? (
-        <div className="admin-tutor-no-data">No tutors found.</div>
+        <div className="admin-loading">Fetching user data...</div>
+      ) : users.length === 0 ? (
+        <div className="admin-no-data">No users found.</div>
       ) : (
-        <div className="admin-tutor-table-wrapper">
-          <table className="admin-tutor-table">
+        <div className="admin-user-table-wrapper">
+          <table className="admin-user-table">
             <thead>
               <tr>
                 <th>Profile</th>
@@ -60,23 +60,23 @@ function AdminManageTutor() {
               </tr>
             </thead>
             <tbody>
-              {tutors.map(tutor => (
-                <tr key={tutor._id}>
+              {users.map(user => (
+                <tr key={user._id}>
                   <td>
                     <img
-                      src={tutor.profilePic || 'https://via.placeholder.com/40'}
+                      src={user.profilePic || 'https://via.placeholder.com/40'}
                       alt="Profile"
-                      className="admin-tutor-avatar"
+                      className="admin-user-avatar"
                     />
                   </td>
-                  <td className="admin-tutor-cell">{tutor.name}</td>
-                  <td className="admin-tutor-cell">{tutor.email}</td>
-                  <td className="admin-tutor-cell">{tutor.role}</td>
-                  <td className="admin-tutor-cell">{tutor.gender || 'N/A'}</td>
+                  <td className="admin-cell-text">{user.name}</td>
+                  <td className="admin-cell-text">{user.email}</td>
+                  <td className="admin-cell-text">{user.role}</td>
+                  <td className="admin-cell-text">{user.gender || 'N/A'}</td>
                   <td>
                     <button
-                      onClick={() => handleDelete(tutor._id)}
-                      className="admin-tutor-delete-btn"
+                      onClick={() => handleDelete(user._id)}
+                      className="admin-delete-btn"
                     >
                       Delete
                     </button>
@@ -91,4 +91,4 @@ function AdminManageTutor() {
   );
 }
 
-export default AdminManageTutor;
+export default AdminManageUser;
