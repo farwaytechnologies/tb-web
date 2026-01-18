@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../Styles/PagesStyle/Login.css';
+import '../Styles/PagesStyle/TutorLogin.css';
 
 function TutorLogin() {
   const [isSignup, setIsSignup] = useState(false);
@@ -12,13 +12,26 @@ function TutorLogin() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // ✅ redirect already logged-in tutor
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (token && user?.role === 'tutor') {
+      navigate('/tutor/dashboard');
+    }
+  }, [navigate]);
+
   const toggleForm = () => {
     setIsSignup(!isSignup);
     setError('');
   };
 
   const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -44,8 +57,14 @@ function TutorLogin() {
       if (!res.ok) throw new Error(data.message || 'Something went wrong');
 
       if (!isSignup) {
+        // ✅ Tutor-only access check
+        if (data.user.role !== 'tutor') {
+          throw new Error('Access denied. Tutors only.');
+        }
+
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+
         window.dispatchEvent(new Event('userLoggedIn'));
         navigate('/tutor/dashboard');
       } else {
@@ -62,7 +81,11 @@ function TutorLogin() {
       <div className="auth-box">
         <h2>{isSignup ? 'Create Tutor Account' : 'Tutor Login'}</h2>
 
-        {error && <p style={{ color: 'salmon' }}>{error}</p>}
+        {error && (
+          <p style={{ color: 'salmon', marginBottom: '10px' }}>
+            {error}
+          </p>
+        )}
 
         <form className="auth-form" onSubmit={handleSubmit}>
           {isSignup && (
@@ -71,7 +94,7 @@ function TutorLogin() {
               <input
                 type="text"
                 name="name"
-                placeholder="Jane Smith"
+                placeholder="Tutor Name"
                 value={formData.name}
                 onChange={handleChange}
                 required
