@@ -59,6 +59,8 @@ import AdminManageNews from "../Dashboard/AdminManageNews";
 import TutorManageBlog from '../Dashboard/TutorManageBlog';
 import TutorManageCourse from '../Dashboard/TutorManageCourse';
 import TutorManageStudents from '../Dashboard/TutorManageStudents';
+import TutorManageLearn from '../Dashboard/TutorMangeLearn';
+
 
 // 👤 Profiles
 import AdminProfile from '../Profile/AdminProfile';
@@ -156,6 +158,7 @@ function PagesRoute() {
       <Route path="/tutor/blogs" element={<TutorManageBlog />} />
       <Route path="/tutor/courses" element={<TutorManageCourse />} />
       <Route path="/tutor/students" element={<TutorManageStudents />} />
+      <Route path="/tutor/learn" element={<TutorManageLearn />} />  
 
       {/* 👤 Profiles */}
       <Route path="/admin-profile" element={<AdminProfile />} />

@@ -19,6 +19,10 @@ const VisitorAnalytics = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Country filter state
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [countryHovered, setCountryHovered] = useState(null);
+
   // Fetch visitor data
   useEffect(() => {
     const fetchVisitorData = async () => {
@@ -52,13 +56,18 @@ const VisitorAnalytics = () => {
     fetchVisitorData();
   }, []);
 
-  // Filter visitors based on search term
-  const filteredVisitors = visitors.filter(v => 
-    v.ip?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    v.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    v.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    v.region?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter visitors based on search term and selected country
+  const filteredVisitors = visitors.filter(v => {
+    const matchesSearch = 
+      v.ip?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      v.country?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      v.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      v.region?.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesCountry = selectedCountry ? v.country?.toLowerCase() === selectedCountry.toLowerCase() : true;
+    
+    return matchesSearch && matchesCountry;
+  });
 
   // Pagination calculations
   const totalPages = Math.ceil(filteredVisitors.length / itemsPerPage);
@@ -78,6 +87,22 @@ const VisitorAnalytics = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  // Handle geography click
+  const handleCountryClick = (geo) => {
+    const countryName = geo.properties?.name;
+    if (countryName) {
+      setSelectedCountry(countryName);
+      setCurrentPage(1);
+    }
+  };
+
+  // Clear country filter
+  const handleClearCountryFilter = () => {
+    setSelectedCountry(null);
+    setSearchTerm("");
     setCurrentPage(1);
   };
 
@@ -182,73 +207,112 @@ const VisitorAnalytics = () => {
         <section className="va-map-section">
           <div className="va-section-header">
             <h3 className="va-section-title">Global Visitor Map</h3>
-            <p className="va-section-subtitle">{visitors.length} visitors tracked</p>
+            <p className="va-section-subtitle">{visitors.length} visitors tracked | Click on countries to filter</p>
           </div>
           
-          <div className="va-map-container">
-            <ComposableMap
-              projection="geoMercator"
-              projectionConfig={{
-                scale: 140,
-                center: [0, 30],
-              }}
-              width={800}
-              height={400}
-              style={{ width: "100%", height: "100%" }}
-            >
-              <Geographies geography={geoUrl}>
-                {({ geographies }) =>
-                  geographies.map((geo) => (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      fill="#1e293b"
-                      stroke="#334155"
-                      strokeWidth={0.5}
-                      style={{
-                        default: { outline: "none" },
-                        hover: { outline: "none", fill: "#334155" },
-                        pressed: { outline: "none" },
-                      }}
-                    />
-                  ))
-                }
-              </Geographies>
+          <div className="va-map-wrapper">
+            <div className="va-map-container">
+              <ComposableMap
+                projection="geoMercator"
+                projectionConfig={{
+                  scale: 160,
+                  center: [0, 20],
+                }}
+                width={800}
+                height={500}
+                style={{ width: "100%", height: "100%" }}
+              >
+                <Geographies geography={geoUrl}>
+                  {({ geographies }) =>
+                    geographies.map((geo) => {
+                      const countryName = geo.properties?.name;
+                      const isSelected = countryName?.toLowerCase() === selectedCountry?.toLowerCase();
+                      const isHovered = countryName?.toLowerCase() === countryHovered?.toLowerCase();
+                      
+                      return (
+                        <Geography
+                          key={geo.rsmKey}
+                          geography={geo}
+                          onClick={() => handleCountryClick(geo)}
+                          onMouseEnter={() => setCountryHovered(countryName)}
+                          onMouseLeave={() => setCountryHovered(null)}
+                          style={{
+                            default: {
+                              fill: isSelected ? "#818cf8" : "#1e293b",
+                              stroke: "#334155",
+                              strokeWidth: 0.5,
+                              outline: "none",
+                              cursor: "pointer",
+                              transition: "all 0.3s ease",
+                            },
+                            hover: {
+                              fill: isSelected ? "#818cf8" : "#334155",
+                              stroke: "#6366f1",
+                              strokeWidth: 1,
+                              outline: "none",
+                              cursor: "pointer",
+                            },
+                            pressed: {
+                              fill: "#818cf8",
+                              stroke: "#6366f1",
+                              strokeWidth: 1,
+                              outline: "none",
+                            },
+                          }}
+                        />
+                      );
+                    })
+                  }
+                </Geographies>
 
-              {visitors.map((visitor, index) => {
-                const lat = parseFloat(visitor.lat);
-                const lon = parseFloat(visitor.lon);
-                
-                if (!lat || !lon || isNaN(lat) || isNaN(lon) || 
-                    lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-                  return null;
-                }
+                {visitors.map((visitor, index) => {
+                  const lat = parseFloat(visitor.lat);
+                  const lon = parseFloat(visitor.lon);
+                  
+                  if (!lat || !lon || isNaN(lat) || isNaN(lon) || 
+                      lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+                    return null;
+                  }
 
-                return (
-                  <Marker key={`marker-${visitor.ip}-${index}`} coordinates={[lon, lat]}>
-                    <g>
-                      <circle
-                        r={8}
-                        fill="#6366f1"
-                        opacity={0.3}
-                        className="va-marker-glow"
-                      />
-                      <circle
-                        r={4}
-                        fill="#6366f1"
-                        stroke="#fff"
-                        strokeWidth={2}
-                        className="va-marker-dot"
-                        style={{ cursor: "pointer" }}
-                      />
-                    </g>
-                    <title>
-                      {`${visitor.city || "Unknown City"}, ${visitor.country || "Unknown Country"}\nIP: ${visitor.ip || "N/A"}`}
-                    </title>
-                  </Marker>
-                );
-              })}
-            </ComposableMap>
+                  return (
+                    <Marker key={`marker-${visitor.ip}-${index}`} coordinates={[lon, lat]}>
+                      <g>
+                        <circle
+                          r={3}
+                          fill="#6366f1"
+                          opacity={0.2}
+                          className="va-marker-glow"
+                        />
+                        <circle
+                          r={1.5}
+                          fill="#6366f1"
+                          stroke="#fff"
+                          strokeWidth={0.8}
+                          className="va-marker-dot"
+                          style={{ cursor: "pointer" }}
+                        />
+                      </g>
+                      <title>
+                        {`${visitor.city || "Unknown City"}, ${visitor.country || "Unknown Country"}\nIP: ${visitor.ip || "N/A"}`}
+                      </title>
+                    </Marker>
+                  );
+                })}
+              </ComposableMap>
+            </div>
+
+            {/* Country Filter Info */}
+            {selectedCountry && (
+              <div className="va-country-filter-badge">
+                <span className="va-filter-text">📍 Filtering: <strong>{selectedCountry}</strong></span>
+                <button 
+                  className="va-filter-clear-btn"
+                  onClick={handleClearCountryFilter}
+                >
+                  ✕ Clear
+                </button>
+              </div>
+            )}
           </div>
         </section>
 
@@ -259,29 +323,62 @@ const VisitorAnalytics = () => {
             <p className="va-section-subtitle">Most active regions</p>
           </div>
           
-          <div className="va-countries-grid">
-            {stats.length > 0 ? (
-              stats.slice(0, 5).map((item, index) => (
-                <div className="va-country-card" key={`country-${item._id}-${index}`}>
-                  <div className="va-country-rank">#{index + 1}</div>
-                  <div className="va-country-info">
-                    <span className="va-country-name">{item._id || "Unknown"}</span>
-                    <span className="va-country-count">
-                      {item.count} {item.count === 1 ? 'visitor' : 'visitors'}
-                    </span>
+          {stats.length > 0 ? (
+            <div className="va-countries-container">
+              {stats.slice(0, 5).map((item, index) => (
+                <div 
+                  className="va-country-structure" 
+                  key={`country-${item._id}-${index}`}
+                  onClick={() => {
+                    setSelectedCountry(item._id);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <div className="va-structure-header">
+                    <div className="va-structure-rank">
+                      <span className="va-rank-number">#{index + 1}</span>
+                      <span className="va-rank-badge">{item._id || "Unknown"}</span>
+                    </div>
+                    <div className="va-structure-stats">
+                      <div className="va-stat-box">
+                        <span className="va-stat-label">Visitors</span>
+                        <span className="va-stat-value">{item.count}</span>
+                      </div>
+                      <div className="va-stat-box">
+                        <span className="va-stat-label">% of Total</span>
+                        <span className="va-stat-value">{((item.count / stats.reduce((sum, s) => sum + s.count, 0)) * 100).toFixed(1)}%</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="va-country-bar">
+                  
+                  <div className="va-structure-people">
+                    <div className="va-people-label">People Structure</div>
+                    <div className="va-people-dots">
+                      {Array(Math.min(item.count, 20)).fill(0).map((_, i) => (
+                        <div 
+                          key={i} 
+                          className="va-people-dot"
+                          title={`Person ${i + 1}`}
+                        />
+                      ))}
+                      {item.count > 20 && (
+                        <div className="va-people-more">+{item.count - 20}</div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="va-structure-bar">
                     <div 
-                      className="va-country-bar-fill" 
+                      className="va-bar-fill" 
                       style={{ width: `${(item.count / stats[0].count) * 100}%` }}
                     ></div>
                   </div>
                 </div>
-              ))
-            ) : (
-              <p className="va-no-data">No country data available</p>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="va-no-data">No country data available</p>
+          )}
         </section>
 
         {/* All Visitors Table with Pagination */}
@@ -289,7 +386,12 @@ const VisitorAnalytics = () => {
           <div className="va-section-header">
             <h3 className="va-section-title">All Visitors</h3>
             <p className="va-section-subtitle">
-              Showing {filteredVisitors.length > 0 ? startIndex + 1 : 0}-{Math.min(endIndex, filteredVisitors.length)} of {filteredVisitors.length} visitors
+              {selectedCountry ? (
+                <>Visitors from <strong>{selectedCountry}</strong>: </>
+              ) : (
+                <>All Visitors: </>
+              )}
+              Showing {filteredVisitors.length > 0 ? startIndex + 1 : 0}-{Math.min(endIndex, filteredVisitors.length)} of {filteredVisitors.length}
             </p>
           </div>
 
@@ -353,7 +455,11 @@ const VisitorAnalytics = () => {
                 ) : (
                   <tr>
                     <td colSpan="8" className="va-no-data">
-                      {searchTerm ? `No visitors found matching "${searchTerm}"` : "No visitors recorded yet"}
+                      {selectedCountry 
+                        ? `No visitors from ${selectedCountry}` 
+                        : searchTerm 
+                        ? `No visitors found matching "${searchTerm}"` 
+                        : "No visitors recorded yet"}
                     </td>
                   </tr>
                 )}

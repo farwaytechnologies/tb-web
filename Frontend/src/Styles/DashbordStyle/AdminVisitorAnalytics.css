@@ -196,7 +196,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(148, 163, 184, 0.1);
   border-radius: 24px;
-  padding: 2.5rem;
+  padding: 1.75rem;
   margin-bottom: 2rem;
   animation: va-slide-up 0.8s ease-out 0.4s both;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -204,7 +204,7 @@
 
 .va-section-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 
 .va-section-title {
@@ -220,15 +220,27 @@
   margin: 0;
 }
 
-/* Map Container */
-.va-map-container {
+/* Map Wrapper & Container */
+.va-map-wrapper {
+  position: relative;
   width: 100%;
   height: 500px;
+}
+
+.va-map-container {
+  width: 100%;
+  height: 100%;
   background: rgba(15, 23, 42, 0.8);
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.1);
   box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+  cursor: grab;
+  transition: all 0.3s ease;
+}
+
+.va-map-container:active {
+  cursor: grabbing;
 }
 
 /* Map Markers Animation */
@@ -265,6 +277,125 @@
   }
 }
 
+/* Zoom Controls */
+.va-zoom-controls {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+  background: rgba(15, 23, 42, 0.9);
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.va-zoom-btn {
+  width: 44px;
+  height: 44px;
+  border: 2px solid #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1);
+}
+
+.va-zoom-btn:hover:not(:disabled) {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: #818cf8;
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.3);
+  transform: translateY(-2px);
+}
+
+.va-zoom-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.va-zoom-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.va-zoom-in {
+  border-top: 2px solid #6366f1;
+}
+
+.va-zoom-reset {
+  border: 2px solid #8b5cf6;
+}
+
+.va-zoom-reset:hover:not(:disabled) {
+  border-color: #a78bfa;
+  background: rgba(139, 92, 246, 0.25);
+  box-shadow: 0 6px 24px rgba(139, 92, 246, 0.3);
+}
+
+.va-zoom-out {
+  border-bottom: 2px solid #6366f1;
+}
+
+/* Country Filter Badge */
+.va-country-filter-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.95), rgba(139, 92, 246, 0.95));
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 9;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: va-slide-up 0.3s ease-out;
+}
+
+.va-filter-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.va-filter-clear-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.va-filter-clear-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.va-filter-clear-btn:active {
+  transform: scale(0.95);
+}
+
 /* Countries Grid */
 .va-countries-grid {
   display: flex;
@@ -289,9 +420,10 @@
 }
 
 .va-country-card:hover {
-  transform: translateX(8px);
+  transform: translateX(8px) scale(1.02);
   border-color: rgba(99, 102, 241, 0.5);
   background: rgba(51, 65, 85, 0.8);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
 }
 
 .va-country-rank {
@@ -334,12 +466,177 @@
   transition: width 1s ease-out;
 }
 
+/* New Country Structure Styles */
+.va-countries-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.va-country-structure {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 16px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.va-country-structure::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.va-country-structure:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(30, 41, 59, 0.9);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
+}
+
+.va-country-structure:hover::before {
+  left: 100%;
+}
+
+.va-structure-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  gap: 0.75rem;
+}
+
+.va-structure-rank {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.va-rank-number {
+  font-size: 1.25rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #6366f1 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  min-width: 35px;
+}
+
+.va-rank-badge {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #a78bfa;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.va-structure-stats {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.va-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.va-stat-label {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.15rem;
+  font-weight: 600;
+}
+
+.va-stat-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.va-structure-people {
+  margin-bottom: 0.75rem;
+}
+
+.va-people-label {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.va-people-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.va-people-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a78bfa);
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.va-people-dot:hover {
+  transform: scale(1.4);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+}
+
+.va-people-more {
+  font-size: 0.7rem;
+  color: #a78bfa;
+  font-weight: 700;
+  padding: 0 6px;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.va-structure-bar {
+  height: 6px;
+  background: rgba(51, 65, 85, 0.5);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.va-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1 0%, #a78bfa 50%, #ec4899 100%);
+  border-radius: 3px;
+  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
+}
+
 /* Table Controls */
 .va-table-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
   align-items: center;
   justify-content: space-between;
 }
@@ -410,7 +707,7 @@
   overflow-x: auto;
   border-radius: 16px;
   border: 1px solid rgba(148, 163, 184, 0.1);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .va-table {
@@ -424,10 +721,10 @@
 }
 
 .va-table th {
-  padding: 1rem 1.25rem;
+  padding: 0.6rem 0.75rem;
   text-align: left;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #fff;
@@ -435,10 +732,10 @@
 }
 
 .va-table td {
-  padding: 1rem 1.25rem;
+  padding: 0.6rem 0.75rem;
   border-bottom: 1px solid rgba(148, 163, 184, 0.1);
   color: #cbd5e1;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .va-table tbody tr {
@@ -478,8 +775,8 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  padding-top: 1rem;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
   border-top: 1px solid rgba(148, 163, 184, 0.1);
 }
 
@@ -618,7 +915,7 @@
     font-size: 2.5rem;
   }
   
-  .va-map-container {
+  .va-map-wrapper {
     height: 400px;
   }
 }
@@ -652,7 +949,7 @@
     font-size: 2rem;
   }
 
-  .va-map-container {
+  .va-map-wrapper {
     height: 350px;
   }
 
@@ -664,6 +961,29 @@
 
   .va-country-card {
     padding: 1rem;
+  }
+
+  .va-country-structure {
+    padding: 1.25rem;
+  }
+
+  .va-structure-header {
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  .va-structure-stats {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .va-stat-value {
+    font-size: 1.5rem;
+  }
+
+  .va-rank-badge {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.75rem;
   }
 
   .va-table th,
@@ -694,6 +1014,27 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+
+  .va-zoom-controls {
+    top: 10px;
+    right: 10px;
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .va-zoom-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    border-width: 1.5px;
+  }
+
+  .va-zoom-info {
+    bottom: 10px;
+    left: 10px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -720,7 +1061,7 @@
     font-size: 1.75rem;
   }
 
-  .va-map-container {
+  .va-map-wrapper {
     height: 300px;
   }
 
@@ -737,5 +1078,26 @@
     padding: 0.4rem 0.75rem;
     font-size: 0.85rem;
     min-width: 35px;
+  }
+
+  .va-zoom-controls {
+    top: 8px;
+    right: 8px;
+    padding: 6px;
+    gap: 5px;
+  }
+
+  .va-zoom-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+    border-width: 1.5px;
+  }
+
+  .va-zoom-info {
+    bottom: 8px;
+    left: 8px;
+    font-size: 11px;
+    padding: 5px 10px;
   }
 }

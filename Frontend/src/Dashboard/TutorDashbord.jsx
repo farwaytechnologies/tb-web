@@ -6,7 +6,8 @@ import {
   Users,
   FileText,
   GraduationCap,
-  CheckCircle
+  CheckCircle,
+  BookOpen
 } from 'lucide-react';
 
 export default function TutorDashboard() {
@@ -77,7 +78,8 @@ export default function TutorDashboard() {
   const quickActions = [
     { to: '/tutor/courses', icon: Book, label: 'Manage Courses', color: '#10b981' },
     { to: '/tutor/blogs', icon: FileText, label: 'Manage Blogs', color: '#06b6d4' },
-    { to: '/tutor/students', icon: Users, label: 'Manage Students', color: '#8b5cf6' }
+    { to: '/tutor/students', icon: Users, label: 'Manage Students', color: '#8b5cf6' },
+    { to: '/tutor/learn', icon: BookOpen, label: 'Manage Learn', color: '#f59e0b' } // ✅ Added
   ];
 
   return (
@@ -86,12 +88,19 @@ export default function TutorDashboard() {
       <div className="tutor-dashboard__header">
         <div className="tutor-dashboard__header-content">
           <div className="tutor-dashboard__header-text">
-            <h1 className="tutor-dashboard__title">Welcome back, {tutor.name}</h1>
-            <p className="tutor-dashboard__subtitle">Here's your teaching dashboard</p>
+            <h1 className="tutor-dashboard__title">
+              Welcome back, {tutor?.name || 'Tutor'}
+            </h1>
+            <p className="tutor-dashboard__subtitle">
+              Here's your teaching dashboard
+            </p>
           </div>
           <div className="tutor-dashboard__header-avatar">
             <img
-              src={tutor.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(tutor.name)}&background=8b5cf6&color=fff&size=128`}
+              src={
+                tutor?.profilePic ||
+                `https://ui-avatars.com/api/?name=${encodeURIComponent(tutor?.name || 'Tutor')}&background=8b5cf6&color=fff&size=128`
+              }
               alt="Tutor"
               className="tutor-dashboard__avatar"
             />
@@ -104,7 +113,10 @@ export default function TutorDashboard() {
       <div className="tutor-dashboard__stats">
         {statsCards.map((stat, index) => (
           <div key={index} className="tutor-dashboard__stat-card">
-            <div className="tutor-dashboard__stat-icon" style={{ backgroundColor: stat.bgColor }}>
+            <div
+              className="tutor-dashboard__stat-icon"
+              style={{ backgroundColor: stat.bgColor }}
+            >
               <stat.icon size={24} style={{ color: stat.color }} strokeWidth={2} />
             </div>
             <div className="tutor-dashboard__stat-content">
@@ -125,10 +137,15 @@ export default function TutorDashboard() {
               to={action.to}
               className="tutor-dashboard__action-card"
             >
-              <div className="tutor-dashboard__action-icon" style={{ color: action.color }}>
+              <div
+                className="tutor-dashboard__action-icon"
+                style={{ color: action.color }}
+              >
                 <action.icon size={20} strokeWidth={2} />
               </div>
-              <span className="tutor-dashboard__action-label">{action.label}</span>
+              <span className="tutor-dashboard__action-label">
+                {action.label}
+              </span>
             </Link>
           ))}
         </div>
