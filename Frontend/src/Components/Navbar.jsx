@@ -19,7 +19,7 @@ function Navbar() {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [examDropdownOpen, setExamDropdownOpen] = useState(false);
+  // const [examDropdownOpen, setExamDropdownOpen] = useState(false);
   const [learningDropdownOpen, setLearningDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
@@ -27,7 +27,7 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const userDropdownRef = useRef(null);
-  const examDropdownRef = useRef(null);
+  // const examDropdownRef = useRef(null);
   const learningDropdownRef = useRef(null);
 
   // Handle scroll effect
@@ -77,7 +77,7 @@ function Navbar() {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) setDropdownOpen(false);
-      if (examDropdownRef.current && !examDropdownRef.current.contains(event.target)) setExamDropdownOpen(false);
+      // if (examDropdownRef.current && !examDropdownRef.current.contains(event.target)) setExamDropdownOpen(false);
       if (learningDropdownRef.current && !learningDropdownRef.current.contains(event.target)) setLearningDropdownOpen(false);
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -88,7 +88,7 @@ function Navbar() {
   useEffect(() => {
     setMenuOpen(false);
     setDropdownOpen(false);
-    setExamDropdownOpen(false);
+    // setExamDropdownOpen(false);
     setLearningDropdownOpen(false);
   }, [location.pathname]);
 
@@ -101,13 +101,13 @@ function Navbar() {
   }, [navigate]);
 
   const toggleDropdown = useCallback(() => setDropdownOpen(prev => !prev), []);
-  const toggleExamDropdown = useCallback(() => setExamDropdownOpen(prev => !prev), []);
+  // const toggleExamDropdown = useCallback(() => setExamDropdownOpen(prev => !prev), []);
   const toggleLearningDropdown = useCallback(() => setLearningDropdownOpen(prev => !prev), []);
   const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
   const closeMobileMenu = useCallback(() => {
     setMenuOpen(false);
     setDropdownOpen(false);
-    setExamDropdownOpen(false);
+    // setExamDropdownOpen(false);
     setLearningDropdownOpen(false);
   }, []);
 
@@ -224,7 +224,7 @@ function Navbar() {
           </li>
 
           {/* Exam Guide Dropdown */}
-          <li className="tb-navbar__item tb-navbar__dropdown" ref={examDropdownRef}>
+          {/* <li className="tb-navbar__item tb-navbar__dropdown" ref={examDropdownRef}>
             <button 
               className="tb-navbar__dropdown-toggle" 
               onClick={toggleExamDropdown}
@@ -244,7 +244,7 @@ function Navbar() {
                 <li><Link to="/exam-guide/pg" onClick={closeMobileMenu}>PG</Link></li>
               </ul>
             )}
-          </li>
+          </li> */}
 
           <li className="tb-navbar__item">
             <Link 

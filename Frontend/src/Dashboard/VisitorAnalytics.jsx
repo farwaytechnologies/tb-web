@@ -8,6 +8,48 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 // Use TopoJSON format for better compatibility
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
+// Country name mapping to handle different naming conventions
+const countryNameMap = {
+  "usa": "united states",
+  "united states of america": "united states",
+  "us": "united states",
+  "uk": "united kingdom",
+  "great britain": "united kingdom",
+  "england": "united kingdom",
+  "scotland": "united kingdom",
+  "wales": "united kingdom",
+  "northern ireland": "united kingdom",
+  "south korea": "korea",
+  "republic of korea": "korea",
+  "north korea": "north korea",
+  "democratic people's republic of korea": "north korea",
+  "vietnam": "vietnam",
+  "viet nam": "vietnam",
+  "czechia": "czech republic",
+  "czech republic": "czech republic",
+  "palestine": "west bank",
+  "hong kong": "hong kong",
+  "macau": "macau",
+  "taiwan": "taiwan",
+  "peoples republic of china": "china",
+  "prc": "china",
+  "russia": "russia",
+  "russian federation": "russia",
+  "iran": "iran",
+  "islamic republic of iran": "iran",
+  "syria": "syria",
+  "syrian arab republic": "syria",
+  "venezuela": "venezuela",
+  "bolivarian republic of venezuela": "venezuela",
+};
+
+// Normalize country names for comparison
+const normalizeCountryName = (name) => {
+  if (!name) return "";
+  const normalized = name.toLowerCase().trim();
+  return countryNameMap[normalized] || normalized;
+};
+
 const VisitorAnalytics = () => {
   const [visitors, setVisitors] = useState([]);
   const [stats, setStats] = useState([]);
@@ -64,7 +106,10 @@ const VisitorAnalytics = () => {
       v.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       v.region?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesCountry = selectedCountry ? v.country?.toLowerCase() === selectedCountry.toLowerCase() : true;
+    // Improved country matching with normalization
+    const matchesCountry = selectedCountry 
+      ? normalizeCountryName(v.country) === normalizeCountryName(selectedCountry)
+      : true;
     
     return matchesSearch && matchesCountry;
   });
@@ -90,12 +135,21 @@ const VisitorAnalytics = () => {
     setCurrentPage(1);
   };
 
-  // Handle geography click
+  // Handle geography click - use the actual country data names
   const handleCountryClick = (geo) => {
     const countryName = geo.properties?.name;
     if (countryName) {
-      setSelectedCountry(countryName);
+      // Find matching visitors data by normalized name
+      const matchingVisitor = visitors.find(
+        v => normalizeCountryName(v.country) === normalizeCountryName(countryName)
+      );
+      
+      // Use the country name from visitor data if found, otherwise use map name
+      const countryToFilter = matchingVisitor?.country || countryName;
+      setSelectedCountry(countryToFilter);
       setCurrentPage(1);
+      
+      console.log(`Filtering by: ${countryToFilter} (map name: ${countryName})`);
     }
   };
 
@@ -226,8 +280,9 @@ const VisitorAnalytics = () => {
                   {({ geographies }) =>
                     geographies.map((geo) => {
                       const countryName = geo.properties?.name;
-                      const isSelected = countryName?.toLowerCase() === selectedCountry?.toLowerCase();
-                      const isHovered = countryName?.toLowerCase() === countryHovered?.toLowerCase();
+                      const isSelected = selectedCountry 
+                        ? normalizeCountryName(countryName) === normalizeCountryName(selectedCountry)
+                        : false;
                       
                       return (
                         <Geography
