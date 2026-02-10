@@ -150,15 +150,17 @@ function Navbar() {
             <span className="tb-navbar__logo-accent">Borg</span>
           </Link>
 
-          {/* Back Navigation Button */}
-          <button 
-            className="tb-navbar__back-btn" 
-            onClick={() => navigate(-1)} 
-            title="Go Back"
-            aria-label="Go back to previous page"
-          >
-            <ArrowLeft size={18} />
-          </button>
+          {/* Back Navigation Button - Hidden on Home Page Only */}
+          {!isActive('/') && (
+            <button 
+              className="tb-navbar__back-btn" 
+              onClick={() => navigate(-1)} 
+              title="Go Back"
+              aria-label="Go back to previous page"
+            >
+              <ArrowLeft size={18} />
+            </button>
+          )}
         </div>
 
         {/* Dashboard Quick Link */}
