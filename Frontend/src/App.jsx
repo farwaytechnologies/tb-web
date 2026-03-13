@@ -4,11 +4,13 @@ import { BrowserRouter, useLocation } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import PagesRout from "./Routes/PagesRoute";
+import PopupAd from "./PopupAd";
+
 
 // 🌍 API base URL (Render for production or localhost)
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-/* 
+/*
   VisitorTracker component handles:
   - session start
   - page tracking
@@ -74,7 +76,7 @@ function VisitorTracker() {
   return null; // Invisible component
 }
 
-/* 
+/*
   Main App Component
 */
 function App() {
@@ -82,7 +84,7 @@ function App() {
     <BrowserRouter>
       {/* Track visitors silently */}
       <VisitorTracker />
-
+    <PopupAd />
       {/* Layout */}
       <Navbar />
       <PagesRout />
