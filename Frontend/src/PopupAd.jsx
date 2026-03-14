@@ -5,7 +5,7 @@ function PopupAd() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowAd(true);
+      setShowAd(false);
     }, 3000); // show popup after 3 seconds
 
     return () => clearTimeout(timer);
