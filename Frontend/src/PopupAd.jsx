@@ -23,7 +23,11 @@ function PopupAd() {
         {/* Ad Content */}
         <h3>Sponsored</h3>
 
-           <a href="https://beta.publishers.adsterra.com/referral/feF8Lgzu83" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/png/200%20x%20200%20px.png" /></a>
+           <img
+            src="src/img/poster-1.png" 
+            alt="Ad"
+            style={{ width: "30%", height: "20%", borderRadius: "1px" }}
+          />
       </div>
     </div>
   );
@@ -43,7 +47,7 @@ const styles = {
     zIndex: 9999
   },
   popup: {
-    background: "#fff",
+    background: "#ffffff",
     padding: "20px",
     borderRadius: "8px",
     textAlign: "center",
