@@ -24,7 +24,7 @@ function PopupAd() {
         <h3>Sponsored</h3>
 
            <img
-            src="src/img/poster-1.png" 
+            src="/img/poster-1.png"
             alt="Ad"
             style={{ width: "30%", height: "20%", borderRadius: "1px" }}
           />
