@@ -23,8 +23,7 @@ function PopupAd() {
         {/* Ad Content */}
         <h3>Sponsored</h3>
 
-            <script src="https://pl28910885.effectivegatecpm.com/a1/b8/28/a1b828d09024bd8e2d7979ae8daeb2f9.js"></script>
-
+           <a href="https://beta.publishers.adsterra.com/referral/feF8Lgzu83" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/png/200%20x%20200%20px.png" /></a>
       </div>
     </div>
   );
