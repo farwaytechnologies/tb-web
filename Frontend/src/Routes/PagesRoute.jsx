@@ -55,6 +55,7 @@ import AdminViewContact from '../Dashboard/AdminViewContact';
 import AdminViewApplications from '../Dashboard/AdminViewApplications';
 import AdminManageNews from "../Dashboard/AdminManageNews";
 import AdminManageRewards from '../Dashboard/AdminManageRewards';
+import AdminBorgCoins from '../Dashboard/AdminBorgCoins';
 
 // 🧠 Tutor Management
 import TutorManageBlog from '../Dashboard/TutorManageBlog';
@@ -62,6 +63,7 @@ import TutorManageCourse from '../Dashboard/TutorManageCourse';
 import TutorManageStudents from '../Dashboard/TutorManageStudents';
 import TutorManageLearn from '../Dashboard/TutorMangeLearn';
 import TutorRewards from '../Dashboard/TutorRewards';
+import TutorBorgCoins from '../Dashboard/TutorBorgCoins';
 
 
 // 👤 Profiles
@@ -148,6 +150,7 @@ function PagesRoute() {
       <Route path="/admin/manage-learn" element={<AdminManageLearn />} />
       <Route path="/admin/visitors" element={<VisitorAnalytics />} />
       <Route path="/admin/rewards" element={<AdminManageRewards />} />
+      <Route path="/admin/borgcoins" element={<AdminBorgCoins />} />
 
       {/* 🧾 CMS Editing */}
       <Route path="/admin/edit-home" element={<HomeCms />} />
@@ -163,6 +166,7 @@ function PagesRoute() {
       <Route path="/tutor/students" element={<TutorManageStudents />} />
       <Route path="/tutor/learn" element={<TutorManageLearn />} />
       <Route path="/tutor/rewards" element={<TutorRewards />} />
+      <Route path="/tutor/borgcoins" element={<TutorBorgCoins />} />
 
       {/* 👤 Profiles */}
       <Route path="/admin-profile" element={<AdminProfile />} />

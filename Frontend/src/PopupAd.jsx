@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
+import posterImg from "./assets/images/poster-2.png";
 
 function PopupAd() {
-  const [showAd, setShowAd] = useState(false);
+  const [showAd, setShowAd] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowAd(false);
-    }, 3000); // show popup after 3 seconds
-
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -16,18 +16,8 @@ function PopupAd() {
   return (
     <div style={styles.overlay}>
       <div style={styles.popup}>
-        <button onClick={() => setShowAd(false)} style={styles.close}>
-          ✖
-        </button>
-
-        {/* Ad Content */}
-        <h3>Sponsored</h3>
-
-           <img
-            src="/img/poster-1.png"
-            alt="Ad"
-            style={{ width: "30%", height: "20%", borderRadius: "1px" }}
-          />
+        <button onClick={() => setShowAd(false)} style={styles.close}>✖</button>
+        <img src={posterImg} alt="Ad" style={styles.image} />
       </div>
     </div>
   );
@@ -40,27 +30,41 @@ const styles = {
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(0,0,0,0.5)",
+    background: "transparent",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 9999
   },
   popup: {
-    background: "#ffffff",
-    padding: "20px",
+    position: "relative",
+    display: "inline-block",
     borderRadius: "8px",
-    textAlign: "center",
-    position: "relative"
+    overflow: "hidden",
+    boxShadow: "0 8px 32px rgba(0,0,0,0.25)"
+  },
+  image: {
+    display: "block",
+    width: "380px",
+    height: "auto",
+    borderRadius: "8px"
   },
   close: {
     position: "absolute",
-    top: "5px",
+    top: "8px",
     right: "10px",
     border: "none",
-    background: "none",
-    fontSize: "18px",
-    cursor: "pointer"
+    background: "rgba(0,0,0,0.45)",
+    color: "#fff",
+    fontSize: "16px",
+    cursor: "pointer",
+    borderRadius: "50%",
+    width: "28px",
+    height: "28px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1
   }
 };
 

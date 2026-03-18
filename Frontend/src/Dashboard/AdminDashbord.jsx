@@ -18,7 +18,8 @@ import {
   BarChart3,
   Settings,
   TrendingUp,
-  Trophy
+  Trophy,
+  Coins
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -96,7 +97,8 @@ export default function AdminDashboard() {
     { to: '/admin/applications', icon: FileText, label: 'View Applications', color: '#0ea5e9' },
     { to: '/admin/visitors', icon: BarChart3, label: 'Visitor Analytics', color: '#a855f7' },
     { to: '/admin/manage-learn', icon: Code, label: 'Manage Learn Section', color: '#22c55e' },
-    { to: '/admin/rewards', icon: Trophy, label: 'Manage Rewards', color: '#f59e0b' }
+    { to: '/admin/rewards', icon: Trophy, label: 'Manage Rewards', color: '#f59e0b' },
+    { to: '/admin/borgcoins', icon: Coins, label: 'BorgCoins', color: '#f59e0b' }
   ];
 
   return (

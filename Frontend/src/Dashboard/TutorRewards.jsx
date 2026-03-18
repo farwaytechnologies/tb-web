@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Trophy, Star, Zap, BookOpen, FileText, Users, Award } from 'lucide-react';
+import { Trophy, Star, Zap, BookOpen, FileText, Users, Award, Coins } from 'lucide-react';
 import '../Styles/DashbordStyle/TutorRewards.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -193,6 +193,9 @@ export default function TutorRewards() {
       </div>
 
       <div className="tr-back">
+        <Link to="/tutor/borgcoins" className="tr-back-link" style={{ marginRight: '1.5rem', color: '#f59e0b' }}>
+          <Coins size={15} style={{ display: 'inline', marginRight: 4 }} /> BorgCoins Wallet
+        </Link>
         <Link to="/tutor/dashboard" className="tr-back-link">← Back to Dashboard</Link>
       </div>
     </div>
