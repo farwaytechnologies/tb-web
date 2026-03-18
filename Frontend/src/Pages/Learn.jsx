@@ -1,130 +1,120 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Helmet } from 'react-helmet';
-import "../Styles/PagesStyle/Learn.css";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Search, X, BookOpen, Code2, ChevronRight, Layers } from 'lucide-react';
+import '../Styles/PagesStyle/Learn.css';
+import SEO from '../Components/SEO';
 
-const Learn = () => {
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+// Language → accent color map
+const LANG_COLORS = {
+  python:     '#3b82f6', javascript: '#f59e0b', java:       '#ef4444',
+  'c++':      '#8b5cf6', 'c#':       '#6366f1', typescript: '#0891b2',
+  rust:       '#f97316', go:         '#06b6d4',  php:        '#7c3aed',
+  ruby:       '#dc2626', swift:      '#f97316',  kotlin:     '#a855f7',
+  html:       '#ea580c', css:        '#2563eb',  sql:        '#059669',
+};
+const langColor = (name) => LANG_COLORS[name?.toLowerCase()] || '#6366f1';
+
+export default function Learn() {
   const [languages, setLanguages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    const fetchLanguages = async () => {
-      try {
-        const response = await fetch("https://tb-back-fyvj.onrender.com/api/learn");
-        if (!response.ok) throw new Error("Failed to fetch languages");
-        const data = await response.json();
-        setLanguages(data);
-      } catch (err) {
-        setError(err.message);
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchLanguages();
+    fetch(`${API_URL}/api/learn`)
+      .then(r => r.json())
+      .then(d => { setLanguages(Array.isArray(d) ? d : []); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return (
-      <div className="learnpage-container">
-        <Helmet>
-          <title>Loading - TechBorg E-Learning</title>
-          <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery. It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
-          <meta name="keywords" content="react, seo, tutorial, java, javascript, cpp, python" />
-        </Helmet>
-        <div className="learnpage-loading-spinner">
-          <div className="learnpage-spinner"></div>
-          <p className="learnpage-loading-text">Loading courses...</p>
-        </div>
-      </div>
-    );
-  }
+  const filtered = languages.filter(l => {
+    const q = search.toLowerCase();
+    return !q || l.language?.toLowerCase().includes(q) || l.shortDescription?.toLowerCase().includes(q);
+  });
 
-  if (error) {
-    return (
-      <div className="learnpage-container">
-        <Helmet>
-          <title>Error - TechBorg E-Learning</title>
-          <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery." />
-        </Helmet>
-        <div className="learnpage-error-message">
-          <h2 className="learnpage-error-title">⚠️ Oops!</h2>
-          <p className="learnpage-error-text">{error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="learnpage-container">
-      <Helmet>
-        <title>TechBorg E-Learning</title>
-        <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery. It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
-        <meta name="keywords" content="react, seo, tutorial, java, javascript, cpp, python" />
-      </Helmet>
-
-      <div className="learnpage-header">
-        <h1 className="learnpage-title">
-          Start Your <span className="learnpage-highlight">Coding Journey</span>
-        </h1>
-        <p className="learnpage-subtitle">
-          Master programming languages with interactive tutorials and real-world examples
-        </p>
-      </div>
-
-      <div className="learnpage-grid">
-        {languages.map((lang, index) => (
-          <div
-            key={lang._id}
-            className="learnpage-card"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <div className="learnpage-card-image-wrapper">
-              <img
-                src={lang.image}
-                alt={lang.language}
-                className="learnpage-card-img"
-                loading="lazy"
-              />
-              <div className="learnpage-card-overlay"></div>
-            </div>
-
-            <div className="learnpage-card-content">
-              <h2 className="learnpage-card-title">{lang.language}</h2>
-              <p className="learnpage-card-description">{lang.shortDescription}</p>
-
-              <Link to={`/learn/${lang._id}`} className="learnpage-btn">
-                <span>Start Learning</span>
-                <svg
-                  className="learnpage-btn-arrow"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                >
-                  <path
-                    d="M7.5 15L12.5 10L7.5 5"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {languages.length === 0 && !loading && (
-        <div className="learnpage-empty-state">
-          <p>No courses available at the moment. Check back soon!</p>
-        </div>
-      )}
+  if (loading) return (
+    <div className="lp-page">
+      <div className="lp-loading"><div className="lp-spinner" /><p>Loading courses...</p></div>
     </div>
   );
-};
 
-export default Learn;
+  return (
+    <div className="lp-page">
+      <SEO
+        title="Learn to Code - Free Programming Tutorials"
+        description="Learn Python, JavaScript, Java, C++, and more with free interactive tutorials and hands-on modules. Start your coding journey with TechBorg."
+        url="/learn"
+        keywords="learn programming, coding tutorials, python tutorial, javascript tutorial, free coding courses"
+      />
+      {/* Hero */}
+      <div className="lp-hero">
+        <div className="lp-hero-inner">
+          <span className="lp-hero-badge"><Code2 size={14} /> Learn to Code</span>
+          <h1>Start Your <span className="lp-hero-accent">Coding Journey</span></h1>
+          <p>Master programming languages with interactive tutorials, real-world examples and hands-on code.</p>
+
+          <div className="lp-search-wrap">
+            <Search size={16} className="lp-search-icon" />
+            <input className="lp-search" placeholder="Search languages..." value={search}
+              onChange={e => setSearch(e.target.value)} />
+            {search && <button className="lp-search-clear" onClick={() => setSearch('')}><X size={14} /></button>}
+          </div>
+
+          <div className="lp-hero-stats">
+            <div className="lp-hero-stat"><span>{languages.length}</span> Languages</div>
+            <div className="lp-hero-stat"><span>{languages.reduce((s, l) => s + (l.modules?.length || 0), 0)}</span> Modules</div>
+            <div className="lp-hero-stat"><span>Free</span> Access</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div className="lp-content">
+        {filtered.length === 0 ? (
+          <div className="lp-empty">
+            <BookOpen size={48} />
+            <p>{search ? `No results for "${search}"` : 'No courses available yet.'}</p>
+          </div>
+        ) : (
+          <>
+            <p className="lp-count">{filtered.length} course{filtered.length !== 1 ? 's' : ''} available</p>
+            <div className="lp-grid">
+              {filtered.map((lang, i) => {
+                const color = langColor(lang.language);
+                const mods = lang.modules?.length || 0;
+                return (
+                  <div key={lang._id} className="lp-card" style={{ '--accent': color, animationDelay: `${i * 0.05}s` }}>
+                    <div className="lp-card-top" style={{ background: `linear-gradient(135deg, ${color}22, ${color}08)` }}>
+                      {lang.image
+                        ? <img src={lang.image} alt={lang.language} className="lp-card-img" onError={e => { e.target.style.display='none'; }} />
+                        : <div className="lp-card-icon" style={{ color }}><Code2 size={40} /></div>
+                      }
+                      <div className="lp-card-badge" style={{ background: color }}>{mods} module{mods !== 1 ? 's' : ''}</div>
+                    </div>
+                    <div className="lp-card-body">
+                      <h3 className="lp-card-title" style={{ color }}>{lang.language}</h3>
+                      <p className="lp-card-desc">{lang.shortDescription || 'Learn the fundamentals and beyond.'}</p>
+                      {mods > 0 && (
+                        <div className="lp-card-modules">
+                          <Layers size={12} />
+                          {lang.modules.slice(0, 3).map((m, j) => (
+                            <span key={j} className="lp-module-chip">{m.title}</span>
+                          ))}
+                          {mods > 3 && <span className="lp-module-more">+{mods - 3} more</span>}
+                        </div>
+                      )}
+                      <Link to={`/learn/${lang._id}`} className="lp-card-btn" style={{ background: color }}>
+                        Start Learning <ChevronRight size={15} />
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

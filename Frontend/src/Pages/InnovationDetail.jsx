@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../Styles/PagesStyle/InnovationDetail.css';
+import SEO from '../Components/SEO';
+
+const API = import.meta.env.VITE_API_URL;
 
 export default function InnovationDetail() {
   const { id } = useParams();
@@ -8,7 +11,7 @@ export default function InnovationDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://tb-back-fyvj.onrender.com/api/innovations/${id}`)
+    fetch(`${API}/api/innovations/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setInnovation(data);
@@ -25,6 +28,15 @@ export default function InnovationDetail() {
 
   return (
     <div className="techborg-innovation-detail-wrapper">
+      {innovation && (
+        <SEO
+          title={innovation.title}
+          description={innovation.description?.slice(0, 155)}
+          url={`/innovation/${id}`}
+          image={innovation.image}
+          keywords={`${innovation.title}, tech innovation, TechBorg`}
+        />
+      )}
       <div className="techborg-innovation-detail-hero">
         {innovation.image && <img src={innovation.image} alt={innovation.title} />}
         <div className="techborg-innovation-detail-hero-text">

@@ -1,134 +1,129 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { BookOpen, Search, X, Users, Clock, ChevronRight, GraduationCap, Star } from 'lucide-react';
 import '../Styles/PagesStyle/Courses.css';
+import SEO from '../Components/SEO';
 
-function Courses() {
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+const LEVEL_COLORS = { beginner: '#10b981', intermediate: '#f59e0b', advanced: '#ef4444' };
+const levelColor = (l) => LEVEL_COLORS[l?.toLowerCase()] || '#6366f1';
+
+export default function Courses() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all');
+  const [search, setSearch] = useState('');
+  const [level, setLevel] = useState('All');
 
   useEffect(() => {
-    fetch('https://tb-back-fyvj.onrender.com/api/courses')
-      .then((res) => res.json())
-      .then((data) => {
-        setCourses(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Error fetching courses:', err);
-        setLoading(false);
-      });
+    fetch(`${API_URL}/api/courses`)
+      .then(r => r.json())
+      .then(d => { setCourses(Array.isArray(d) ? d : []); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
+  const levels = ['All', ...Array.from(new Set(courses.map(c => c.level).filter(Boolean)))];
+
+  const filtered = courses.filter(c => {
+    const q = search.toLowerCase();
+    const matchSearch = !q || c.title?.toLowerCase().includes(q) || c.instructor?.toLowerCase().includes(q) || c.description?.toLowerCase().includes(q);
+    const matchLevel = level === 'All' || c.level === level;
+    return matchSearch && matchLevel;
+  });
+
+  if (loading) return (
+    <div className="crs-page">
+      <div className="crs-loading"><div className="crs-spinner" /><p>Loading courses...</p></div>
+    </div>
+  );
+
   return (
-    <div className="techborg-courses-page">
-      {/* Hero Section */}
-      <div className="techborg-courses-hero">
-        <div className="techborg-hero-content">
-          <h1 className="techborg-courses-title">
-            Explore Our <span className="techborg-highlight">Courses</span>
-          </h1>
-          <p className="techborg-courses-subtitle">
-            Master new skills with our expertly crafted courses designed for real-world success
-          </p>
-        </div>
-        <div className="techborg-hero-decorations">
-          <div className="techborg-deco-circle techborg-deco-1"></div>
-          <div className="techborg-deco-circle techborg-deco-2"></div>
-          <div className="techborg-deco-circle techborg-deco-3"></div>
-        </div>
-      </div>
+    <div className="crs-page">
+      <SEO
+        title="Online Courses"
+        description="Browse TechBorg's expert-led online courses in programming, web development, data science, AI and more. Beginner to advanced levels available."
+        url="/courses"
+        keywords="online courses, programming courses, web development, data science, AI courses, beginner courses India"
+      />
+      {/* Hero */}
+      <div className="crs-hero">
+        <div className="crs-hero-inner">
+          <span className="crs-hero-badge"><GraduationCap size={14} /> Online Courses</span>
+          <h1>Explore Our <span className="crs-accent">Courses</span></h1>
+          <p>Master new skills with expertly crafted courses designed for real-world success.</p>
 
-      {/* Filter Section */}
-      <div className="techborg-filter-section">
-        <div className="techborg-filter-container">
-          <button
-            className={`techborg-filter-btn ${filter === 'all' ? 'active' : ''}`}
-            onClick={() => setFilter('all')}
-          >
-            All Courses
-          </button>
-          <button
-            className={`techborg-filter-btn ${filter === 'popular' ? 'active' : ''}`}
-            onClick={() => setFilter('popular')}
-          >
-            Popular
-          </button>
-          <button
-            className={`techborg-filter-btn ${filter === 'new' ? 'active' : ''}`}
-            onClick={() => setFilter('new')}
-          >
-            New
-          </button>
-        </div>
-      </div>
-
-      {/* Courses Grid */}
-      <div className="techborg-courses-container">
-        {loading ? (
-          <div className="techborg-loading-state">
-            <div className="techborg-spinner"></div>
-            <p>Loading amazing courses...</p>
+          <div className="crs-search-wrap">
+            <Search size={16} className="crs-search-icon" />
+            <input className="crs-search" placeholder="Search courses or instructors..." value={search}
+              onChange={e => setSearch(e.target.value)} />
+            {search && <button className="crs-search-clear" onClick={() => setSearch('')}><X size={14} /></button>}
           </div>
-        ) : courses.length > 0 ? (
-          <div className="techborg-courses-grid">
-            {courses.map((course, index) => (
-              <Link
-                to={`/courses/${course._id}`}
-                className="techborg-courses-card"
-                key={course._id}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="techborg-card-image-wrapper">
-                  <img
-                    src={course.image}
-                    alt={course.title}
-                    className="techborg-courses-image"
-                  />
-                  <div className="techborg-card-overlay">
-                    <span className="techborg-view-details">View Details →</span>
-                  </div>
-                  <div className="techborg-card-badge">Featured</div>
-                </div>
 
-                <div className="techborg-card-content">
-                  <h2 className="techborg-card-title">{course.title}</h2>
-                  <p className="techborg-card-description">{course.description}</p>
+          <div className="crs-hero-stats">
+            <div className="crs-stat"><span>{courses.length}</span>Courses</div>
+            <div className="crs-stat"><span>{courses.reduce((s, c) => s + (c.modules?.length || 0), 0)}</span>Modules</div>
+            <div className="crs-stat"><span>{courses.filter(c => !c.price || c.price === 0).length}</span>Free</div>
+          </div>
+        </div>
+      </div>
 
-                  <div className="techborg-card-footer">
-                    <div className="techborg-card-meta">
-                      <span className="techborg-meta-item">
-                        <svg className="techborg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        12 weeks
-                      </span>
-                      <span className="techborg-meta-item">
-                        <svg className="techborg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        2.5k students
-                      </span>
-                    </div>
-                    <div className="techborg-card-price">
-                      <span className="techborg-currency">₹</span>
-                      <span className="techborg-amount">{course.price}</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+      <div className="crs-content">
+        {/* Level filter */}
+        {levels.length > 1 && (
+          <div className="crs-levels">
+            {levels.map(l => (
+              <button key={l} className={`crs-level-btn ${level === l ? 'active' : ''}`}
+                style={level === l && l !== 'All' ? { background: levelColor(l), borderColor: levelColor(l) } : {}}
+                onClick={() => setLevel(l)}>{l}</button>
             ))}
           </div>
-        ) : (
-          <div className="techborg-empty-state">
-            <div className="techborg-empty-icon">📚</div>
-            <h3>No courses found</h3>
-            <p>Check back soon for new courses!</p>
+        )}
+
+        {filtered.length === 0 ? (
+          <div className="crs-empty">
+            <BookOpen size={48} />
+            <p>{search ? `No results for "${search}"` : 'No courses available yet.'}</p>
           </div>
+        ) : (
+          <>
+            <p className="crs-count">{filtered.length} course{filtered.length !== 1 ? 's' : ''} available</p>
+            <div className="crs-grid">
+              {filtered.map((course, i) => (
+                <Link key={course._id} to={`/courses/${course._id}`} className="crs-card"
+                  style={{ animationDelay: `${i * 0.05}s` }}>
+                  <div className="crs-card-img">
+                    {course.image
+                      ? <img src={course.image} alt={course.title} onError={e => e.target.style.display='none'} />
+                      : <div className="crs-card-placeholder"><BookOpen size={40} /></div>
+                    }
+                    {course.level && (
+                      <span className="crs-card-level" style={{ background: levelColor(course.level) }}>{course.level}</span>
+                    )}
+                    <div className="crs-card-hover-overlay">
+                      <span>View Course <ChevronRight size={14} /></span>
+                    </div>
+                  </div>
+                  <div className="crs-card-body">
+                    <h3 className="crs-card-title">{course.title}</h3>
+                    {course.instructor && <p className="crs-card-instructor">by {course.instructor}</p>}
+                    <p className="crs-card-desc">{course.description}</p>
+                    <div className="crs-card-meta">
+                      {course.duration && <span className="crs-meta-item"><Clock size={12} />{course.duration}</span>}
+                      <span className="crs-meta-item"><BookOpen size={12} />{course.modules?.length || 0} modules</span>
+                    </div>
+                    <div className="crs-card-footer">
+                      <span className="crs-card-price">
+                        {course.price ? <><span className="crs-currency">₹</span>{Number(course.price).toLocaleString()}</> : <span className="crs-free">Free</span>}
+                      </span>
+                      <span className="crs-enroll-cta">Enroll Now <ChevronRight size={13} /></span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
   );
 }
-
-export default Courses;

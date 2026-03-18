@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Block private/dashboard routes
+Disallow: /admin/
+Disallow: /tutor/
+Disallow: /user/
+Disallow: /admin-profile
+Disallow: /tutor-profile
+Disallow: /user-profile
+Disallow: /settings
+Disallow: /invoices
+Disallow: /certificates
+Disallow: /exam
+Disallow: /enroll
+Disallow: /apply/
+Disallow: /login
+Disallow: /tutor-login
+Disallow: /admin-login
+Disallow: /notifications
+
+Sitemap: https://techborg.in/sitemap.xml

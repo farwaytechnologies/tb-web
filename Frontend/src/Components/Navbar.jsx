@@ -330,18 +330,22 @@ function Navbar() {
                     <User size={18} />
                     <span>My Profile</span>
                   </Link>
-                  <Link to="/certificates" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
-                    <Award size={18} />
-                    <span>Certificates</span>
-                  </Link>
-                  <Link to="/exam" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
-                    <FileText size={18} />
-                    <span>Exam</span>
-                  </Link>
-                  <Link to="/invoices" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
-                    <Receipt size={18} />
-                    <span>Invoices</span>
-                  </Link>
+                  {user.role !== 'admin' && (
+                    <>
+                      <Link to="/certificates" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
+                        <Award size={18} />
+                        <span>Certificates</span>
+                      </Link>
+                      <Link to="/exam" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
+                        <FileText size={18} />
+                        <span>Exam</span>
+                      </Link>
+                      <Link to="/invoices" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
+                        <Receipt size={18} />
+                        <span>Invoices</span>
+                      </Link>
+                    </>
+                  )}
                   <button onClick={handleLogout} className="tb-navbar__user-menu-item tb-navbar__logout">
                     <LogOut size={18} />
                     <span>Logout</span>

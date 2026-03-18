@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Loader, AlertCircle } from 'lucide-react';
 import '../Styles/PagesStyle/About.css';
+import SEO from '../Components/SEO';
 
 function About() {
   const [aboutData, setAboutData] = useState(null);
@@ -54,6 +55,12 @@ function About() {
 
   return (
     <div className="about-page">
+      <SEO
+        title="About Us"
+        description="Learn about TechBorg E-Learning — our mission, vision, values, and the team behind India's growing tech education platform."
+        url="/about"
+        keywords="about TechBorg, e-learning mission, tech education India, online learning platform"
+      />
       <div className="about-container">
         {/* Hero Section */}
         <div className="about-hero">

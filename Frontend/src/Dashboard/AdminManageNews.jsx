@@ -1,193 +1,175 @@
-import React, { useEffect, useState } from "react";
-import "../Styles/DashbordStyle/AdminManageNews.css";
+import { useEffect, useState } from 'react';
+import { Plus, X, Edit2, Trash2, Newspaper, Search, Calendar, Tag, Image } from 'lucide-react';
+import '../Styles/DashbordStyle/AdminManageNews.css';
 
-const API_URL = "https://tb-back-fyvj.onrender.com/api/news";
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-function AdminManageNews() {
-  const [newsList, setNewsList] = useState([]);
-  const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    date: "",
-    category: "",
-    image: "",
-  });
-  const [editId, setEditId] = useState(null);
+const EMPTY = { title: '', content: '', date: '', category: '', image: '' };
+
+const CATEGORY_COLORS = {
+  technology: '#3b82f6', ai: '#8b5cf6', science: '#10b981', business: '#f59e0b',
+  education: '#06b6d4', health: '#ef4444', innovation: '#f97316',
+};
+const catColor = (c) => CATEGORY_COLORS[c?.toLowerCase()] || '#6366f1';
+
+export default function AdminManageNews() {
+  const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [search, setSearch] = useState('');
+  const [modal, setModal] = useState(false);
+  const [form, setForm] = useState(EMPTY);
+  const [editId, setEditId] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
-  // Fetch all news
-  const fetchNews = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error("Failed to fetch news");
-      const data = await response.json();
-      setNewsList(data);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to fetch news");
-    } finally {
-      setLoading(false);
-    }
+  const fetchNews = () => {
+    setLoading(true);
+    fetch(`${API_URL}/api/news`)
+      .then(r => r.json())
+      .then(d => { setNews(Array.isArray(d) ? d : []); setLoading(false); })
+      .catch(() => setLoading(false));
   };
 
-  useEffect(() => {
-    fetchNews();
-  }, []);
+  useEffect(() => { fetchNews(); }, []);
 
-  // Handle form input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const openAdd = () => { setForm(EMPTY); setEditId(null); setError(''); setModal(true); };
+  const openEdit = (item) => {
+    setForm({ title: item.title, content: item.content || '', date: item.date ? item.date.split('T')[0] : '', category: item.category || '', image: item.image || '' });
+    setEditId(item._id); setError(''); setModal(true);
   };
+  const closeModal = () => { setModal(false); setEditId(null); setForm(EMPTY); };
 
-  // Add or update news
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const method = editId ? "PUT" : "POST";
-    const url = editId ? `${API_URL}/${editId}` : API_URL;
-
+    setSaving(true); setError('');
+    const method = editId ? 'PUT' : 'POST';
+    const url = editId ? `${API_URL}/api/news/${editId}` : `${API_URL}/api/news`;
     try {
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) throw new Error("Failed to save news");
-
-      await fetchNews();
-      setFormData({ title: "", content: "", date: "", category: "", image: "" });
-      setEditId(null);
-      setError("");
-    } catch (err) {
-      console.error(err);
-      setError("Error saving news");
-    }
+      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+      if (!res.ok) throw new Error('Failed to save');
+      fetchNews(); closeModal();
+    } catch (err) { setError(err.message); }
+    finally { setSaving(false); }
   };
 
-  // Delete news
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this news item?")) return;
-    try {
-      const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-      if (!response.ok) throw new Error("Failed to delete news");
-      setNewsList(newsList.filter((item) => item._id !== id));
-      setError("");
-    } catch (err) {
-      console.error(err);
-      setError("Failed to delete news");
-    }
+    if (!window.confirm('Delete this news item?')) return;
+    await fetch(`${API_URL}/api/news/${id}`, { method: 'DELETE' });
+    setNews(prev => prev.filter(n => n._id !== id));
   };
 
-  // Edit news
-  const handleEdit = (item) => {
-    setEditId(item._id);
-    setFormData({
-      title: item.title,
-      content: item.content || "",
-      date: item.date ? item.date.split("T")[0] : "",
-      category: item.category || "",
-      image: item.image || "",
-    });
-  };
+  const filtered = news.filter(n => {
+    const q = search.toLowerCase();
+    return !q || n.title?.toLowerCase().includes(q) || n.category?.toLowerCase().includes(q);
+  });
 
   return (
-    <div className="admin-manage-news-container">
-      <h1 className="admin-page-title">📰 Manage News</h1>
-
-      {/* Add/Edit News Form */}
-      <form className="news-form" onSubmit={handleSubmit}>
-        <h2>{editId ? "Edit News" : "Add New News"}</h2>
-
-        {error && <p className="error-text">{error}</p>}
-
-        <div className="form-grid">
-          <input
-            type="text"
-            name="title"
-            placeholder="News Title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="category"
-            placeholder="Category (optional)"
-            value={formData.category}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="image"
-            placeholder="Image URL (optional)"
-            value={formData.image}
-            onChange={handleChange}
-          />
+    <div className="amn-page">
+      {/* Header */}
+      <div className="amn-header">
+        <div className="amn-header-left">
+          <Newspaper size={22} className="amn-header-icon" />
+          <div>
+            <h1 className="amn-title">Manage News</h1>
+            <p className="amn-subtitle">{news.length} article{news.length !== 1 ? 's' : ''}</p>
+          </div>
         </div>
-
-        <textarea
-          name="content"
-          placeholder="News Content..."
-          rows="4"
-          value={formData.content}
-          onChange={handleChange}
-        ></textarea>
-
-        <button type="submit" className="submit-btn">
-          {editId ? "Update News" : "Add News"}
-        </button>
-      </form>
-
-      {/* News Table */}
-      <div className="news-list">
-        <h2>All News Items</h2>
-        {loading ? (
-          <p>Loading...</p>
-        ) : newsList.length === 0 ? (
-          <p>No news available.</p>
-        ) : (
-          <table className="news-table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {newsList.map((item) => (
-                <tr key={item._id}>
-                  <td>{item.title}</td>
-                  <td>{item.category}</td>
-                  <td>{new Date(item.date).toLocaleDateString()}</td>
-                  <td>
-                    <div className="actions">
-                      <button className="edit-btn" onClick={() => handleEdit(item)}>
-                        ✏️ Edit
-                      </button>
-                      <button className="delete-btn" onClick={() => handleDelete(item._id)}>
-                        🗑️ Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <button className="amn-add-btn" onClick={openAdd}><Plus size={16} /> Add News</button>
       </div>
+
+      {/* Search */}
+      <div className="amn-toolbar">
+        <div className="amn-search-wrap">
+          <Search size={15} className="amn-search-icon" />
+          <input className="amn-search" placeholder="Search news..." value={search} onChange={e => setSearch(e.target.value)} />
+          {search && <button className="amn-search-clear" onClick={() => setSearch('')}><X size={13} /></button>}
+        </div>
+      </div>
+
+      {/* Grid */}
+      {loading ? (
+        <div className="amn-loading"><div className="amn-spinner" /></div>
+      ) : filtered.length === 0 ? (
+        <div className="amn-empty"><Newspaper size={40} /><p>{search ? 'No results found.' : 'No news yet. Add your first article.'}</p></div>
+      ) : (
+        <div className="amn-grid">
+          {filtered.map(item => (
+            <div key={item._id} className="amn-card">
+              <div className="amn-card-img">
+                {item.image
+                  ? <img src={item.image} alt={item.title} onError={e => e.target.style.display='none'} />
+                  : <div className="amn-card-placeholder"><Newspaper size={28} /></div>
+                }
+                {item.category && <span className="amn-card-cat" style={{ background: catColor(item.category) }}>{item.category}</span>}
+              </div>
+              <div className="amn-card-body">
+                <div className="amn-card-meta">
+                  <span className="amn-card-date"><Calendar size={11} />{new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                </div>
+                <h3 className="amn-card-title">{item.title}</h3>
+                {item.content && <p className="amn-card-excerpt">{item.content}</p>}
+              </div>
+              <div className="amn-card-actions">
+                <button className="amn-edit-btn" onClick={() => openEdit(item)}><Edit2 size={14} /> Edit</button>
+                <button className="amn-del-btn" onClick={() => handleDelete(item._id)}><Trash2 size={14} /> Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Modal */}
+      {modal && (
+        <div className="amn-overlay" onClick={closeModal}>
+          <div className="amn-modal" onClick={e => e.stopPropagation()}>
+            <div className="amn-modal-header">
+              <h2>{editId ? 'Edit Article' : 'Add Article'}</h2>
+              <button className="amn-modal-close" onClick={closeModal}><X size={18} /></button>
+            </div>
+            <form className="amn-form" onSubmit={handleSubmit}>
+              {error && <p className="amn-error">{error}</p>}
+
+              <div className="amn-form-row">
+                <div className="amn-field">
+                  <label>Title *</label>
+                  <input value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} placeholder="Article title" required />
+                </div>
+              </div>
+
+              <div className="amn-form-row amn-two-col">
+                <div className="amn-field">
+                  <label>Date *</label>
+                  <input type="date" value={form.date} onChange={e => setForm(p => ({ ...p, date: e.target.value }))} required />
+                </div>
+                <div className="amn-field">
+                  <label>Category</label>
+                  <input value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} placeholder="e.g. Technology" />
+                </div>
+              </div>
+
+              <div className="amn-field">
+                <label>Image URL</label>
+                <input value={form.image} onChange={e => setForm(p => ({ ...p, image: e.target.value }))} placeholder="https://..." />
+                {form.image && (
+                  <div className="amn-img-preview">
+                    <img src={form.image} alt="preview" onError={e => e.target.style.display='none'} />
+                  </div>
+                )}
+              </div>
+
+              <div className="amn-field">
+                <label>Content</label>
+                <textarea rows={5} value={form.content} onChange={e => setForm(p => ({ ...p, content: e.target.value }))} placeholder="Article content..." />
+              </div>
+
+              <div className="amn-form-actions">
+                <button type="button" className="amn-cancel-btn" onClick={closeModal}>Cancel</button>
+                <button type="submit" className="amn-save-btn" disabled={saving}>{saving ? 'Saving...' : editId ? 'Update' : 'Publish'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
-export default AdminManageNews;

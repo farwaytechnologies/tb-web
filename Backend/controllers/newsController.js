@@ -48,7 +48,7 @@ exports.addNews = async (req, res) => {
 // ✅ Update a news item by ID
 exports.updateNews = async (req, res) => {
   try {
-    const updatedNews = await News.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedNews = await News.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
 
     if (!updatedNews) {
       return res.status(404).json({ message: 'News not found' });

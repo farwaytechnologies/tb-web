@@ -1,167 +1,123 @@
-/* Container */
-.adminjob-container {
-  min-height: 100vh;
-  background-color: #f0f4f8;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Segoe UI', sans-serif;
+.aj-page { padding: 32px; background: #0a0a0f; min-height: 100vh; color: #e2e8f0; position: relative; }
+
+.aj-toast {
+  position: fixed; top: 20px; right: 20px; z-index: 9999;
+  padding: 12px 20px; border-radius: 10px; font-size: 0.875rem; font-weight: 500;
+  animation: aj-slide 0.3s ease;
+}
+@keyframes aj-slide { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.aj-toast-success { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+.aj-toast-error { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
+
+.aj-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.aj-header h2 { font-size: 1.5rem; font-weight: 700; margin: 0 0 4px; }
+.aj-header p { color: #64748b; font-size: 0.875rem; margin: 0; }
+
+.aj-btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #6366f1; color: #fff; border: none;
+  padding: 10px 20px; border-radius: 10px; font-size: 0.875rem; font-weight: 600;
+  cursor: pointer; transition: background 0.2s;
+}
+.aj-btn-primary:hover { background: #4f46e5; }
+.aj-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.aj-state {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; padding: 80px 0; color: #475569;
+}
+.aj-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid rgba(99,102,241,0.2); border-top-color: #6366f1;
+  border-radius: 50%; animation: aj-spin 0.8s linear infinite;
+}
+@keyframes aj-spin { to { transform: rotate(360deg); } }
+
+.aj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
-/* Job Form Box */
-.adminjob-box {
-  background: #ffffff;
-  padding: 2.5rem 3rem;
-  border-radius: 14px;
-  max-width: 750px;
-  width: 100%;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
-  border-left: 6px solid #4a7abe;
-  margin-bottom: 3rem;
+.aj-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px; padding: 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.2s;
+}
+.aj-card:hover { border-color: rgba(99,102,241,0.3); }
+
+.aj-card-top { display: flex; align-items: center; justify-content: space-between; }
+.aj-card-icon {
+  width: 40px; height: 40px;
+  background: rgba(99,102,241,0.12); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; color: #818cf8;
+}
+.aj-delete-btn {
+  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+  color: #f87171; border-radius: 8px; padding: 6px 8px;
+  cursor: pointer; transition: background 0.2s; display: flex;
+}
+.aj-delete-btn:hover { background: rgba(239,68,68,0.2); }
+
+.aj-card-title { font-size: 1rem; font-weight: 700; color: #f1f5f9; margin: 0; }
+.aj-card-desc {
+  color: #94a3b8; font-size: 0.8rem; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 0;
+}
+.aj-card-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.aj-meta { display: flex; align-items: center; gap: 4px; color: #64748b; font-size: 0.78rem; }
+.aj-level-badge {
+  background: rgba(16,185,129,0.12); color: #34d399;
+  border: 1px solid rgba(16,185,129,0.25);
+  padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
 }
 
-.adminjob-title {
-  font-size: 1.8rem;
-  color: #2a4f9c;
-  margin-bottom: 2rem;
-  font-weight: 600;
-  text-align: center;
+/* Modal */
+.aj-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 16px;
 }
-
-/* Form Structure */
-.adminjob-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+.aj-modal {
+  background: #13131f; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; width: 100%; max-width: 540px;
+  max-height: 90vh; overflow-y: auto;
 }
-
-.adminjob-field {
-  display: flex;
-  flex-direction: column;
+.aj-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-
-.adminjob-field label {
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: #333;
+.aj-modal-header h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.aj-modal-close {
+  background: rgba(255,255,255,0.05); border: none; color: #94a3b8;
+  border-radius: 8px; padding: 6px; cursor: pointer; display: flex; transition: background 0.2s;
 }
+.aj-modal-close:hover { background: rgba(255,255,255,0.1); }
 
-.adminjob-field input,
-.adminjob-field textarea {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  transition: border 0.2s ease;
+.aj-form { padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+.aj-field { display: flex; flex-direction: column; gap: 6px; }
+.aj-field label { font-size: 0.8rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+.aj-field input, .aj-field textarea, .aj-field select {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; padding: 10px 14px; color: #e2e8f0; font-size: 0.9rem;
+  outline: none; transition: border-color 0.2s; resize: vertical;
 }
+.aj-field input:focus, .aj-field textarea:focus, .aj-field select:focus { border-color: #6366f1; }
+.aj-field select option { background: #1e1e2e; }
 
-.adminjob-field input:focus,
-.adminjob-field textarea:focus {
-  border-color: #4a7abe;
-  outline: none;
+.aj-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.aj-modal-actions { display: flex; gap: 12px; justify-content: flex-end; padding-top: 4px; }
+.aj-btn-cancel {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: #94a3b8; padding: 10px 20px; border-radius: 10px;
+  font-size: 0.875rem; cursor: pointer; transition: background 0.2s;
 }
+.aj-btn-cancel:hover { background: rgba(255,255,255,0.1); }
 
-.adminjob-row {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.adminjob-row .adminjob-field {
-  flex: 1;
-}
-
-/* Submit Button */
-.adminjob-submit {
-  background-color: #4a7abe;
-  color: white;
-  border: none;
-  padding: 0.9rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.25s ease;
-}
-
-.adminjob-submit:hover {
-  background-color: #365f91;
-}
-
-/* Messages */
-.adminjob-success,
-.adminjob-error {
-  margin-top: 1rem;
-  font-weight: 600;
-  text-align: center;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-}
-
-.adminjob-success {
-  background-color: #e6f8e6;
-  color: #2e7d32;
-  border: 1px solid #b2dfdb;
-}
-
-.adminjob-error {
-  background-color: #fdecea;
-  color: #c0392b;
-  border: 1px solid #f5c6cb;
-}
-
-/* Job List Section */
-.adminjob-list-section {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 2rem 2.5rem;
-  width: 100%;
-  max-width: 750px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-}
-
-.adminjob-subtitle {
-  font-size: 1.5rem;
-  color: #2a4f9c;
-  font-weight: 600;
-  margin-bottom: 1.2rem;
-}
-
-.adminjob-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.adminjob-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.9rem 0;
-  border-bottom: 1px solid #eee;
-  font-size: 1rem;
-  color: #333;
-}
-
-.adminjob-delete {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 0.45rem 0.9rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.adminjob-delete:hover {
-  background-color: #c0392b;
-}
-
-.adminjob-empty {
-  color: #888;
-  font-style: italic;
-  padding: 0.5rem;
-  text-align: center;
+@media (max-width: 640px) {
+  .aj-page { padding: 20px 16px; }
+  .aj-row { grid-template-columns: 1fr; }
+  .aj-grid { grid-template-columns: 1fr; }
 }

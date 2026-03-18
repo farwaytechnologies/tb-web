@@ -3,6 +3,7 @@ import '../Styles/PagesStyle/Home.css';
 import { Link } from 'react-router-dom';
 import HomeWhyUs from '../Home/HomeWhyUs';
 import { Helmet } from 'react-helmet';
+import SEO from '../Components/SEO';
 
 function Home() {
   const [homeContent, setHomeContent] = useState(null);
@@ -95,10 +96,19 @@ function Home() {
 
   return (
     <>
+      <SEO
+        title="Master Technology Skills"
+        description="TechBorg E-Learning — AI-powered online courses in programming, web development, data science and more. Join thousands of learners transforming their careers."
+        url="/"
+        keywords="online learning, tech courses, programming, python, javascript, web development, AI courses, certifications India"
+      />
       <Helmet>
-        <title>TechBorg E-Learning - Master Technology Skills</title>
-        <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery. It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
-        <meta name="keywords" content="online learning, courses, programming, python, javascript, java, cpp, web development" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "TechBorg Featured Courses",
+          "url": "https://techborg.in/courses"
+        })}</script>
       </Helmet>
 
       <div className="homepage-wrapper">

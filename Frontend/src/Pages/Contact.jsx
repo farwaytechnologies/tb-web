@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Clock, Send, User, MessageSquare, Linkedin, Twitter, Facebook, Instagram, CheckCircle, AlertCircle } from 'lucide-react';
 import '../Styles/PagesStyle/Contact.css';
+import SEO from '../Components/SEO';
 
 function Contact() {
   const [form, setForm] = useState({
@@ -54,6 +55,12 @@ function Contact() {
 
   return (
     <section className="contact-page">
+      <SEO
+        title="Contact Us"
+        description="Get in touch with TechBorg E-Learning. We're here to answer your questions about courses, partnerships, and support."
+        url="/contact"
+        keywords="contact TechBorg, e-learning support, get in touch, tech education help"
+      />
       <div className="contact-container">
         {/* Header Section */}
         <div className="contact-header">

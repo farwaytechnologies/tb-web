@@ -1,0 +1,158 @@
+.ami-page { padding: 32px; background: #0a0a0f; min-height: 100vh; color: #e2e8f0; }
+
+.ami-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.ami-header h2 { font-size: 1.5rem; font-weight: 700; margin: 0 0 4px; }
+.ami-header p { color: #64748b; font-size: 0.875rem; margin: 0; }
+
+/* KPIs */
+.ami-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px; margin-bottom: 28px;
+}
+.ami-kpi {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px; padding: 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.ami-kpi-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ami-kpi-blue { background: rgba(99,102,241,0.12); color: #818cf8; }
+.ami-kpi-green { background: rgba(16,185,129,0.12); color: #34d399; }
+.ami-kpi-emerald { background: rgba(52,211,153,0.12); color: #6ee7b7; }
+.ami-kpi-yellow { background: rgba(245,158,11,0.12); color: #fbbf24; }
+.ami-kpi-val { font-size: 1.3rem; font-weight: 700; margin: 0 0 2px; color: #f1f5f9; }
+.ami-kpi-label { font-size: 0.78rem; color: #64748b; margin: 0; }
+
+/* Filters */
+.ami-filters { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.ami-search {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; padding: 10px 16px; flex: 1; min-width: 240px;
+  transition: border-color 0.2s;
+}
+.ami-search:focus-within { border-color: #6366f1; }
+.ami-search svg { color: #64748b; flex-shrink: 0; }
+.ami-search input { background: none; border: none; outline: none; color: #e2e8f0; font-size: 0.875rem; width: 100%; }
+.ami-search input::placeholder { color: #475569; }
+
+.ami-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.ami-tab {
+  padding: 8px 18px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: #94a3b8; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;
+}
+.ami-tab:hover { border-color: #6366f1; color: #e2e8f0; }
+.ami-tab.active { background: #6366f1; border-color: #6366f1; color: #fff; font-weight: 600; }
+
+/* State */
+.ami-state {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; padding: 80px 0; color: #64748b;
+}
+.ami-state span { font-size: 2.5rem; }
+.ami-error { color: #f87171; }
+.ami-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid rgba(99,102,241,0.2); border-top-color: #6366f1;
+  border-radius: 50%; animation: ami-spin 0.8s linear infinite;
+}
+@keyframes ami-spin { to { transform: rotate(360deg); } }
+
+/* Table */
+.ami-table-wrap {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px; overflow-x: auto;
+}
+.ami-table { width: 100%; border-collapse: collapse; }
+.ami-table thead tr { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.ami-table th {
+  padding: 14px 16px; text-align: left;
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: #475569; white-space: nowrap;
+}
+.ami-table tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.15s;
+}
+.ami-table tbody tr:last-child { border-bottom: none; }
+.ami-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+.ami-table td { padding: 14px 16px; font-size: 0.875rem; vertical-align: middle; }
+
+.ami-inv-num { font-family: monospace; color: #818cf8; font-size: 0.8rem; }
+.ami-student { display: flex; align-items: center; gap: 10px; }
+.ami-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.ami-student-name { font-weight: 600; color: #f1f5f9; margin: 0 0 2px; font-size: 0.875rem; }
+.ami-student-email { color: #64748b; font-size: 0.75rem; margin: 0; }
+.ami-course { color: #cbd5e1; max-width: 180px; }
+.ami-amount { font-weight: 700; color: #34d399; }
+.ami-date { color: #64748b; white-space: nowrap; font-size: 0.8rem; }
+
+.ami-status-badge {
+  display: inline-block; padding: 3px 10px;
+  border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+}
+.ami-view-btn {
+  background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25);
+  color: #818cf8; padding: 6px 14px; border-radius: 8px;
+  font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
+}
+.ami-view-btn:hover { background: rgba(99,102,241,0.22); }
+
+/* Modal */
+.ami-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 16px;
+}
+.ami-modal {
+  background: #13131f; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; width: 100%; max-width: 500px;
+  max-height: 90vh; overflow-y: auto;
+}
+.ami-modal-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); gap: 12px;
+}
+.ami-modal-header h3 { font-size: 1rem; font-weight: 700; margin: 0 0 8px; font-family: monospace; color: #818cf8; }
+.ami-modal-close {
+  background: rgba(255,255,255,0.05); border: none; color: #94a3b8;
+  border-radius: 8px; padding: 6px; cursor: pointer; display: flex; flex-shrink: 0;
+}
+.ami-modal-close:hover { background: rgba(255,255,255,0.1); }
+
+.ami-modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 20px; }
+.ami-modal-section { display: flex; flex-direction: column; gap: 10px; }
+.ami-modal-section-title {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: #475569; margin: 0;
+}
+.ami-modal-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.875rem;
+}
+.ami-modal-row span:first-child { color: #64748b; }
+.ami-modal-row span:last-child { color: #e2e8f0; font-weight: 500; text-align: right; }
+.ami-modal-amount { color: #34d399 !important; font-size: 1.1rem !important; font-weight: 700 !important; }
+
+@media (max-width: 768px) {
+  .ami-page { padding: 20px 16px; }
+  .ami-kpis { grid-template-columns: 1fr 1fr; }
+  .ami-filters { flex-direction: column; align-items: stretch; }
+  .ami-search { min-width: unset; }
+}
+@media (max-width: 480px) {
+  .ami-kpis { grid-template-columns: 1fr; }
+}

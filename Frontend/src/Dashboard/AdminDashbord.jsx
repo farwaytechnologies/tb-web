@@ -22,7 +22,8 @@ import {
   TrendingUp,
   Trophy,
   Coins,
-  ClipboardList
+  ClipboardList,
+  Receipt
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -102,7 +103,8 @@ export default function AdminDashboard() {
     { to: '/admin/manage-learn', icon: Code, label: 'Manage Learn Section', color: '#22c55e' },
     { to: '/admin/rewards', icon: Trophy, label: 'Manage Rewards', color: '#f59e0b' },
     { to: '/admin/borgcoins', icon: Coins, label: 'BorgCoins', color: '#f59e0b' },
-    { to: '/admin/exams', icon: ClipboardList, label: 'Manage Exams', color: '#6366f1' }
+    { to: '/admin/exams', icon: ClipboardList, label: 'Manage Exams', color: '#6366f1' },
+    { to: '/admin/invoices', icon: Receipt, label: 'Manage Invoices', color: '#10b981' }
   ];
 
   return (

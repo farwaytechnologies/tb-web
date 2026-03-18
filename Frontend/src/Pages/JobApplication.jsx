@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 import '../Styles/PagesStyle/JobApplication.css';
+import SEO from '../Components/SEO';
+
+const API = import.meta.env.VITE_API_URL;
 
 const JobApplication = () => {
   const { jobId } = useParams();
@@ -57,7 +59,7 @@ const JobApplication = () => {
     data.append('resume', formData.resume);
 
     try {
-      const res = await fetch('https://tb-back-fyvj.onrender.com/api/applications', {
+      const res = await fetch(`${API}/api/applications`, {
         method: 'POST',
         body: data,
       });
@@ -82,11 +84,12 @@ const JobApplication = () => {
 
   return (
     <div className="jobapp-page">
-      <Helmet>
-        <title>Job Application - TechBorg E-Learning</title>
-        <meta name="description" content="Apply for exciting job opportunities at TechBorg E-Learning. Submit your application and join our innovative team." />
-        <meta name="keywords" content="job application, careers, apply, employment" />
-      </Helmet>
+      <SEO
+        title="Apply for a Job"
+        description="Submit your job application to TechBorg E-Learning. Join our team of educators, developers, and innovators."
+        url="/apply"
+        noindex
+      />
 
       <div className="jobapp-container">
         <div className="jobapp-header">

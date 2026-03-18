@@ -1,331 +1,169 @@
-/* JobAlert.css - Modern Page-Specific Styling */
+.ja-page { background: #0a0a0f; min-height: 100vh; color: #e2e8f0; }
 
-.jobalert-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  background-attachment: fixed;
-  padding: 4rem 2rem;
-}
-
-.jobalert-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Header Section */
-.jobalert-header {
+/* Hero */
+.ja-hero {
+  background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #0f0f1a 100%);
+  padding: 100px 24px 60px;
   text-align: center;
-  margin-bottom: 4rem;
-  animation: jobalertFadeInDown 0.8s ease-out;
+  border-bottom: 1px solid #1e1e2e;
+  position: relative;
+  overflow: hidden;
 }
-
-.jobalert-heading {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 1rem;
-  line-height: 1.2;
+.ja-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+  pointer-events: none;
 }
-
-.jobalert-highlight {
-  background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.jobalert-subheading {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 400;
-}
-
-/* Job List Grid */
-.jobalert-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
-  animation: jobalertFadeIn 0.6s ease-out;
-}
-
-/* Job Card */
-.jobalert-card {
-  background: rgba(255, 255, 255, 0.98);
+.ja-hero-inner { position: relative; max-width: 700px; margin: 0 auto; }
+.ja-hero-badge {
+  display: inline-block;
+  background: rgba(99,102,241,0.15);
+  color: #818cf8;
+  border: 1px solid rgba(99,102,241,0.3);
+  padding: 6px 16px;
   border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
-  animation: jobalertSlideUp 0.6s ease-out backwards;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.jobalert-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-/* Card Header */
-.jobalert-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.jobalert-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #2d3748;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  flex: 1;
-}
-
-.jobalert-badge {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  white-space: nowrap;
-  text-transform: capitalize;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
 }
+.ja-hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin: 0 0 16px; line-height: 1.2; }
+.ja-accent { color: #818cf8; }
+.ja-hero p { color: #94a3b8; font-size: 1.1rem; margin: 0 0 32px; }
 
-/* Card Description */
-.jobalert-description {
-  font-size: 1rem;
-  color: #4a5568;
-  line-height: 1.7;
-  flex-grow: 1;
-}
-
-/* Info Section */
-.jobalert-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.jobalert-info-item {
+.ja-search-bar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: #4a5568;
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-.jobalert-icon {
-  color: #667eea;
-  flex-shrink: 0;
-}
-
-/* Apply Button */
-.jobalert-action {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.jobalert-apply-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.75rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  text-decoration: none;
+  gap: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  padding: 14px 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  transition: border-color 0.2s;
+}
+.ja-search-bar:focus-within { border-color: #6366f1; }
+.ja-search-bar svg { color: #64748b; flex-shrink: 0; }
+.ja-search-bar input {
+  background: none; border: none; outline: none;
+  color: #e2e8f0; font-size: 0.95rem; width: 100%;
+}
+.ja-search-bar input::placeholder { color: #475569; }
+
+/* Body */
+.ja-body { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* Tabs */
+.ja-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+.ja-tab {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: #94a3b8;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ja-tab:hover { border-color: #6366f1; color: #e2e8f0; }
+.ja-tab.active { background: #6366f1; border-color: #6366f1; color: #fff; font-weight: 600; }
+
+/* State */
+.ja-state {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; padding: 80px 0; color: #64748b; font-size: 1rem;
+}
+.ja-state span { font-size: 2.5rem; }
+.ja-error { color: #f87171; }
+.ja-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid rgba(99,102,241,0.2);
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: ja-spin 0.8s linear infinite;
+}
+@keyframes ja-spin { to { transform: rotate(360deg); } }
+
+/* Grid */
+.ja-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
 }
 
-.jobalert-apply-btn:hover {
-  transform: translateX(5px);
-  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
-}
-
-.jobalert-btn-arrow {
-  transition: transform 0.3s ease;
-}
-
-.jobalert-apply-btn:hover .jobalert-btn-arrow {
-  transform: translateX(5px);
-}
-
-/* Loading State */
-.jobalert-loading-wrapper {
+/* Card */
+.ja-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 50vh;
-  gap: 1.5rem;
+  gap: 12px;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  animation: ja-fadeUp 0.4s ease both;
+}
+.ja-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(99,102,241,0.4);
+  box-shadow: 0 8px 32px rgba(99,102,241,0.1);
+}
+@keyframes ja-fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.jobalert-spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: jobalertSpin 1s linear infinite;
+.ja-card-top { display: flex; align-items: center; justify-content: space-between; }
+.ja-card-icon {
+  width: 44px; height: 44px;
+  background: rgba(99,102,241,0.12);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #818cf8;
 }
-
-.jobalert-loading-text {
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-
-/* Error State */
-.jobalert-error-wrapper {
-  background: rgba(255, 255, 255, 0.98);
-  padding: 3rem;
+.ja-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.ja-badge-level {
+  background: rgba(16,185,129,0.12);
+  color: #34d399;
+  border: 1px solid rgba(16,185,129,0.25);
+  padding: 3px 10px;
   border-radius: 20px;
-  text-align: center;
-  max-width: 500px;
-  margin: 0 auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-.jobalert-error-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
+.ja-card-title { font-size: 1.15rem; font-weight: 700; color: #f1f5f9; margin: 0; }
+.ja-card-desc {
+  color: #94a3b8; font-size: 0.875rem; line-height: 1.6;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  margin: 0;
 }
 
-.jobalert-error-message {
-  color: #e53e3e;
-  font-size: 1.2rem;
-  font-weight: 500;
+.ja-card-meta { display: flex; gap: 16px; flex-wrap: wrap; }
+.ja-meta-item {
+  display: flex; align-items: center; gap: 5px;
+  color: #64748b; font-size: 0.8rem;
 }
 
-/* Empty State */
-.jobalert-empty-wrapper {
-  background: rgba(255, 255, 255, 0.98);
-  padding: 4rem 3rem;
-  border-radius: 20px;
-  text-align: center;
-  max-width: 500px;
-  margin: 0 auto;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+.ja-apply-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #6366f1; color: #fff;
+  padding: 10px 20px; border-radius: 8px;
+  font-size: 0.875rem; font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: auto;
+  align-self: flex-start;
 }
+.ja-apply-btn:hover { background: #4f46e5; transform: translateX(2px); }
 
-.jobalert-empty-icon {
-  font-size: 5rem;
-  margin-bottom: 1.5rem;
-}
-
-.jobalert-empty-text {
-  color: #2d3748;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.jobalert-empty-subtext {
-  color: #4a5568;
-  font-size: 1rem;
-}
-
-/* Animations */
-@keyframes jobalertFadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes jobalertFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes jobalertSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes jobalertSpin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .jobalert-page {
-    padding: 2rem 1rem;
-  }
-
-  .jobalert-header {
-    margin-bottom: 2rem;
-  }
-
-  .jobalert-list {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .jobalert-card {
-    padding: 1.5rem;
-  }
-
-  .jobalert-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .jobalert-info {
-    flex-direction: column;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .jobalert-heading {
-    font-size: 2rem;
-  }
-
-  .jobalert-subheading {
-    font-size: 1rem;
-  }
-
-  .jobalert-title {
-    font-size: 1.5rem;
-  }
-
-  .jobalert-apply-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .jobalert-action {
-    justify-content: stretch;
-  }
+@media (max-width: 640px) {
+  .ja-hero { padding: 80px 16px 48px; }
+  .ja-grid { grid-template-columns: 1fr; }
 }

@@ -6,6 +6,7 @@ const newsSchema = new mongoose.Schema(
     date: { type: String, required: true },
     content: { type: String },
     image: { type: String },
+    category: { type: String },
   },
   { timestamps: true }
 );

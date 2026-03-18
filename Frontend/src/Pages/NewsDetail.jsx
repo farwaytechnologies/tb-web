@@ -1,269 +1,141 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import "../Styles/PagesStyle/NewsDetails.css";
-import { Helmet } from 'react-helmet';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { ArrowLeft, Calendar, Tag, Share2, Copy, Check, Newspaper, ChevronRight } from 'lucide-react';
+import '../Styles/PagesStyle/NewsDetails.css';
+import SEO from '../Components/SEO';
 
-function NewsDetail() {
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+const CATEGORY_COLORS = {
+  technology: '#3b82f6', ai: '#8b5cf6', science: '#10b981', business: '#f59e0b',
+  education: '#06b6d4', health: '#ef4444', innovation: '#f97316', default: '#6366f1',
+};
+const catColor = (c) => CATEGORY_COLORS[c?.toLowerCase()] || CATEGORY_COLORS.default;
+
+export default function NewsDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [newsItem, setNewsItem] = useState(null);
-  const [relatedNews, setRelatedNews] = useState([]);
+  const [item, setItem] = useState(null);
+  const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const fetchNewsDetail = async () => {
-      try {
-        // Fetch specific news item
-        const response = await fetch(`https://tb-back-fyvj.onrender.com/api/news/${id}`);
-        if (!response.ok) throw new Error("Failed to fetch news details");
-        
-        const data = await response.json();
-        setNewsItem(data);
-
-        // Fetch all news for related articles
-        const allNewsResponse = await fetch("https://tb-back-fyvj.onrender.com/api/news");
-        if (allNewsResponse.ok) {
-          const allNews = await allNewsResponse.json();
-          // Filter out current article and get 3 related ones
-          const related = allNews
-            .filter(item => item._id !== id)
-            .slice(0, 3);
-          setRelatedNews(related);
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNewsDetail();
     window.scrollTo(0, 0);
+    Promise.all([
+      fetch(`${API_URL}/api/news/${id}`).then(r => r.json()),
+      fetch(`${API_URL}/api/news`).then(r => r.json()),
+    ]).then(([single, all]) => {
+      setItem(single);
+      setRelated(Array.isArray(all) ? all.filter(n => n._id !== id).slice(0, 3) : []);
+      setLoading(false);
+    }).catch(e => { setError(e.message); setLoading(false); });
   }, [id]);
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
-  const handleRelatedClick = (newsId) => {
-    navigate(`/news/${newsId}`);
-  };
-
-  const handleShare = (platform) => {
-    const title = encodeURIComponent(newsItem.title);
+  const share = (platform) => {
+    const title = encodeURIComponent(item.title);
     const url = encodeURIComponent(window.location.href);
-    let shareUrl = '';
-
-    switch(platform) {
-      case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?text=${title}&url=${url}`;
-        break;
-      case 'facebook':
-        shareUrl = `https://facebook.com/sharer/sharer.php?u=${url}`;
-        break;
-      case 'linkedin':
-        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-        break;
-      case 'copy':
-        navigator.clipboard.writeText(window.location.href);
-        alert('Link copied to clipboard!');
-        return;
-      default:
-        return;
-    }
-
-    if (shareUrl) {
-      window.open(shareUrl, '_blank', 'width=600,height=400');
+    const urls = {
+      twitter: `https://twitter.com/intent/tweet?text=${title}&url=${url}`,
+      facebook: `https://facebook.com/sharer/sharer.php?u=${url}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+    };
+    if (platform === 'copy') {
+      navigator.clipboard.writeText(window.location.href);
+      setCopied(true); setTimeout(() => setCopied(false), 2000);
+    } else if (urls[platform]) {
+      window.open(urls[platform], '_blank', 'width=600,height=400');
     }
   };
 
-  if (loading) {
-    return (
-      <div className="nd-loading">
-        <Helmet>
-          <title>Loading - TechBorg E-Learning</title>
-        </Helmet>
-        <div className="nd-loading-spinner">
-          <div className="nd-spinner-ring"></div>
-          <div className="nd-spinner-ring-animated"></div>
-        </div>
-        <p className="nd-loading-text">Loading article...</p>
-      </div>
-    );
-  }
+  if (loading) return (
+    <div className="nd-page"><div className="nd-loading"><div className="nd-spinner" /><p>Loading article...</p></div></div>
+  );
+  if (error || !item) return (
+    <div className="nd-page"><div className="nd-error">
+      <Newspaper size={48} />
+      <h2>Article not found</h2>
+      <p>{error || "This article doesn't exist."}</p>
+      <Link to="/news" className="nd-error-btn">← Back to News</Link>
+    </div></div>
+  );
 
-  if (error || !newsItem) {
-    return (
-      <div className="nd-error">
-        <Helmet>
-          <title>Error - TechBorg E-Learning</title>
-        </Helmet>
-        <div className="nd-error-icon-wrapper">
-          <svg className="nd-error-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </div>
-        <h2 className="nd-error-title">Article Not Found</h2>
-        <p className="nd-error-message">
-          {error || "The article you're looking for doesn't exist."}
-        </p>
-        <button onClick={handleBack} className="nd-error-back-btn">
-          ← Go Back
-        </button>
-      </div>
-    );
-  }
+  const color = catColor(item.category);
 
   return (
-    <div className="nd-wrapper">
-      <Helmet>
-        <title>{newsItem.title} - TechBorg E-Learning</title>
-        <meta 
-          name="description" 
-          content={newsItem.content?.substring(0, 160) || "Read the latest news from TechBorg E-Learning"} 
+    <div className="nd-page">
+      {item && (
+        <SEO
+          title={item.title}
+          description={item.content?.slice(0, 155)}
+          url={`/news/${id}`}
+          image={item.image}
+          article
+          publishedTime={item.date}
+          keywords={item.category ? `${item.category}, tech news, TechBorg` : 'tech news, TechBorg'}
         />
-        <meta name="og:title" content={newsItem.title} />
-        <meta name="og:description" content={newsItem.content?.substring(0, 160)} />
-      </Helmet>
-
-      {/* Background decorations */}
-      <div className="nd-background-decorations">
-        <div className="nd-blob nd-blob-1"></div>
-        <div className="nd-blob nd-blob-2"></div>
+      )}
+      {/* Cover image hero */}
+      <div className="nd-cover" style={item.image ? {} : { background: 'linear-gradient(135deg, #0f172a, #1e1b4b)' }}>
+        {item.image && <img src={item.image} alt={item.title} className="nd-cover-img" onError={e => e.target.style.display='none'} />}
+        <div className="nd-cover-overlay" />
+        <div className="nd-cover-content">
+          <button className="nd-back" onClick={() => navigate('/news')}><ArrowLeft size={16} /> News</button>
+          {item.category && <span className="nd-cover-cat" style={{ background: color }}>{item.category}</span>}
+          <h1 className="nd-cover-title">{item.title}</h1>
+          <div className="nd-cover-meta">
+            <span><Calendar size={13} />{new Date(item.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+          </div>
+        </div>
       </div>
 
-      <div className="nd-container">
-        {/* Back Button */}
-        <button onClick={handleBack} className="nd-back-button" aria-label="Go back to news list">
-          <svg className="nd-back-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          <span>Back to News</span>
-        </button>
-
-        {/* Main Article */}
-        <article className="nd-article-card">
-          {/* Article Header */}
-          <header className="nd-article-header">
-            <div className="nd-article-meta">
-              {newsItem.category && (
-                <span className="nd-article-category">{newsItem.category}</span>
-              )}
-              <time className="nd-article-date">
-                <svg className="nd-date-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                {new Date(newsItem.date).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </time>
-            </div>
-
-            <h1 className="nd-article-title">{newsItem.title}</h1>
-          </header>
-
-          {/* Article Content */}
-          <div className="nd-article-content">
-            <p className="nd-article-text">{newsItem.content}</p>
+      <div className="nd-content">
+        {/* Article body */}
+        <article className="nd-article">
+          <div className="nd-article-body">
+            <p className="nd-article-text">{item.content}</p>
           </div>
 
-          {/* Article Footer */}
-          <footer className="nd-article-footer">
-            <div className="nd-share-section">
-              <span className="nd-share-label">Share this article:</span>
-              <div className="nd-share-buttons">
-                <button 
-                  className="nd-share-btn" 
-                  aria-label="Share on Twitter"
-                  onClick={() => handleShare('twitter')}
-                  title="Share on Twitter"
-                >
-                  <svg className="nd-share-icon" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                  </svg>
-                </button>
-                <button 
-                  className="nd-share-btn" 
-                  aria-label="Share on Facebook"
-                  onClick={() => handleShare('facebook')}
-                  title="Share on Facebook"
-                >
-                  <svg className="nd-share-icon" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-                  </svg>
-                </button>
-                <button 
-                  className="nd-share-btn" 
-                  aria-label="Share on LinkedIn"
-                  onClick={() => handleShare('linkedin')}
-                  title="Share on LinkedIn"
-                >
-                  <svg className="nd-share-icon" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-                    <circle cx="4" cy="4" r="2" />
-                  </svg>
-                </button>
-                <button 
-                  className="nd-share-btn" 
-                  aria-label="Copy link"
-                  onClick={() => handleShare('copy')}
-                  title="Copy link to clipboard"
-                >
-                  <svg className="nd-share-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                </button>
-              </div>
+          {/* Share */}
+          <div className="nd-share">
+            <span className="nd-share-label"><Share2 size={14} /> Share</span>
+            <div className="nd-share-btns">
+              <button className="nd-share-btn nd-twitter" onClick={() => share('twitter')} title="Twitter">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+              </button>
+              <button className="nd-share-btn nd-facebook" onClick={() => share('facebook')} title="Facebook">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+              </button>
+              <button className="nd-share-btn nd-linkedin" onClick={() => share('linkedin')} title="LinkedIn">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button className="nd-share-btn nd-copy" onClick={() => share('copy')} title="Copy link">
+                {copied ? <><Check size={14} /> Copied!</> : <><Copy size={14} /> Copy</>}
+              </button>
             </div>
-          </footer>
+          </div>
         </article>
 
-        {/* Related Articles */}
-        {relatedNews.length > 0 && (
-          <section className="nd-related-section">
-            <h2 className="nd-related-title">Related Articles</h2>
+        {/* Related */}
+        {related.length > 0 && (
+          <section className="nd-related">
+            <h2 className="nd-related-heading">More Articles</h2>
             <div className="nd-related-grid">
-              {relatedNews.map((item) => (
-                <article 
-                  key={item._id} 
-                  className="nd-related-card"
-                  onClick={() => handleRelatedClick(item._id)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      handleRelatedClick(item._id);
+              {related.map(r => (
+                <article key={r._id} className="nd-related-card" onClick={() => navigate(`/news/${r._id}`)}>
+                  <div className="nd-related-img">
+                    {r.image
+                      ? <img src={r.image} alt={r.title} onError={e => e.target.style.display='none'} />
+                      : <div className="nd-related-placeholder"><Newspaper size={24} /></div>
                     }
-                  }}
-                >
-                  <div className="nd-related-content">
-                    {item.category && (
-                      <span className="nd-related-category">{item.category}</span>
-                    )}
-                    <h3 className="nd-related-card-title">{item.title}</h3>
-                    <time className="nd-related-date">
-                      {new Date(item.date).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </time>
+                    {r.category && <span className="nd-related-cat" style={{ background: catColor(r.category) }}>{r.category}</span>}
                   </div>
-                  <button 
-                    className="nd-related-link" 
-                    aria-label={`Read: ${item.title}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRelatedClick(item._id);
-                    }}
-                  >
-                    <svg className="nd-arrow-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </button>
+                  <div className="nd-related-body">
+                    <span className="nd-related-date"><Calendar size={11} />{new Date(r.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    <h3 className="nd-related-title">{r.title}</h3>
+                    <span className="nd-related-link">Read <ChevronRight size={13} /></span>
+                  </div>
                 </article>
               ))}
             </div>
@@ -273,5 +145,3 @@ function NewsDetail() {
     </div>
   );
 }
-
-export default NewsDetail;

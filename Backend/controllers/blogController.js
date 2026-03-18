@@ -59,7 +59,7 @@ exports.getBlogById = async (req, res) => {
 // UPDATE Blog
 exports.updateBlog = async (req, res) => {
   try {
-    const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, {
+    const blog = await Blog.findByIdAndUpdate(req.params.id, { $set: req.body }, {
       new: true,
       runValidators: true
     });

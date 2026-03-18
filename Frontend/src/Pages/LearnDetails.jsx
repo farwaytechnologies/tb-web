@@ -1,231 +1,185 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import "../Styles/PagesStyle/LearnDetails.css";
-import { Helmet } from 'react-helmet';
-<Helmet>
-  <title>TechBorg E-Learning</title>
-  <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery.
-It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
-  <meta name="keywords" content="react, seo, tutorial, java, javascirpt, cpp, python" />
-</Helmet>
-const LearnDetails = () => {
+import { useEffect, useState, useCallback } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { ArrowLeft, CheckCircle, Circle, Copy, Check, ChevronLeft, ChevronRight, BookOpen, Code2 } from 'lucide-react';
+import '../Styles/PagesStyle/LearnDetails.css';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+const LANG_COLORS = {
+  python:'#3b82f6', javascript:'#f59e0b', java:'#ef4444', 'c++':'#8b5cf6',
+  'c#':'#6366f1', typescript:'#0891b2', rust:'#f97316', go:'#06b6d4',
+  php:'#7c3aed', ruby:'#dc2626', swift:'#f97316', kotlin:'#a855f7',
+  html:'#ea580c', css:'#2563eb', sql:'#059669',
+};
+const langColor = (name) => LANG_COLORS[name?.toLowerCase()] || '#6366f1';
+
+export default function LearnDetails() {
   const { id } = useParams();
   const [language, setLanguage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeModule, setActiveModule] = useState(0);
+  const [active, setActive] = useState(0);
+  const [completed, setCompleted] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(`learn-${id}`) || '[]'); } catch { return []; }
+  });
+  const [copied, setCopied] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
-    const fetchLanguageDetails = async () => {
-      try {
-        const response = await fetch(`https://tb-back-fyvj.onrender.com/api/learn/${id}`);
-        if (!response.ok) throw new Error("Failed to fetch language details");
-        const data = await response.json();
-        setLanguage(data);
-      } catch (err) {
-        setError(err.message);
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    fetch(`${API_URL}/api/learn/${id}`)
+      .then(r => r.json())
+      .then(d => { setLanguage(d); setLoading(false); })
+      .catch(e => { setError(e.message); setLoading(false); });
+  }, [id]);
 
-    fetchLanguageDetails();
+  const markComplete = useCallback((i) => {
+    setCompleted(prev => {
+      const next = prev.includes(i) ? prev.filter(x => x !== i) : [...prev, i];
+      localStorage.setItem(`learn-${id}`, JSON.stringify(next));
+      return next;
+    });
   }, [id]);
 
   const copyCode = (code) => {
-    navigator.clipboard.writeText(code);
-    // You could add a toast notification here
+    navigator.clipboard.writeText(code).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
   };
 
-  if (loading) {
-    return (
-      <div className="details-container">
-        <div className="loading-state">
-          <div className="spinner-large"></div>
-          <p>Loading course content...</p>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return (
+    <div className="ld-page"><div className="ld-loading"><div className="ld-spinner" /><p>Loading course...</p></div></div>
+  );
+  if (error || !language) return (
+    <div className="ld-page"><div className="ld-error"><h2>⚠️ {error || 'Course not found'}</h2><Link to="/learn" className="ld-back-link">← Back to Courses</Link></div></div>
+  );
 
-  if (error) {
-    return (
-      <div className="details-container">
-        <div className="error-state">
-          <h2>⚠️ Error Loading Course</h2>
-          <p>{error}</p>
-          <Link to="/learn" className="back-link">
-            ← Return to Courses
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (!language) {
-    return (
-      <div className="details-container">
-        <div className="error-state">
-          <h2>Course Not Found</h2>
-          <Link to="/learn" className="back-link">
-            ← Return to Courses
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  const mods = language.modules || [];
+  const color = langColor(language.language);
+  const progress = mods.length ? Math.round((completed.length / mods.length) * 100) : 0;
+  const mod = mods[active];
 
   return (
-    <div className="details-container">
-      {/* Header Section */}
-      <header className="details-header">
-        <Link to="/learn" className="back-btn">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M12.5 15L7.5 10L12.5 5"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span>Back to Courses</span>
-        </Link>
+    <div className="ld-page">
+      {/* Top bar */}
+      <div className="ld-topbar" style={{ borderBottomColor: color }}>
+        <Link to="/learn" className="ld-back"><ArrowLeft size={16} /> Courses</Link>
+        <div className="ld-topbar-center">
+          <span className="ld-topbar-title" style={{ color }}>{language.language}</span>
+          <span className="ld-topbar-meta">{mods.length} modules · {progress}% complete</span>
+        </div>
+        <button className="ld-sidebar-toggle" onClick={() => setSidebarOpen(s => !s)}>
+          {sidebarOpen ? '✕ Hide' : '☰ Modules'}
+        </button>
+      </div>
 
-        <div className="header-content">
-          <h1 className="details-title">{language.language}</h1>
-          <div className="header-meta">
-            <span className="module-count">
-              {language.modules.length} Module{language.modules.length !== 1 ? 's' : ''}
-            </span>
+      {/* Progress bar */}
+      <div className="ld-progress-track">
+        <div className="ld-progress-fill" style={{ width: `${progress}%`, background: color }} />
+      </div>
+
+      <div className="ld-layout">
+        {/* Sidebar */}
+        <aside className={`ld-sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
+          <div className="ld-sidebar-header">
+            <BookOpen size={15} style={{ color }} />
+            <span>Modules</span>
+            <span className="ld-sidebar-count">{completed.length}/{mods.length}</span>
           </div>
-        </div>
-      </header>
+          <nav className="ld-sidebar-nav">
+            {mods.map((m, i) => (
+              <button key={i}
+                className={`ld-nav-item ${active === i ? 'active' : ''} ${completed.includes(i) ? 'done' : ''}`}
+                style={active === i ? { borderLeftColor: color, background: `${color}10` } : {}}
+                onClick={() => setActive(i)}>
+                <span className="ld-nav-num" style={active === i ? { background: color, color: '#fff' } : {}}>{i + 1}</span>
+                <span className="ld-nav-title">{m.title}</span>
+                {completed.includes(i) && <CheckCircle size={14} className="ld-nav-check" style={{ color }} />}
+              </button>
+            ))}
+          </nav>
+        </aside>
 
-      {/* Progress Bar */}
-      <div className="progress-container">
-        <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{ width: `${((activeModule + 1) / language.modules.length) * 100}%` }}
-          ></div>
-        </div>
-        <p className="progress-text">
-          Module {activeModule + 1} of {language.modules.length}
-        </p>
-      </div>
+        {/* Main content */}
+        <main className="ld-main">
+          {mod ? (
+            <div className="ld-module">
+              {/* Module header */}
+              <div className="ld-module-header">
+                <div className="ld-module-badge" style={{ background: `${color}18`, color }}>Module {active + 1}</div>
+                <h1 className="ld-module-title">{mod.title}</h1>
+                <button className="ld-complete-btn"
+                  style={completed.includes(active) ? { background: color, color: '#fff', borderColor: color } : { borderColor: color, color }}
+                  onClick={() => markComplete(active)}>
+                  {completed.includes(active) ? <><CheckCircle size={15} /> Completed</> : <><Circle size={15} /> Mark Complete</>}
+                </button>
+              </div>
 
-      {/* Module Navigation */}
-      <div className="module-nav">
-        {language.modules.map((mod, index) => (
-          <button
-            key={index}
-            className={`module-nav-btn ${activeModule === index ? 'active' : ''}`}
-            onClick={() => setActiveModule(index)}
-          >
-            <span className="module-number">{index + 1}</span>
-            <span className="module-nav-title">{mod.title}</span>
-          </button>
-        ))}
-      </div>
+              {/* Description */}
+              {mod.description && (
+                <div className="ld-section">
+                  <p className="ld-description">{mod.description}</p>
+                </div>
+              )}
 
-      {/* Module Content */}
-      <div className="modules-content">
-        {language.modules.map((mod, index) => (
-          <div
-            key={index}
-            className={`module-card ${activeModule === index ? 'active' : ''}`}
-            style={{ display: activeModule === index ? 'block' : 'none' }}
-          >
-            <div className="module-header">
-              <div className="module-badge">Module {index + 1}</div>
-              <h2 className="module-title">{mod.title}</h2>
-            </div>
-
-            <div className="module-body">
-              <p className="module-description">{mod.description}</p>
-
+              {/* Module image */}
               {mod.image && (
-                <div className="module-image-wrapper">
-                  <img
-                    src={mod.image}
-                    alt={mod.title}
-                    className="module-image"
-                    loading="lazy"
-                  />
+                <div className="ld-section">
+                  <img src={mod.image} alt={mod.title} className="ld-module-img" onError={e => e.target.style.display='none'} />
                 </div>
               )}
 
-              {mod.codeExample && (
-                <div className="code-block-wrapper">
-                  <div className="code-header">
-                    <span className="code-label">Code Example</span>
-                    <button
-                      className="copy-btn"
-                      onClick={() => copyCode(mod.codeExample)}
-                      title="Copy code"
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" strokeWidth="2"/>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" strokeWidth="2"/>
-                      </svg>
-                    </button>
-                  </div>
-                  <pre className="code-block"><code>{mod.codeExample}</code></pre>
-                </div>
-              )}
-
+              {/* Content */}
               {mod.content && (
-                <div className="module-content">
-                  <p>{mod.content}</p>
+                <div className="ld-section ld-content-block">
+                  <h3 className="ld-section-title"><BookOpen size={15} style={{ color }} /> Explanation</h3>
+                  <p className="ld-content-text">{mod.content}</p>
                 </div>
               )}
-            </div>
 
-            {/* Navigation Buttons */}
-            <div className="module-footer">
-              {activeModule > 0 && (
-                <button
-                  className="nav-btn prev-btn"
-                  onClick={() => setActiveModule(activeModule - 1)}
-                >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path
-                      d="M12.5 15L7.5 10L12.5 5"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  Previous
-                </button>
+              {/* Code example */}
+              {mod.codeExample && (
+                <div className="ld-section">
+                  <h3 className="ld-section-title"><Code2 size={15} style={{ color }} /> Code Example</h3>
+                  <div className="ld-code-wrap">
+                    <div className="ld-code-header">
+                      <div className="ld-code-dots">
+                        <span style={{ background: '#ef4444' }} />
+                        <span style={{ background: '#f59e0b' }} />
+                        <span style={{ background: '#10b981' }} />
+                      </div>
+                      <span className="ld-code-lang">{language.language}</span>
+                      <button className="ld-copy-btn" onClick={() => copyCode(mod.codeExample)}>
+                        {copied ? <><Check size={13} /> Copied!</> : <><Copy size={13} /> Copy</>}
+                      </button>
+                    </div>
+                    <pre className="ld-code"><code>{mod.codeExample}</code></pre>
+                  </div>
+                </div>
               )}
 
-              {activeModule < language.modules.length - 1 && (
-                <button
-                  className="nav-btn next-btn"
-                  onClick={() => setActiveModule(activeModule + 1)}
-                >
-                  Next
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path
-                      d="M7.5 15L12.5 10L7.5 5"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+              {/* Prev / Next */}
+              <div className="ld-nav-footer">
+                <button className="ld-nav-btn" disabled={active === 0} onClick={() => setActive(a => a - 1)}>
+                  <ChevronLeft size={16} /> Previous
                 </button>
-              )}
+                <span className="ld-nav-pos">{active + 1} / {mods.length}</span>
+                {active < mods.length - 1 ? (
+                  <button className="ld-nav-btn primary" style={{ background: color }} onClick={() => { markComplete(active); setActive(a => a + 1); }}>
+                    Next <ChevronRight size={16} />
+                  </button>
+                ) : (
+                  <Link to="/learn" className="ld-nav-btn primary" style={{ background: color }}>
+                    Finish <CheckCircle size={16} />
+                  </Link>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ) : (
+            <div className="ld-empty">No modules available.</div>
+          )}
+        </main>
       </div>
     </div>
   );
-};
-
-export default LearnDetails;
+}

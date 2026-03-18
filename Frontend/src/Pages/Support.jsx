@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MessageCircle, Phone, Mail, Search, Loader, AlertCircle } from 'lucide-react';
 import '../Styles/PagesStyle/Support.css';
+import SEO from '../Components/SEO';
 
 function Support() {
   const [categories, setCategories] = useState([]);
@@ -42,6 +43,12 @@ function Support() {
 
   return (
     <div className="support-page">
+      <SEO
+        title="Support Center"
+        description="Find answers to your questions in TechBorg's support center. Browse help topics or contact our team directly."
+        url="/support"
+        keywords="TechBorg support, help center, FAQ, e-learning help, customer support"
+      />
       {/* Hero Section */}
       <div className="support-hero">
         <h1 className="support-hero-title">

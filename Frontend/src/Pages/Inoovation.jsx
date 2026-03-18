@@ -1,38 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/PagesStyle/Innovation.css';
-import { Helmet } from 'react-helmet';
-<Helmet>
-  <title>TechBorg E-Learning</title>
-  <meta name="description" content="TechBorg E-Learning is an advanced online learning ecosystem powered by AI and smart content delivery.
-It offers learners an interactive, personalized, and industry-relevant education experience across technology, science, and innovation domains." />
-  <meta name="keywords" content="react, seo, tutorial, java, javascirpt, cpp, python" />
-</Helmet>
+import SEO from '../Components/SEO';
+
+const API = import.meta.env.VITE_API_URL;
+
 function Innovation() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch backend API instead of public JSON
   useEffect(() => {
-    fetch('https://tb-back-fyvj.onrender.com/api/innovations')
-      .then((res) => res.json())
-      .then((data) => {
-        setItems(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Failed to fetch innovation data:', err);
-        setLoading(false);
-      });
+    fetch(`${API}/api/innovations`)
+      .then(res => res.json())
+      .then(data => { setItems(data); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
   return (
     <section className="innovation-wrapper">
+      <SEO
+        title="Innovation Hub"
+        description="Explore TechBorg's innovation hub — discover emerging technologies, breakthrough projects, and the future of tech education."
+        url="/innovation"
+        keywords="tech innovation, emerging technology, AI innovation, future tech, TechBorg projects"
+      />
+
       <div className="innovation-header">
         <h1 className="innovation-title">Our Innovation</h1>
-        <p className="innovation-subtext">
-          Discover the future with emerging technologies.
-        </p>
+        <p className="innovation-subtext">Discover the future with emerging technologies.</p>
       </div>
 
       {loading ? (
@@ -41,26 +36,15 @@ function Innovation() {
         <p className="innovation-loading">No innovations found.</p>
       ) : (
         <div className="innovation-grid">
-          {items.map((item) => (
+          {items.map(item => (
             <div className="innovation-card" key={item._id}>
-              <img
-                src={item.image}
-                alt={item.title}
-                className="innovation-image"
-              />
+              <img src={item.image} alt={item.title} className="innovation-image" />
               <h2 className="innovation-card-title">{item.title}</h2>
               <div className="innovation-card-footer">
                 <Link to={`/innovation/${item._id}`} className="innovation-link">
                   Learn More
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="innovation-icon"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
+                    strokeWidth="2" className="innovation-icon" viewBox="0 0 24 24">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </Link>
