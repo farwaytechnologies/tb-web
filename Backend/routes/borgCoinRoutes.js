@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   getWallet,
+  transferPointsToCoins,
   requestWithdrawal,
   getAllWithdrawals,
   resolveWithdrawal,
@@ -11,6 +12,7 @@ const {
 
 // Tutor
 router.get('/wallet/:tutorId', getWallet);
+router.post('/transfer', transferPointsToCoins);
 router.post('/withdraw', requestWithdrawal);
 
 // Admin

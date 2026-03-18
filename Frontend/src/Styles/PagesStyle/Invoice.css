@@ -1,61 +1,240 @@
-.techborg-invoice-page {
-  padding: 60px 20px;
-   background: linear-gradient(135deg, #62a8ef, #854ef4);
-  min-height: 100vh;
+.inv-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
   font-family: 'Segoe UI', sans-serif;
+  color: #1f2937;
 }
+.inv-page *, .inv-page *::before, .inv-page *::after { box-sizing: border-box; }
 
-.techborg-invoice-title {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 10px;
-  text-align: left;
+.inv-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
 }
+.inv-header-icon { color: #8b5cf6; }
+.inv-title { font-size: 1.6rem; font-weight: 700; margin: 0; }
+.inv-sub { font-size: 0.82rem; color: #6b7280; margin: 0; }
 
-.techborg-invoice-sub {
-  color: #475569;
-  margin-bottom: 30px;
-  font-size: 1rem;
+/* Table */
+.inv-table-wrap {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  overflow-x: auto;
 }
-.h{
-  height: 10px;
-}
-.techborg-invoice-table {
+.inv-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
-  border: 1px solid #e3e7ec;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
-  overflow: hidden;
+  font-size: 0.88rem;
+  min-width: 600px;
 }
-
-.techborg-invoice-table th,
-.techborg-invoice-table td {
-  padding: 16px 20px;
+.inv-table th {
+  background: #f9fafb;
+  padding: 0.75rem 1rem;
   text-align: left;
-  font-size: 0.95rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1.5px solid #e5e7eb;
 }
+.inv-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  vertical-align: middle;
+}
+.inv-table tr:last-child td { border-bottom: none; }
+.inv-table tr:hover td { background: #fafafa; }
 
-.techborg-invoice-table th {
-  background-color: #f2f4f7;
-  color: #333;
+.inv-number { font-weight: 700; color: #8b5cf6; font-size: 0.82rem; }
+.inv-amount { font-weight: 700; color: #1f2937; }
+
+.inv-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.inv-badge--paid    { background: #d1fae5; color: #065f46; }
+.inv-badge--free    { background: #dbeafe; color: #1e40af; }
+.inv-badge--pending { background: #fef3c7; color: #92400e; }
+
+.inv-actions { display: flex; gap: 0.4rem; }
+.inv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  border-radius: 7px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
 }
+.inv-btn:hover { opacity: 0.82; }
+.inv-btn--view  { background: #f5f3ff; color: #8b5cf6; }
+.inv-btn--print { background: #8b5cf6; color: #fff; }
 
-.techborg-invoice-table tr:not(:last-child) {
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.techborg-invoice-table a {
-  color: #3b82f6;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.techborg-invoice-loading {
+.inv-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 4rem 2rem;
+  color: #9ca3af;
   text-align: center;
-  padding: 20px;
-  color: #888;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+/* Modal */
+.inv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.inv-modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.inv-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1.5px solid #e5e7eb;
+  flex-shrink: 0;
+}
+.inv-modal-header h2 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.inv-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 6px;
+}
+.inv-modal-close:hover { background: #f3f4f6; }
+.inv-preview {
+  overflow-y: auto;
+  padding: 1.5rem;
+  flex: 1;
+}
+
+/* Invoice Document */
+.inv-doc {
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 2rem;
+  background: #fff;
+}
+.inv-doc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid #8b5cf6;
+}
+.inv-doc-brand { font-size: 1.8rem; font-weight: 800; color: #8b5cf6; margin: 0; }
+.inv-doc-brand-sub { font-size: 0.78rem; color: #6b7280; margin: 4px 0 0; }
+.inv-doc-meta { text-align: right; }
+.inv-doc-label { font-size: 1.3rem; font-weight: 700; color: #8b5cf6; margin: 0; }
+.inv-doc-num { font-size: 0.88rem; font-weight: 600; margin: 4px 0; }
+.inv-doc-date { font-size: 0.78rem; color: #6b7280; }
+
+.inv-doc-parties {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.inv-doc-party-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #9ca3af;
+  letter-spacing: 0.06em;
+  margin: 0 0 6px;
+}
+.inv-doc-party-name { font-size: 0.95rem; font-weight: 700; margin: 0 0 4px; }
+.inv-doc-party p { font-size: 0.82rem; color: #6b7280; margin: 2px 0; }
+
+.inv-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+.inv-doc-table th {
+  background: #f5f3ff;
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+.inv-doc-table td {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+}
+
+.inv-doc-total {
+  margin-left: auto;
+  width: 260px;
+}
+.inv-doc-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+.inv-doc-total-final {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+  border-top: 2px solid #e5e7eb;
+  padding-top: 10px;
+  margin-top: 4px;
+}
+.inv-doc-status { margin-top: 10px; }
+
+.inv-doc-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.78rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .inv-doc-parties { flex-direction: column; }
+  .inv-doc-total { width: 100%; }
 }

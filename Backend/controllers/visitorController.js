@@ -113,3 +113,58 @@ exports.getVisitorStats = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to fetch stats" });
   }
 };
+
+// 📊 Rich analytics: daily trend, top pages, hourly, avg duration
+exports.getAnalytics = async (req, res) => {
+  try {
+    const [
+      dailyTrend,
+      topPages,
+      hourly,
+      avgDuration,
+      totalVisitors,
+      uniqueCountries,
+      recentVisitors,
+    ] = await Promise.all([
+      // Daily visitor count for last 14 days
+      Visitor.aggregate([
+        { $match: { createdAt: { $gte: new Date(Date.now() - 14 * 86400000) } } },
+        { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } }, count: { $sum: 1 } } },
+        { $sort: { _id: 1 } },
+      ]),
+      // Top pages visited
+      Visitor.aggregate([
+        { $unwind: '$pagesVisited' },
+        { $group: { _id: '$pagesVisited', count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+        { $limit: 10 },
+      ]),
+      // Hourly distribution
+      Visitor.aggregate([
+        { $group: { _id: { $hour: '$createdAt' }, count: { $sum: 1 } } },
+        { $sort: { _id: 1 } },
+      ]),
+      // Average session duration
+      Visitor.aggregate([
+        { $match: { duration: { $gt: 0 } } },
+        { $group: { _id: null, avg: { $avg: '$duration' }, max: { $max: '$duration' } } },
+      ]),
+      Visitor.countDocuments(),
+      Visitor.distinct('country').then(c => c.length),
+      Visitor.find().sort({ createdAt: -1 }).limit(5).select('ip country city createdAt pagesVisited duration'),
+    ]);
+
+    res.json({
+      dailyTrend,
+      topPages,
+      hourly,
+      avgDuration: avgDuration[0] || { avg: 0, max: 0 },
+      totalVisitors,
+      uniqueCountries,
+      recentVisitors,
+    });
+  } catch (err) {
+    console.error('Analytics error:', err.message);
+    res.status(500).json({ message: 'Failed to fetch analytics' });
+  }
+};

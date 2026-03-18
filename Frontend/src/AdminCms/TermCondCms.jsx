@@ -1,9 +1,18 @@
-import React from 'react'
+import CmsPage from './CmsPage';
 
-function TermCondCms() {
+const FIELDS = [
+  { key: 'title',   label: 'Page Title', type: 'text' },
+  { key: 'content', label: 'Content',    type: 'rich' },
+];
+
+export default function TermCondCms() {
   return (
-    <div className='nqc-vh'>TermCondCms</div>
-  )
+    <CmsPage
+      title="Edit Terms & Conditions"
+      fields={FIELDS}
+      fetchUrl="/api/terms"
+      saveUrl="/api/terms"
+      saveMethod="PUT"
+    />
+  );
 }
-
-export default TermCondCms

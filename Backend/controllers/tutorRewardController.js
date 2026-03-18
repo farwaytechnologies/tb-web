@@ -39,16 +39,20 @@ exports.saveTutorRewards = async (req, res) => {
     const { courses = 0, blogs = 0, enrollments = 0, learnContent = 0 } = req.body;
 
     const breakdown = { courses, blogs, enrollments, learnContent };
-    const points = computePoints(breakdown);
-    const badges = computeBadges(points);
+    const activityPoints = computePoints(breakdown);
+    const badges = computeBadges(activityPoints);
 
+    // Only update activity-based fields — never touch bonusPoints
     const reward = await TutorReward.findOneAndUpdate(
       { tutorId },
-      { points, badges, breakdown, lastUpdated: new Date() },
+      { $set: { points: activityPoints, badges, breakdown, lastUpdated: new Date() } },
       { upsert: true, new: true }
     );
 
-    res.json({ ...reward.toObject(), pointsConfig: POINTS, allBadges: BADGES });
+    // Total points = activity + bonus (for response only)
+    const totalPoints = (reward.points || 0) + (reward.bonusPoints || 0);
+
+    res.json({ ...reward.toObject(), totalPoints, pointsConfig: POINTS, allBadges: BADGES });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -116,16 +120,16 @@ exports.getLeaderboard = async (req, res) => {
     entries.sort((a, b) => b.points - a.points);
     const top10 = entries.slice(0, 10);
 
-    // Upsert reward records for all tutors in background
+    // Upsert reward records for all tutors in background — preserve bonusPoints
     for (const entry of entries) {
       TutorReward.findOneAndUpdate(
         { tutorId: entry.tutorId },
-        {
+        { $set: {
           points: entry.points,
           badges: computeBadges(entry.points),
           breakdown: entry.breakdown,
           lastUpdated: new Date()
-        },
+        }},
         { upsert: true }
       ).catch(() => {});
     }
@@ -210,7 +214,7 @@ exports.adjustBonusPoints = async (req, res) => {
       {
         $inc: { bonusPoints: bonus },
         $push: { bonusHistory: { bonus, reason, date: new Date() } },
-        lastUpdated: new Date()
+        $set: { lastUpdated: new Date() }
       },
       { upsert: true, new: true }
     );
@@ -228,7 +232,7 @@ exports.resetTutorReward = async (req, res) => {
     const { tutorId } = req.params;
     await TutorReward.findOneAndUpdate(
       { tutorId },
-      { bonusPoints: 0, bonusHistory: [], lastUpdated: new Date() },
+      { $set: { bonusPoints: 0, bonusHistory: [], lastUpdated: new Date() } },
       { upsert: true }
     );
     res.json({ message: 'Reward reset successfully' });

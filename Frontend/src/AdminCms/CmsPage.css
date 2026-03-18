@@ -1,0 +1,115 @@
+.cmspage {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.cmspage-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 6rem 2rem;
+  color: #6366f1;
+}
+
+@keyframes cmspage-spin { to { transform: rotate(360deg); } }
+.cmspage-spin { animation: cmspage-spin 0.9s linear infinite; }
+
+.cmspage-header {
+  margin-bottom: 1.5rem;
+}
+
+.cmspage-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: #6366f1;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+}
+.cmspage-back:hover { text-decoration: underline; }
+
+.cmspage-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.cmspage-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  margin-bottom: 1.25rem;
+}
+.cmspage-msg.ok  { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+.cmspage-msg.err { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+.cmspage-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cmspage-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cmspage-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.cmspage-input,
+.cmspage-textarea {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  color: #1f2937;
+  background: #fff;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.cmspage-input:focus,
+.cmspage-textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+}
+
+.cmspage-footer {
+  padding-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.cmspage-save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.5rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+.cmspage-save-btn:hover:not(:disabled) { background: #4f46e5; }
+.cmspage-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }

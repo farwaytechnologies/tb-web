@@ -10,7 +10,6 @@ import {
   FileText, 
   Award, 
   Receipt, 
-  Settings, 
   LogOut 
 } from 'lucide-react';
 import '../Styles/ComponentsStyle/Navbar.css';
@@ -342,10 +341,6 @@ function Navbar() {
                   <Link to="/invoices" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
                     <Receipt size={18} />
                     <span>Invoices</span>
-                  </Link>
-                  <Link to="/settings" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
-                    <Settings size={18} />
-                    <span>Settings</span>
                   </Link>
                   <button onClick={handleLogout} className="tb-navbar__user-menu-item tb-navbar__logout">
                     <LogOut size={18} />

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../Styles/DashbordStyle/AdminDashbord.css';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 import {
   Users,
   BookOpen,
@@ -19,7 +21,8 @@ import {
   Settings,
   TrendingUp,
   Trophy,
-  Coins
+  Coins,
+  ClipboardList
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -44,10 +47,10 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       try {
         const [usersRes, coursesRes, blogsRes, enrollmentsRes] = await Promise.all([
-          fetch('https://tb-back-fyvj.onrender.com/api/auth/users'),
-          fetch('https://tb-back-fyvj.onrender.com/api/courses'),
-          fetch('https://tb-back-fyvj.onrender.com/api/blogs'),
-          fetch('https://tb-back-fyvj.onrender.com/api/enrollments')
+          fetch(`${API_URL}/api/auth/users`),
+          fetch(`${API_URL}/api/courses`),
+          fetch(`${API_URL}/api/blogs`),
+          fetch(`${API_URL}/api/enrollments`)
         ]);
 
         const users = await usersRes.json();
@@ -98,7 +101,8 @@ export default function AdminDashboard() {
     { to: '/admin/visitors', icon: BarChart3, label: 'Visitor Analytics', color: '#a855f7' },
     { to: '/admin/manage-learn', icon: Code, label: 'Manage Learn Section', color: '#22c55e' },
     { to: '/admin/rewards', icon: Trophy, label: 'Manage Rewards', color: '#f59e0b' },
-    { to: '/admin/borgcoins', icon: Coins, label: 'BorgCoins', color: '#f59e0b' }
+    { to: '/admin/borgcoins', icon: Coins, label: 'BorgCoins', color: '#f59e0b' },
+    { to: '/admin/exams', icon: ClipboardList, label: 'Manage Exams', color: '#6366f1' }
   ];
 
   return (

@@ -1,0 +1,102 @@
+.me-wrap {
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* Toolbar */
+.me-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 8px;
+  background: #f8fafc;
+  border-bottom: 1.5px solid #e5e7eb;
+}
+
+.me-btn {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: #374151;
+  transition: background 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.me-btn:hover {
+  background: #e0e7ff;
+  border-color: #a5b4fc;
+  color: #4f46e5;
+}
+
+.me-sep {
+  width: 1px;
+  height: 22px;
+  background: #d1d5db;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.me-select {
+  height: 28px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  padding: 0 4px;
+  background: #fff;
+  color: #374151;
+  cursor: pointer;
+}
+
+.me-color {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  padding: 1px;
+  cursor: pointer;
+  background: #fff;
+}
+
+/* Editor body */
+.me-body {
+  min-height: 280px;
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #1f2937;
+  outline: none;
+  overflow-y: auto;
+}
+
+.me-body:empty::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+/* Content styles inside editor */
+.me-body h1 { font-size: 1.8rem; font-weight: 700; margin: 0.5rem 0; }
+.me-body h2 { font-size: 1.4rem; font-weight: 700; margin: 0.5rem 0; }
+.me-body h3 { font-size: 1.15rem; font-weight: 600; margin: 0.4rem 0; }
+.me-body p  { margin: 0.4rem 0; }
+.me-body ul { padding-left: 1.5rem; list-style: disc; }
+.me-body ol { padding-left: 1.5rem; list-style: decimal; }
+.me-body a  { color: #4f46e5; text-decoration: underline; }
+.me-body img { max-width: 100%; border-radius: 6px; margin: 0.5rem 0; }
+.me-body blockquote {
+  border-left: 3px solid #6366f1;
+  padding-left: 1rem;
+  color: #6b7280;
+  margin: 0.5rem 0;
+}

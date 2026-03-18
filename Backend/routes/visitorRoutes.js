@@ -6,6 +6,7 @@ const {
   endSession,
   getAllVisitors,
   getVisitorStats,
+  getAnalytics,
 } = require("../controllers/visitorController");
 
 // Session tracking routes
@@ -16,5 +17,6 @@ router.post("/end-session", endSession);
 // Visitor analytics
 router.get("/", getAllVisitors);
 router.get("/stats", getVisitorStats);
+router.get("/analytics", getAnalytics);
 
 module.exports = router;

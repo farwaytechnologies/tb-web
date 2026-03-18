@@ -1,39 +1,66 @@
-.cms-container {
-  padding: 2rem;
-  background-color: #f9fbff;
-  min-height: 100vh;
+.cms-hub {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.cms-title {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
-  text-align: center;
+.cms-hub-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
 }
 
-.cms-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  padding: 1rem;
+.cms-hub-icon { color: #6366f1; }
+.cms-hub-title { font-size: 1.6rem; font-weight: 700; margin: 0; color: #1f2937; }
+.cms-hub-sub   { font-size: 0.85rem; color: #6b7280; margin: 0; }
+
+.cms-hub-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.cms-card {
-  display: block;
-  padding: 1rem;
-  background-color: #ffffff;
-  border: 1px solid #4a7abe;
-  border-radius: 10px;
-  text-align: center;
-  color: #4a7abe;
-  font-weight: 500;
+.cms-hub-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
   text-decoration: none;
-  transition: 0.3s;
+  color: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 
-.cms-card:hover {
-  background-color: #4a7abe;
-  color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.cms-hub-card:hover {
+  border-color: #6366f1;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.12);
+  transform: translateX(3px);
 }
+
+.cms-hub-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #6366f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cms-hub-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cms-hub-card-label { font-size: 0.95rem; font-weight: 600; color: #1f2937; }
+.cms-hub-card-desc  { font-size: 0.8rem; color: #6b7280; }
+.cms-hub-card-arrow { color: #9ca3af; flex-shrink: 0; }
+.cms-hub-card:hover .cms-hub-card-arrow { color: #6366f1; }

@@ -20,5 +20,8 @@ router.use('/news', require('../routes/newsRoutes'));
 router.use('/learn', require('../routes/learnRoutes'));
 router.use('/rewards', require('../routes/tutorRewardRoutes'));
 router.use('/borgcoins', require('../routes/borgCoinRoutes'));
+router.use('/invoices', require('../routes/invoiceRoutes'));
+router.use('/payment', require('../routes/paymentRoutes'));
+router.use('/exams', require('../routes/examRoutes'));
 
 module.exports = router;

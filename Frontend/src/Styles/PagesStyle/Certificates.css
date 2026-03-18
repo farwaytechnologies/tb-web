@@ -1,67 +1,171 @@
-.techborg-certificates-page {
-  padding: 60px 20px;
-  background: linear-gradient(135deg, #62a8ef, #854ef4);
-  min-height: 100vh;
-}
-
-.techborg-certificates-title {
-  text-align: center;
-  font-size: 2.5rem;
-  color: #1e2a38;
-  font-weight: 700;
-}
-
-.techborg-certificates-count {
-  text-align: center;
-  color: #4a4a4a;
-  font-size: 1.2rem;
-  margin-bottom: 40px;
-}
-
-.techborg-certificates-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
+.cert-page {
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 60vh;
 }
 
-.techborg-certificates-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+.cert-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.cert-header-icon { color: #b8860b; }
+.cert-header h1 { font-size: 28px; font-weight: 700; color: #1e293b; margin: 0; }
+.cert-header p  { font-size: 14px; color: #64748b; margin: 4px 0 0; }
+
+.cert-loading { text-align: center; color: #64748b; padding: 60px; }
+
+.cert-empty {
   text-align: center;
-  transition: all 0.3s ease;
+  padding: 80px 20px;
+  color: #94a3b8;
+}
+.cert-empty svg { margin-bottom: 16px; opacity: 0.4; }
+.cert-empty h3 { font-size: 20px; color: #475569; margin: 0 0 8px; }
+.cert-empty p  { font-size: 14px; }
+
+/* Grid */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }
 
-.techborg-certificates-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+.cert-card {
+  background: linear-gradient(135deg, #fffdf0 0%, #fff8e1 100%);
+  border: 2px solid #f0d060;
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
+.cert-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(184,134,11,0.15); }
 
-.techborg-certificates-img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+.cert-card-seal { font-size: 48px; }
+.cert-card-title { font-size: 16px; font-weight: 700; color: #1e293b; margin: 0; }
+.cert-card-instructor,
+.cert-card-date {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+.cert-card-id { font-size: 11px; color: #94a3b8; font-family: monospace; }
+.cert-card-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px 18px;
+  background: #b8860b;
+  color: #fff;
+  border: none;
   border-radius: 8px;
-  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
 }
+.cert-card-btn:hover { opacity: 0.85; }
 
-.techborg-certificates-card h3 {
-  font-size: 1.1rem;
-  color: #1e2a38;
-  margin: 8px 0;
+/* Modal */
+.cert-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
-
-.techborg-certificates-date {
-  font-size: 0.9rem;
-  color: #777;
+.cert-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 700px;
+  width: 100%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
 }
+.cert-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+}
+.cert-modal-print {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding: 9px 18px;
+  background: #b8860b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cert-modal-print:hover { opacity: 0.85; }
 
-.techborg-certificates-loading {
+/* Certificate design */
+.cert-print {
+  border: 10px double #b8860b;
+  padding: 48px 40px;
   text-align: center;
-  font-size: 1.2rem;
-  color: #666;
-  grid-column: 1 / -1;
+  background: #fffdf5;
+  border-radius: 8px;
+}
+.cert-print .cert-seal { font-size: 56px; margin-bottom: 8px; }
+.cert-print h1 { font-size: 32px; color: #b8860b; font-family: Georgia, serif; margin: 0 0 6px; }
+.cert-print .cert-sub { font-size: 13px; color: #888; letter-spacing: 2px; text-transform: uppercase; }
+.cert-print .cert-name {
+  font-size: 30px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin: 24px 0 8px;
+  border-bottom: 2px solid #b8860b;
+  display: inline-block;
+  padding-bottom: 6px;
+  font-family: Georgia, serif;
+}
+.cert-print .cert-course { font-size: 18px; color: #333; margin: 12px 0; line-height: 1.6; }
+.cert-print .cert-instructor { font-size: 14px; color: #666; margin: 4px 0; }
+.cert-print .cert-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #888;
+  margin-top: 24px;
+}
+.cert-print .cert-id { font-size: 11px; color: #aaa; margin-top: 8px; font-family: monospace; }
+
+@media (max-width: 600px) {
+  .cert-grid { grid-template-columns: 1fr; }
+  .cert-print { padding: 28px 16px; }
+  .cert-print h1 { font-size: 22px; }
+  .cert-print .cert-name { font-size: 22px; }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Coins, ArrowDownCircle, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Coins, ArrowDownCircle, ArrowRightLeft, Clock, CheckCircle, XCircle, AlertCircle, Zap } from 'lucide-react';
 import '../Styles/DashbordStyle/TutorBorgCoins.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -17,39 +17,22 @@ export default function TutorBorgCoins() {
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [tutorId, setTutorId] = useState(null);
+  const [transferring, setTransferring] = useState(false);
+  const [transferMsg, setTransferMsg] = useState('');
+  const [transferError, setTransferError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     let stored = null;
     try { stored = JSON.parse(localStorage.getItem('user')); } catch (_) {}
     if (!stored || stored.role !== 'tutor') { navigate('/login'); return; }
-
     setTutorId(stored._id);
-
-    const load = async () => {
-      try {
-        const res = await fetch(`${API_URL}/api/borgcoins/wallet/${stored._id}`);
-        if (res.ok) {
-          const data = await res.json();
-          setWallet(data.wallet || { borgCoins: 0, totalEarned: 0, totalWithdrawn: 0 });
-          setSettings(data.settings || { pointsPerCoin: 10, usdPerCoin: 0.5, minWithdrawal: 10 });
-          setWithdrawals(Array.isArray(data.withdrawals) ? data.withdrawals : []);
-          setTotalPoints(data.totalPoints || 0);
-        }
-      } catch (err) {
-        console.error('BorgCoins load error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
+    loadWallet(stored._id);
   }, [navigate]);
 
-  const reload = async () => {
-    if (!tutorId) return;
+  const loadWallet = async (id) => {
     try {
-      const res = await fetch(`${API_URL}/api/borgcoins/wallet/${tutorId}`);
+      const res = await fetch(`${API_URL}/api/borgcoins/wallet/${id}`);
       if (res.ok) {
         const data = await res.json();
         setWallet(data.wallet || { borgCoins: 0, totalEarned: 0, totalWithdrawn: 0 });
@@ -57,7 +40,34 @@ export default function TutorBorgCoins() {
         setWithdrawals(Array.isArray(data.withdrawals) ? data.withdrawals : []);
         setTotalPoints(data.totalPoints || 0);
       }
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error('BorgCoins load error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const reload = () => { if (tutorId) loadWallet(tutorId); };
+
+  const handleTransfer = async () => {
+    setTransferError('');
+    setTransferMsg('');
+    setTransferring(true);
+    try {
+      const res = await fetch(`${API_URL}/api/borgcoins/transfer`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tutorId, pointsToConvert: totalPoints })
+      });
+      const data = await res.json();
+      if (!res.ok) { setTransferError(data.message || 'Transfer failed.'); return; }
+      setTransferMsg(data.message);
+      reload();
+    } catch {
+      setTransferError('Transfer failed. Try again.');
+    } finally {
+      setTransferring(false);
+    }
   };
 
   const handleWithdraw = async (e) => {
@@ -89,7 +99,7 @@ export default function TutorBorgCoins() {
       setShowForm(false);
       setForm({ borgCoins: '', paymentMethod: 'paypal', paymentDetails: '' });
       reload();
-    } catch (err) {
+    } catch {
       setFormError('Request failed. Try again.');
     } finally {
       setSubmitting(false);
@@ -102,6 +112,8 @@ export default function TutorBorgCoins() {
     return <Clock size={14} className="bc-status-icon pending" />;
   };
 
+  const totalEarnableCoins = Math.floor(totalPoints / settings.pointsPerCoin);
+  const pendingCoins = Math.max(0, totalEarnableCoins - (wallet.totalEarned || 0));
   const availableUSD = (wallet.borgCoins * settings.usdPerCoin).toFixed(2);
   const totalEarnedUSD = (wallet.totalEarned * settings.usdPerCoin).toFixed(2);
 
@@ -138,6 +150,34 @@ export default function TutorBorgCoins() {
         <span>⚡ {settings.pointsPerCoin} pts = 1 BorgCoin</span>
         <span>💵 1 BorgCoin = ${settings.usdPerCoin}</span>
         <span>📉 Min withdrawal: {settings.minWithdrawal} BorgCoins</span>
+      </div>
+
+      {/* Transfer Points → BorgCoins */}
+      <div className="bc-transfer-box">
+        <div className="bc-transfer-info">
+          <Zap size={20} className="bc-transfer-icon" />
+          <div>
+            <span className="bc-transfer-title">Convert Points to BorgCoins</span>
+            <span className="bc-transfer-sub">
+              You have <strong>{totalPoints}</strong> pts →{' '}
+              <strong>{totalEarnableCoins}</strong> earnable BorgCoins
+              {pendingCoins > 0
+                ? <span className="bc-transfer-pending"> ({pendingCoins} not yet transferred)</span>
+                : <span className="bc-transfer-done"> (all transferred ✓)</span>
+              }
+            </span>
+          </div>
+        </div>
+        {transferMsg && <p className="bc-transfer-success">{transferMsg}</p>}
+        {transferError && <p className="bc-transfer-error"><AlertCircle size={13} /> {transferError}</p>}
+        <button
+          className="bc-transfer-btn"
+          onClick={handleTransfer}
+          disabled={transferring || pendingCoins <= 0}
+        >
+          <ArrowRightLeft size={15} />
+          {transferring ? 'Transferring...' : pendingCoins > 0 ? `Transfer ${pendingCoins} BorgCoins` : 'Up to date'}
+        </button>
       </div>
 
       <div className="bc-cards">

@@ -8,13 +8,13 @@ const {
   resetTutorReward
 } = require('../controllers/tutorRewardController');
 
-// Tutor routes
-router.post('/tutor/:tutorId', saveTutorRewards);
+// Static routes FIRST — before any :param routes
 router.get('/leaderboard', getLeaderboard);
-
-// Admin routes
 router.get('/admin/all', getAllTutorRewards);
 router.post('/admin/bonus/:tutorId', adjustBonusPoints);
 router.delete('/admin/reset/:tutorId', resetTutorReward);
+
+// Param route LAST
+router.post('/tutor/:tutorId', saveTutorRewards);
 
 module.exports = router;

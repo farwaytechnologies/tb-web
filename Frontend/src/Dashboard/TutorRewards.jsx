@@ -30,6 +30,7 @@ function getCurrentBadge(pts) {
 
 export default function TutorRewards() {
   const [breakdown, setBreakdown] = useState({ courses: 0, blogs: 0, enrollments: 0, learnContent: 0 });
+  const [bonusPoints, setBonusPoints] = useState(0);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -73,12 +74,18 @@ export default function TutorRewards() {
         setBreakdown(counts);
         setLeaderboard(lb);
 
-        // Save to backend silently — don't block UI on this
-        fetch(`${API_URL}/api/rewards/tutor/${stored._id}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(counts)
-        }).catch(() => {});
+        // Save activity points to backend, then read back bonus
+        try {
+          const rewardRes = await fetch(`${API_URL}/api/rewards/tutor/${stored._id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(counts)
+          });
+          if (rewardRes.ok) {
+            const rewardData = await rewardRes.json();
+            setBonusPoints(rewardData.bonusPoints || 0);
+          }
+        } catch (_) {}
       } catch (err) {
         console.error('Rewards load error:', err);
       } finally {
@@ -89,8 +96,8 @@ export default function TutorRewards() {
     load();
   }, [navigate]);
 
-  const points = calcPoints(breakdown);
-  const earnedBadges = getBadges(points);
+  const activityPoints = calcPoints(breakdown);
+  const points = activityPoints + bonusPoints;
   const currentBadge = getCurrentBadge(points);
   const nextBadge = ALL_BADGES.find(b => b.minPoints > points);
   const progressPct = nextBadge ? Math.min(100, Math.round((points / nextBadge.minPoints) * 100)) : 100;
@@ -122,6 +129,9 @@ export default function TutorRewards() {
         <div className="tr-points-card">
           <span className="tr-points-value">{points}</span>
           <span className="tr-points-label">Total Points</span>
+          {bonusPoints > 0 && (
+            <span className="tr-bonus-label">+{bonusPoints} bonus pts</span>
+          )}
           <span className="tr-current-badge">{currentBadge?.name}</span>
           <div className="tr-progress-wrap">
             <div className="tr-progress-bar" style={{ width: `${progressPct}%` }} />

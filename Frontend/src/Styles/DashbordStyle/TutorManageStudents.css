@@ -1,54 +1,166 @@
-.tutor-student-container {
-  padding: 2rem;
+.tms-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f8fc;
-  min-height: 100vh;
+  color: #1f2937;
 }
+.tms-page *, .tms-page *::before, .tms-page *::after { box-sizing: border-box; }
 
-.tutor-student-container h2 {
+.tms-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
-  color: #333;
+}
+.tms-header-icon { color: #8b5cf6; }
+.tms-title { font-size: 1.6rem; font-weight: 700; margin: 0; }
+.tms-sub { font-size: 0.82rem; color: #6b7280; margin: 0; }
+
+.tms-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.tms-stat {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tms-stat-val { font-size: 1.6rem; font-weight: 700; }
+.tms-stat-lbl { font-size: 0.78rem; color: #6b7280; }
+
+.tms-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.tms-search-wrap {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.tms-search-icon { position: absolute; left: 10px; color: #9ca3af; pointer-events: none; }
+.tms-search {
+  width: 100%;
+  padding: 0.6rem 2.2rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  background: #fff;
+}
+.tms-search:focus { outline: none; border-color: #8b5cf6; }
+.tms-search-clear { position: absolute; right: 8px; background: none; border: none; cursor: pointer; color: #9ca3af; }
+
+.tms-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.tms-filter-btn {
+  padding: 0.45rem 1rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #374151;
+  transition: all 0.15s;
+}
+.tms-filter-btn.active, .tms-filter-btn:hover {
+  background: #8b5cf6;
+  border-color: #8b5cf6;
+  color: #fff;
 }
 
-/* Table styling */
-.tutor-student-table {
+.tms-table-wrap {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.tms-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  font-size: 0.88rem;
 }
-
-.tutor-student-table th,
-.tutor-student-table td {
-  padding: 14px 20px;
+.tms-table th {
+  background: #f9fafb;
+  padding: 0.75rem 1rem;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1.5px solid #e5e7eb;
 }
-
-.tutor-student-table th {
-  background-color: #4a7abe;
-  color: #fff;
-  font-weight: 600;
+.tms-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
 }
+.tms-table tr:last-child td { border-bottom: none; }
+.tms-table tr:hover td { background: #fafafa; }
 
-/* Avatar */
-.tutor-student-avatar {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
+.tms-student-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.tms-avatar {
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  border: 2px solid #ccc;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
-.enrolled-course-list {
-  list-style-type: disc;
-  padding-left: 1.2rem;
-  margin: 0;
+.tms-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.tms-badge--pending  { background: #fef3c7; color: #92400e; }
+.tms-badge--accepted { background: #d1fae5; color: #065f46; }
+.tms-badge--rejected { background: #fee2e2; color: #991b1b; }
+
+.tms-empty {
+  text-align: center;
+  color: #9ca3af;
+  padding: 3rem;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
 }
 
-.enrolled-course-list li {
-  font-size: 0.9rem;
-  margin-bottom: 4px;
+@media (max-width: 640px) {
+  .tms-stats { grid-template-columns: repeat(2, 1fr); }
+  .tms-table th:nth-child(4), .tms-table td:nth-child(4) { display: none; }
 }
+
+.tms-complete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: #b8860b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.tms-complete-btn:hover { opacity: 0.85; }
+.tms-na { color: #94a3b8; font-size: 13px; }

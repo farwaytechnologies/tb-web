@@ -41,6 +41,7 @@ exports.login = async (req, res) => {
       token,
       user: {
         id: user._id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -50,6 +51,14 @@ exports.login = async (req, res) => {
         middleName: user.middleName,
         lastName: user.lastName,
         profilePic: user.profilePic || '',
+        phone: user.phone || '',
+        bio: user.bio || '',
+        website: user.website || '',
+        linkedin: user.linkedin || '',
+        twitter: user.twitter || '',
+        language: user.language,
+        emailNotifications: user.emailNotifications,
+        showProfile: user.showProfile,
       }
     });
   } catch (err) {
@@ -72,22 +81,23 @@ exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      name, title, gender, firstName, middleName, lastName, profilePic
+      name, title, gender, firstName, middleName, lastName,
+      profilePic, phone, bio, website, linkedin, twitter
     } = req.body;
 
     const updated = await User.findByIdAndUpdate(
       id,
-      { name, title, gender, firstName, middleName, lastName, profilePic },
+      { $set: { name, title, gender, firstName, middleName, lastName, profilePic, phone, bio, website, linkedin, twitter } },
       { new: true }
     );
 
-    if (!updated)
-      return res.status(404).json({ message: 'User not found' });
+    if (!updated) return res.status(404).json({ message: 'User not found' });
 
     res.json({
-      message: 'User updated successfully',
+      message: 'Profile updated successfully',
       user: {
         id: updated._id,
+        _id: updated._id,
         name: updated.name,
         email: updated.email,
         role: updated.role,
@@ -97,6 +107,14 @@ exports.updateUser = async (req, res) => {
         middleName: updated.middleName,
         lastName: updated.lastName,
         profilePic: updated.profilePic || '',
+        phone: updated.phone || '',
+        bio: updated.bio || '',
+        website: updated.website || '',
+        linkedin: updated.linkedin || '',
+        twitter: updated.twitter || '',
+        language: updated.language,
+        emailNotifications: updated.emailNotifications,
+        showProfile: updated.showProfile,
       }
     });
   } catch (err) {
@@ -124,6 +142,34 @@ exports.changePassword = async (req, res) => {
   }
 };
 
+
+// UPDATE SETTINGS (notifications, privacy, language)
+exports.updateSettings = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { language, emailNotifications, showProfile } = req.body;
+    const updated = await User.findByIdAndUpdate(
+      id,
+      { $set: { language, emailNotifications, showProfile } },
+      { new: true }
+    );
+    if (!updated) return res.status(404).json({ message: 'User not found' });
+    const u = updated;
+    res.json({
+      message: 'Settings updated',
+      user: {
+        id: u._id, _id: u._id, name: u.name, email: u.email, role: u.role,
+        title: u.title, gender: u.gender, firstName: u.firstName,
+        middleName: u.middleName, lastName: u.lastName, profilePic: u.profilePic || '',
+        phone: u.phone || '', bio: u.bio || '', website: u.website || '',
+        linkedin: u.linkedin || '', twitter: u.twitter || '',
+        language: u.language, emailNotifications: u.emailNotifications, showProfile: u.showProfile,
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Settings update failed' });
+  }
+};
 
 // DELETE ACCOUNT
 exports.deleteAccount = async (req, res) => {

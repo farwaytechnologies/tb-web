@@ -25,27 +25,52 @@ exports.getWallet = async (req, res) => {
     const { tutorId } = req.params;
     const settings = await getSettings();
 
-    // Get current reward points
-    const reward = await TutorReward.findOne({ tutorId });
-    const totalPoints = (reward?.points || 0) + (reward?.bonusPoints || 0);
+    // Always compute activity points live for accuracy
+    const User = require('../models/user');
+    const Course = require('../models/Course');
+    const Blog = require('../models/Blog');
+    const Enrollment = require('../models/Enrollment');
 
-    // Sync wallet: available coins = floor(totalPoints / rate) - totalWithdrawn
+    let activityPoints = 0;
+    let bonusPoints = 0;
+
+    const [tutor, reward] = await Promise.all([
+      User.findById(tutorId).select('name'),
+      TutorReward.findOne({ tutorId })
+    ]);
+
+    if (reward) bonusPoints = reward.bonusPoints || 0;
+
+    if (tutor) {
+      const [courses, blogs, allEnrollments] = await Promise.all([
+        Course.find({ instructor: tutor.name }).select('_id'),
+        Blog.find({ author: tutor.name }).select('_id'),
+        Enrollment.find().select('courseId')
+      ]);
+      const courseIds = new Set(courses.map(c => String(c._id)));
+      const enrolled = allEnrollments.filter(e => courseIds.has(String(e.courseId))).length;
+      activityPoints = courses.length * 50 + blogs.length * 20 + enrolled * 10;
+    }
+
+    const totalPoints = activityPoints + bonusPoints;
+
+    // Sync wallet — borgCoins available = earned - withdrawn
     let wallet = await BorgCoinWallet.findOne({ tutorId });
     const earnedCoins = Math.floor(totalPoints / settings.pointsPerCoin);
+    const available = Math.max(0, earnedCoins - (wallet ? wallet.totalWithdrawn : 0));
 
     if (!wallet) {
       wallet = await BorgCoinWallet.create({
         tutorId,
-        borgCoins: earnedCoins,
+        borgCoins: available,
         totalEarned: earnedCoins,
         totalWithdrawn: 0,
         lastSynced: new Date()
       });
     } else {
-      const available = Math.max(0, earnedCoins - wallet.totalWithdrawn);
       wallet = await BorgCoinWallet.findOneAndUpdate(
         { tutorId },
-        { borgCoins: available, totalEarned: earnedCoins, lastSynced: new Date() },
+        { $set: { borgCoins: available, totalEarned: earnedCoins, lastSynced: new Date() } },
         { new: true }
       );
     }
@@ -53,6 +78,87 @@ exports.getWallet = async (req, res) => {
     const withdrawals = await Withdrawal.find({ tutorId }).sort({ requestedAt: -1 });
 
     res.json({ wallet, settings, totalPoints, withdrawals });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// POST /api/borgcoins/transfer
+// Body: { tutorId, pointsToConvert }
+// Explicitly converts reward points → BorgCoins and adds to wallet
+exports.transferPointsToCoins = async (req, res) => {
+  try {
+    const { tutorId, pointsToConvert } = req.body;
+    if (!tutorId || !pointsToConvert || pointsToConvert <= 0) {
+      return res.status(400).json({ message: 'Invalid transfer amount.' });
+    }
+
+    const settings = await getSettings();
+
+    // Compute current total points live
+    const User = require('../models/user');
+    const Course = require('../models/Course');
+    const Blog = require('../models/Blog');
+    const Enrollment = require('../models/Enrollment');
+
+    const [tutor, reward] = await Promise.all([
+      User.findById(tutorId).select('name'),
+      TutorReward.findOne({ tutorId })
+    ]);
+
+    if (!tutor) return res.status(404).json({ message: 'Tutor not found.' });
+
+    const bonusPoints = reward?.bonusPoints || 0;
+    const [courses, blogs, allEnrollments] = await Promise.all([
+      Course.find({ instructor: tutor.name }).select('_id'),
+      Blog.find({ author: tutor.name }).select('_id'),
+      Enrollment.find().select('courseId')
+    ]);
+    const courseIds = new Set(courses.map(c => String(c._id)));
+    const enrolled = allEnrollments.filter(e => courseIds.has(String(e.courseId))).length;
+    const activityPoints = courses.length * 50 + blogs.length * 20 + enrolled * 10;
+    const totalPoints = activityPoints + bonusPoints;
+
+    // How many coins already earned (lifetime)
+    const totalEarnableCoins = Math.floor(totalPoints / settings.pointsPerCoin);
+
+    // Get or create wallet
+    let wallet = await BorgCoinWallet.findOne({ tutorId });
+    const alreadyEarned = wallet?.totalEarned || 0;
+
+    // New coins = total earnable - already credited
+    const newCoins = totalEarnableCoins - alreadyEarned;
+    if (newCoins <= 0) {
+      return res.status(400).json({
+        message: 'No new BorgCoins available to transfer. Earn more points first.',
+        totalPoints,
+        totalEarnableCoins,
+        alreadyEarned
+      });
+    }
+
+    if (!wallet) {
+      wallet = await BorgCoinWallet.create({
+        tutorId,
+        borgCoins: newCoins,
+        totalEarned: totalEarnableCoins,
+        totalWithdrawn: 0,
+        lastSynced: new Date()
+      });
+    } else {
+      wallet = await BorgCoinWallet.findOneAndUpdate(
+        { tutorId },
+        { $inc: { borgCoins: newCoins, totalEarned: newCoins }, $set: { lastSynced: new Date() } },
+        { new: true }
+      );
+    }
+
+    res.json({
+      message: `Successfully transferred ${newCoins} BorgCoins to your wallet!`,
+      coinsAdded: newCoins,
+      wallet,
+      totalPoints
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

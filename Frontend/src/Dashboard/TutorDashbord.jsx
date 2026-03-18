@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../Styles/DashbordStyle/TutorDashbord.css';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 import {
   Book,
   Users,
@@ -37,10 +39,10 @@ export default function TutorDashboard() {
   const fetchTutorStats = async (tutorId) => {
     try {
       const [coursesRes, blogsRes, usersRes, enrollmentsRes] = await Promise.all([
-        fetch('https://tb-back-fyvj.onrender.com/api/courses'),
-        fetch(`https://tb-back-fyvj.onrender.com/api/blogs?tutorId=${tutorId}`),
-        fetch('https://tb-back-fyvj.onrender.com/api/auth/users'),
-        fetch('https://tb-back-fyvj.onrender.com/api/enrollments')
+        fetch(`${API_URL}/api/courses`),
+        fetch(`${API_URL}/api/blogs?tutorId=${tutorId}`),
+        fetch(`${API_URL}/api/auth/users`),
+        fetch(`${API_URL}/api/enrollments`)
       ]);
 
       const allCourses = await coursesRes.json();

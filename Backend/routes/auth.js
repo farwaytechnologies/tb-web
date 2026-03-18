@@ -4,6 +4,7 @@ const {
   register,
   login,
   updateUser,
+  updateSettings,
   changePassword,
   deleteAccount,
   getAllUsers
@@ -13,12 +14,13 @@ const {
 router.post('/register', register);
 router.post('/login', login);
 
-// Settings
+// Profile
 router.put('/update/:id', updateUser);
+router.put('/settings/:id', updateSettings);
 router.post('/change-password', changePassword);
 router.delete('/delete/:id', deleteAccount);
 
 // Admin
-router.get('/users', getAllUsers); // Only accessible by admin (add middleware if needed)
+router.get('/users', getAllUsers);
 
 module.exports = router;

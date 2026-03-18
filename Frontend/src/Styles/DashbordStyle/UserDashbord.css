@@ -1,141 +1,198 @@
-.user-dashboard-container {
-  padding: 40px 60px;
-  background-color: #f0f4f8;
-  min-height: 100vh;
+.ud-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
   font-family: 'Segoe UI', sans-serif;
+  color: #1f2937;
 }
 
-.user-dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.user-dashboard-user-info {
+/* Header */
+.ud-header {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1.25rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #fff;
 }
-
-.user-dashboard-avatar {
-  width: 70px;
-  height: 70px;
+.ud-avatar {
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #4a7abe;
+  border: 3px solid rgba(255,255,255,0.4);
+}
+.ud-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+.ud-role {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin: 0;
 }
 
-.user-dashboard-role {
-  color: #666;
-  font-size: 14px;
-}
-
-.user-dashboard-stats-grid {
+/* Stats */
+.ud-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
-
-.user-dashboard-stat-card {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
+.ud-stat {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   text-align: center;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-  border-left: 6px solid #4a7abe;
-  transition: transform 0.2s ease;
+}
+.ud-stat-val {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.ud-stat-lbl {
+  font-size: 0.75rem;
+  color: #6b7280;
 }
 
-.user-dashboard-stat-card:hover {
-  transform: translateY(-3px);
+/* Section */
+.ud-section {
+  margin-bottom: 2rem;
+}
+.ud-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  color: #1f2937;
 }
 
-.user-dashboard-stat-card h3 {
-  font-size: 32px;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.user-dashboard-stat-card p {
-  color: #666;
-  font-size: 15px;
-}
-
-.user-dashboard-quick-actions {
-  margin-bottom: 40px;
-}
-
-.user-dashboard-quick-actions h3 {
-  margin-bottom: 15px;
-  color: #222;
-  font-size: 20px;
-}
-
-.user-dashboard-action-grid {
+/* Quick Actions */
+.ud-actions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
 }
-
-.user-dashboard-action-card {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  color: #333;
+.ud-action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem 0.75rem;
   text-decoration: none;
-  transition: 0.3s ease;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.04);
+  color: #374151;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.ud-action-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
 }
 
-.user-dashboard-action-card:hover {
-  background-color: #eaf3fc;
-  color: #4a7abe;
-  transform: scale(1.03);
+/* Enrollments */
+.ud-enrollments {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
-
-.user-dashboard-action-card span {
-  display: block;
-  margin-top: 8px;
-  font-size: 15px;
+.ud-enroll-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem;
 }
-
-.user-dashboard-announcement {
-  margin-top: 40px;
+.ud-enroll-img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
-
-.user-dashboard-announcement h3 {
-  margin-bottom: 10px;
-  color: #222;
-  font-size: 20px;
+.ud-enroll-info {
+  flex: 1;
+  min-width: 0;
 }
+.ud-enroll-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ud-enroll-meta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin: 0 0 2px;
+}
+.ud-enroll-date {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin: 0;
+}
+.ud-enroll-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.ud-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.ud-badge--pending  { background: #fef3c7; color: #92400e; }
+.ud-badge--accepted { background: #d1fae5; color: #065f46; }
+.ud-badge--rejected { background: #fee2e2; color: #991b1b; }
 
-.user-dashboard-announcement-box {
-  background: #fffbe6;
-  padding: 15px 20px;
-  border-left: 6px solid #ffc107;
+.ud-continue-btn {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6366f1;
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1.5px solid #6366f1;
   border-radius: 6px;
-  font-size: 15px;
-  color: #444;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  transition: background 0.15s;
+}
+.ud-continue-btn:hover {
+  background: #eef2ff;
 }
 
-/* Responsive Fixes */
-@media (max-width: 768px) {
-  .user-dashboard-container {
-    padding: 20px;
-  }
+.ud-empty {
+  text-align: center;
+  color: #9ca3af;
+  padding: 2rem;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+}
+.ud-enroll-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  color: #6366f1;
+  font-weight: 600;
+  text-decoration: none;
+}
 
-  .user-dashboard-user-info {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .user-dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+@media (max-width: 640px) {
+  .ud-stats, .ud-actions { grid-template-columns: repeat(2, 1fr); }
+  .ud-enroll-card { flex-wrap: wrap; }
 }

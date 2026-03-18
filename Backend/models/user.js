@@ -10,11 +10,16 @@ const userSchema = new mongoose.Schema({
   middleName: { type: String, default: '' },
   lastName: { type: String, default: '' },
   gender: { type: String, default: '' },
+  phone: { type: String, default: '' },
+  bio: { type: String, default: '' },
+  website: { type: String, default: '' },
+  linkedin: { type: String, default: '' },
+  twitter: { type: String, default: '' },
   profilePic: { type: String, default: '' },
   language: { type: String, default: 'en' },
   theme: { type: String, default: 'light' },
   showProfile: { type: Boolean, default: true },
   emailNotifications: { type: Boolean, default: true }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

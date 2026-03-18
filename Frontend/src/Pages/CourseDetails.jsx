@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import '../Styles/PagesStyle/CourseDetails.css';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 function CourseDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [enrolled, setEnrolled] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`https://tb-back-fyvj.onrender.com/api/courses/${id}`)
+    fetch(`${API_URL}/api/courses/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error('Course not found');
         return res.json();
@@ -18,12 +22,30 @@ function CourseDetail() {
       .then((data) => {
         setCourse(data);
         setLoading(false);
+        // Check if user is already enrolled
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user) {
+          fetch(`${API_URL}/api/enrollments/user/${user._id || user.id}`)
+            .then(r => r.json())
+            .then(enrollments => {
+              if (Array.isArray(enrollments)) {
+                setEnrolled(enrollments.some(e => String(e.courseId?._id || e.courseId) === id));
+              }
+            })
+            .catch(() => {});
+        }
       })
       .catch((err) => {
         setError(err.message);
         setLoading(false);
       });
   }, [id]);
+
+  const handleEnroll = () => {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!user) { navigate('/login'); return; }
+    navigate(`/enroll?courseId=${id}`);
+  };
 
   if (loading) return <div className="techborg-course-loading">Loading...</div>;
   if (error) return <div className="techborg-course-error">Error: {error}</div>;
@@ -46,14 +68,14 @@ function CourseDetail() {
           </ul>
 
           <div className="techborg-course-buttons">
-            {localStorage.getItem('user') ? (
-              <Link to={'/enroll'} className="techborg-enroll-btn">
-                Enroll Now
+            {enrolled ? (
+              <Link to={`/courses/${id}/modules`} className="techborg-enroll-btn" style={{ background: '#10b981' }}>
+                ✓ Already Enrolled — Continue
               </Link>
             ) : (
-              <Link to="/login" className="techborg-enroll-btn">
+              <button onClick={handleEnroll} className="techborg-enroll-btn">
                 Enroll Now
-              </Link>
+              </button>
             )}
             <Link to={`/courses/${id}/modules`} className="techborg-module-btn">
               View Modules
