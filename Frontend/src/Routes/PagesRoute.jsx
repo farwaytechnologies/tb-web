@@ -54,6 +54,7 @@ import AdminAddJob from '../Dashboard/AdminAddJob';
 import AdminViewContact from '../Dashboard/AdminViewContact';
 import AdminViewApplications from '../Dashboard/AdminViewApplications';
 import AdminManageNews from "../Dashboard/AdminManageNews";
+import AdminManageRewards from '../Dashboard/AdminManageRewards';
 
 // 🧠 Tutor Management
 import TutorManageBlog from '../Dashboard/TutorManageBlog';
@@ -146,6 +147,7 @@ function PagesRoute() {
       <Route path="/admin/news" element={<AdminManageNews />} />
       <Route path="/admin/manage-learn" element={<AdminManageLearn />} />
       <Route path="/admin/visitors" element={<VisitorAnalytics />} />
+      <Route path="/admin/rewards" element={<AdminManageRewards />} />
 
       {/* 🧾 CMS Editing */}
       <Route path="/admin/edit-home" element={<HomeCms />} />

@@ -175,19 +175,17 @@ export default function TutorRewards() {
           {leaderboard.length === 0
             ? <p className="tr-empty">No leaderboard data yet.</p>
             : leaderboard.map((entry, i) => (
-              <div key={entry._id} className="tr-lb-row">
+              <div key={entry.tutorId} className="tr-lb-row">
                 <span className={`tr-lb-rank rank-${i + 1}`}>#{i + 1}</span>
                 <img
-                  src={entry.tutorId?.profilePic ||
-                    `https://ui-avatars.com/api/?name=${encodeURIComponent(entry.tutorId?.name || 'T')}&background=8b5cf6&color=fff&size=40`}
-                  alt={entry.tutorId?.name || 'Tutor'}
+                  src={entry.profilePic ||
+                    `https://ui-avatars.com/api/?name=${encodeURIComponent(entry.name || 'T')}&background=8b5cf6&color=fff&size=40`}
+                  alt={entry.name || 'Tutor'}
                   className="tr-lb-avatar"
                 />
-                <span className="tr-lb-name">{entry.tutorId?.name || 'Tutor'}</span>
+                <span className="tr-lb-name">{entry.name || 'Tutor'}</span>
                 <span className="tr-lb-points">{entry.points} pts</span>
-                <span className="tr-lb-badge">
-                  {getCurrentBadge(entry.points)?.name}
-                </span>
+                <span className="tr-lb-badge">{entry.currentBadge}</span>
               </div>
             ))
           }
