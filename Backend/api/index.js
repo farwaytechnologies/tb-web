@@ -18,5 +18,6 @@ router.use('/jobs', require('../routes/jobRoutes'));
 router.use('/applications', require('../routes/jobApplicationRoutes'));
 router.use('/news', require('../routes/newsRoutes'));
 router.use('/learn', require('../routes/learnRoutes'));
+router.use('/rewards', require('../routes/tutorRewardRoutes'));
 
 module.exports = router;

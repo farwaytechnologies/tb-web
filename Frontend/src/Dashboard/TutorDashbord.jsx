@@ -7,7 +7,8 @@ import {
   FileText,
   GraduationCap,
   CheckCircle,
-  BookOpen
+  BookOpen,
+  Trophy
 } from 'lucide-react';
 
 export default function TutorDashboard() {
@@ -79,7 +80,8 @@ export default function TutorDashboard() {
     { to: '/tutor/courses', icon: Book, label: 'Manage Courses', color: '#10b981' },
     { to: '/tutor/blogs', icon: FileText, label: 'Manage Blogs', color: '#06b6d4' },
     { to: '/tutor/students', icon: Users, label: 'Manage Students', color: '#8b5cf6' },
-    { to: '/tutor/learn', icon: BookOpen, label: 'Manage Learn', color: '#f59e0b' } // ✅ Added
+    { to: '/tutor/learn', icon: BookOpen, label: 'Manage Learn', color: '#f59e0b' },
+    { to: '/tutor/rewards', icon: Trophy, label: 'My Rewards', color: '#f59e0b' }
   ];
 
   return (

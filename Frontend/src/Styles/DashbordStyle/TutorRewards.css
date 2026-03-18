@@ -1,0 +1,153 @@
+.tr-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+  font-family: inherit;
+  background: #f9fafb;
+  min-height: 100vh;
+  color: #1f2937;
+}
+
+.tr-loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 6rem 2rem;
+  color: #7c3aed;
+  font-size: 1rem;
+}
+
+.tr-spin-icon {
+  color: #7c3aed;
+  animation: tr-spin 1.2s linear infinite;
+}
+
+@keyframes tr-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Header */
+.tr-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.tr-header-icon { color: #f59e0b; }
+.tr-title { font-size: 1.75rem; font-weight: 700; color: #1f2937; margin: 0; }
+.tr-subtitle { color: #6b7280; margin: 0; font-size: 0.9rem; }
+
+/* Hero row */
+.tr-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+@media (max-width: 640px) { .tr-hero { grid-template-columns: 1fr; } }
+
+/* Points card */
+.tr-points-card {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  border-radius: 16px;
+  padding: 2rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tr-points-value { font-size: 3rem; font-weight: 800; line-height: 1; }
+.tr-points-label { font-size: 0.85rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em; }
+.tr-current-badge { font-size: 1.25rem; margin-top: 0.25rem; }
+.tr-progress-wrap {
+  width: 100%;
+  height: 8px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+.tr-progress-bar { height: 100%; background: #fbbf24; border-radius: 99px; transition: width 0.6s ease; }
+.tr-next-badge { font-size: 0.8rem; opacity: 0.8; text-align: center; margin: 0; }
+
+/* Breakdown */
+.tr-breakdown { display: flex; flex-direction: column; gap: 0.75rem; }
+.tr-breakdown-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.tr-breakdown-info { flex: 1; display: flex; flex-direction: column; }
+.tr-breakdown-count { font-size: 1.1rem; font-weight: 700; color: #1f2937; }
+.tr-breakdown-label { font-size: 0.78rem; color: #6b7280; }
+.tr-breakdown-pts { font-size: 0.85rem; font-weight: 600; color: #7c3aed; white-space: nowrap; }
+
+/* Sections */
+.tr-section { margin-bottom: 2rem; }
+.tr-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+/* Badges grid */
+.tr-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+.tr-badge-card {
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  border: 2px solid transparent;
+  transition: transform 0.2s;
+}
+.tr-badge-card.earned { background: #f0fdf4; border-color: #10b981; }
+.tr-badge-card.locked { background: #f9fafb; border-color: #e5e7eb; opacity: 0.55; filter: grayscale(0.6); }
+.tr-badge-card:hover { transform: translateY(-2px); }
+.tr-badge-name { font-size: 1rem; font-weight: 600; color: #1f2937; }
+.tr-badge-req { font-size: 0.75rem; color: #6b7280; }
+.tr-badge-check { font-size: 0.75rem; color: #10b981; font-weight: 600; }
+
+/* Leaderboard */
+.tr-leaderboard { display: flex; flex-direction: column; gap: 0.6rem; }
+.tr-lb-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+}
+.tr-lb-rank { font-size: 1rem; font-weight: 800; width: 2rem; text-align: center; color: #6b7280; }
+.tr-lb-rank.rank-1 { color: #f59e0b; }
+.tr-lb-rank.rank-2 { color: #9ca3af; }
+.tr-lb-rank.rank-3 { color: #b45309; }
+.tr-lb-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.tr-lb-name { flex: 1; font-weight: 600; color: #1f2937; font-size: 0.9rem; }
+.tr-lb-points { font-weight: 700; color: #7c3aed; font-size: 0.9rem; }
+.tr-lb-badge { font-size: 0.8rem; color: #6b7280; margin-left: 0.5rem; }
+.tr-empty { color: #9ca3af; font-size: 0.9rem; }
+
+/* Back link */
+.tr-back { margin-top: 1rem; }
+.tr-back-link { color: #7c3aed; text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+.tr-back-link:hover { text-decoration: underline; }
