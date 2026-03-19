@@ -58,6 +58,7 @@ import AdminManageRewards from '../Dashboard/AdminManageRewards';
 import AdminBorgCoins from '../Dashboard/AdminBorgCoins';
 import AdminManageExams from '../Dashboard/AdminManageExams';
 import AdminManageInvoices from '../Dashboard/AdminManageInvoices';
+import AdminSecurityDashboard from '../Dashboard/AdminSecurityDashboard';
 
 // 🧠 Tutor Management
 import TutorManageBlog from '../Dashboard/TutorManageBlog';
@@ -157,6 +158,7 @@ function PagesRoute() {
       <Route path="/admin/borgcoins" element={<AdminBorgCoins />} />
       <Route path="/admin/exams" element={<AdminManageExams />} />
       <Route path="/admin/invoices" element={<AdminManageInvoices />} />
+      <Route path="/admin/security" element={<AdminSecurityDashboard />} />
 
       {/* 🧾 CMS Editing */}
       <Route path="/admin/edit-home" element={<HomeCms />} />

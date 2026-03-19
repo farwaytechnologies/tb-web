@@ -347,3 +347,12 @@
 .pp-pic-info { display: flex; flex-direction: column; gap: 4px; }
 .pp-pic-label { font-size: 14px; font-weight: 600; color: #1e293b; margin: 0; }
 .pp-pic-hint  { font-size: 12px; color: #94a3b8; margin: 0; }
+
+/* ── Bank Details ── */
+.pp-section-desc { font-size: 0.875rem; color: #64748b; margin: -0.5rem 0 1.5rem; line-height: 1.6; }
+.pp-bank-notice {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2);
+  color: #059669; font-size: 0.82rem; font-weight: 500;
+  padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1.75rem;
+}

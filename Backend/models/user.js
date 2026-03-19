@@ -19,7 +19,16 @@ const userSchema = new mongoose.Schema({
   language: { type: String, default: 'en' },
   theme: { type: String, default: 'light' },
   showProfile: { type: Boolean, default: true },
-  emailNotifications: { type: Boolean, default: true }
+  emailNotifications: { type: Boolean, default: true },
+  bankDetails: {
+    accountHolderName: { type: String, default: '' },
+    accountNumber:     { type: String, default: '' },
+    ifscCode:          { type: String, default: '' },
+    bankName:          { type: String, default: '' },
+    branchName:        { type: String, default: '' },
+    upiId:             { type: String, default: '' },
+    accountType:       { type: String, default: '' },
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

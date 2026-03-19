@@ -47,6 +47,7 @@ const ACTION_GROUPS = [
       { to: '/admin/view-contact',  icon: MessageSquare,label: 'Contact Msgs',   color: '#3b82f6' },
       { to: '/admin/manage-notifications', icon: Bell, label: 'Notifications',   color: '#ef4444' },
       { to: '/admin/visitors',      icon: BarChart3,   label: 'Analytics',       color: '#a855f7' },
+      { to: '/admin/security',      icon: Shield,      label: 'Security',         color: '#ef4444' },
       { to: '/admin/manage-cms',    icon: Settings,    label: 'CMS',             color: '#64748b' },
     ],
   },

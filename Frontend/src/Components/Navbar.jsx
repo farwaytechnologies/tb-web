@@ -1,94 +1,84 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { 
-  Menu, 
-  X, 
-  Bell, 
-  ArrowLeft, 
-  ChevronDown, 
-  User, 
-  FileText, 
-  Award, 
-  Receipt, 
-  LogOut 
+import {
+  Menu, X, Bell, ArrowLeft, ChevronDown,
+  User, FileText, Award, Receipt, LogOut,
+  BookOpen, GraduationCap, Newspaper, Briefcase,
+  LayoutDashboard, Zap,
 } from 'lucide-react';
 import '../Styles/ComponentsStyle/Navbar.css';
 
-function Navbar() {
-  const [user, setUser] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  // const [examDropdownOpen, setExamDropdownOpen] = useState(false);
-  const [learningDropdownOpen, setLearningDropdownOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [notificationCount, setNotificationCount] = useState(0);
+const API = import.meta.env.VITE_API_URL;
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const userDropdownRef = useRef(null);
-  // const examDropdownRef = useRef(null);
-  const learningDropdownRef = useRef(null);
+const ROLE_COLORS = {
+  admin:   '#ef4444',
+  tutor:   '#06b6d4',
+  student: '#10b981',
+};
 
-  // Handle scroll effect
+export default function Navbar() {
+  const [user, setUser]                       = useState(null);
+  const [dropdownOpen, setDropdownOpen]       = useState(false);
+  const [menuOpen, setMenuOpen]               = useState(false);
+  const [learningOpen, setLearningOpen]       = useState(false);
+  const [scrolled, setScrolled]               = useState(false);
+  const [notifCount, setNotifCount]           = useState(0);
+
+  const navigate  = useNavigate();
+  const location  = useLocation();
+  const userRef   = useRef(null);
+  const learnRef  = useRef(null);
+
+  /* scroll */
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Load user data
+  /* user */
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        console.error('Failed to parse user data:', error);
-        localStorage.removeItem('user');
-      }
-    }
-
-    const handleLogin = () => {
-      const updatedUser = localStorage.getItem('user');
-      setUser(updatedUser ? JSON.parse(updatedUser) : null);
+    const load = () => {
+      const raw = localStorage.getItem('user');
+      setUser(raw ? JSON.parse(raw) : null);
     };
-
-    window.addEventListener('userLoggedIn', handleLogin);
-    return () => window.removeEventListener('userLoggedIn', handleLogin);
+    load();
+    window.addEventListener('userLoggedIn', load);
+    return () => window.removeEventListener('userLoggedIn', load);
   }, []);
 
-  // Fetch notifications count
+  /* notifications */
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const res = await fetch('https://tb-back-fyvj.onrender.com/api/notifications');
-        const data = await res.json();
-        if (Array.isArray(data)) setNotificationCount(data.length);
-        else setNotificationCount(0);
-      } catch (error) {
-        console.error('Failed to fetch notifications:', error);
-      }
-    };
-    fetchNotifications();
-  }, []);
+    fetch(`${API}/api/notifications`)
+      .then(r => r.ok ? r.json() : [])
+      .then(d => {
+        if (!Array.isArray(d)) { setNotifCount(0); return; }
+        const uid = user?._id || user?.id;
+        if (uid) {
+          const unread = d.filter(n => !n.readBy?.includes(uid));
+          setNotifCount(unread.length);
+        } else {
+          setNotifCount(d.length);
+        }
+      })
+      .catch(() => setNotifCount(0));
+  }, [user]);
 
-  // Handle click outside dropdowns
+  /* click outside */
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) setDropdownOpen(false);
-      // if (examDropdownRef.current && !examDropdownRef.current.contains(event.target)) setExamDropdownOpen(false);
-      if (learningDropdownRef.current && !learningDropdownRef.current.contains(event.target)) setLearningDropdownOpen(false);
+    const handler = (e) => {
+      if (userRef.current  && !userRef.current.contains(e.target))  setDropdownOpen(false);
+      if (learnRef.current && !learnRef.current.contains(e.target)) setLearningOpen(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  // Close mobile menu on route change
+  /* close on route change */
   useEffect(() => {
     setMenuOpen(false);
     setDropdownOpen(false);
-    // setExamDropdownOpen(false);
-    setLearningDropdownOpen(false);
+    setLearningOpen(false);
   }, [location.pathname]);
 
   const handleLogout = useCallback(() => {
@@ -99,270 +89,177 @@ function Navbar() {
     navigate('/login');
   }, [navigate]);
 
-  const toggleDropdown = useCallback(() => setDropdownOpen(prev => !prev), []);
-  // const toggleExamDropdown = useCallback(() => setExamDropdownOpen(prev => !prev), []);
-  const toggleLearningDropdown = useCallback(() => setLearningDropdownOpen(prev => !prev), []);
-  const toggleMenu = useCallback(() => setMenuOpen(prev => !prev), []);
-  const closeMobileMenu = useCallback(() => {
+  const close = useCallback(() => {
     setMenuOpen(false);
     setDropdownOpen(false);
-    // setExamDropdownOpen(false);
-    setLearningDropdownOpen(false);
+    setLearningOpen(false);
   }, []);
 
-  const getDashboardLink = () => {
+  const dashLink = () => {
     if (!user) return '/';
-    switch (user.role) {
-      case 'admin': return '/admin/dashboard';
-      case 'tutor': return '/tutor/dashboard';
-      default: return '/user/dashboard';
-    }
+    if (user.role === 'admin') return '/admin/dashboard';
+    if (user.role === 'tutor') return '/tutor/dashboard';
+    return '/user/dashboard';
   };
 
-  const getDashboardText = () => {
-    if (!user) return '';
-    switch (user.role) {
-      case 'admin': return 'Admin Dashboard';
-      case 'tutor': return 'Tutor Dashboard';
-      default: return 'Student Dashboard';
-    }
-  };
-
-  const getProfileLink = () => {
+  const profileLink = () => {
     if (!user) return '/user-profile';
-    switch (user.role) {
-      case 'admin': return '/admin-profile';
-      case 'tutor': return '/tutor-profile';
-      default: return '/user-profile';
-    }
+    if (user.role === 'admin') return '/admin-profile';
+    if (user.role === 'tutor') return '/tutor-profile';
+    return '/user-profile';
   };
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (p) => location.pathname === p || location.pathname.startsWith(p + '/');
+  const roleColor = ROLE_COLORS[user?.role] || '#8b5cf6';
 
   return (
-    <nav className={`tb-navbar ${scrolled ? 'tb-navbar--scrolled' : ''}`}>
-      <div className="tb-navbar__container">
-        {/* Logo Section */}
-        <div className="tb-navbar__brand">
-          <Link to="/" className="tb-navbar__logo" onClick={closeMobileMenu}>
-            <span className="tb-navbar__logo-text">Tech</span>
-            <span className="tb-navbar__logo-accent">Borg</span>
-          </Link>
+    <nav className={`nb ${scrolled ? 'nb--scrolled' : ''}`}>
+      <div className="nb__inner">
 
-          {/* Back Navigation Button - Hidden on Home Page Only */}
-          {!isActive('/') && (
-            <button 
-              className="tb-navbar__back-btn" 
-              onClick={() => navigate(-1)} 
-              title="Go Back"
-              aria-label="Go back to previous page"
-            >
-              <ArrowLeft size={18} />
+        {/* ── Brand ── */}
+        <div className="nb__brand">
+          {location.pathname !== '/' && (
+            <button className="nb__back" onClick={() => navigate(-1)} aria-label="Go back">
+              <ArrowLeft size={16} />
             </button>
           )}
+          <Link to="/" className="nb__logo" onClick={close}>
+            <span className="nb__logo-t">Tech</span><span className="nb__logo-b">Borg</span>
+            <span className="nb__logo-dot" />
+          </Link>
         </div>
 
-        {/* Dashboard Quick Link */}
-        {user && (
-          <Link 
-            to={getDashboardLink()} 
-            className="tb-navbar__dashboard-link" 
-            onClick={closeMobileMenu}
-          >
-            {getDashboardText()}
-          </Link>
-        )}
+        {/* ── Nav links (desktop) ── */}
+        <ul className={`nb__links ${menuOpen ? 'nb__links--open' : ''}`}>
+          <li><Link to="/" className={`nb__link ${isActive('/') && location.pathname === '/' ? 'nb__link--active' : ''}`} onClick={close}>Home</Link></li>
 
-        {/* Mobile Menu Toggle */}
-        <button 
-          className="tb-navbar__hamburger" 
-          onClick={toggleMenu} 
-          aria-label="Toggle navigation menu" 
-          aria-expanded={menuOpen}
-        >
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-
-        {/* Navigation Links */}
-        <ul className={`tb-navbar__links ${menuOpen ? 'tb-navbar__links--active' : ''}`}>
-          <li className="tb-navbar__item">
-            <Link 
-              to="/" 
-              onClick={closeMobileMenu} 
-              className={`tb-navbar__link ${isActive('/') ? 'tb-navbar__link--active' : ''}`}
-            >
-              Home
-            </Link>
-          </li>
-
-          {/* Learning Dropdown */}
-          <li className="tb-navbar__item tb-navbar__dropdown" ref={learningDropdownRef}>
-            <button 
-              className="tb-navbar__dropdown-toggle" 
-              onClick={toggleLearningDropdown}
-              aria-expanded={learningDropdownOpen}
-            >
-              Learning
-              <ChevronDown 
-                size={18} 
-                className={`tb-navbar__dropdown-icon ${learningDropdownOpen ? 'tb-navbar__dropdown-icon--rotate' : ''}`} 
-              />
+          {/* Learning dropdown */}
+          <li className="nb__drop" ref={learnRef}>
+            <button className={`nb__link nb__drop-toggle ${isActive('/courses') || isActive('/learn') ? 'nb__link--active' : ''}`}
+              onClick={() => setLearningOpen(p => !p)}>
+              Learning <ChevronDown size={14} className={learningOpen ? 'nb__chevron--open' : ''} />
             </button>
-            {learningDropdownOpen && (
-              <ul className="tb-navbar__submenu">
-                <li>
-                  <Link to="/courses" onClick={closeMobileMenu}>
-                    Courses
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/learn" onClick={closeMobileMenu}>
-                    Learn
-                  </Link>
-                </li>
-              </ul>
+            {learningOpen && (
+              <div className="nb__submenu">
+                <Link to="/courses" className="nb__sub-item" onClick={close}>
+                  <GraduationCap size={15} /> Courses
+                </Link>
+                <Link to="/learn" className="nb__sub-item" onClick={close}>
+                  <BookOpen size={15} /> Learn
+                </Link>
+              </div>
             )}
           </li>
 
-          {/* Exam Guide Dropdown */}
-          {/* <li className="tb-navbar__item tb-navbar__dropdown" ref={examDropdownRef}>
-            <button 
-              className="tb-navbar__dropdown-toggle" 
-              onClick={toggleExamDropdown}
-              aria-expanded={examDropdownOpen}
-            >
-              Exam Guide
-              <ChevronDown 
-                size={18} 
-                className={`tb-navbar__dropdown-icon ${examDropdownOpen ? 'tb-navbar__dropdown-icon--rotate' : ''}`} 
-              />
-            </button>
-            {examDropdownOpen && (
-              <ul className="tb-navbar__submenu">
-                <li><Link to="/exam-guide/polytechnic" onClick={closeMobileMenu}>Polytechnic</Link></li>
-                <li><Link to="/exam-guide/engineering" onClick={closeMobileMenu}>Engineering</Link></li>
-                <li><Link to="/exam-guide/degree" onClick={closeMobileMenu}>UG</Link></li>
-                <li><Link to="/exam-guide/pg" onClick={closeMobileMenu}>PG</Link></li>
-              </ul>
-            )}
-          </li> */}
+          <li><Link to="/blog"      className={`nb__link ${isActive('/blog')       ? 'nb__link--active' : ''}`} onClick={close}>Blog</Link></li>
+          <li><Link to="/news"      className={`nb__link ${isActive('/news')       ? 'nb__link--active' : ''}`} onClick={close}>News</Link></li>
+          <li><Link to="/job-alerts" className={`nb__link ${isActive('/job-alerts') ? 'nb__link--active' : ''}`} onClick={close}>Jobs</Link></li>
 
-          <li className="tb-navbar__item">
-            <Link 
-              to="/blog" 
-              onClick={closeMobileMenu} 
-              className={`tb-navbar__link ${isActive('/blog') ? 'tb-navbar__link--active' : ''}`}
-            >
-              Blogs
+          {/* Mobile-only extras */}
+          <li className="nb__mobile-only">
+            <Link to="/notifications" className="nb__link" onClick={close}>
+              <Bell size={15} /> Notifications
+              {notifCount > 0 && <span className="nb__badge">{notifCount > 99 ? '99+' : notifCount}</span>}
             </Link>
           </li>
-
-          <li className="tb-navbar__item">
-            <Link 
-              to="/news" 
-              onClick={closeMobileMenu} 
-              className={`tb-navbar__link ${isActive('/news') ? 'tb-navbar__link--active' : ''}`}
-            >
-              News
-            </Link>
-          </li>
-
-          <li className="tb-navbar__item">
-            <Link 
-              to="/job-alerts" 
-              onClick={closeMobileMenu} 
-              className={`tb-navbar__link ${isActive('/job-alerts') ? 'tb-navbar__link--active' : ''}`}
-            >
-              Job Alert
-            </Link>
-          </li>
-
-          {/* Mobile Notification Link */}
-          <li className="tb-navbar__item tb-navbar__notification-mobile">
-            <Link to="/notifications" onClick={closeMobileMenu} className="tb-navbar__link">
-              <Bell size={18} />
-              <span>Notifications</span>
-              {notificationCount > 0 && (
-                <span className="tb-navbar__badge">{notificationCount}</span>
-              )}
-            </Link>
-          </li>
+          {user && (
+            <li className="nb__mobile-only">
+              <Link to={dashLink()} className="nb__link" onClick={close}>
+                <LayoutDashboard size={15} /> Dashboard
+              </Link>
+            </li>
+          )}
         </ul>
 
-        {/* Right Section */}
-        <div className="tb-navbar__actions">
-          {/* Notification Bell (Desktop) */}
-          <Link 
-            to="/notifications" 
-            className="tb-navbar__notification-btn" 
-            aria-label={`Notifications (${notificationCount} unread)`}
-          >
-            <Bell size={20} />
-            {notificationCount > 0 && (
-              <span className="tb-navbar__notification-badge">{notificationCount}</span>
-            )}
+        {/* ── Right actions ── */}
+        <div className="nb__actions">
+          {/* Dashboard pill (desktop) */}
+          {user && (
+            <Link to={dashLink()} className="nb__dash-pill" onClick={close}>
+              <LayoutDashboard size={14} />
+              <span>{user.role === 'admin' ? 'Admin' : user.role === 'tutor' ? 'Tutor' : 'Student'}</span>
+            </Link>
+          )}
+
+          {/* Bell */}
+          <Link to="/notifications" className="nb__bell" aria-label="Notifications">
+            <Bell size={18} />
+            {notifCount > 0 && <span className="nb__bell-badge">{notifCount > 99 ? '99+' : notifCount}</span>}
           </Link>
 
-          {/* User Menu or Login */}
+          {/* User menu */}
           {user ? (
-            <div className="tb-navbar__user" ref={userDropdownRef}>
-              <button 
-                className="tb-navbar__user-toggle" 
-                onClick={toggleDropdown}
-                aria-expanded={dropdownOpen}
-                aria-label="User menu"
-              >
+            <div className="nb__user" ref={userRef}>
+              <button className="nb__user-btn" onClick={() => setDropdownOpen(p => !p)}>
                 <img
-                  src={user.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=4a7abe&color=fff`}
+                  src={user.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=8b5cf6&color=fff&size=80`}
                   alt={user.name}
-                  className="tb-navbar__avatar"
+                  className="nb__avatar"
+                  onError={e => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=8b5cf6&color=fff&size=80`; }}
                 />
-                <span className="tb-navbar__username">{user.name}</span>
-                <ChevronDown 
-                  size={16} 
-                  className={`tb-navbar__dropdown-icon ${dropdownOpen ? 'tb-navbar__dropdown-icon--rotate' : ''}`} 
-                />
+                <span className="nb__uname">{user.name}</span>
+                <ChevronDown size={13} className={dropdownOpen ? 'nb__chevron--open' : ''} />
               </button>
-              
+
               {dropdownOpen && (
-                <div className="tb-navbar__user-menu">
-                  <Link to={getProfileLink()} onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
-                    <User size={18} />
-                    <span>My Profile</span>
+                <div className="nb__user-menu">
+                  {/* User info header */}
+                  <div className="nb__menu-head">
+                    <img
+                      src={user.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=8b5cf6&color=fff&size=80`}
+                      alt={user.name}
+                      className="nb__menu-av"
+                      onError={e => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=8b5cf6&color=fff&size=80`; }}
+                    />
+                    <div>
+                      <strong>{user.name}</strong>
+                      <span>{user.email}</span>
+                      <span className="nb__role-badge" style={{ background: `${roleColor}20`, color: roleColor, border: `1px solid ${roleColor}40` }}>
+                        <Zap size={10} /> {user.role?.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="nb__menu-divider" />
+
+                  <Link to={profileLink()} className="nb__menu-item" onClick={close}>
+                    <User size={15} /> My Profile
                   </Link>
+
                   {user.role !== 'admin' && (
                     <>
-                      <Link to="/certificates" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
-                        <Award size={18} />
-                        <span>Certificates</span>
+                      <Link to="/certificates" className="nb__menu-item" onClick={close}>
+                        <Award size={15} /> Certificates
                       </Link>
-                      <Link to="/exam" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
-                        <FileText size={18} />
-                        <span>Exam</span>
+                      <Link to="/exam" className="nb__menu-item" onClick={close}>
+                        <FileText size={15} /> Exam
                       </Link>
-                      <Link to="/invoices" onClick={closeMobileMenu} className="tb-navbar__user-menu-item">
-                        <Receipt size={18} />
-                        <span>Invoices</span>
+                      <Link to="/invoices" className="nb__menu-item" onClick={close}>
+                        <Receipt size={15} /> Invoices
                       </Link>
                     </>
                   )}
-                  <button onClick={handleLogout} className="tb-navbar__user-menu-item tb-navbar__logout">
-                    <LogOut size={18} />
-                    <span>Logout</span>
+
+                  <div className="nb__menu-divider" />
+
+                  <button className="nb__menu-item nb__menu-logout" onClick={handleLogout}>
+                    <LogOut size={15} /> Logout
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            <Link to="/login" className="tb-navbar__login-btn">
-              <User size={20} />
-              <span>Login</span>
+            <Link to="/login" className="nb__login-btn" onClick={close}>
+              <User size={15} /> Login
             </Link>
           )}
+
+          {/* Hamburger */}
+          <button className="nb__burger" onClick={() => setMenuOpen(p => !p)} aria-label="Toggle menu">
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
       </div>
     </nav>
   );
 }
-
-export default Navbar;

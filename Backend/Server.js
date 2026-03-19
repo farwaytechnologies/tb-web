@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
+const { apiLimiter, sanitizeInputs, suspiciousInputDetector } = require('./middleware/security');
 
 dotenv.config();
 
@@ -30,8 +32,15 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // ✅ Middleware
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: false, // handled by frontend
+}));
+app.use(express.json({ limit: '2mb' }));
+app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+app.use(...sanitizeInputs);
+app.use(suspiciousInputDetector);
+app.use('/api', apiLimiter);
 
 // ✅ Static File Serving
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

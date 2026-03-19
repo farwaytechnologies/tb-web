@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const { logFailedLogin } = require('../middleware/security');
 
 // REGISTER
 exports.register = async (req, res) => {
@@ -24,12 +25,16 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user)
+    if (!user) {
+      await logFailedLogin(req, email);
       return res.status(400).json({ message: 'Invalid email or password' });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
+    if (!isMatch) {
+      await logFailedLogin(req, email);
       return res.status(400).json({ message: 'Invalid email or password' });
+    }
 
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
@@ -178,5 +183,33 @@ exports.deleteAccount = async (req, res) => {
     res.json({ message: 'Account deleted' });
   } catch (err) {
     res.status(500).json({ message: 'Error deleting account' });
+  }
+};
+
+// UPDATE BANK DETAILS
+exports.updateBankDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { accountHolderName, accountNumber, ifscCode, bankName, branchName, upiId, accountType } = req.body;
+    const updated = await User.findByIdAndUpdate(
+      id,
+      { $set: { bankDetails: { accountHolderName, accountNumber, ifscCode, bankName, branchName, upiId, accountType } } },
+      { new: true }
+    );
+    if (!updated) return res.status(404).json({ message: 'User not found' });
+    res.json({ message: 'Bank details saved', bankDetails: updated.bankDetails });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to save bank details' });
+  }
+};
+
+// GET BANK DETAILS
+exports.getBankDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('bankDetails');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user.bankDetails || {});
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch bank details' });
   }
 };

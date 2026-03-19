@@ -3,17 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import {
   User, Mail, Phone, Globe, Linkedin, Twitter, Lock,
   Settings, Camera, CheckCircle, AlertCircle, Save, X,
-  Eye, EyeOff, Shield
+  Eye, EyeOff, Shield, CreditCard,
 } from 'lucide-react';
 import './ProfilePage.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const TABS = [
-  { id: 'overview', label: 'Overview', icon: User },
-  { id: 'edit',     label: 'Edit Profile', icon: Settings },
-  { id: 'password', label: 'Password', icon: Lock },
-  { id: 'settings', label: 'Settings', icon: Shield },
+  { id: 'overview', label: 'Overview',      icon: User },
+  { id: 'edit',     label: 'Edit Profile',  icon: Settings },
+  { id: 'password', label: 'Password',      icon: Lock },
+  { id: 'settings', label: 'Settings',      icon: Shield },
+  { id: 'bank',     label: 'Bank Details',  icon: CreditCard, tutorOnly: true },
 ];
 
 const ROLE_COLORS = {
@@ -34,6 +35,7 @@ export default function ProfilePage({ requiredRole }) {
   const [pwForm, setPwForm] = useState({ currentPassword: '', newPassword: '', confirm: '' });
   const [showPw, setShowPw] = useState({ cur: false, nw: false, cf: false });
   const [settings, setSettings] = useState({ language: 'en', emailNotifications: true, showProfile: true });
+  const [bank, setBank] = useState({ accountHolderName: '', accountNumber: '', ifscCode: '', bankName: '', branchName: '', upiId: '', accountType: '' });
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem('user') || 'null');
@@ -48,6 +50,12 @@ export default function ProfilePage({ requiredRole }) {
       emailNotifications: stored.emailNotifications !== false,
       showProfile: stored.showProfile !== false,
     });
+    if (stored.role === 'tutor') {
+      fetch(`${API_URL}/api/auth/bank/${stored._id || stored.id}`)
+        .then(r => r.ok ? r.json() : {})
+        .then(d => setBank(b => ({ ...b, ...d })))
+        .catch(() => {});
+    }
   }, [navigate, requiredRole]);
 
   const avatarUrl = (name) =>
@@ -140,6 +148,25 @@ export default function ProfilePage({ requiredRole }) {
     }
   };
 
+  const handleSaveBankDetails = async () => {
+    setSaving(true);
+    try {
+      const uid = user._id || user.id;
+      const res = await fetch(`${API_URL}/api/auth/bank/${uid}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bank),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Save failed');
+      toast('ok', 'Bank details saved successfully.');
+    } catch (err) {
+      toast('err', err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   if (!user) return null;
 
   const displayName = [form.firstName, form.middleName, form.lastName].filter(Boolean).join(' ') || form.name;
@@ -187,7 +214,7 @@ export default function ProfilePage({ requiredRole }) {
 
           {/* Nav */}
           <nav className="pp-nav">
-            {TABS.map(t => (
+            {TABS.filter(t => !t.tutorOnly || user.role === 'tutor').map(t => (
               <button key={t.id}
                 className={`pp-nav-btn ${tab === t.id ? 'active' : ''}`}
                 style={tab === t.id ? { background: colors.bg, color: '#fff' } : {}}
@@ -389,6 +416,60 @@ export default function ProfilePage({ requiredRole }) {
                 onClick={handleSaveSettings} disabled={saving}>
                 <Save size={15} /> {saving ? 'Saving...' : 'Save Settings'}
               </button>
+            </div>
+          )}
+
+          {/* BANK DETAILS — tutor only */}
+          {tab === 'bank' && (
+            <div className="pp-section">
+              <h3 className="pp-section-title">Bank Details</h3>
+              <p className="pp-section-desc">These details are used to transfer your earnings. Keep them accurate and up to date.</p>
+
+              <div className="pp-bank-notice">
+                <Shield size={15} />
+                Your bank information is encrypted and never shared publicly.
+              </div>
+
+              <h4 className="pp-subsection">Account Information</h4>
+              <div className="pp-form-grid">
+                <Field label="Account Holder Name" value={bank.accountHolderName}
+                  onChange={e => setBank(b => ({ ...b, accountHolderName: e.target.value }))}
+                  placeholder="As per bank records" />
+                <Field label="Bank Name" value={bank.bankName}
+                  onChange={e => setBank(b => ({ ...b, bankName: e.target.value }))}
+                  placeholder="e.g. State Bank of India" />
+                <Field label="Account Number" value={bank.accountNumber}
+                  onChange={e => setBank(b => ({ ...b, accountNumber: e.target.value }))}
+                  placeholder="Enter account number" />
+                <Field label="IFSC Code" value={bank.ifscCode}
+                  onChange={e => setBank(b => ({ ...b, ifscCode: e.target.value.toUpperCase() }))}
+                  placeholder="e.g. SBIN0001234" />
+                <Field label="Branch Name" value={bank.branchName}
+                  onChange={e => setBank(b => ({ ...b, branchName: e.target.value }))}
+                  placeholder="e.g. MG Road, Bangalore" />
+                <div className="pp-field">
+                  <label>Account Type</label>
+                  <select value={bank.accountType || ''} onChange={e => setBank(b => ({ ...b, accountType: e.target.value }))}>
+                    <option value="">Select type</option>
+                    <option value="Savings">Savings</option>
+                    <option value="Current">Current</option>
+                  </select>
+                </div>
+              </div>
+
+              <h4 className="pp-subsection">UPI (Optional)</h4>
+              <div className="pp-form-grid">
+                <Field label="UPI ID" value={bank.upiId}
+                  onChange={e => setBank(b => ({ ...b, upiId: e.target.value }))}
+                  placeholder="yourname@upi" />
+              </div>
+
+              <div className="pp-form-actions">
+                <button className="pp-btn pp-btn--primary" style={{ background: colors.bg }}
+                  onClick={handleSaveBankDetails} disabled={saving}>
+                  <Save size={15} /> {saving ? 'Saving...' : 'Save Bank Details'}
+                </button>
+              </div>
             </div>
           )}
 
