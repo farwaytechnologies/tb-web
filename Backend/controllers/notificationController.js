@@ -1,6 +1,7 @@
 const Notification = require('../models/Notification');
+const User = require('../models/user');
 
-// GET all notifications
+// GET all notifications (with readBy count)
 exports.getAllNotifications = async (req, res) => {
   try {
     const notifications = await Notification.find().sort({ date: -1 });
@@ -10,46 +11,72 @@ exports.getAllNotifications = async (req, res) => {
   }
 };
 
-// POST a new notification
+// GET notification read stats (admin) — returns each notification with readers list
+exports.getReadStats = async (req, res) => {
+  try {
+    const notifications = await Notification.find()
+      .sort({ date: -1 })
+      .populate('readBy', 'name email role');
+    res.status(200).json(notifications);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch read stats', error: err });
+  }
+};
+
+// POST create notification
 exports.createNotification = async (req, res) => {
   try {
-    const { title, message, date, isRead = false } = req.body;
-
-    if (!title || !message || !date) {
-      return res.status(400).json({ message: 'All fields are required.' });
+    const { title, message } = req.body;
+    if (!title || !message) {
+      return res.status(400).json({ message: 'Title and message are required.' });
     }
-
-    const newNotification = new Notification({ title, message, date, isRead });
+    const newNotification = new Notification({ title, message });
     await newNotification.save();
-
-    res.status(201).json({ message: 'Notification created successfully' });
+    res.status(201).json({ message: 'Notification created successfully', notification: newNotification });
   } catch (err) {
     res.status(500).json({ message: 'Failed to create notification', error: err });
   }
 };
 
-// DELETE a notification by ID
+// DELETE notification
 exports.deleteNotification = async (req, res) => {
   try {
-    const { id } = req.params;
-    const notification = await Notification.findByIdAndDelete(id);
-
-    if (!notification) {
-      return res.status(404).json({ message: 'Notification not found' });
-    }
-
+    const notification = await Notification.findByIdAndDelete(req.params.id);
+    if (!notification) return res.status(404).json({ message: 'Notification not found' });
     res.status(200).json({ message: 'Notification deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete notification', error: err });
   }
 };
 
-// PUT - Mark all notifications as read
+// PUT mark all as read for a user
 exports.markAllAsRead = async (req, res) => {
   try {
-    await Notification.updateMany({ isRead: false }, { $set: { isRead: true } });
+    const { userId } = req.body;
+    if (!userId) return res.status(400).json({ message: 'userId is required.' });
+    await Notification.updateMany(
+      { readBy: { $ne: userId } },
+      { $addToSet: { readBy: userId } }
+    );
     res.status(200).json({ message: 'All notifications marked as read.' });
   } catch (err) {
     res.status(500).json({ message: 'Failed to mark notifications as read', error: err });
+  }
+};
+
+// PATCH mark one as read for a user
+exports.markOneAsRead = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) return res.status(400).json({ message: 'userId is required.' });
+    const notification = await Notification.findByIdAndUpdate(
+      req.params.id,
+      { $addToSet: { readBy: userId } },
+      { new: true }
+    );
+    if (!notification) return res.status(404).json({ message: 'Notification not found' });
+    res.status(200).json({ message: 'Notification marked as read', notification });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to mark notification as read', error: err });
   }
 };

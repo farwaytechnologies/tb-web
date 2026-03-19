@@ -26,6 +26,17 @@ exports.createJob = async (req, res) => {
   }
 };
 
+// GET /api/jobs/:id - Get single job
+exports.getJobById = async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) return res.status(404).json({ message: 'Job not found' });
+    res.json(job);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch job', error: err.message });
+  }
+};
+
 // DELETE /api/jobs/:id - Delete a job
 exports.deleteJob = async (req, res) => {
   try {

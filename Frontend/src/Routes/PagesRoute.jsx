@@ -90,6 +90,8 @@ import Privacy from '../Legal/Privacy';
 import Terms from '../Legal/Terms';
 import Cookies from '../Legal/Cookies';
 import Faq from '../Legal/Faq';
+import Accessibility from '../Legal/Accessibility';
+import Sitemap from '../Legal/Sitemap';
 
 // =============================
 // 🚀 Main Route Component
@@ -193,6 +195,8 @@ function PagesRoute() {
       <Route path="/terms" element={<Terms />} />
       <Route path="/cookies" element={<Cookies />} />
       <Route path="/faq" element={<Faq />} />
+      <Route path="/accessibility" element={<Accessibility />} />
+      <Route path="/sitemap" element={<Sitemap />} />
 
       {/* 404 fallback (optional) */}
       {/* <Route path="*" element={<NotFound />} /> */}

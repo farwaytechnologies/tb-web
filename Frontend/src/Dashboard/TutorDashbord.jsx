@@ -1,157 +1,141 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Book, Users, FileText, GraduationCap, CheckCircle, BookOpen, Trophy, Coins, ChevronRight } from 'lucide-react';
 import '../Styles/DashbordStyle/TutorDashbord.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-import {
-  Book,
-  Users,
-  FileText,
-  GraduationCap,
-  CheckCircle,
-  BookOpen,
-  Trophy,
-  Coins
-} from 'lucide-react';
+const API = import.meta.env.VITE_API_URL;
 
 export default function TutorDashboard() {
   const [tutor, setTutor] = useState({});
-  const [stats, setStats] = useState({
-    courses: 0,
-    students: 0,
-    blogs: 0,
-    registeredStudents: 0,
-    allEnrolledStudents: 0
-  });
-
+  const [stats, setStats] = useState({ courses: 0, students: 0, blogs: 0, registeredStudents: 0, allEnrolledStudents: 0 });
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem('user'));
-    if (!stored || stored.role !== 'tutor') {
-      navigate('/login');
-    } else {
-      setTutor(stored);
-      fetchTutorStats(stored._id);
-    }
+    if (!stored || stored.role !== 'tutor') { navigate('/login'); return; }
+    setTutor(stored);
+    fetchStats(stored._id);
   }, [navigate]);
 
-  const fetchTutorStats = async (tutorId) => {
+  const fetchStats = async (tutorId) => {
     try {
+      const stored = JSON.parse(localStorage.getItem('user'));
+      const tutorName = stored?.name || '';
+
       const [coursesRes, blogsRes, usersRes, enrollmentsRes] = await Promise.all([
-        fetch(`${API_URL}/api/courses`),
-        fetch(`${API_URL}/api/blogs?tutorId=${tutorId}`),
-        fetch(`${API_URL}/api/auth/users`),
-        fetch(`${API_URL}/api/enrollments`)
+        fetch(`${API}/api/courses`),
+        fetch(`${API}/api/blogs`),
+        fetch(`${API}/api/auth/users`),
+        fetch(`${API}/api/enrollments`)
+      ]);
+      const [allCourses, allBlogs, users, enrollments] = await Promise.all([
+        coursesRes.json(), blogsRes.json(), usersRes.json(), enrollmentsRes.json()
       ]);
 
-      const allCourses = await coursesRes.json();
-      const blogs = await blogsRes.json();
-      const users = await usersRes.json();
-      const enrollments = await enrollmentsRes.json();
+      // Course model uses `instructor` (string name), not instructorId
+      const tutorCourses = allCourses.filter(c => c.instructor === tutorName);
+      const tutorCourseIds = new Set(tutorCourses.map(c => String(c._id)));
 
-      const tutorCourses = allCourses.filter(course => course.instructorId === tutorId);
-      const tutorCourseIds = tutorCourses.map(course => course._id);
+      // Blog model uses `author` (string name)
+      const tutorBlogs = allBlogs.filter(b => b.author === tutorName);
 
-      const enrolledCount = enrollments.filter(enr =>
-        tutorCourseIds.includes(enr.courseId)
-      ).length;
-
-      const registeredStudents = users.filter(u => u.role === 'student').length;
+      // Normalize courseId — may be populated object or plain string
+      const enrolledCount = enrollments.filter(e => {
+        const cid = String(e.courseId?._id || e.courseId);
+        return tutorCourseIds.has(cid);
+      }).length;
 
       setStats({
         courses: tutorCourses.length,
-        blogs: blogs.length,
+        blogs: tutorBlogs.length,
         students: enrolledCount,
-        registeredStudents,
+        registeredStudents: users.filter(u => u.role === 'student').length,
         allEnrolledStudents: enrollments.length
       });
     } catch (err) {
       console.error('Failed to fetch tutor stats:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const greeting = () => {
+    const h = new Date().getHours();
+    if (h < 12) return 'Good morning';
+    if (h < 17) return 'Good afternoon';
+    return 'Good evening';
+  };
+
   const statsCards = [
-    { icon: Book, count: stats.courses, label: 'Your Courses', color: '#10b981', bgColor: '#d1fae5' },
-    { icon: Users, count: stats.students, label: 'Enrolled in Your Courses', color: '#8b5cf6', bgColor: '#f3e8ff' },
-    { icon: FileText, count: stats.blogs, label: 'Your Blogs', color: '#06b6d4', bgColor: '#cffafe' },
-    { icon: GraduationCap, count: stats.registeredStudents, label: 'Total Registered Students', color: '#f59e0b', bgColor: '#fef3c7' },
-    { icon: CheckCircle, count: stats.allEnrolledStudents, label: 'Total Enrolled Students', color: '#ec4899', bgColor: '#fce7f3' }
+    { icon: Book,          count: stats.courses,             label: 'Your Courses',              color: '#10b981', glow: 'rgba(16,185,129,0.15)' },
+    { icon: Users,         count: stats.students,            label: 'Enrolled in Your Courses',  color: '#8b5cf6', glow: 'rgba(139,92,246,0.15)' },
+    { icon: FileText,      count: stats.blogs,               label: 'Your Blogs',                color: '#06b6d4', glow: 'rgba(6,182,212,0.15)'  },
+    { icon: GraduationCap, count: stats.registeredStudents,  label: 'Registered Students',       color: '#f59e0b', glow: 'rgba(245,158,11,0.15)' },
+    { icon: CheckCircle,   count: stats.allEnrolledStudents, label: 'Total Enrollments',         color: '#ec4899', glow: 'rgba(236,72,153,0.15)' },
   ];
 
   const quickActions = [
-    { to: '/tutor/courses', icon: Book, label: 'Manage Courses', color: '#10b981' },
-    { to: '/tutor/blogs', icon: FileText, label: 'Manage Blogs', color: '#06b6d4' },
-    { to: '/tutor/students', icon: Users, label: 'Manage Students', color: '#8b5cf6' },
-    { to: '/tutor/learn', icon: BookOpen, label: 'Manage Learn', color: '#f59e0b' },
-    { to: '/tutor/rewards', icon: Trophy, label: 'My Rewards', color: '#f59e0b' },
-    { to: '/tutor/borgcoins', icon: Coins, label: 'BorgCoins Wallet', color: '#d97706' }
+    { to: '/tutor/courses',    icon: Book,     label: 'Manage Courses',   color: '#10b981' },
+    { to: '/tutor/blogs',      icon: FileText, label: 'Manage Blogs',     color: '#06b6d4' },
+    { to: '/tutor/students',   icon: Users,    label: 'Manage Students',  color: '#8b5cf6' },
+    { to: '/tutor/learn',      icon: BookOpen, label: 'Manage Learn',     color: '#f59e0b' },
+    { to: '/tutor/rewards',    icon: Trophy,   label: 'My Rewards',       color: '#f59e0b' },
+    { to: '/tutor/borgcoins',  icon: Coins,    label: 'BorgCoins Wallet', color: '#d97706' },
   ];
 
   return (
-    <div className="tutor-dashboard">
-      {/* Header Section */}
-      <div className="tutor-dashboard__header">
-        <div className="tutor-dashboard__header-content">
-          <div className="tutor-dashboard__header-text">
-            <h1 className="tutor-dashboard__title">
-              Welcome back, {tutor?.name || 'Tutor'}
-            </h1>
-            <p className="tutor-dashboard__subtitle">
-              Here's your teaching dashboard
-            </p>
+    <div className="td-page">
+      {/* Header */}
+      <div className="td-header">
+        <div className="td-header-glow" />
+        <div className="td-header-left">
+          <p className="td-greeting">{greeting()}</p>
+          <h1 className="td-name">{tutor?.name || 'Tutor'}</h1>
+          <div className="td-role-badge">
+            <span className="td-role-dot" />
+            Tutor
           </div>
-          <div className="tutor-dashboard__header-avatar">
+          <p className="td-date">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        </div>
+        <div className="td-header-right">
+          <div className="td-avatar-wrap">
             <img
-              src={
-                tutor?.profilePic ||
-                `https://ui-avatars.com/api/?name=${encodeURIComponent(tutor?.name || 'Tutor')}&background=8b5cf6&color=fff&size=128`
-              }
-              alt="Tutor"
-              className="tutor-dashboard__avatar"
+              src={tutor?.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(tutor?.name || 'Tutor')}&background=8b5cf6&color=fff&size=128`}
+              alt="avatar"
+              className="td-avatar"
             />
-            <div className="tutor-dashboard__status"></div>
+            <span className="td-online-dot" />
           </div>
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="tutor-dashboard__stats">
-        {statsCards.map((stat, index) => (
-          <div key={index} className="tutor-dashboard__stat-card">
-            <div
-              className="tutor-dashboard__stat-icon"
-              style={{ backgroundColor: stat.bgColor }}
-            >
-              <stat.icon size={24} style={{ color: stat.color }} strokeWidth={2} />
+      {/* Stats */}
+      <div className="td-stats">
+        {statsCards.map((s, i) => (
+          <div key={i} className="td-stat-card" style={{ '--glow': s.glow }}>
+            <div className="td-stat-icon" style={{ background: s.glow, border: `1px solid ${s.color}30` }}>
+              <s.icon size={22} style={{ color: s.color }} strokeWidth={2} />
             </div>
-            <div className="tutor-dashboard__stat-content">
-              <h3 className="tutor-dashboard__stat-count">{stat.count}</h3>
-              <p className="tutor-dashboard__stat-label">{stat.label}</p>
+            <div className="td-stat-body">
+              <span className="td-stat-val" style={{ color: s.color }}>{loading ? '—' : s.count}</span>
+              <span className="td-stat-lbl">{s.label}</span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Quick Actions Section */}
-      <div className="tutor-dashboard__actions-section">
-        <h2 className="tutor-dashboard__section-title">Quick Actions</h2>
-        <div className="tutor-dashboard__actions-grid">
-          {quickActions.map((action, index) => (
-            <Link
-              key={index}
-              to={action.to}
-              className="tutor-dashboard__action-card"
-            >
-              <div
-                className="tutor-dashboard__action-icon"
-                style={{ color: action.color }}
-              >
-                <action.icon size={20} strokeWidth={2} />
+      {/* Quick Actions */}
+      <div className="td-section">
+        <h2 className="td-section-title">Quick Actions</h2>
+        <div className="td-actions">
+          {quickActions.map((a, i) => (
+            <Link key={i} to={a.to} className="td-action-card">
+              <div className="td-action-icon" style={{ background: `${a.color}18`, border: `1px solid ${a.color}30` }}>
+                <a.icon size={18} style={{ color: a.color }} strokeWidth={2} />
               </div>
-              <span className="tutor-dashboard__action-label">
-                {action.label}
-              </span>
+              <span className="td-action-label">{a.label}</span>
+              <ChevronRight size={16} className="td-action-chevron" />
             </Link>
           ))}
         </div>

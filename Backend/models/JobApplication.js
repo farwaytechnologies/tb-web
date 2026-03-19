@@ -6,6 +6,7 @@ const jobApplicationSchema = new mongoose.Schema({
   email: { type: String, required: true },
   experience: { type: String, required: true },
   course: { type: String, required: true },
+  coverLetter: { type: String, default: '' },
   resumeUrl: { type: String, required: true },
   createdAt: {
     type: Date,

@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const supportCategorySchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, unique: true },
-    description: { type: String, required: false },
+    title: { type: String, required: true },
+    description: { type: String, default: '' },
+    subcategories: [{ type: String }],
+    icon: { type: String, default: '💬' },
   },
   { timestamps: true }
 );
 
-const SupportCategory = mongoose.model("SupportCategory", supportCategorySchema);
-
-export default SupportCategory;
+module.exports = mongoose.model('SupportCategory', supportCategorySchema);

@@ -1,164 +1,160 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../Styles/DashbordStyle/AdminDashbord.css';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 import {
-  Users,
-  BookOpen,
-  Shield,
-  FileText,
-  CheckCircle,
-  Lightbulb,
-  GraduationCap,
-  UserCog,
-  Bell,
-  Newspaper,
-  Code,
-  Briefcase,
-  MessageSquare,
-  BarChart3,
-  Settings,
-  TrendingUp,
-  Trophy,
-  Coins,
-  ClipboardList,
-  Receipt
+  Users, BookOpen, Shield, FileText, CheckCircle, Lightbulb,
+  GraduationCap, UserCog, Bell, Newspaper, Code, Briefcase,
+  MessageSquare, BarChart3, Settings, TrendingUp, Trophy,
+  Coins, ClipboardList, Receipt, ChevronRight
 } from 'lucide-react';
+
+const API = import.meta.env.VITE_API_URL;
+
+const ACTION_GROUPS = [
+  {
+    label: 'Users & Roles',
+    items: [
+      { to: '/admin/users',         icon: Users,       label: 'Manage Users',    color: '#6366f1' },
+      { to: '/admin/tutors',        icon: Shield,      label: 'Manage Tutors',   color: '#ec4899' },
+      { to: '/admin/manage-admins', icon: UserCog,     label: 'Manage Admins',   color: '#f59e0b' },
+    ],
+  },
+  {
+    label: 'Content',
+    items: [
+      { to: '/admin/courses',       icon: BookOpen,    label: 'Courses',         color: '#10b981' },
+      { to: '/admin/blogs',         icon: FileText,    label: 'Blogs',           color: '#06b6d4' },
+      { to: '/admin/news',          icon: Newspaper,   label: 'News',            color: '#8b5cf6' },
+      { to: '/admin/innovations',   icon: Lightbulb,   label: 'Innovations',     color: '#eab308' },
+      { to: '/admin/manage-learn',  icon: Code,        label: 'Learn Section',   color: '#22c55e' },
+    ],
+  },
+  {
+    label: 'Learning',
+    items: [
+      { to: '/admin/enrollments',   icon: CheckCircle, label: 'Enrollments',     color: '#14b8a6' },
+      { to: '/admin/exams',         icon: ClipboardList,label: 'Exams',          color: '#6366f1' },
+      { to: '/admin/invoices',      icon: Receipt,     label: 'Invoices',        color: '#10b981' },
+      { to: '/admin/rewards',       icon: Trophy,      label: 'Rewards',         color: '#f59e0b' },
+      { to: '/admin/borgcoins',     icon: Coins,       label: 'BorgCoins',       color: '#f97316' },
+    ],
+  },
+  {
+    label: 'Operations',
+    items: [
+      { to: '/admin/add-job',       icon: Briefcase,   label: 'Post Job',        color: '#f97316' },
+      { to: '/admin/applications',  icon: FileText,    label: 'Applications',    color: '#0ea5e9' },
+      { to: '/admin/view-contact',  icon: MessageSquare,label: 'Contact Msgs',   color: '#3b82f6' },
+      { to: '/admin/manage-notifications', icon: Bell, label: 'Notifications',   color: '#ef4444' },
+      { to: '/admin/visitors',      icon: BarChart3,   label: 'Analytics',       color: '#a855f7' },
+      { to: '/admin/manage-cms',    icon: Settings,    label: 'CMS',             color: '#64748b' },
+    ],
+  },
+];
 
 export default function AdminDashboard() {
   const [admin, setAdmin] = useState({});
-  const [userCount, setUserCount] = useState(0);
-  const [courseCount, setCourseCount] = useState(0);
-  const [tutorCount, setTutorCount] = useState(0);
-  const [studentCount, setStudentCount] = useState(0);
-  const [adminCount, setAdminCount] = useState(0);
-  const [blogCount, setBlogCount] = useState(0);
-  const [enrollmentCount, setEnrollmentCount] = useState(0);
+  const [stats, setStats] = useState({ users: 0, students: 0, tutors: 0, admins: 0, courses: 0, blogs: 0, enrollments: 0 });
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem('user'));
-    if (!stored || stored.role !== 'admin') {
-      navigate('/login');
-    } else {
-      setAdmin(stored);
-    }
+    if (!stored || stored.role !== 'admin') { navigate('/login'); return; }
+    setAdmin(stored);
 
-    const fetchStats = async () => {
-      try {
-        const [usersRes, coursesRes, blogsRes, enrollmentsRes] = await Promise.all([
-          fetch(`${API_URL}/api/auth/users`),
-          fetch(`${API_URL}/api/courses`),
-          fetch(`${API_URL}/api/blogs`),
-          fetch(`${API_URL}/api/enrollments`)
-        ]);
-
-        const users = await usersRes.json();
-        const courses = await coursesRes.json();
-        const blogs = await blogsRes.json();
-        const enrollments = await enrollmentsRes.json();
-
-        setUserCount(users.length);
-        setTutorCount(users.filter(u => u.role === 'tutor').length);
-        setStudentCount(users.filter(u => u.role === 'student').length);
-        setAdminCount(users.filter(u => u.role === 'admin').length);
-        setCourseCount(courses.length);
-        setBlogCount(blogs.length);
-        setEnrollmentCount(enrollments.length);
-      } catch (error) {
-        console.error('Error fetching admin stats:', error);
-      }
-    };
-
-    fetchStats();
+    Promise.all([
+      fetch(`${API}/api/auth/users`).then(r => r.json()),
+      fetch(`${API}/api/courses`).then(r => r.json()),
+      fetch(`${API}/api/blogs`).then(r => r.json()),
+      fetch(`${API}/api/enrollments`).then(r => r.json()),
+    ]).then(([users, courses, blogs, enrollments]) => {
+      setStats({
+        users: users.length,
+        students: users.filter(u => u.role === 'student').length,
+        tutors: users.filter(u => u.role === 'tutor').length,
+        admins: users.filter(u => u.role === 'admin').length,
+        courses: courses.length,
+        blogs: blogs.length,
+        enrollments: enrollments.length,
+      });
+    }).catch(console.error).finally(() => setLoading(false));
   }, [navigate]);
 
-  const statsCards = [
-    { icon: Users, count: userCount, label: 'Total Users', color: '#6366f1', bgColor: '#eef2ff' },
-    { icon: GraduationCap, count: studentCount, label: 'Students', color: '#8b5cf6', bgColor: '#f3e8ff' },
-    { icon: Shield, count: tutorCount, label: 'Tutors', color: '#ec4899', bgColor: '#fce7f3' },
-    { icon: UserCog, count: adminCount, label: 'Administrators', color: '#f59e0b', bgColor: '#fef3c7' },
-    { icon: BookOpen, count: courseCount, label: 'Courses', color: '#10b981', bgColor: '#d1fae5' },
-    { icon: FileText, count: blogCount, label: 'Blog Posts', color: '#06b6d4', bgColor: '#cffafe' },
-    { icon: CheckCircle, count: enrollmentCount, label: 'Enrollments', color: '#14b8a6', bgColor: '#ccfbf1' },
-    { icon: TrendingUp, count: '98%', label: 'Success Rate', color: '#84cc16', bgColor: '#ecfccb' }
+  const STAT_CARDS = [
+    { icon: Users,       value: stats.users,       label: 'Total Users',   color: '#6366f1', glow: 'rgba(99,102,241,0.2)'  },
+    { icon: GraduationCap,value: stats.students,   label: 'Students',      color: '#8b5cf6', glow: 'rgba(139,92,246,0.2)'  },
+    { icon: Shield,      value: stats.tutors,       label: 'Tutors',        color: '#ec4899', glow: 'rgba(236,72,153,0.2)'  },
+    { icon: BookOpen,    value: stats.courses,      label: 'Courses',       color: '#10b981', glow: 'rgba(16,185,129,0.2)'  },
+    { icon: FileText,    value: stats.blogs,        label: 'Blog Posts',    color: '#06b6d4', glow: 'rgba(6,182,212,0.2)'   },
+    { icon: CheckCircle, value: stats.enrollments,  label: 'Enrollments',   color: '#14b8a6', glow: 'rgba(20,184,166,0.2)'  },
+    { icon: UserCog,     value: stats.admins,       label: 'Admins',        color: '#f59e0b', glow: 'rgba(245,158,11,0.2)'  },
+    { icon: TrendingUp,  value: '98%',              label: 'Success Rate',  color: '#84cc16', glow: 'rgba(132,204,22,0.2)'  },
   ];
 
-  const quickActions = [
-    { to: '/admin/users', icon: Users, label: 'Manage Users', color: '#6366f1' },
-    { to: '/admin/courses', icon: BookOpen, label: 'Manage Courses', color: '#10b981' },
-    { to: '/admin/tutors', icon: Shield, label: 'Manage Tutors', color: '#ec4899' },
-    { to: '/admin/manage-admins', icon: UserCog, label: 'Manage Admins', color: '#f59e0b' },
-    { to: '/admin/blogs', icon: FileText, label: 'Manage Blogs', color: '#06b6d4' },
-    { to: '/admin/news', icon: Newspaper, label: 'Manage News', color: '#8b5cf6' },
-    { to: '/admin/enrollments', icon: CheckCircle, label: 'Enrollment List', color: '#14b8a6' },
-    { to: '/admin/innovations', icon: Lightbulb, label: 'Manage Innovations', color: '#eab308' },
-    { to: '/admin/manage-cms', icon: Settings, label: 'Manage CMS', color: '#64748b' },
-    { to: '/admin/view-contact', icon: MessageSquare, label: 'Contact Messages', color: '#3b82f6' },
-    { to: '/admin/manage-notifications', icon: Bell, label: 'Notifications', color: '#ef4444' },
-    { to: '/admin/add-job', icon: Briefcase, label: 'Post Job Alert', color: '#f97316' },
-    { to: '/admin/applications', icon: FileText, label: 'View Applications', color: '#0ea5e9' },
-    { to: '/admin/visitors', icon: BarChart3, label: 'Visitor Analytics', color: '#a855f7' },
-    { to: '/admin/manage-learn', icon: Code, label: 'Manage Learn Section', color: '#22c55e' },
-    { to: '/admin/rewards', icon: Trophy, label: 'Manage Rewards', color: '#f59e0b' },
-    { to: '/admin/borgcoins', icon: Coins, label: 'BorgCoins', color: '#f59e0b' },
-    { to: '/admin/exams', icon: ClipboardList, label: 'Manage Exams', color: '#6366f1' },
-    { to: '/admin/invoices', icon: Receipt, label: 'Manage Invoices', color: '#10b981' }
-  ];
+  const now = new Date();
+  const hour = now.getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   return (
-    <div className="admin-dashboard">
-      {/* Header Section */}
-      <div className="admin-dashboard__header">
-        <div className="admin-dashboard__header-content">
-          <div className="admin-dashboard__header-text">
-            <h1 className="admin-dashboard__title">Welcome back, {admin.name}</h1>
-            <p className="admin-dashboard__subtitle">Here's what's happening with your platform today</p>
-          </div>
-          <div className="admin-dashboard__header-avatar">
+    <div className="adm-page">
+      {/* Header */}
+      <div className="adm-header">
+        <div className="adm-header-glow" />
+        <div className="adm-header-left">
+          <p className="adm-greeting">{greeting} 👋</p>
+          <h1 className="adm-title">{admin.name || 'Admin'}</h1>
+          <p className="adm-subtitle">Here's what's happening on your platform today.</p>
+        </div>
+        <div className="adm-header-right">
+          <div className="adm-avatar-wrap">
             <img
-              src={admin.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(admin.name)}&background=6366f1&color=fff&size=128`}
-              alt="Admin"
-              className="admin-dashboard__avatar"
+              src={admin.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(admin.name || 'A')}&background=6366f1&color=fff&size=128`}
+              alt={admin.name}
+              className="adm-avatar"
             />
-            <div className="admin-dashboard__status"></div>
+            <span className="adm-online-dot" />
+          </div>
+          <div className="adm-header-meta">
+            <span className="adm-role-badge">Administrator</span>
+            <p className="adm-date">{now.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
           </div>
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="admin-dashboard__stats">
-        {statsCards.map((stat, index) => (
-          <div key={index} className="admin-dashboard__stat-card">
-            <div className="admin-dashboard__stat-icon" style={{ backgroundColor: stat.bgColor }}>
-              <stat.icon size={24} style={{ color: stat.color }} strokeWidth={2} />
+      {/* Stats */}
+      <div className="adm-stats">
+        {STAT_CARDS.map((s, i) => (
+          <div key={i} className="adm-stat" style={{ '--glow': s.glow, '--color': s.color }}>
+            <div className="adm-stat-icon" style={{ background: `${s.color}18`, color: s.color }}>
+              <s.icon size={22} strokeWidth={2} />
             </div>
-            <div className="admin-dashboard__stat-content">
-              <h3 className="admin-dashboard__stat-count">{stat.count}</h3>
-              <p className="admin-dashboard__stat-label">{stat.label}</p>
+            <div className="adm-stat-body">
+              <p className="adm-stat-val">{loading ? '—' : s.value}</p>
+              <p className="adm-stat-label">{s.label}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Quick Actions Section */}
-      <div className="admin-dashboard__actions-section">
-        <h2 className="admin-dashboard__section-title">Quick Actions</h2>
-        <div className="admin-dashboard__actions-grid">
-          {quickActions.map((action, index) => (
-            <Link
-              key={index}
-              to={action.to}
-              className="admin-dashboard__action-card"
-            >
-              <div className="admin-dashboard__action-icon" style={{ color: action.color }}>
-                <action.icon size={20} strokeWidth={2} />
-              </div>
-              <span className="admin-dashboard__action-label">{action.label}</span>
-            </Link>
-          ))}
-        </div>
+      {/* Quick Actions — grouped */}
+      <div className="adm-actions-wrap">
+        {ACTION_GROUPS.map((group) => (
+          <div key={group.label} className="adm-group">
+            <h3 className="adm-group-title">{group.label}</h3>
+            <div className="adm-group-grid">
+              {group.items.map((item) => (
+                <Link key={item.to} to={item.to} className="adm-action" style={{ '--c': item.color }}>
+                  <div className="adm-action-icon" style={{ background: `${item.color}18`, color: item.color }}>
+                    <item.icon size={18} strokeWidth={2} />
+                  </div>
+                  <span className="adm-action-label">{item.label}</span>
+                  <ChevronRight size={14} className="adm-action-arrow" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

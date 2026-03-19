@@ -5,7 +5,7 @@ const fs = require('fs');
 // Submit job application
 exports.submitApplication = async (req, res) => {
   try {
-    const { jobId, name, email, experience, course } = req.body;
+    const { jobId, name, email, experience, course, coverLetter } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: 'Resume file is required.' });
@@ -14,12 +14,7 @@ exports.submitApplication = async (req, res) => {
     const resumeUrl = `/uploads/resumes/${req.file.filename}`;
 
     const newApplication = new JobApplication({
-      jobId,
-      name,
-      email,
-      experience,
-      course,
-      resumeUrl,
+      jobId, name, email, experience, course, coverLetter, resumeUrl,
     });
 
     await newApplication.save();

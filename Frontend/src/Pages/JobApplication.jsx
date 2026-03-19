@@ -1,265 +1,243 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { User, Mail, Briefcase, BookOpen, FileText, ArrowLeft, CheckCircle, Upload, MapPin, BarChart2, Send } from 'lucide-react';
 import '../Styles/PagesStyle/JobApplication.css';
 import SEO from '../Components/SEO';
 
 const API = import.meta.env.VITE_API_URL;
 
-const JobApplication = () => {
+const COURSES = [
+  'Web Development', 'Data Science', 'UI/UX Design',
+  'Cybersecurity', 'Mobile Development', 'Cloud Computing',
+  'Machine Learning', 'DevOps', 'Blockchain', 'Other',
+];
+
+export default function JobApplication() {
   const { jobId } = useParams();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    experience: '',
-    course: '',
-    resume: null,
+  const [job, setJob] = useState(null);
+  const [jobLoading, setJobLoading] = useState(true);
+
+  const [form, setForm] = useState({
+    name: '', email: '', experience: '', course: '', coverLetter: '', resume: null,
   });
-
-  const [courses, setCourses] = useState([]);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [fileName, setFileName] = useState('');
+  const [dragOver, setDragOver] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
+  // Pre-fill from localStorage
   useEffect(() => {
-    setCourses(['Web Development', 'Data Science', 'UI/UX Design', 'Cybersecurity', 'Mobile Development', 'Cloud Computing']);
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.name || user.email) {
+      setForm(f => ({ ...f, name: user.name || '', email: user.email || '' }));
+    }
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    
-    if (name === 'resume' && files[0]) {
-      setFormData((prev) => ({
-        ...prev,
-        resume: files[0],
-      }));
-      setFileName(files[0].name);
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+  // Fetch job details
+  useEffect(() => {
+    if (!jobId) return;
+    fetch(`${API}/api/jobs/${jobId}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data) setJob(data); })
+      .catch(() => {})
+      .finally(() => setJobLoading(false));
+  }, [jobId]);
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleFile = file => {
+    if (!file) return;
+    const allowed = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    if (!allowed.includes(file.type)) { setError('Only PDF, DOC, DOCX files are accepted.'); return; }
+    if (file.size > 5 * 1024 * 1024) { setError('File must be under 5 MB.'); return; }
+    setError('');
+    setForm(f => ({ ...f, resume: file }));
+    setFileName(file.name);
+  };
+
+  const handleFileInput = e => handleFile(e.target.files[0]);
+  const handleDrop = e => { e.preventDefault(); setDragOver(false); handleFile(e.dataTransfer.files[0]); };
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    setSuccessMessage('');
-    setErrorMessage('');
-    setIsSubmitting(true);
+    if (!form.resume) { setError('Please upload your resume.'); return; }
+    setError('');
+    setSubmitting(true);
 
     const data = new FormData();
     data.append('jobId', jobId);
-    data.append('name', formData.name);
-    data.append('email', formData.email);
-    data.append('experience', formData.experience);
-    data.append('course', formData.course);
-    data.append('resume', formData.resume);
+    data.append('name', form.name);
+    data.append('email', form.email);
+    data.append('experience', form.experience);
+    data.append('course', form.course);
+    data.append('coverLetter', form.coverLetter);
+    data.append('resume', form.resume);
 
     try {
-      const res = await fetch(`${API}/api/applications`, {
-        method: 'POST',
-        body: data,
-      });
-
-      if (!res.ok) throw new Error('Failed to submit');
-
-      setSuccessMessage('Application submitted successfully! We will contact you soon.');
-      setFormData({ name: '', email: '', experience: '', course: '', resume: null });
-      setFileName('');
-      
-      // Redirect after 3 seconds
-      setTimeout(() => {
-        navigate('/jobs');
-      }, 3000);
-    } catch (err) {
-      setErrorMessage('Failed to submit application. Please try again.');
-      console.error('Submission error:', err);
+      const res = await fetch(`${API}/api/applications`, { method: 'POST', body: data });
+      if (!res.ok) throw new Error();
+      setSubmitted(true);
+    } catch {
+      setError('Submission failed. Please try again.');
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
 
+  // Success screen
+  if (submitted) {
+    return (
+      <div className="jap-page">
+        <div className="jap-success-screen">
+          <div className="jap-success-icon"><CheckCircle size={56} /></div>
+          <h2>Application Submitted!</h2>
+          <p>Thanks <strong>{form.name}</strong>, we've received your application{job ? ` for <strong>${job.title}</strong>` : ''}. We'll be in touch soon.</p>
+          <div className="jap-success-actions">
+            <Link to="/jobs" className="jap-btn-outline"><ArrowLeft size={16} /> Browse More Jobs</Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="jobapp-page">
+    <div className="jap-page">
       <SEO
-        title="Apply for a Job"
-        description="Submit your job application to TechBorg E-Learning. Join our team of educators, developers, and innovators."
-        url="/apply"
+        title={job ? `Apply – ${job.title}` : 'Job Application'}
+        description="Submit your application to join the TechBorg team."
+        url={`/apply/${jobId}`}
         noindex
       />
 
-      <div className="jobapp-container">
-        <div className="jobapp-header">
-          <h1 className="jobapp-heading">
-            Job <span className="jobapp-highlight">Application Form</span>
-          </h1>
-          <p className="jobapp-subheading">Fill in your details to apply for this position</p>
-        </div>
+      <div className="jap-container">
+        {/* Back */}
+        <Link to="/jobs" className="jap-back"><ArrowLeft size={16} /> Back to Jobs</Link>
 
-        <div className="jobapp-form-wrapper">
-          <form className="jobapp-form" onSubmit={handleSubmit}>
-            <div className="jobapp-form-group">
-              <label className="jobapp-label" htmlFor="name">
-                <svg className="jobapp-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
-                Full Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                name="name"
-                className="jobapp-input"
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="jobapp-form-group">
-              <label className="jobapp-label" htmlFor="email">
-                <svg className="jobapp-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                className="jobapp-input"
-                placeholder="your.email@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="jobapp-form-group">
-              <label className="jobapp-label" htmlFor="course">
-                <svg className="jobapp-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                </svg>
-                Select Course
-              </label>
-              <select 
-                id="course"
-                name="course" 
-                className="jobapp-select" 
-                value={formData.course} 
-                onChange={handleChange} 
-                required
-              >
-                <option value="">Choose your specialization</option>
-                {courses.map((course, idx) => (
-                  <option key={idx} value={course}>{course}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="jobapp-form-group">
-              <label className="jobapp-label" htmlFor="experience">
-                <svg className="jobapp-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-                </svg>
-                Years of Experience
-              </label>
-              <input
-                id="experience"
-                type="number"
-                name="experience"
-                className="jobapp-input"
-                placeholder="Enter years of experience"
-                value={formData.experience}
-                onChange={handleChange}
-                min="0"
-                max="50"
-                required
-              />
-            </div>
-
-            <div className="jobapp-form-group">
-              <label className="jobapp-label">
-                <svg className="jobapp-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
-                  <polyline points="13 2 13 9 20 9"/>
-                </svg>
-                Upload Resume
-              </label>
-              <div className="jobapp-file-wrapper">
-                <input
-                  type="file"
-                  name="resume"
-                  id="resume"
-                  className="jobapp-file-input"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleChange}
-                  required
-                />
-                <label htmlFor="resume" className="jobapp-file-label">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="17 8 12 3 7 8"/>
-                    <line x1="12" y1="3" x2="12" y2="15"/>
-                  </svg>
-                  {fileName || 'Choose file (PDF, DOC, DOCX)'}
-                </label>
-              </div>
-            </div>
-
-            <button 
-              type="submit" 
-              className="jobapp-submit-btn"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
+        <div className="jap-layout">
+          {/* Left: Job Info Panel */}
+          <aside className="jap-sidebar">
+            <div className="jap-job-card">
+              <div className="jap-job-icon"><Briefcase size={28} /></div>
+              {jobLoading ? (
+                <div className="jap-skeleton-wrap">
+                  <div className="jap-skeleton jap-sk-title" />
+                  <div className="jap-skeleton jap-sk-line" />
+                  <div className="jap-skeleton jap-sk-line short" />
+                </div>
+              ) : job ? (
                 <>
-                  <div className="jobapp-btn-spinner"></div>
-                  <span>Submitting...</span>
+                  <h2 className="jap-job-title">{job.title}</h2>
+                  <div className="jap-job-meta">
+                    {job.location && <span><MapPin size={13} />{job.location}</span>}
+                    {job.level && <span><BarChart2 size={13} />{job.level}</span>}
+                  </div>
+                  {job.description && <p className="jap-job-desc">{job.description}</p>}
                 </>
               ) : (
-                <>
-                  <span>Submit Application</span>
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </>
+                <p className="jap-job-desc">Job details unavailable.</p>
               )}
-            </button>
+            </div>
 
-            {successMessage && (
-              <div className="jobapp-alert jobapp-success">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                  <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-                {successMessage}
+            <div className="jap-tips">
+              <h3>Application Tips</h3>
+              <ul>
+                <li>Keep your resume under 5 MB (PDF preferred)</li>
+                <li>Tailor your cover letter to the role</li>
+                <li>Double-check your email address</li>
+                <li>Mention relevant projects or experience</li>
+              </ul>
+            </div>
+          </aside>
+
+          {/* Right: Form */}
+          <div className="jap-form-wrap">
+            <div className="jap-form-header">
+              <h1>Apply for this Position</h1>
+              <p>Fill in the details below and attach your resume.</p>
+            </div>
+
+            <form className="jap-form" onSubmit={handleSubmit} noValidate>
+              <div className="jap-row">
+                <div className="jap-field">
+                  <label htmlFor="name"><User size={15} /> Full Name</label>
+                  <input id="name" name="name" type="text" placeholder="Your full name"
+                    value={form.name} onChange={handleChange} required />
+                </div>
+                <div className="jap-field">
+                  <label htmlFor="email"><Mail size={15} /> Email Address</label>
+                  <input id="email" name="email" type="email" placeholder="you@example.com"
+                    value={form.email} onChange={handleChange} required />
+                </div>
               </div>
-            )}
-            
-            {errorMessage && (
-              <div className="jobapp-alert jobapp-error">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <line x1="15" y1="9" x2="9" y2="15"/>
-                  <line x1="9" y1="9" x2="15" y2="15"/>
-                </svg>
-                {errorMessage}
+
+              <div className="jap-row">
+                <div className="jap-field">
+                  <label htmlFor="experience"><Briefcase size={15} /> Years of Experience</label>
+                  <input id="experience" name="experience" type="number" placeholder="e.g. 3"
+                    value={form.experience} onChange={handleChange} min="0" max="50" required />
+                </div>
+                <div className="jap-field">
+                  <label htmlFor="course"><BookOpen size={15} /> Specialization</label>
+                  <select id="course" name="course" value={form.course} onChange={handleChange} required>
+                    <option value="">Select your field</option>
+                    {COURSES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
               </div>
-            )}
-          </form>
+
+              <div className="jap-field full">
+                <label htmlFor="coverLetter"><FileText size={15} /> Cover Letter <span className="jap-optional">(optional)</span></label>
+                <textarea id="coverLetter" name="coverLetter" rows={5}
+                  placeholder="Tell us why you're a great fit for this role..."
+                  value={form.coverLetter} onChange={handleChange} />
+              </div>
+
+              {/* File Upload */}
+              <div className="jap-field full">
+                <label><Upload size={15} /> Resume <span className="jap-req">*</span></label>
+                <div
+                  className={`jap-dropzone${dragOver ? ' drag' : ''}${fileName ? ' has-file' : ''}`}
+                  onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+                  onDragLeave={() => setDragOver(false)}
+                  onDrop={handleDrop}
+                  onClick={() => document.getElementById('resume-input').click()}
+                >
+                  <input id="resume-input" type="file" accept=".pdf,.doc,.docx"
+                    onChange={handleFileInput} style={{ display: 'none' }} />
+                  {fileName ? (
+                    <div className="jap-file-chosen">
+                      <FileText size={20} />
+                      <span>{fileName}</span>
+                      <button type="button" className="jap-file-clear"
+                        onClick={e => { e.stopPropagation(); setFileName(''); setForm(f => ({ ...f, resume: null })); }}>
+                        ✕
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="jap-drop-hint">
+                      <Upload size={28} />
+                      <p>Drag & drop or <span>browse</span></p>
+                      <small>PDF, DOC, DOCX — max 5 MB</small>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {error && <div className="jap-error-msg">⚠ {error}</div>}
+
+              <button type="submit" className="jap-submit" disabled={submitting}>
+                {submitting ? <><span className="jap-spinner" /> Submitting...</> : <><Send size={16} /> Submit Application</>}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default JobApplication;
+}
