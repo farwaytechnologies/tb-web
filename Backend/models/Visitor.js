@@ -12,6 +12,11 @@ const visitorSchema = new mongoose.Schema(
     sessionStart: { type: Date },
     sessionEnd: { type: Date },
     duration: { type: Number, default: 0 }, // in seconds
+    device: { type: String, default: "Desktop" },   // Desktop | Mobile | Tablet
+    browser: { type: String, default: "Unknown" },
+    os: { type: String, default: "Unknown" },
+    referrer: { type: String, default: "Direct" },
+    isNew: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

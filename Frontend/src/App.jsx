@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, useLocation } from "react-router-dom";
 
 import Navbar from "./Components/Navbar";
@@ -27,6 +27,7 @@ function VisitorTracker() {
         const res = await fetch(`${API_URL}/api/visitors/start-session`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ referrer: document.referrer || "" }),
         });
         const data = await res.json();
         if (data.visitorId) {

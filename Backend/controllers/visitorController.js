@@ -1,170 +1,235 @@
 const Visitor = require("../models/Visitor");
 
-// 🌍 Start a visitor session
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function parseUserAgent(ua = "") {
+  // Device
+  let device = "Desktop";
+  if (/tablet|ipad|playbook|silk/i.test(ua)) device = "Tablet";
+  else if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile/i.test(ua)) device = "Mobile";
+
+  // Browser
+  let browser = "Other";
+  if (/edg\//i.test(ua)) browser = "Edge";
+  else if (/opr\//i.test(ua)) browser = "Opera";
+  else if (/chrome/i.test(ua)) browser = "Chrome";
+  else if (/safari/i.test(ua)) browser = "Safari";
+  else if (/firefox/i.test(ua)) browser = "Firefox";
+  else if (/msie|trident/i.test(ua)) browser = "IE";
+
+  // OS
+  let os = "Other";
+  if (/windows nt/i.test(ua)) os = "Windows";
+  else if (/mac os x/i.test(ua)) os = "macOS";
+  else if (/android/i.test(ua)) os = "Android";
+  else if (/iphone|ipad|ipod/i.test(ua)) os = "iOS";
+  else if (/linux/i.test(ua)) os = "Linux";
+
+  return { device, browser, os };
+}
+
+function parseReferrer(ref = "") {
+  if (!ref || ref === "null") return "Direct";
+  try {
+    const host = new URL(ref).hostname.replace("www.", "");
+    if (/google/.test(host)) return "Google";
+    if (/facebook|fb\.com/.test(host)) return "Facebook";
+    if (/twitter|t\.co/.test(host)) return "Twitter";
+    if (/linkedin/.test(host)) return "LinkedIn";
+    if (/youtube/.test(host)) return "YouTube";
+    if (/instagram/.test(host)) return "Instagram";
+    return host || "Direct";
+  } catch { return "Direct"; }
+}
+
+// ── Session Start ─────────────────────────────────────────────────────────────
+
 exports.startSession = async (req, res) => {
   try {
-    // Get IP address from headers or socket
     let ip =
       req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
       req.socket?.remoteAddress ||
       req.connection?.remoteAddress;
 
-    // Clean up IP formats
-    if (ip.startsWith("::ffff:")) ip = ip.replace("::ffff:", "");
-    if (ip === "127.0.0.1" || ip === "::1") ip = "8.8.8.8"; // use Google DNS for localhost testing
+    if (ip?.startsWith("::ffff:")) ip = ip.replace("::ffff:", "");
+    if (ip === "127.0.0.1" || ip === "::1") ip = "8.8.8.8";
 
-    console.log("📡 New visitor IP:", ip);
+    const ua = req.headers["user-agent"] || "";
+    const { device, browser, os } = parseUserAgent(ua);
+    const referrer = parseReferrer(req.body.referrer || req.headers["referer"] || "");
 
-    // Fetch geolocation data
+    // Check if returning visitor (same IP visited before)
+    const existing = await Visitor.findOne({ ip });
+    const isNew = !existing;
+
     const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
-    const geoData = await geoRes.json();
+    const geo = await geoRes.json();
 
-    // Create visitor record
     const visitor = await Visitor.create({
       ip,
-      country: geoData.country || "Unknown Country",
-      region: geoData.regionName || "Unknown Region",
-      city: geoData.city || "Unknown City",
-      lat: geoData.lat || null,
-      lon: geoData.lon || null,
+      country: geo.country || "Unknown",
+      region: geo.regionName || "Unknown",
+      city: geo.city || "Unknown",
+      lat: geo.lat || null,
+      lon: geo.lon || null,
       pagesVisited: [],
       sessionStart: new Date(),
+      device, browser, os, referrer, isNew,
     });
 
-    res.status(201).json({
-      success: true,
-      visitorId: visitor._id,
-    });
+    res.status(201).json({ success: true, visitorId: visitor._id });
   } catch (err) {
-    console.error("❌ Error starting visitor session:", err.message);
+    console.error("❌ startSession:", err.message);
     res.status(500).json({ success: false, message: "Failed to start session" });
   }
 };
 
-// 📄 Track each page visit
+// ── Track Page ────────────────────────────────────────────────────────────────
+
 exports.trackPage = async (req, res) => {
   try {
     const { visitorId, page } = req.body;
     if (!visitorId || !page)
       return res.status(400).json({ message: "Missing visitorId or page" });
 
-    await Visitor.findByIdAndUpdate(visitorId, {
-      $addToSet: { pagesVisited: page },
-    });
-
-    res.status(200).json({ success: true, message: `Page ${page} tracked` });
+    await Visitor.findByIdAndUpdate(visitorId, { $addToSet: { pagesVisited: page } });
+    res.status(200).json({ success: true });
   } catch (err) {
-    console.error("❌ Error tracking page:", err.message);
     res.status(500).json({ success: false, message: "Failed to track page" });
   }
 };
 
-// ⏱️ End session and record duration
+// ── End Session ───────────────────────────────────────────────────────────────
+
 exports.endSession = async (req, res) => {
   try {
     const { visitorId } = req.body;
-    if (!visitorId)
-      return res.status(400).json({ success: false, message: "Missing visitorId" });
+    if (!visitorId) return res.status(400).json({ success: false, message: "Missing visitorId" });
 
     const visitor = await Visitor.findById(visitorId);
     if (!visitor) return res.status(404).json({ message: "Visitor not found" });
 
     visitor.sessionEnd = new Date();
-    visitor.duration = Math.floor(
-      (visitor.sessionEnd - visitor.sessionStart) / 1000
-    ); // duration in seconds
-
+    visitor.duration = Math.floor((visitor.sessionEnd - visitor.sessionStart) / 1000);
     await visitor.save();
 
     res.status(200).json({ success: true, duration: visitor.duration });
   } catch (err) {
-    console.error("❌ Error ending visitor session:", err.message);
     res.status(500).json({ success: false, message: "Failed to end session" });
   }
 };
 
-// 🧾 Get all visitors (for dashboard)
+// ── Get All Visitors ──────────────────────────────────────────────────────────
+
 exports.getAllVisitors = async (req, res) => {
   try {
     const visitors = await Visitor.find().sort({ createdAt: -1 });
     res.status(200).json({ success: true, visitors });
-  } catch (error) {
-    console.error("❌ Error fetching visitors:", error.message);
+  } catch (err) {
     res.status(500).json({ success: false, message: "Failed to fetch visitors" });
   }
 };
 
-// 🌎 Get visitor stats grouped by country
+// ── Country Stats ─────────────────────────────────────────────────────────────
+
 exports.getVisitorStats = async (req, res) => {
   try {
     const stats = await Visitor.aggregate([
-      {
-        $group: {
-          _id: "$country",
-          count: { $sum: 1 },
-        },
-      },
+      { $group: { _id: "$country", count: { $sum: 1 } } },
       { $sort: { count: -1 } },
     ]);
-
     res.status(200).json({ success: true, stats });
-  } catch (error) {
-    console.error("❌ Error fetching visitor stats:", error.message);
+  } catch (err) {
     res.status(500).json({ success: false, message: "Failed to fetch stats" });
   }
 };
 
-// 📊 Rich analytics: daily trend, top pages, hourly, avg duration
+// ── Rich Analytics ────────────────────────────────────────────────────────────
+
 exports.getAnalytics = async (req, res) => {
   try {
     const [
-      dailyTrend,
-      topPages,
-      hourly,
-      avgDuration,
-      totalVisitors,
-      uniqueCountries,
-      recentVisitors,
+      dailyTrend, topPages, hourly, avgDurationArr,
+      totalVisitors, uniqueCountries, recentVisitors,
+      deviceBreakdown, browserBreakdown, osBreakdown,
+      referrerBreakdown, newVsReturning, bounceData,
     ] = await Promise.all([
-      // Daily visitor count for last 14 days
+      // Daily last 30 days
       Visitor.aggregate([
-        { $match: { createdAt: { $gte: new Date(Date.now() - 14 * 86400000) } } },
-        { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } }, count: { $sum: 1 } } },
+        { $match: { createdAt: { $gte: new Date(Date.now() - 30 * 86400000) } } },
+        { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, count: { $sum: 1 } } },
         { $sort: { _id: 1 } },
       ]),
-      // Top pages visited
+      // Top pages
       Visitor.aggregate([
-        { $unwind: '$pagesVisited' },
-        { $group: { _id: '$pagesVisited', count: { $sum: 1 } } },
-        { $sort: { count: -1 } },
-        { $limit: 10 },
+        { $unwind: "$pagesVisited" },
+        { $group: { _id: "$pagesVisited", count: { $sum: 1 } } },
+        { $sort: { count: -1 } }, { $limit: 10 },
       ]),
-      // Hourly distribution
+      // Hourly
       Visitor.aggregate([
-        { $group: { _id: { $hour: '$createdAt' }, count: { $sum: 1 } } },
+        { $group: { _id: { $hour: "$createdAt" }, count: { $sum: 1 } } },
         { $sort: { _id: 1 } },
       ]),
-      // Average session duration
+      // Avg duration
       Visitor.aggregate([
         { $match: { duration: { $gt: 0 } } },
-        { $group: { _id: null, avg: { $avg: '$duration' }, max: { $max: '$duration' } } },
+        { $group: { _id: null, avg: { $avg: "$duration" }, max: { $max: "$duration" } } },
       ]),
       Visitor.countDocuments(),
-      Visitor.distinct('country').then(c => c.length),
-      Visitor.find().sort({ createdAt: -1 }).limit(5).select('ip country city createdAt pagesVisited duration'),
+      Visitor.distinct("country").then(c => c.length),
+      Visitor.find().sort({ createdAt: -1 }).limit(10)
+        .select("ip country city createdAt pagesVisited duration device browser"),
+      // Device breakdown
+      Visitor.aggregate([
+        { $group: { _id: "$device", count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+      ]),
+      // Browser breakdown
+      Visitor.aggregate([
+        { $group: { _id: "$browser", count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+      ]),
+      // OS breakdown
+      Visitor.aggregate([
+        { $group: { _id: "$os", count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+      ]),
+      // Referrer breakdown
+      Visitor.aggregate([
+        { $group: { _id: "$referrer", count: { $sum: 1 } } },
+        { $sort: { count: -1 } }, { $limit: 8 },
+      ]),
+      // New vs returning
+      Visitor.aggregate([
+        { $group: { _id: "$isNew", count: { $sum: 1 } } },
+      ]),
+      // Bounce rate (visited only 1 page)
+      Visitor.aggregate([
+        { $project: { bounced: { $lte: [{ $size: "$pagesVisited" }, 1] } } },
+        { $group: { _id: "$bounced", count: { $sum: 1 } } },
+      ]),
     ]);
 
+    // Compute bounce rate
+    const totalB = bounceData.reduce((s, d) => s + d.count, 0);
+    const bouncedCount = bounceData.find(d => d._id === true)?.count || 0;
+    const bounceRate = totalB ? Math.round((bouncedCount / totalB) * 100) : 0;
+
+    // New vs returning counts
+    const newCount = newVsReturning.find(d => d._id === true)?.count || 0;
+    const returningCount = newVsReturning.find(d => d._id === false)?.count || 0;
+
     res.json({
-      dailyTrend,
-      topPages,
-      hourly,
-      avgDuration: avgDuration[0] || { avg: 0, max: 0 },
-      totalVisitors,
-      uniqueCountries,
-      recentVisitors,
+      dailyTrend, topPages, hourly,
+      avgDuration: avgDurationArr[0] || { avg: 0, max: 0 },
+      totalVisitors, uniqueCountries, recentVisitors,
+      deviceBreakdown, browserBreakdown, osBreakdown,
+      referrerBreakdown, bounceRate,
+      newVisitors: newCount, returningVisitors: returningCount,
     });
   } catch (err) {
-    console.error('Analytics error:', err.message);
-    res.status(500).json({ message: 'Failed to fetch analytics' });
+    console.error("Analytics error:", err.message);
+    res.status(500).json({ message: "Failed to fetch analytics" });
   }
 };
