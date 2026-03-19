@@ -1,427 +1,68 @@
-/* ===================================
-   HomeWhyUs Section - Modern Styles
-   =================================== */
-
-/* Main Wrapper */
-.homewhyus-wrapper {
-  padding: 6rem 2rem;
-  background: linear-gradient(135deg, #4302a5 0%, #7b07ef 100%);
-  position: relative;
-  overflow: hidden;
+/* HomeWhyUs.css — dark theme */
+.hwu-section {
+  position: relative; z-index: 1;
+  padding: 6rem 1.5rem;
+  background: #0d0d14;
+  border-top: 1px solid #1e1e2e;
+  border-bottom: 1px solid #1e1e2e;
 }
 
-/* Decorative Background Elements */
-.homewhyus-wrapper::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -10%;
-  width: 500px;
-  height: 500px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  z-index: 0;
-  animation: float 20s ease-in-out infinite;
+.hwu-container { max-width: 1100px; margin: 0 auto; }
+
+.hwu-header {
+  text-align: center; max-width: 620px; margin: 0 auto 3.5rem;
+}
+.hwu-badge {
+  display: inline-block; padding: 0.35rem 1rem; border-radius: 100px;
+  background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2);
+  color: #a78bfa; font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem;
+}
+.hwu-header h2 {
+  font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800;
+  color: #f1f5f9; margin: 0 0 0.75rem; letter-spacing: -0.02em;
+}
+.hwu-header p { font-size: 0.95rem; color: #64748b; line-height: 1.7; margin: 0; }
+
+.hwu-cards {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5rem;
 }
 
-.homewhyus-wrapper::after {
-  content: '';
-  position: absolute;
-  bottom: -30%;
-  left: -10%;
-  width: 400px;
-  height: 400px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  z-index: 0;
-  animation: float 15s ease-in-out infinite reverse;
+.hwu-card {
+  position: relative; background: #13131a; border: 1px solid #1e1e2e;
+  border-radius: 20px; padding: 2rem; overflow: hidden;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.hwu-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--cc, #8b5cf6);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
 }
 
-/* Container */
-.homewhyus-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+.hwu-card-img-wrap {
+  width: 72px; height: 72px; margin-bottom: 1.5rem;
+  background: rgba(255,255,255,0.03); border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.3s;
 }
+.hwu-card:hover .hwu-card-img-wrap { transform: scale(1.08) rotate(3deg); }
+.hwu-card-img-wrap img { width: 52px; height: 52px; object-fit: contain; }
 
-/* ===================================
-   Header Section
-   =================================== */
-.homewhyus-header {
-  text-align: center;
-  margin-bottom: 4rem;
-  animation: fadeInDown 0.8s ease;
+.hwu-tag {
+  display: block; font-size: 0.72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem;
 }
+.hwu-card h3 { font-size: 1.1rem; font-weight: 700; color: #f1f5f9; margin: 0 0 0.6rem; }
+.hwu-card p  { font-size: 0.875rem; color: #64748b; line-height: 1.7; margin: 0; }
 
-.homewhyus-heading {
-  margin-bottom: 1.5rem;
+/* Bottom accent bar */
+.hwu-card-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; opacity: 0; transition: opacity 0.25s;
 }
+.hwu-card:hover .hwu-card-bar { opacity: 1; }
 
-.homewhyus-heading h1 {
-  font-size: 3rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin: 0 0 1rem 0;
-  letter-spacing: -0.5px;
-  line-height: 1.2;
-}
-
-/* Animated Underline */
-.homewhyus-underline {
-  width: 80px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.9);
-  margin: 0 auto;
-  border-radius: 2px;
-  position: relative;
-  animation: expandWidth 1s ease 0.5s backwards;
-}
-
-.homewhyus-underline::after {
-  content: '';
-  position: absolute;
-  width: 40px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.7);
-  left: 50%;
-  transform: translateX(-50%);
-  top: 8px;
-  border-radius: 2px;
-  animation: expandWidth 1s ease 0.7s backwards;
-}
-
-.homewhyus-subtext {
-  font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
-
-/* ===================================
-   Cards Grid
-   =================================== */
-.homewhyus-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
-  animation: fadeInUp 0.8s ease 0.3s backwards;
-}
-
-/* ===================================
-   Individual Card
-   =================================== */
-.homewhyus-card {
-  background: white;
-  border-radius: 20px;
-  padding: 2.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  cursor: pointer;
-}
-
-/* Top Colored Border on Hover */
-.homewhyus-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s ease;
-}
-
-/* Card Hover Effects */
-.homewhyus-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
-  border-color: rgba(99, 102, 241, 0.2);
-}
-
-.homewhyus-card:hover::before {
-  transform: scaleX(1);
-}
-
-/* ===================================
-   Card Image
-   =================================== */
-.homewhyus-image-container {
-  margin-bottom: 1.5rem;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-
-.homewhyus-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: transform 0.4s ease;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-}
-
-.homewhyus-card:hover .homewhyus-image {
-  transform: scale(1.1) rotate(5deg);
-}
-
-/* ===================================
-   Card Content
-   =================================== */
-
-/* Tag/Label */
-.homewhyus-tag {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #6366f1;
-  letter-spacing: 1.5px;
-  margin: 0 0 1rem 0;
-  text-transform: uppercase;
-  position: relative;
-  display: inline-block;
-}
-
-.homewhyus-tag::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 30px;
-  height: 2px;
-  background: #6366f1;
-  transition: width 0.3s ease;
-}
-
-.homewhyus-card:hover .homewhyus-tag::after {
-  width: 100%;
-}
-
-/* Title */
-.homewhyus-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 1rem 0;
-  line-height: 1.3;
-  transition: color 0.3s ease;
-}
-
-.homewhyus-card:hover .homewhyus-title {
-  color: #6366f1;
-}
-
-/* Description */
-.homewhyus-desc {
-  font-size: 1rem;
-  color: #64748b;
-  line-height: 1.7;
-  margin: 0;
-}
-
-/* ===================================
-   Animations
-   =================================== */
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes expandWidth {
-  from {
-    width: 0;
-  }
-  to {
-    width: inherit;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) translateX(0);
-  }
-  50% {
-    transform: translateY(-20px) translateX(20px);
-  }
-}
-
-/* ===================================
-   Responsive Design
-   =================================== */
-
-/* Tablet Landscape */
-@media (max-width: 1024px) {
-  .homewhyus-wrapper {
-    padding: 4rem 1.5rem;
-  }
-
-  .homewhyus-heading h1 {
-    font-size: 2.5rem;
-  }
-
-  .homewhyus-cards {
-    gap: 2rem;
-  }
-
-  .homewhyus-card {
-    padding: 2rem;
-  }
-}
-
-/* Tablet Portrait */
 @media (max-width: 768px) {
-  .homewhyus-wrapper {
-    padding: 3rem 1rem;
-  }
-
-  .homewhyus-heading h1 {
-    font-size: 2rem;
-  }
-
-  .homewhyus-subtext {
-    font-size: 1rem;
-  }
-
-  .homewhyus-cards {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .homewhyus-card {
-    padding: 2rem;
-  }
-
-  .homewhyus-title {
-    font-size: 1.25rem;
-  }
-
-  .homewhyus-wrapper::before,
-  .homewhyus-wrapper::after {
-    display: none;
-  }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-  .homewhyus-wrapper {
-    padding: 2.5rem 1rem;
-  }
-
-  .homewhyus-header {
-    margin-bottom: 3rem;
-  }
-
-  .homewhyus-heading h1 {
-    font-size: 1.75rem;
-  }
-
-  .homewhyus-subtext {
-    font-size: 0.95rem;
-  }
-
-  .homewhyus-image-container {
-    width: 64px;
-    height: 64px;
-  }
-
-  .homewhyus-card {
-    padding: 1.5rem;
-  }
-
-  .homewhyus-title {
-    font-size: 1.125rem;
-  }
-
-  .homewhyus-desc {
-    font-size: 0.9375rem;
-  }
-}
-
-/* ===================================
-   Dark Mode Support (Optional)
-   =================================== */
-@media (prefers-color-scheme: dark) {
-  .homewhyus-wrapper {
-    background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
-  }
-
-  .homewhyus-heading h1 {
-    color: #f1f5f9;
-  }
-
-  .homewhyus-subtext {
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  .homewhyus-card {
-    background: #1e293b;
-    border-color: #334155;
-  }
-
-  .homewhyus-title {
-    color: #f1f5f9;
-  }
-
-  .homewhyus-desc {
-    color: #cbd5e1;
-  }
-
-  .homewhyus-card:hover {
-    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.3);
-  }
-
-  .homewhyus-card:hover .homewhyus-title {
-    color: #818cf8;
-  }
-
-  .homewhyus-tag {
-    color: #818cf8;
-  }
-
-  .homewhyus-tag::after {
-    background: #818cf8;
-  }
-}
-
-/* ===================================
-   Print Styles
-   =================================== */
-@media print {
-  .homewhyus-wrapper {
-    background: white;
-    padding: 2rem;
-  }
-
-  .homewhyus-wrapper::before,
-  .homewhyus-wrapper::after {
-    display: none;
-  }
-
-  .homewhyus-card {
-    break-inside: avoid;
-    box-shadow: none;
-    border: 1px solid #e2e8f0;
-  }
+  .hwu-section { padding: 4rem 1rem; }
+  .hwu-cards { grid-template-columns: 1fr; }
 }

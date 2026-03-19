@@ -1,4 +1,5 @@
 const Visitor = require("../models/Visitor");
+const geoip = require("geoip-lite");
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -52,7 +53,8 @@ exports.startSession = async (req, res) => {
       req.connection?.remoteAddress;
 
     if (ip?.startsWith("::ffff:")) ip = ip.replace("::ffff:", "");
-    if (ip === "127.0.0.1" || ip === "::1") ip = "8.8.8.8";
+    // For localhost testing, use a real IP so geoip works
+    const lookupIp = (ip === "127.0.0.1" || ip === "::1") ? "8.8.8.8" : ip;
 
     const ua = req.headers["user-agent"] || "";
     const { device, browser, os } = parseUserAgent(ua);
@@ -62,16 +64,16 @@ exports.startSession = async (req, res) => {
     const existing = await Visitor.findOne({ ip });
     const isNew = !existing;
 
-    const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
-    const geo = await geoRes.json();
+    // Use geoip-lite (offline, no external HTTP call)
+    const geo = geoip.lookup(lookupIp) || {};
 
     const visitor = await Visitor.create({
       ip,
       country: geo.country || "Unknown",
-      region: geo.regionName || "Unknown",
+      region: (geo.region) || "Unknown",
       city: geo.city || "Unknown",
-      lat: geo.lat || null,
-      lon: geo.lon || null,
+      lat: geo.ll?.[0] || null,
+      lon: geo.ll?.[1] || null,
       pagesVisited: [],
       sessionStart: new Date(),
       device, browser, os, referrer, isNew,

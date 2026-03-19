@@ -23,5 +23,6 @@ router.use('/borgcoins', require('../routes/borgCoinRoutes'));
 router.use('/invoices', require('../routes/invoiceRoutes'));
 router.use('/payment', require('../routes/paymentRoutes'));
 router.use('/exams', require('../routes/examRoutes'));
+router.use('/support', require('../routes/supportRoutes'));
 
 module.exports = router;

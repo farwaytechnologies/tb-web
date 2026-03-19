@@ -121,10 +121,11 @@ export default function VisitorAnalytics() {
         fetch(`${API}/api/visitors/stats`),
       ]);
       const [a, v, s] = await Promise.all([aRes.json(), vRes.json(), sRes.json()]);
-      setAnalytics(a);
-      setVisitors(v.visitors || []);
-      setStats(s.stats || []);
-    } catch (e) { console.error(e); }
+      // Guard: only set if response has expected shape
+      if (a && !a.message) setAnalytics(a);
+      setVisitors(Array.isArray(v.visitors) ? v.visitors : []);
+      setStats(Array.isArray(s.stats) ? s.stats : []);
+    } catch (e) { console.error('VisitorAnalytics fetch error:', e); }
     finally { setLoading(false); setRefreshing(false); }
   }, []);
 
@@ -154,25 +155,27 @@ export default function VisitorAnalytics() {
     </div>
   );
 
-  const totalV = analytics?.totalVisitors || visitors.length;
-  const avgDur = analytics?.avgDuration?.avg || 0;
-  const maxPage = analytics?.topPages?.[0]?.count || 1;
+  // Fallback empty analytics shape so nothing crashes
+  const a = analytics || {};
+  const totalV = a.totalVisitors ?? visitors.length;
+  const avgDur = a.avgDuration?.avg || 0;
+  const maxPage = a.topPages?.[0]?.count || 1;
   const maxCountry = stats[0]?.count || 1;
   const todayCount = dailyData[dailyData.length - 1]?.count || 0;
 
   // Device donut
   const deviceColors = { Desktop: '#8b5cf6', Mobile: '#06b6d4', Tablet: '#f59e0b', Other: '#64748b' };
-  const deviceSegs = (analytics?.deviceBreakdown || []).map(d => ({
+  const deviceSegs = (a.deviceBreakdown || []).map(d => ({
     label: d._id || 'Other', value: d.count, color: deviceColors[d._id] || '#64748b',
   }));
   const deviceTotal = deviceSegs.reduce((s, d) => s + d.value, 0) || 1;
 
   // New vs returning donut
   const newRet = [
-    { label: 'New', value: analytics?.newVisitors || 0, color: '#10b981' },
-    { label: 'Returning', value: analytics?.returningVisitors || 0, color: '#8b5cf6' },
+    { label: 'New', value: a.newVisitors || 0, color: '#10b981' },
+    { label: 'Returning', value: a.returningVisitors || 0, color: '#8b5cf6' },
   ];
-  const nrTotal = (analytics?.newVisitors || 0) + (analytics?.returningVisitors || 0) || 1;
+  const nrTotal = (a.newVisitors || 0) + (a.returningVisitors || 0) || 1;
 
   return (
     <div className="va-page">
@@ -195,13 +198,13 @@ export default function VisitorAnalytics() {
       <div className="va-kpi-grid">
         {[
           { icon: Users,        label: 'Total Visitors',   val: totalV,                          color: '#8b5cf6', glow: 'rgba(139,92,246,0.15)' },
-          { icon: Globe,        label: 'Countries',        val: analytics?.uniqueCountries || 0, color: '#06b6d4', glow: 'rgba(6,182,212,0.15)'  },
-          { icon: Clock,        label: 'Avg Session',      val: fmtDur(avgDur),                  color: '#10b981', glow: 'rgba(16,185,129,0.15)' },
-          { icon: TrendingUp,   label: 'Today',            val: todayCount,                      color: '#f59e0b', glow: 'rgba(245,158,11,0.15)' },
-          { icon: MousePointer, label: 'Bounce Rate',      val: `${analytics?.bounceRate ?? 0}%`,color: '#f87171', glow: 'rgba(248,113,113,0.15)'},
-          { icon: ArrowUpRight, label: 'New Visitors',     val: analytics?.newVisitors || 0,     color: '#10b981', glow: 'rgba(16,185,129,0.15)' },
-          { icon: RotateCcw,    label: 'Returning',        val: analytics?.returningVisitors || 0,color:'#8b5cf6', glow: 'rgba(139,92,246,0.15)' },
-          { icon: FileText,     label: 'Unique Pages',     val: analytics?.topPages?.length || 0,color: '#d97706', glow: 'rgba(217,119,6,0.15)'  },
+          { icon: Globe,        label: 'Countries',        val: a.uniqueCountries || 0,  color: '#06b6d4', glow: 'rgba(6,182,212,0.15)'  },
+          { icon: Clock,        label: 'Avg Session',      val: fmtDur(avgDur),          color: '#10b981', glow: 'rgba(16,185,129,0.15)' },
+          { icon: TrendingUp,   label: 'Today',            val: todayCount,              color: '#f59e0b', glow: 'rgba(245,158,11,0.15)' },
+          { icon: MousePointer, label: 'Bounce Rate',      val: `${a.bounceRate ?? 0}%`, color: '#f87171', glow: 'rgba(248,113,113,0.15)'},
+          { icon: ArrowUpRight, label: 'New Visitors',     val: a.newVisitors || 0,      color: '#10b981', glow: 'rgba(16,185,129,0.15)' },
+          { icon: RotateCcw,    label: 'Returning',        val: a.returningVisitors || 0,color:'#8b5cf6',  glow: 'rgba(139,92,246,0.15)' },
+          { icon: FileText,     label: 'Unique Pages',     val: a.topPages?.length || 0, color: '#d97706', glow: 'rgba(217,119,6,0.15)'  },
         ].map((k, i) => (
           <div key={i} className="va-kpi-card" style={{ '--glow': k.glow }}>
             <div className="va-kpi-icon" style={{ background: k.glow, border: `1px solid ${k.color}30` }}>
@@ -275,7 +278,7 @@ export default function VisitorAnalytics() {
             <div className="va-card">
               <div className="va-card-header"><h3>Recent Visitors</h3></div>
               <div className="va-recent-list">
-                {(analytics?.recentVisitors || []).map((v, i) => (
+                {(a.recentVisitors || []).map((v, i) => (
                   <div key={i} className="va-recent-row">
                     <div className="va-recent-dot" />
                     <div>
@@ -284,7 +287,7 @@ export default function VisitorAnalytics() {
                     </div>
                   </div>
                 ))}
-                {!analytics?.recentVisitors?.length && <p className="va-empty-msg">No recent visitors</p>}
+                {!a.recentVisitors?.length && <p className="va-empty-msg">No recent visitors</p>}
               </div>
             </div>
           </div>
@@ -302,8 +305,8 @@ export default function VisitorAnalytics() {
             <div className="va-card">
               <div className="va-card-header"><h3>Top Pages</h3></div>
               <div className="va-hbar-list">
-                {analytics?.topPages?.length
-                  ? analytics.topPages.map((p, i) => <HBar key={i} label={p._id} value={p.count} max={maxPage} color="#8b5cf6" />)
+                {a.topPages?.length
+                  ? a.topPages.map((p, i) => <HBar key={i} label={p._id} value={p.count} max={maxPage} color="#8b5cf6" />)
                   : <p className="va-empty-msg">No page data</p>}
               </div>
             </div>
@@ -313,28 +316,28 @@ export default function VisitorAnalytics() {
             <div className="va-card">
               <div className="va-card-header"><h3>Traffic Sources</h3></div>
               <div className="va-hbar-list">
-                {(analytics?.referrerBreakdown || []).map((r, i) => (
+                {(a.referrerBreakdown || []).map((r, i) => (
                   <HBar key={i} label={r._id || 'Direct'} value={r.count}
-                    max={analytics.referrerBreakdown[0]?.count || 1} color="#f59e0b" />
+                    max={a.referrerBreakdown[0]?.count || 1} color="#f59e0b" />
                 ))}
-                {!analytics?.referrerBreakdown?.length && <p className="va-empty-msg">No referrer data</p>}
+                {!a.referrerBreakdown?.length && <p className="va-empty-msg">No referrer data</p>}
               </div>
             </div>
             <div className="va-card">
               <div className="va-card-header"><h3>Browser Breakdown</h3></div>
               <div className="va-hbar-list">
-                {(analytics?.browserBreakdown || []).map((b, i) => (
+                {(a.browserBreakdown || []).map((b, i) => (
                   <HBar key={i} label={b._id || 'Other'} value={b.count}
-                    max={analytics.browserBreakdown[0]?.count || 1} color="#10b981" />
+                    max={a.browserBreakdown[0]?.count || 1} color="#10b981" />
                 ))}
               </div>
             </div>
             <div className="va-card">
               <div className="va-card-header"><h3>OS Breakdown</h3></div>
               <div className="va-hbar-list">
-                {(analytics?.osBreakdown || []).map((o, i) => (
+                {(a.osBreakdown || []).map((o, i) => (
                   <HBar key={i} label={o._id || 'Other'} value={o.count}
-                    max={analytics.osBreakdown[0]?.count || 1} color="#06b6d4" />
+                    max={a.osBreakdown[0]?.count || 1} color="#06b6d4" />
                 ))}
               </div>
             </div>

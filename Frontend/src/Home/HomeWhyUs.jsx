@@ -1,61 +1,38 @@
-import React from 'react';
 import '../Styles/HomeStyle/HomeWhyUs.css';
-
 import im1 from '../assets/images/diversity.png';
 import im2 from '../assets/images/flexibility.png';
 import im3 from '../assets/images/pricing.png';
 
-function HomeWhyUs() {
+const CARDS = [
+  { img: im1, tag: 'Variety of Courses', title: 'Explore Diverse Topics', desc: 'From technology to arts, learn from experts in various fields and discover new passions.', color: '#8b5cf6' },
+  { img: im2, tag: 'Flexible Schedule',  title: 'Learn at Your Own Pace', desc: 'Fit learning into your busy schedule. Access courses anytime, anywhere on any device.', color: '#06b6d4' },
+  { img: im3, tag: 'Affordable Learning', title: 'Competitive Pricing',   desc: 'Gain access to high-quality education without breaking the bank. Invest in yourself.', color: '#10b981' },
+];
+
+export default function HomeWhyUs() {
   return (
-    <section className="homewhyus-wrapper">
-      <div className="homewhyus-container">
-        <div className="homewhyus-header">
-          <div className="homewhyus-heading">
-            <h1>Why Choose Techborg?</h1>
-            <div className="homewhyus-underline"></div>
-          </div>
-          <p className="homewhyus-subtext">
-            Whether you're looking to advance your career or explore a new hobby, find the course that's right for you.
-          </p>
+    <section className="hwu-section">
+      <div className="hwu-container">
+        <div className="hwu-header">
+          <span className="hwu-badge">Why TechBorg</span>
+          <h2>Built for Learners Like You</h2>
+          <p>Whether you're advancing your career or exploring a new passion, we have the right course for you.</p>
         </div>
 
-        <div className="homewhyus-cards">
-          <div className="homewhyus-card">
-            <div className="homewhyus-image-container">
-              <img src={im1} alt="Diverse Courses" className="homewhyus-image" />
+        <div className="hwu-cards">
+          {CARDS.map((c, i) => (
+            <div key={i} className="hwu-card" style={{ '--cc': c.color }}>
+              <div className="hwu-card-img-wrap">
+                <img src={c.img} alt={c.title} />
+              </div>
+              <span className="hwu-tag" style={{ color: c.color }}>{c.tag}</span>
+              <h3>{c.title}</h3>
+              <p>{c.desc}</p>
+              <div className="hwu-card-bar" style={{ background: c.color }} />
             </div>
-            <h3 className="homewhyus-tag">VARIETY OF COURSES</h3>
-            <h2 className="homewhyus-title">Explore Diverse Topics</h2>
-            <p className="homewhyus-desc">
-              From technology to arts, learn from experts in various fields and discover new passions.
-            </p>
-          </div>
-
-          <div className="homewhyus-card">
-            <div className="homewhyus-image-container">
-              <img src={im2} alt="Flexible Schedule" className="homewhyus-image" />
-            </div>
-            <h3 className="homewhyus-tag">FLEXIBLE SCHEDULE</h3>
-            <h2 className="homewhyus-title">Learn at Your Own Pace</h2>
-            <p className="homewhyus-desc">
-              Fit learning into your busy schedule. Access courses anytime, anywhere with our platform.
-            </p>
-          </div>
-
-          <div className="homewhyus-card">
-            <div className="homewhyus-image-container">
-              <img src={im3} alt="Affordable Pricing" className="homewhyus-image" />
-            </div>
-            <h3 className="homewhyus-tag">AFFORDABLE LEARNING</h3>
-            <h2 className="homewhyus-title">Competitive Pricing</h2>
-            <p className="homewhyus-desc">
-              Gain access to high-quality education without breaking the bank. Invest in yourself.
-            </p>
-          </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
-
-export default HomeWhyUs;
