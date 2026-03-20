@@ -312,3 +312,121 @@
 @media (min-width: 901px) {
   .ud-actions { grid-template-columns: repeat(5, 1fr); }
 }
+
+/* Reward badge strip */
+.ud-reward-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(236,72,153,0.06);
+  border: 1px solid rgba(236,72,153,0.2);
+  border-radius: 12px;
+  padding: 12px 18px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.ud-reward-badge-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f472b6;
+  white-space: nowrap;
+}
+.ud-reward-bar-wrap {
+  flex: 1;
+  min-width: 80px;
+  height: 5px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ud-reward-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ec4899, #f472b6);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+.ud-reward-pts {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ec4899;
+  white-space: nowrap;
+}
+.ud-reward-next {
+  font-size: 0.75rem;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+/* Referral Card */
+.ud-referral-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(99,102,241,0.06);
+  border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 12px;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.ud-referral-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.ud-referral-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(99,102,241,0.12);
+  border: 1px solid rgba(99,102,241,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ud-referral-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0;
+}
+.ud-referral-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0;
+}
+.ud-referral-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.ud-referral-code {
+  font-family: monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  letter-spacing: 0.05em;
+}
+.ud-referral-copy {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(99,102,241,0.15);
+  border: 1px solid rgba(99,102,241,0.3);
+  color: #a5b4fc;
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ud-referral-copy:hover {
+  background: rgba(99,102,241,0.25);
+}

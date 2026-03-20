@@ -27,5 +27,7 @@ router.use('/support', require('../routes/supportRoutes'));
 router.use('/security', require('../routes/securityRoutes'));
 router.use('/community', require('../routes/communityRoutes'));
 router.use('/progress', require('../routes/progressRoutes'));
+router.use('/student-rewards', require('../routes/studentRewardRoutes'));
+router.use('/referral', require('../routes/referralRoutes'));
 
 module.exports = router;

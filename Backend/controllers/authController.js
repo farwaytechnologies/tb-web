@@ -1,19 +1,62 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const User = require('../models/user');
+const StudentReward = require('../models/StudentReward');
+const TutorReward = require('../models/TutorReward');
 const { logFailedLogin } = require('../middleware/security');
+
+function generateReferralCode() {
+  return 'TB-' + crypto.randomBytes(4).toString('hex').toUpperCase();
+}
 
 // REGISTER
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, referralCode } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: 'User already exists' });
 
+    // Generate unique referral code
+    let code;
+    let attempts = 0;
+    do {
+      code = generateReferralCode();
+      attempts++;
+    } while (await User.findOne({ referralCode: code }) && attempts < 10);
+
+    // Resolve referrer
+    let referrer = null;
+    if (referralCode) {
+      referrer = await User.findOne({ referralCode: referralCode.trim().toUpperCase() });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, email, password: hashedPassword, role });
+    const newUser = new User({
+      name, email, password: hashedPassword, role,
+      referralCode: code,
+      referredBy: referrer?._id || null,
+    });
     await newUser.save();
+
+    // Award referrer points
+    if (referrer) {
+      if (referrer.role === 'student') {
+        let reward = await StudentReward.findOne({ userId: referrer._id });
+        if (!reward) reward = new StudentReward({ userId: referrer._id, points: 0, history: [] });
+        reward.points += 25;
+        reward.history.push({ points: 25, reason: `Referral: ${name} joined` });
+        await reward.save();
+      } else if (referrer.role === 'tutor') {
+        let reward = await TutorReward.findOne({ tutorId: referrer._id });
+        if (!reward) reward = new TutorReward({ tutorId: referrer._id, points: 0, bonusPoints: 0 });
+        reward.bonusPoints += 25;
+        reward.bonusHistory.push({ bonus: 25, reason: `Referral: ${name} joined` });
+        await reward.save();
+      }
+    }
+
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -64,6 +107,7 @@ exports.login = async (req, res) => {
         language: user.language,
         emailNotifications: user.emailNotifications,
         showProfile: user.showProfile,
+        referralCode: user.referralCode || '',
       }
     });
   } catch (err) {

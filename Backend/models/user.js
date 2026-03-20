@@ -28,7 +28,9 @@ const userSchema = new mongoose.Schema({
     branchName:        { type: String, default: '' },
     upiId:             { type: String, default: '' },
     accountType:       { type: String, default: '' },
-  }
+  },
+  referralCode: { type: String, unique: true, sparse: true },
+  referredBy:   { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

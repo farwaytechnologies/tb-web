@@ -21,11 +21,16 @@ const VALUES = [
   { icon: Award,    color: '#f87171', title: 'Integrity',     desc: 'Honest, transparent, and ethical in everything we do — from content quality to student outcomes.' },
 ];
 
-const TEAM = [
+const TEAMKERALA = [
   { name: 'Shaun Sebastian',   role: 'Founder',        initial: 'S', color: '#8b5cf6' },
   { name: 'Sudheesh Sudhan',     role: 'Founder Associate',   initial: 'S', color: '#ec4899' },
   { name: 'Mahesh MB',    role: 'Founder Associate',         initial: 'M', color: '#10b981' },
   { name: 'Anil B',    role: 'Devloper',     initial: 'A', color: '#f59e0b' },
+];
+
+const TEAMBANGLORE = [
+  { name: 'Team Member',   role: 'Testing',        initial: 'B', color: '#8b5cf6' },
+  
 ];
 
 const WHY_ITEMS = [
@@ -199,8 +204,25 @@ export default function About() {
           <span className="ab-section-badge">The People</span>
           <h2>Meet the Team</h2>
         </div>
+        <div>
+          <h2>Kerala</h2>
+        </div>
         <div className="ab-team-grid">
-          {TEAM.map((m, i) => (
+          {TEAMKERALA.map((m, i) => (
+            <div key={i} className="ab-team-card">
+              <div className="ab-team-avatar" style={{ background: `${m.color}20`, border: `2px solid ${m.color}40` }}>
+                <span style={{ color: m.color }}>{m.initial}</span>
+              </div>
+              <h3>{m.name}</h3>
+              <p style={{ color: m.color }}>{m.role}</p>
+            </div>
+          ))}
+        </div>
+        <div>
+          <h2>Banglore</h2>
+        </div>
+        <div className="ab-team-grid">
+          {TEAMBANGLORE.map((m, i) => (
             <div key={i} className="ab-team-card">
               <div className="ab-team-avatar" style={{ background: `${m.color}20`, border: `2px solid ${m.color}40` }}>
                 <span style={{ color: m.color }}>{m.initial}</span>

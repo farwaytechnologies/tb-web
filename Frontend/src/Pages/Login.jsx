@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../Styles/PagesStyle/Login.css';
 
 const API = import.meta.env.VITE_API_URL;
 
 export default function Login() {
-  const [role, setRole] = useState(null); // 'student' | 'tutor'
+  const [role, setRole] = useState(null);
   const [isSignup, setIsSignup] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', referralCode: '' });
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -21,7 +22,14 @@ export default function Login() {
       else if (user.role === 'student') navigate('/user/dashboard');
       else if (user.role === 'admin') navigate('/admin/dashboard');
     }
-  }, [navigate]);
+    // Pre-fill referral code from ?ref= query param
+    const params = new URLSearchParams(location.search);
+    const ref = params.get('ref');
+    if (ref) {
+      setForm(prev => ({ ...prev, referralCode: ref.toUpperCase() }));
+      setIsSignup(true);
+    }
+  }, [navigate, location.search]);
 
   const handleChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -53,7 +61,7 @@ export default function Login() {
       } else {
         setError('');
         setIsSignup(false);
-        setForm({ name: '', email: '', password: '' });
+        setForm({ name: '', email: '', password: '', referralCode: '' });
         // show success inline
         setError('__success__Account created! You can now log in.');
       }
@@ -157,6 +165,20 @@ export default function Login() {
                 value={form.name}
                 onChange={handleChange}
                 required
+                style={{ '--focus-color': accent }}
+              />
+            </div>
+          )}
+
+          {isSignup && (
+            <div className="lp-field">
+              <label>Referral Code <span style={{ opacity: 0.5, fontSize: '0.8em' }}>(optional)</span></label>
+              <input
+                type="text"
+                name="referralCode"
+                placeholder="TB-XXXXXXXX"
+                value={form.referralCode}
+                onChange={e => setForm(prev => ({ ...prev, referralCode: e.target.value.toUpperCase() }))}
                 style={{ '--focus-color': accent }}
               />
             </div>

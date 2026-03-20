@@ -1,4 +1,7 @@
 const Enrollment = require('../models/Enrollment');
+const StudentReward = require('../models/StudentReward');
+
+const ENROLLMENT_POINTS = 50; // points awarded per accepted enrollment
 
 // Create a new enrollment (free courses only — no invoice)
 exports.createEnrollment = async (req, res) => {
@@ -44,14 +47,35 @@ exports.updateEnrollmentStatus = async (req, res) => {
       return res.status(400).json({ error: 'Invalid status value' });
     }
 
+    const enrollment = await Enrollment.findById(req.params.id);
+    if (!enrollment) return res.status(404).json({ error: 'Enrollment not found' });
+
+    const wasAlreadyAccepted = enrollment.status === 'Accepted';
+
     const updated = await Enrollment.findByIdAndUpdate(
       req.params.id,
-      { status },
+      { $set: { status } },
       { new: true }
     );
 
-    if (!updated) {
-      return res.status(404).json({ error: 'Enrollment not found' });
+    // Award points to student only on first acceptance
+    if (status === 'Accepted' && !wasAlreadyAccepted) {
+      try {
+        let reward = await StudentReward.findOne({ userId: enrollment.userId });
+        if (!reward) {
+          reward = new StudentReward({ userId: enrollment.userId, points: 0, history: [] });
+        }
+        reward.points += ENROLLMENT_POINTS;
+        reward.history.push({
+          points: ENROLLMENT_POINTS,
+          reason: 'Course enrollment accepted',
+          courseId: enrollment.courseId,
+          date: new Date()
+        });
+        await reward.save();
+      } catch (rewardErr) {
+        console.error('Reward award error:', rewardErr);
+      }
     }
 
     res.json(updated);
@@ -119,6 +143,25 @@ exports.completeEnrollment = async (req, res) => {
     enrollment.completedAt = new Date();
     enrollment.certificateId = certId;
     await enrollment.save();
+
+    // Award completion bonus points
+    try {
+      const COMPLETION_POINTS = 100;
+      let reward = await StudentReward.findOne({ userId: enrollment.userId });
+      if (!reward) {
+        reward = new StudentReward({ userId: enrollment.userId, points: 0, history: [] });
+      }
+      reward.points += COMPLETION_POINTS;
+      reward.history.push({
+        points: COMPLETION_POINTS,
+        reason: `Course completed: ${enrollment.courseId?.title || 'Course'}`,
+        courseId: enrollment.courseId?._id || enrollment.courseId,
+        date: new Date()
+      });
+      await reward.save();
+    } catch (rewardErr) {
+      console.error('Completion reward error:', rewardErr);
+    }
 
     res.json({ message: 'Marked as completed', enrollment });
   } catch (err) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Award, LifeBuoy, UserCircle, Clock, CheckCircle, TrendingUp, ChevronRight, XCircle } from 'lucide-react';
+import { BookOpen, Award, LifeBuoy, UserCircle, Clock, CheckCircle, TrendingUp, ChevronRight, XCircle, Copy, Users, Gift } from 'lucide-react';
 import '../Styles/DashbordStyle/UserDashbord.css';
 
 const API = import.meta.env.VITE_API_URL;
@@ -10,6 +10,9 @@ export default function UserDashboard() {
   const [enrollments, setEnrollments] = useState([]);
   const [certificates, setCertificates] = useState([]);
   const [progressList, setProgressList] = useState([]);
+  const [reward, setReward] = useState(null);
+  const [referral, setReferral] = useState(null);
+  const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -23,10 +26,14 @@ export default function UserDashboard() {
       fetch(`${API}/api/enrollments/user/${uid}`).then(r => r.json()),
       fetch(`${API}/api/enrollments/certificates/${uid}`).then(r => r.json()).catch(() => []),
       fetch(`${API}/api/progress/${uid}`).then(r => r.json()).catch(() => []),
-    ]).then(([enrData, certData, progData]) => {
+      fetch(`${API}/api/student-rewards/${uid}`).then(r => r.json()).catch(() => null),
+      fetch(`${API}/api/referral/${uid}`).then(r => r.json()).catch(() => null),
+    ]).then(([enrData, certData, progData, rewardData, referralData]) => {
       if (Array.isArray(enrData)) setEnrollments(enrData);
       if (Array.isArray(certData)) setCertificates(certData);
       if (Array.isArray(progData)) setProgressList(progData);
+      if (rewardData) setReward(rewardData);
+      if (referralData) setReferral(referralData);
     }).catch(() => {}).finally(() => setLoading(false));
   }, [navigate]);
 
@@ -46,18 +53,19 @@ export default function UserDashboard() {
   const pending   = enrollments.filter(e => e.status === 'Pending');
 
   const statsCards = [
-    { icon: BookOpen,    val: enrollments.length,  label: 'Total Enrolled',  color: '#6366f1', glow: 'rgba(99,102,241,0.15)'  },
-    { icon: CheckCircle, val: accepted.length,      label: 'Active Courses',  color: '#10b981', glow: 'rgba(16,185,129,0.15)'  },
-    { icon: Clock,       val: pending.length,       label: 'Pending Review',  color: '#f59e0b', glow: 'rgba(245,158,11,0.15)'  },
-    { icon: Award,       val: certificates.length,  label: 'Certificates',    color: '#ec4899', glow: 'rgba(236,72,153,0.15)'  },
+    { icon: BookOpen,    val: enrollments.length,       label: 'Total Enrolled',  color: '#6366f1', glow: 'rgba(99,102,241,0.15)'  },
+    { icon: CheckCircle, val: accepted.length,           label: 'Active Courses',  color: '#10b981', glow: 'rgba(16,185,129,0.15)'  },
+    { icon: Clock,       val: pending.length,            label: 'Pending Review',  color: '#f59e0b', glow: 'rgba(245,158,11,0.15)'  },
+    { icon: Award,       val: reward?.points || 0,       label: 'Reward Points',   color: '#ec4899', glow: 'rgba(236,72,153,0.15)'  },
   ];
 
   const quickActions = [
-    { to: '/my-learning',  icon: TrendingUp,  label: 'My Learning',    color: '#6366f1' },
-    { to: '/user-profile', icon: UserCircle,  label: 'My Profile',     color: '#8b5cf6' },
-    { to: '/courses',      icon: BookOpen,    label: 'Browse Courses', color: '#10b981' },
-    { to: '/certificates', icon: Award,       label: 'Certificates',   color: '#ec4899' },
-    { to: '/support',      icon: LifeBuoy,    label: 'Support',        color: '#06b6d4' },
+    { to: '/my-learning',    icon: TrendingUp, label: 'My Learning',    color: '#6366f1' },
+    { to: '/user-profile',   icon: UserCircle, label: 'My Profile',     color: '#8b5cf6' },
+    { to: '/courses',        icon: BookOpen,   label: 'Browse Courses', color: '#10b981' },
+    { to: '/certificates',   icon: Award,      label: 'Certificates',   color: '#ec4899' },
+    { to: '/user/referral',  icon: Gift,       label: 'Referral',       color: '#f59e0b' },
+    { to: '/support',        icon: LifeBuoy,   label: 'Support',        color: '#06b6d4' },
   ];
 
   const statusColor = { Accepted: '#10b981', Pending: '#f59e0b', Rejected: '#ef4444' };
@@ -102,8 +110,56 @@ export default function UserDashboard() {
         ))}
       </div>
 
+      {/* Reward badge strip */}
+      {!loading && reward?.points > 0 && (
+        <div className="ud-reward-strip">
+          <Award size={15} style={{ color: '#ec4899' }} />
+          <span className="ud-reward-badge-name">{reward.badge?.name || '🌱 Beginner'}</span>
+          <div className="ud-reward-bar-wrap">
+            <div
+              className="ud-reward-bar-fill"
+              style={{
+                width: reward.nextBadge
+                  ? `${Math.min(100, Math.round((reward.points / reward.nextBadge.minPoints) * 100))}%`
+                  : '100%'
+              }}
+            />
+          </div>
+          <span className="ud-reward-pts">{reward.points} pts</span>
+          {reward.nextBadge && (
+            <span className="ud-reward-next">{reward.nextBadge.minPoints - reward.points} to {reward.nextBadge.name}</span>
+          )}
+        </div>
+      )}
+
       {/* Quick Actions */}
       <div className="ud-section">
+        {/* Referral Card */}
+        {referral?.referralCode && (
+          <div className="ud-referral-card">
+            <div className="ud-referral-left">
+              <div className="ud-referral-icon"><Users size={18} style={{ color: '#6366f1' }} /></div>
+              <div>
+                <p className="ud-referral-title">Your Referral Code</p>
+                <p className="ud-referral-sub">{referral.referralCount} referred · {referral.pointsFromReferrals} pts earned</p>
+              </div>
+            </div>
+            <div className="ud-referral-right">
+              <span className="ud-referral-code">{referral.referralCode}</span>
+              <button
+                className="ud-referral-copy"
+                onClick={() => {
+                  const link = `${window.location.origin}/login?ref=${referral.referralCode}`;
+                  navigator.clipboard.writeText(link);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+              >
+                <Copy size={13} /> {copied ? 'Copied!' : 'Copy Link'}
+              </button>
+            </div>
+          </div>
+        )}
         <h2 className="ud-section-title">Quick Actions</h2>
         <div className="ud-actions">
           {quickActions.map(a => (

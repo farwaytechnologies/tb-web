@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Book, Users, FileText, GraduationCap, CheckCircle, BookOpen, Trophy, Coins, ChevronRight } from 'lucide-react';
+import { Book, Users, FileText, GraduationCap, CheckCircle, BookOpen, Trophy, Coins, ChevronRight, Copy, Gift } from 'lucide-react';
 import '../Styles/DashbordStyle/TutorDashbord.css';
 
 const API = import.meta.env.VITE_API_URL;
@@ -8,6 +8,8 @@ const API = import.meta.env.VITE_API_URL;
 export default function TutorDashboard() {
   const [tutor, setTutor] = useState({});
   const [stats, setStats] = useState({ courses: 0, students: 0, blogs: 0, registeredStudents: 0, allEnrolledStudents: 0 });
+  const [referral, setReferral] = useState(null);
+  const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -16,6 +18,7 @@ export default function TutorDashboard() {
     if (!stored || stored.role !== 'tutor') { navigate('/login'); return; }
     setTutor(stored);
     fetchStats(stored._id);
+    fetch(`${API}/api/referral/${stored._id}`).then(r => r.json()).then(setReferral).catch(() => {});
   }, [navigate]);
 
   const fetchStats = async (tutorId) => {
@@ -76,12 +79,13 @@ export default function TutorDashboard() {
   ];
 
   const quickActions = [
-    { to: '/tutor/courses',    icon: Book,     label: 'Manage Courses',   color: '#10b981' },
-    { to: '/tutor/blogs',      icon: FileText, label: 'Manage Blogs',     color: '#06b6d4' },
-    { to: '/tutor/students',   icon: Users,    label: 'Manage Students',  color: '#8b5cf6' },
-    { to: '/tutor/learn',      icon: BookOpen, label: 'Manage Learn',     color: '#f59e0b' },
-    { to: '/tutor/rewards',    icon: Trophy,   label: 'My Rewards',       color: '#f59e0b' },
-    { to: '/tutor/borgcoins',  icon: Coins,    label: 'BorgCoins Wallet', color: '#d97706' },
+    { to: '/tutor/courses',   icon: Book,     label: 'Manage Courses',   color: '#10b981' },
+    { to: '/tutor/blogs',     icon: FileText, label: 'Manage Blogs',     color: '#06b6d4' },
+    { to: '/tutor/students',  icon: Users,    label: 'Manage Students',  color: '#8b5cf6' },
+    { to: '/tutor/learn',     icon: BookOpen, label: 'Manage Learn',     color: '#f59e0b' },
+    { to: '/tutor/rewards',   icon: Trophy,   label: 'My Rewards',       color: '#f59e0b' },
+    { to: '/tutor/borgcoins', icon: Coins,    label: 'BorgCoins Wallet', color: '#d97706' },
+    { to: '/tutor/referral',  icon: Gift,     label: 'Referral',         color: '#ec4899' },
   ];
 
   return (
@@ -127,6 +131,31 @@ export default function TutorDashboard() {
 
       {/* Quick Actions */}
       <div className="td-section">
+        {referral?.referralCode && (
+          <div className="ud-referral-card" style={{ marginBottom: '1.5rem' }}>
+            <div className="ud-referral-left">
+              <div className="ud-referral-icon"><Users size={18} style={{ color: '#8b5cf6' }} /></div>
+              <div>
+                <p className="ud-referral-title">Your Referral Code</p>
+                <p className="ud-referral-sub">{referral.referralCount} referred · {referral.pointsFromReferrals} pts earned</p>
+              </div>
+            </div>
+            <div className="ud-referral-right">
+              <span className="ud-referral-code">{referral.referralCode}</span>
+              <button
+                className="ud-referral-copy"
+                onClick={() => {
+                  const link = `${window.location.origin}/login?ref=${referral.referralCode}`;
+                  navigator.clipboard.writeText(link);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+              >
+                <Copy size={13} /> {copied ? 'Copied!' : 'Copy Link'}
+              </button>
+            </div>
+          </div>
+        )}
         <h2 className="td-section-title">Quick Actions</h2>
         <div className="td-actions">
           {quickActions.map((a, i) => (

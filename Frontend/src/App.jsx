@@ -85,7 +85,7 @@ function App() {
     <BrowserRouter>
       {/* Track visitors silently */}
       <VisitorTracker />
-    <PopupAd />
+      <PopupAd />
       {/* Layout */}
       <Navbar />
       <PagesRout />

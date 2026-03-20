@@ -67,6 +67,8 @@ import TutorManageStudents from '../Dashboard/TutorManageStudents';
 import TutorManageLearn from '../Dashboard/TutorMangeLearn';
 import TutorRewards from '../Dashboard/TutorRewards';
 import TutorBorgCoins from '../Dashboard/TutorBorgCoins';
+import UserReferral from '../Dashboard/UserReferral';
+import TutorReferral from '../Dashboard/TutorReferral';
 
 
 // 👤 Profiles
@@ -120,6 +122,7 @@ function PagesRoute() {
       <Route path="/news/:id" element={<NewsDetail />} />
       <Route path="/community" element={<Community />} />
       <Route path="/my-learning" element={<MyLearning />} />
+      <Route path="/user/referral" element={<UserReferral />} />
 
       {/* 📘 Course Routes */}
       <Route path="/courses/:id" element={<CourseDetail />} />
@@ -179,6 +182,7 @@ function PagesRoute() {
       <Route path="/tutor/learn" element={<TutorManageLearn />} />
       <Route path="/tutor/rewards" element={<TutorRewards />} />
       <Route path="/tutor/borgcoins" element={<TutorBorgCoins />} />
+      <Route path="/tutor/referral" element={<TutorReferral />} />
 
       {/* 👤 Profiles */}
       <Route path="/admin-profile" element={<AdminProfile />} />
