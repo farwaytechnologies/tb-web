@@ -1,0 +1,23 @@
+[
+  {
+    "language": "Python Basics",
+    "shortDescription": "Learn Python from scratch with hands-on examples.",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
+    "modules": [
+      {
+        "title": "Introduction to Python",
+        "description": "What Python is and why it matters.",
+        "content": "Python is a high-level, interpreted programming language known for its simplicity and readability. It is widely used in web development, data science, automation, and AI.",
+        "codeExample": "print('Hello, World!')",
+        "image": ""
+      },
+      {
+        "title": "Variables and Data Types",
+        "description": "Understanding how Python stores data.",
+        "content": "Python supports several built-in data types: int, float, str, bool, list, tuple, dict, and set. Variables are dynamically typed — no need to declare a type.",
+        "codeExample": "name = 'Alice'\nage = 25\nheight = 5.6\nis_student = True\nprint(name, age, height, is_student)",
+        "image": ""
+      }
+    ]
+  }
+]
