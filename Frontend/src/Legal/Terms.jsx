@@ -1,178 +1,169 @@
-import React, { useState } from "react";
-import "../Styles/LegalStyle/Terms.css";
-import { ChevronDown, AlertCircle, CheckCircle } from "lucide-react";
+import { useState } from 'react';
+import { FileText, AlertTriangle, CheckCircle, ChevronDown, Scale, Shield, BookOpen, CreditCard, UserCheck, Link as LinkIcon } from 'lucide-react';
+import '../Styles/LegalStyle/Terms.css';
 
-const Terms = () => {
-  const [expandedSection, setExpandedSection] = useState(null);
+const highlights = [
+  { icon: UserCheck, color: '#6366f1', title: 'Account Security',   desc: 'You are responsible for maintaining your account credentials and all activity under your account.' },
+  { icon: BookOpen,  color: '#10b981', title: 'Content Rights',     desc: 'All course materials are protected intellectual property. Personal use only — no redistribution.' },
+  { icon: Shield,    color: '#f59e0b', title: 'User Conduct',       desc: 'Harassment, disruptive behaviour, and fraudulent activity will result in account termination.' },
+  { icon: CreditCard,color: '#ec4899', title: 'Payments & Refunds', desc: 'Fees are non-refundable unless stated otherwise. Refund eligibility is course-specific.' },
+  { icon: Scale,     color: '#06b6d4', title: 'Liability Limits',   desc: 'Our liability for damages arising from platform use is limited to the fullest extent permitted by law.' },
+  { icon: LinkIcon,  color: '#8b5cf6', title: 'Third-Party Links',  desc: 'We are not responsible for the content or practices of any external sites linked from the platform.' },
+];
 
-  const toggleSection = (index) => {
-    setExpandedSection(expandedSection === index ? null : index);
-  };
+const sections = [
+  {
+    title: '1. Acceptance of Terms',
+    content: 'By accessing and using this platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service and all applicable laws. If you do not agree, you are prohibited from using the platform. Continued use after modifications constitutes acceptance of the updated terms.',
+  },
+  {
+    title: '2. Use License',
+    content: 'You are granted a limited, non-exclusive, non-transferable licence to access course materials for personal, non-commercial use only. You may not modify, copy, distribute, or commercially exploit any materials. You may not reverse-engineer any software, remove proprietary notices, or mirror content on any other server.',
+  },
+  {
+    title: '3. User Accounts & Responsibilities',
+    content: 'To access certain features you must create an account with accurate, complete information. You are responsible for maintaining the confidentiality of your credentials and for all activity under your account. Notify us immediately of any unauthorised use. You must not use another user\'s account or misrepresent your identity.',
+  },
+  {
+    title: '4. User Conduct & Restrictions',
+    content: 'You agree not to harass, threaten, or cause distress to any person; post obscene or defamatory content; disrupt the normal flow of the platform; violate any applicable local, national, or international law; or introduce malicious code. Violations may result in immediate account suspension or termination.',
+  },
+  {
+    title: '5. Course Content & Materials',
+    content: 'All course content — including video lectures, reading materials, and assessments — is protected by copyright. Materials are provided for your personal educational use only. Reproduction, distribution, or commercial use without express written permission is prohibited. Certificates of completion are non-transferable and do not constitute academic credit unless explicitly stated.',
+  },
+  {
+    title: '6. Payment & Refunds',
+    content: 'By purchasing a course or service, you agree to pay all applicable fees. All fees are non-refundable unless otherwise stated at the time of purchase. Payment is processed securely through third-party processors. We reserve the right to change pricing with 30 days\' notice. Refund eligibility for course withdrawals is governed by the policy communicated at purchase.',
+  },
+  {
+    title: '7. Intellectual Property Rights',
+    content: 'The platform and all its content, features, and functionality are owned by TechBorg or its licensors and are protected by international copyright, trademark, and intellectual property laws. You agree not to reproduce, distribute, modify, or create derivative works from any platform content without explicit written permission.',
+  },
+  {
+    title: '8. Disclaimer of Warranties',
+    content: 'Materials are provided on an "as is" basis. We make no warranties, expressed or implied, including warranties of merchantability, fitness for a particular purpose, or non-infringement. We do not warrant the accuracy, completeness, or reliability of any materials on the platform.',
+  },
+  {
+    title: '9. Limitations of Liability',
+    content: 'In no event shall TechBorg or its suppliers be liable for any damages — including loss of data, profit, or business interruption — arising from the use or inability to use the platform, even if we have been notified of the possibility of such damage. Some jurisdictions do not allow these limitations, so they may not apply to you.',
+  },
+  {
+    title: '10. Links to Third-Party Sites',
+    content: 'The platform may contain links to third-party websites not operated by us. We are not responsible for their content, accuracy, or practices. Your use of third-party sites is at your own risk and subject to their own terms. We do not endorse any third-party sites or services.',
+  },
+  {
+    title: '11. Termination & Suspension',
+    content: 'We reserve the right to refuse service, suspend, or terminate accounts at our sole discretion, with or without notice. Grounds include violation of these terms, disruptive behaviour, fraudulent activity, or non-payment. Upon termination, your right to use the platform ceases immediately. Provisions relating to liability, indemnification, and intellectual property survive termination.',
+  },
+  {
+    title: '12. Dispute Resolution',
+    content: 'Any disputes arising from these Terms shall be governed by the laws of the jurisdiction in which TechBorg is registered. Before pursuing legal action, you agree to attempt resolution through good faith negotiation. If negotiation fails, disputes may be resolved through arbitration or small claims court as applicable.',
+  },
+  {
+    title: '13. Modifications to Terms',
+    content: 'We may modify these Terms at any time. Changes take effect immediately upon posting. Continued use of the platform after changes are posted constitutes your acceptance. Significant changes will be communicated via email or a prominent notice on the platform. We encourage you to review these terms periodically.',
+  },
+];
 
-  const sections = [
-    {
-      title: "1. Acceptance of Terms",
-      content: "By accessing and using this educational platform, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this platform. Your continued use of the platform after modifications to these terms constitutes your acceptance of the updated terms."
-    },
-    {
-      title: "2. Use License",
-      content: "Permission is granted to temporarily download one copy of the materials (information or software) on our platform for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not: modify or copy the materials; use the materials for any commercial purpose or for any public display; attempt to decompile or reverse engineer any software contained on the platform; remove any copyright or other proprietary notations from the materials; or transfer the materials to another person or 'mirror' the materials on any other server."
-    },
-    {
-      title: "3. Disclaimer of Warranties",
-      content: "The materials on our platform are provided on an 'as is' basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights. Further, we do not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on the Internet or relating to such materials or on any sites linked to this site."
-    },
-    {
-      title: "4. Limitations of Liability",
-      content: "In no event shall our platform or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on the platform, even if we or our authorized representative has been notified orally or in writing of the possibility of such damage. Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you."
-    },
-    {
-      title: "5. Accuracy of Materials",
-      content: "The materials appearing on the platform could include technical, typographical, or photographic errors. We do not warrant that any of the materials on the platform are accurate, complete, or current. We may make changes to the materials contained on the platform at any time without notice. However, we do not make any commitment to update the materials. Course content reflects information available at the time of creation and may require updates."
-    },
-    {
-      title: "6. Materials & Course Content",
-      content: "The materials provided through our platform, including but not limited to course content, video lectures, reading materials, and assessments, are protected by copyright and other intellectual property laws. You may use these materials solely for your personal educational purposes. Reproduction, distribution, modification, or commercial use of course materials without express permission is prohibited. Upon course completion, you retain access to materials for personal reference purposes only."
-    },
-    {
-      title: "7. User Accounts & Responsibilities",
-      content: "To access certain features, you must create an account and provide accurate, complete information. You are responsible for maintaining the confidentiality of your account credentials and password. You agree to accept responsibility for all activities that occur under your account. You must immediately notify us of any unauthorized use of your account. You agree not to use another user's account or provide false information about your identity or background."
-    },
-    {
-      title: "8. User Conduct & Restrictions",
-      content: "You agree not to engage in any conduct that restricts or inhibits anyone's use or enjoyment of the platform. Prohibited behavior includes: harassing or causing distress or inconvenience to any person; offending the dignity of any person; disrupting normal flow of dialogue; posting obscene or defamatory messages; inserting images or sounds without permission; disrupting others' studies; intentionally or unintentionally violating any applicable local, state, national, or international law; or infecting others with viruses or malicious code."
-    },
-    {
-      title: "9. Payment & Refunds",
-      content: "If you choose to purchase paid courses or services, you agree to pay all applicable fees. All fees are non-refundable unless otherwise stated. Payment processing is handled securely through third-party payment processors. We reserve the right to change fees with 30 days' notice. For course withdrawals, refund eligibility depends on the refund policy applicable to that specific course, communicated at the time of purchase."
-    },
-    {
-      title: "10. Intellectual Property Rights",
-      content: "The platform and all its content, features, and functionality are owned by our organization, its licensors, or other providers of such material and are protected by international copyright, trademark, and other intellectual property laws. You agree not to reproduce, distribute, modify, create derivative works, publicly display, or use any platform content for commercial purposes without explicit written permission from the copyright holder."
-    },
-    {
-      title: "11. Links to Third-Party Sites",
-      content: "Our platform may contain links to third-party websites and services that are not operated by us. We are not responsible for the content, accuracy, or practices of these external sites. Your use of third-party sites is at your own risk and subject to their terms and conditions. We do not endorse any third-party sites or services and are not liable for any harm or loss resulting from your use of them."
-    },
-    {
-      title: "12. Certificate of Completion",
-      content: "Upon successful completion of a course, you may be eligible to receive a certificate of completion. These certificates are non-transferable and represent completion of the course material. Certificates do not constitute academic credit or accreditation unless explicitly stated. We reserve the right to revoke certificates obtained through fraudulent means or policy violations. Certificates are issued at our sole discretion based on completion criteria."
-    },
-    {
-      title: "13. Termination & Suspension",
-      content: "We reserve the right to refuse service, terminate accounts, or remove any content at our sole discretion, with or without cause, and with or without notice. Causes for termination include violation of these Terms of Service, disruptive behavior, fraudulent activity, or non-payment of fees. Upon termination, your right to use the platform ceases immediately. Sections addressing liability, indemnification, and intellectual property survive termination."
-    },
-    {
-      title: "14. Dispute Resolution",
-      content: "Any disputes arising out of or relating to these Terms of Service or the platform shall be governed by the laws of the jurisdiction in which our organization is located. You agree to submit to the exclusive jurisdiction of the courts in that location. Before pursuing legal action, you agree to attempt resolution through good faith negotiation. If negotiation fails, you may pursue remedies through arbitration or small claims court as applicable."
-    },
-    {
-      title: "15. Modifications to Terms",
-      content: "We reserve the right to modify these Terms of Service at any time. Changes become effective immediately upon posting to the platform. Your continued use of the platform following the posting of revised terms means that you accept and agree to the changes. We encourage you to review these terms periodically. Significant changes will be communicated via email or prominent notice on the platform."
-    }
-  ];
+export default function Terms() {
+  const [expanded, setExpanded] = useState(null);
+  const toggle = (i) => setExpanded(expanded === i ? null : i);
 
   return (
-    <div className="terms-page">
-      <div className="terms-container">
-        {/* Hero Section */}
-        <div className="terms-hero">
-          <h1 className="terms-title">Terms of Service</h1>
-          <div className="terms-divider"></div>
-          <p className="terms-subtitle">
-            Please read these terms carefully before using our platform
-          </p>
-          <p className="terms-last-updated">Effective Date: November 2024</p>
-        </div>
+    <div className="tm-page">
+      {/* Hero */}
+      <div className="tm-hero">
+        <div className="tm-hero-glow" />
+        <div className="tm-hero-icon"><FileText size={36} /></div>
+        <h1 className="tm-hero-title">Terms of Service</h1>
+        <p className="tm-hero-sub">Please read these terms carefully before using TechBorg</p>
+        <span className="tm-updated">Effective Date: November 2024</span>
+      </div>
 
-        {/* Important Notice */}
-        <div className="terms-notice">
-          <AlertCircle size={24} className="terms-notice-icon" />
-          <div className="terms-notice-content">
-            <h3>Important Notice</h3>
-            <p>
-              By accessing this platform, you agree to be bound by all terms and conditions. If you disagree with any part of these terms, you may not use the platform. Please contact us if you have questions.
-            </p>
+      <div className="tm-body">
+        {/* Alert notice */}
+        <div className="tm-notice">
+          <AlertTriangle size={18} style={{ color: '#f59e0b', flexShrink: 0, marginTop: 2 }} />
+          <div>
+            <p className="tm-notice-title">Important Notice</p>
+            <p className="tm-notice-text">By accessing this platform you agree to be bound by all terms below. If you disagree with any part, please do not use the platform. Contact us if you have questions before proceeding.</p>
           </div>
         </div>
 
-        {/* Introduction */}
-        <div className="terms-section">
-          <h2 className="terms-section-title">Overview</h2>
-          <p className="terms-section-text">
-            Welcome to our educational platform. These Terms of Service govern your access to and use of our website, mobile applications, and all services provided through these platforms (collectively, the "Platform"). Our mission is to provide accessible, high-quality educational content and learning experiences to students worldwide.
+        {/* Intro */}
+        <div className="tm-card">
+          <p className="tm-text">
+            Welcome to TechBorg. These Terms of Service govern your access to and use of our website, applications, and all services provided through the platform. Our mission is to deliver accessible, high-quality educational content to learners worldwide.
           </p>
-          <p className="terms-section-text">
-            These terms establish a legally binding agreement between you and our organization. We encourage you to read these terms thoroughly and contact us with any questions or concerns before proceeding.
+          <p className="tm-text" style={{ marginTop: 12 }}>
+            These terms form a legally binding agreement between you and TechBorg. We encourage you to read them thoroughly and reach out with any questions before proceeding.
           </p>
         </div>
 
-        {/* Detailed Sections */}
-        <div className="terms-sections-container">
-          {sections.map((section, index) => (
-            <div
-              key={index}
-              className={`terms-expandable-section ${
-                expandedSection === index ? "expanded" : ""
-              }`}
-            >
-              <button
-                className="terms-section-header"
-                onClick={() => toggleSection(index)}
-              >
-                <h3 className="terms-section-heading">{section.title}</h3>
-                <ChevronDown className="terms-chevron" size={24} />
-              </button>
-              <div className="terms-section-content">
-                <p className="terms-section-body">{section.content}</p>
+        {/* Highlights grid */}
+        <h2 className="tm-section-heading">Key Points at a Glance</h2>
+        <div className="tm-highlights">
+          {highlights.map(h => (
+            <div key={h.title} className="tm-highlight-card" style={{ '--accent': h.color }}>
+              <div className="tm-hl-icon" style={{ background: `${h.color}18`, border: `1px solid ${h.color}30` }}>
+                <h.icon size={18} style={{ color: h.color }} />
+              </div>
+              <div>
+                <p className="tm-hl-title">{h.title}</p>
+                <p className="tm-hl-desc">{h.desc}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Key Points */}
-        <div className="terms-section terms-key-points">
-          <h2 className="terms-section-title">Quick Reference</h2>
-          <div className="terms-points-grid">
-            <div className="terms-point-card">
-              <CheckCircle className="terms-point-icon" size={28} />
-              <h4>Account Security</h4>
-              <p>You're responsible for maintaining your account confidentiality</p>
+        {/* Accordion */}
+        <h2 className="tm-section-heading">Full Terms</h2>
+        <div className="tm-accordion">
+          {sections.map((s, i) => (
+            <div key={i} className={`tm-acc-item ${expanded === i ? 'open' : ''}`}>
+              <button className="tm-acc-header" onClick={() => toggle(i)}>
+                <span>{s.title}</span>
+                <ChevronDown size={18} className="tm-acc-chevron" />
+              </button>
+              <div className="tm-acc-body">
+                <p className="tm-text">{s.content}</p>
+              </div>
             </div>
-            <div className="terms-point-card">
-              <CheckCircle className="terms-point-icon" size={28} />
-              <h4>Content Rights</h4>
-              <p>Educational materials are protected intellectual property</p>
-            </div>
-            <div className="terms-point-card">
-              <CheckCircle className="terms-point-icon" size={28} />
-              <h4>User Conduct</h4>
-              <p>Users must not engage in harassment or disruptive behavior</p>
-            </div>
-            <div className="terms-point-card">
-              <CheckCircle className="terms-point-icon" size={28} />
-              <h4>Liability Limits</h4>
-              <p>We limit liability for damages arising from platform use</p>
-            </div>
+          ))}
+        </div>
+
+        {/* Quick reference */}
+        <div className="tm-quick-ref">
+          <h2 className="tm-qr-title">Quick Reference</h2>
+          <div className="tm-qr-grid">
+            {[
+              'You must be 13+ to use this platform.',
+              'Do not share your account credentials.',
+              'Course materials are for personal use only.',
+              'Certificates do not constitute academic credit.',
+              'Fees are non-refundable unless stated otherwise.',
+              'We may update these terms at any time.',
+            ].map(item => (
+              <div key={item} className="tm-qr-item">
+                <CheckCircle size={14} style={{ color: '#10b981', flexShrink: 0, marginTop: 2 }} />
+                <span>{item}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Contact Section */}
-        <div className="terms-section terms-contact-section">
-          <h2 className="terms-section-title">Questions About These Terms?</h2>
-          <p className="terms-section-text">
-            If you have any questions, concerns, or disagreements regarding these Terms of Service, please contact us directly:
-          </p>
-          <div className="terms-contact-info">
-            <p><strong>Email:</strong> legal@learning.com</p>
-            <p><strong>Address:</strong> 123 Education Street, Learning City, LC 12345</p>
-            <p><strong>Support Hours:</strong> Monday - Friday, 9:00 AM - 5:00 PM (EST)</p>
-            <p><strong>Response Time:</strong> We respond to all inquiries within 5 business days</p>
+        {/* Contact */}
+        <div className="tm-contact-card">
+          <h2 className="tm-qr-title">Questions About These Terms?</h2>
+          <p className="tm-text" style={{ marginBottom: 20 }}>Reach out to our legal team and we'll respond within 5 business days.</p>
+          <div className="tm-contact-grid">
+            <div className="tm-contact-item"><span className="tm-contact-label">Legal</span><span>legal@techborg.com</span></div>
+            <div className="tm-contact-item"><span className="tm-contact-label">Support Hours</span><span>Mon–Fri, 9am–5pm</span></div>
+            <div className="tm-contact-item"><span className="tm-contact-label">Response Time</span><span>Within 5 business days</span></div>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default Terms;
+}

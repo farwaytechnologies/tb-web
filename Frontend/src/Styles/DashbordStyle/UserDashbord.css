@@ -286,3 +286,29 @@
   .ud-enroll-card { flex-wrap: wrap; }
   .ud-enroll-img { width: 100%; height: 120px; }
 }
+
+/* Progress bar on enrollment cards */
+.ud-prog-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0 3px;
+}
+.ud-prog-bar {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ud-prog-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+.ud-prog-pct { font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
+
+/* 5-column quick actions */
+@media (min-width: 901px) {
+  .ud-actions { grid-template-columns: repeat(5, 1fr); }
+}

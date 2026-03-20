@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Award, LifeBuoy, UserCircle, Clock, CheckCircle, BookMarked, ChevronRight, XCircle } from 'lucide-react';
+import { BookOpen, Award, LifeBuoy, UserCircle, Clock, CheckCircle, TrendingUp, ChevronRight, XCircle } from 'lucide-react';
 import '../Styles/DashbordStyle/UserDashbord.css';
 
 const API = import.meta.env.VITE_API_URL;
@@ -9,6 +9,7 @@ export default function UserDashboard() {
   const [user, setUser] = useState(null);
   const [enrollments, setEnrollments] = useState([]);
   const [certificates, setCertificates] = useState([]);
+  const [progressList, setProgressList] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -20,10 +21,12 @@ export default function UserDashboard() {
 
     Promise.all([
       fetch(`${API}/api/enrollments/user/${uid}`).then(r => r.json()),
-      fetch(`${API}/api/enrollments/certificates/${uid}`).then(r => r.json()).catch(() => [])
-    ]).then(([enrData, certData]) => {
+      fetch(`${API}/api/enrollments/certificates/${uid}`).then(r => r.json()).catch(() => []),
+      fetch(`${API}/api/progress/${uid}`).then(r => r.json()).catch(() => []),
+    ]).then(([enrData, certData, progData]) => {
       if (Array.isArray(enrData)) setEnrollments(enrData);
       if (Array.isArray(certData)) setCertificates(certData);
+      if (Array.isArray(progData)) setProgressList(progData);
     }).catch(() => {}).finally(() => setLoading(false));
   }, [navigate]);
 
@@ -34,22 +37,27 @@ export default function UserDashboard() {
     return 'Good evening';
   };
 
+  const getProgress = (enr) => {
+    const cid = enr.courseId?._id || enr.courseId;
+    return progressList.find(p => (p.courseId?._id || p.courseId) === cid);
+  };
+
   const accepted  = enrollments.filter(e => e.status === 'Accepted');
   const pending   = enrollments.filter(e => e.status === 'Pending');
-  const completed = enrollments.filter(e => e.completed);
 
   const statsCards = [
-    { icon: BookOpen,    val: enrollments.length, label: 'Total Enrolled',   color: '#6366f1', glow: 'rgba(99,102,241,0.15)'  },
-    { icon: CheckCircle, val: accepted.length,    label: 'Active Courses',   color: '#10b981', glow: 'rgba(16,185,129,0.15)'  },
-    { icon: Clock,       val: pending.length,     label: 'Pending Review',   color: '#f59e0b', glow: 'rgba(245,158,11,0.15)'  },
-    { icon: Award,       val: certificates.length,label: 'Certificates',     color: '#ec4899', glow: 'rgba(236,72,153,0.15)'  },
+    { icon: BookOpen,    val: enrollments.length,  label: 'Total Enrolled',  color: '#6366f1', glow: 'rgba(99,102,241,0.15)'  },
+    { icon: CheckCircle, val: accepted.length,      label: 'Active Courses',  color: '#10b981', glow: 'rgba(16,185,129,0.15)'  },
+    { icon: Clock,       val: pending.length,       label: 'Pending Review',  color: '#f59e0b', glow: 'rgba(245,158,11,0.15)'  },
+    { icon: Award,       val: certificates.length,  label: 'Certificates',    color: '#ec4899', glow: 'rgba(236,72,153,0.15)'  },
   ];
 
   const quickActions = [
-    { to: '/user-profile', icon: UserCircle, label: 'My Profile',     color: '#6366f1' },
-    { to: '/courses',      icon: BookOpen,   label: 'Browse Courses', color: '#10b981' },
-    { to: '/certificates', icon: Award,      label: 'Certificates',   color: '#ec4899' },
-    { to: '/support',      icon: LifeBuoy,   label: 'Support',        color: '#06b6d4' },
+    { to: '/my-learning',  icon: TrendingUp,  label: 'My Learning',    color: '#6366f1' },
+    { to: '/user-profile', icon: UserCircle,  label: 'My Profile',     color: '#8b5cf6' },
+    { to: '/courses',      icon: BookOpen,    label: 'Browse Courses', color: '#10b981' },
+    { to: '/certificates', icon: Award,       label: 'Certificates',   color: '#ec4899' },
+    { to: '/support',      icon: LifeBuoy,    label: 'Support',        color: '#06b6d4' },
   ];
 
   const statusColor = { Accepted: '#10b981', Pending: '#f59e0b', Rejected: '#ef4444' };
@@ -115,7 +123,7 @@ export default function UserDashboard() {
         <div className="ud-section-header">
           <h2 className="ud-section-title">My Enrollments</h2>
           {enrollments.length > 0 && (
-            <Link to="/courses" className="ud-see-all">Browse more →</Link>
+            <Link to="/my-learning" className="ud-see-all">View all progress →</Link>
           )}
         </div>
 
@@ -131,6 +139,8 @@ export default function UserDashboard() {
           <div className="ud-enrollments">
             {enrollments.map(e => {
               const status = e.status || 'Pending';
+              const prog = getProgress(e);
+              const pct = prog?.progressPercent || 0;
               return (
                 <div key={e._id} className="ud-enroll-card">
                   <img
@@ -145,6 +155,22 @@ export default function UserDashboard() {
                       {e.courseId?.instructor && <span>{e.courseId.instructor}</span>}
                       {e.courseId?.level && <span className="ud-level-chip">{e.courseId.level}</span>}
                     </div>
+                    {status === 'Accepted' && (
+                      <div className="ud-prog-wrap">
+                        <div className="ud-prog-bar">
+                          <div
+                            className="ud-prog-fill"
+                            style={{
+                              width: `${pct}%`,
+                              background: pct >= 100
+                                ? 'linear-gradient(90deg,#10b981,#34d399)'
+                                : 'linear-gradient(90deg,#6366f1,#8b5cf6)'
+                            }}
+                          />
+                        </div>
+                        <span className="ud-prog-pct" style={{ color: pct >= 100 ? '#10b981' : '#a5b4fc' }}>{pct}%</span>
+                      </div>
+                    )}
                     <p className="ud-enroll-date">Enrolled {new Date(e.enrolledAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</p>
                   </div>
                   <div className="ud-enroll-right">
@@ -159,7 +185,7 @@ export default function UserDashboard() {
                     </span>
                     {status === 'Accepted' && (
                       <Link to={`/courses/${e.courseId?._id}/modules`} className="ud-continue-btn">
-                        Continue →
+                        {pct > 0 ? 'Continue →' : 'Start →'}
                       </Link>
                     )}
                   </div>

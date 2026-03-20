@@ -1,4 +1,7 @@
 const AboutContent = require('../models/AboutContent');
+const User = require('../models/user');
+const Course = require('../models/Course');
+const Enrollment = require('../models/Enrollment');
 
 exports.getAboutContent = async (req, res) => {
   try {
@@ -13,15 +16,27 @@ exports.getAboutContent = async (req, res) => {
 exports.updateAboutContent = async (req, res) => {
   try {
     const { title, description } = req.body;
-    const updateData = { title, description };
-
-    const updated = await AboutContent.findOneAndUpdate({}, updateData, {
+    const updated = await AboutContent.findOneAndUpdate({}, { title, description }, {
       new: true,
       upsert: true,
     });
-
     res.json(updated);
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+};
+
+// GET /api/about/stats — public, no auth needed
+exports.getAboutStats = async (req, res) => {
+  try {
+    const [totalStudents, totalTutors, totalCourses, totalEnrollments] = await Promise.all([
+      User.countDocuments({ role: 'student' }),
+      User.countDocuments({ role: 'tutor' }),
+      Course.countDocuments(),
+      Enrollment.countDocuments(),
+    ]);
+    res.json({ totalStudents, totalTutors, totalCourses, totalEnrollments });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch stats' });
   }
 };

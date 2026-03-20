@@ -25,5 +25,7 @@ router.use('/payment', require('../routes/paymentRoutes'));
 router.use('/exams', require('../routes/examRoutes'));
 router.use('/support', require('../routes/supportRoutes'));
 router.use('/security', require('../routes/securityRoutes'));
+router.use('/community', require('../routes/communityRoutes'));
+router.use('/progress', require('../routes/progressRoutes'));
 
 module.exports = router;

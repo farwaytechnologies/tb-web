@@ -1,145 +1,151 @@
-import React, { useState } from "react";
-import "../Styles/LegalStyle/Privacy.css";
-import { ChevronDown } from "lucide-react";
+import { useState } from 'react';
+import { Lock, Eye, Edit3, Trash2, BellOff, Download, Globe, ChevronDown, ShieldCheck, Database, Users, BarChart2 } from 'lucide-react';
+import '../Styles/LegalStyle/Privacy.css';
 
-const Privacy = () => {
-  const [expandedSection, setExpandedSection] = useState(null);
+const rights = [
+  { icon: Eye,     color: '#6366f1', title: 'Right to Access',     desc: 'Request a copy of the personal data we hold about you at any time.' },
+  { icon: Edit3,   color: '#10b981', title: 'Right to Correction',  desc: 'Update or correct inaccurate information in your account.' },
+  { icon: Trash2,  color: '#ef4444', title: 'Right to Deletion',    desc: 'Request erasure of your data, subject to legal obligations.' },
+  { icon: BellOff, color: '#f59e0b', title: 'Right to Opt-Out',     desc: 'Unsubscribe from marketing communications at any time.' },
+  { icon: Download,color: '#06b6d4', title: 'Data Portability',     desc: 'Receive your data in a structured, machine-readable format.' },
+  { icon: Globe,   color: '#8b5cf6', title: 'Lodge a Complaint',    desc: 'Contact your local data protection authority if you have concerns.' },
+];
 
-  const toggleSection = (index) => {
-    setExpandedSection(expandedSection === index ? null : index);
-  };
+const dataTypes = [
+  { icon: Users,    color: '#6366f1', title: 'Account Data',     items: ['Name', 'Email address', 'Phone number', 'Profile picture'] },
+  { icon: BarChart2,color: '#10b981', title: 'Usage Data',       items: ['Pages visited', 'Course progress', 'Session duration', 'Device & browser info'] },
+  { icon: Database, color: '#f59e0b', title: 'Transaction Data', items: ['Enrollment records', 'Payment history', 'Invoice details', 'Certificate records'] },
+  { icon: ShieldCheck,color:'#ec4899',title: 'Security Data',    items: ['IP address', 'Login timestamps', 'Security logs', 'Authentication tokens'] },
+];
 
-  const sections = [
-    {
-      title: "1. Information We Collect",
-      content: "We collect information you provide directly to us, such as when you create an account, enroll in a course, or contact us. This includes your name, email address, phone number, and educational background. We also automatically collect certain information about your device and how you interact with our platform, including IP address, browser type, pages visited, and course engagement data."
-    },
-    {
-      title: "2. How We Use Your Information",
-      content: "We use the information we collect to provide, maintain, and improve our educational services. This includes delivering course content, processing enrollments, sending educational updates, personalizing your learning experience, and analyzing platform usage patterns. We may also use your information to comply with legal obligations, enforce our terms, and protect the rights and safety of our users and platform."
-    },
-    {
-      title: "3. Information Sharing & Disclosure",
-      content: "We do not sell, trade, or rent your personal information to third parties. We may share information with service providers who assist us in operating our website and conducting our business, subject to confidentiality agreements. We may also disclose information when required by law, to enforce our agreements, or to protect the safety and rights of our users."
-    },
-    {
-      title: "4. Data Security",
-      content: "We implement comprehensive security measures to protect your personal information from unauthorized access, alteration, and disclosure. Our platform uses industry-standard encryption protocols and secure servers. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security. We encourage you to use strong passwords and maintain confidentiality of your account credentials."
-    },
-    {
-      title: "5. Your Rights & Choices",
-      content: "You have the right to access, update, or delete your personal information at any time through your account settings. You can opt out of promotional communications while maintaining essential service notifications. Depending on your location, you may have additional rights under applicable data protection laws. Contact us to exercise any of these rights."
-    },
-    {
-      title: "6. Cookies & Tracking",
-      content: "We use cookies and similar tracking technologies to enhance your user experience and analyze platform usage. These tools help us remember your preferences, understand learning patterns, and improve our services. You can control cookie settings through your browser, though this may affect functionality. Learn more about our cookie practices in our Cookie Policy."
-    },
-    {
-      title: "7. Data Retention",
-      content: "We retain your personal information for as long as necessary to provide our services and fulfill the purposes outlined in this policy. After you close your account, we may retain certain information as required by law or for legitimate business purposes. You can request deletion of your data subject to legal and operational requirements."
-    },
-    {
-      title: "8. International Transfers",
-      content: "Your information may be transferred to, stored in, and processed in countries other than your country of residence. These countries may have different data protection laws. By using our platform, you consent to such transfers. We ensure appropriate safeguards are in place to protect your information during international transfers."
-    },
-    {
-      title: "9. Third-Party Links",
-      content: "Our platform may contain links to third-party websites and services that are not operated by us. This Privacy Policy applies only to information collected through our platform. We are not responsible for the privacy practices of third-party sites. We encourage you to review their privacy policies before providing any information."
-    },
-    {
-      title: "10. Contact Us",
-      content: "If you have questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us at privacy@learning.com or through our contact form. We will respond to your inquiries within 30 days. You also have the right to lodge a complaint with your local data protection authority."
-    }
-  ];
+const sections = [
+  {
+    title: '1. Information We Collect',
+    content: 'We collect information you provide directly — such as when you create an account, enroll in a course, or contact us — including your name, email, phone number, and educational background. We also automatically collect device and interaction data: IP address, browser type, pages visited, and course engagement metrics.',
+  },
+  {
+    title: '2. How We Use Your Information',
+    content: 'We use collected data to deliver and improve our educational services, process enrollments, personalise your learning experience, send relevant updates, and analyse platform usage. We may also use your data to comply with legal obligations, enforce our terms, and protect the safety of our users and platform.',
+  },
+  {
+    title: '3. Information Sharing & Disclosure',
+    content: 'We do not sell, trade, or rent your personal information to third parties. We may share data with service providers who assist in operating our platform, subject to confidentiality agreements. We may also disclose information when required by law, to enforce our agreements, or to protect the rights and safety of our users.',
+  },
+  {
+    title: '4. Data Security',
+    content: 'We implement industry-standard security measures — including encryption, secure servers, and access controls — to protect your data from unauthorised access, alteration, and disclosure. No method of internet transmission is 100% secure; we encourage you to use strong passwords and keep your credentials confidential.',
+  },
+  {
+    title: '5. Cookies & Tracking Technologies',
+    content: 'We use cookies and similar technologies to enhance your experience, remember preferences, and analyse platform usage. You can control cookie settings through your browser, though this may affect some functionality. See our Cookie Policy for full details.',
+  },
+  {
+    title: '6. Data Retention',
+    content: 'We retain your personal data for as long as necessary to provide our services and fulfil the purposes in this policy. After account closure, we may retain certain data as required by law or for legitimate business purposes. You can request deletion subject to legal and operational requirements.',
+  },
+  {
+    title: '7. International Data Transfers',
+    content: 'Your data may be transferred to, stored in, and processed in countries other than your country of residence. These countries may have different data protection laws. By using our platform, you consent to such transfers. We ensure appropriate safeguards are in place for all international transfers.',
+  },
+  {
+    title: '8. Third-Party Links',
+    content: 'Our platform may link to third-party websites not operated by us. This Privacy Policy applies only to data collected through our platform. We are not responsible for third-party privacy practices and encourage you to review their policies before providing any information.',
+  },
+  {
+    title: '9. Children\'s Privacy',
+    content: 'Our platform is not directed at children under 13. We do not knowingly collect personal information from children under 13. If we become aware that a child under 13 has provided us with personal data, we will take steps to delete that information promptly.',
+  },
+  {
+    title: '10. Changes to This Policy',
+    content: 'We may update this Privacy Policy periodically. Significant changes will be communicated via email or a prominent notice on the platform. Your continued use of the platform after changes are posted constitutes acceptance of the revised policy. We encourage you to review this policy regularly.',
+  },
+];
+
+export default function Privacy() {
+  const [expanded, setExpanded] = useState(null);
+  const toggle = (i) => setExpanded(expanded === i ? null : i);
 
   return (
-    <div className="privacy-page">
-      <div className="privacy-container">
-        {/* Hero Section */}
-        <div className="privacy-hero">
-          <h1 className="privacy-title">Privacy Policy</h1>
-          <div className="privacy-divider"></div>
-          <p className="privacy-subtitle">
-            Your privacy is important to us. Learn how we collect, use, and protect your data.
+    <div className="pv-page">
+      {/* Hero */}
+      <div className="pv-hero">
+        <div className="pv-hero-glow" />
+        <div className="pv-hero-icon"><Lock size={36} /></div>
+        <h1 className="pv-hero-title">Privacy Policy</h1>
+        <p className="pv-hero-sub">How we collect, use, and protect your personal data</p>
+        <span className="pv-updated">Last updated: November 2024</span>
+      </div>
+
+      <div className="pv-body">
+        {/* Intro */}
+        <div className="pv-card">
+          <p className="pv-text">
+            This Privacy Policy explains how TechBorg collects, uses, maintains, and discloses information obtained from users of our platform. We are committed to protecting your privacy and ensuring a positive, trustworthy experience.
           </p>
-          <p className="privacy-last-updated">Last updated: November 2024</p>
+          <p className="pv-text" style={{ marginTop: 12 }}>
+            By accessing and using our platform, you acknowledge that you have read and agree to this policy. If you do not agree, please do not use the platform.
+          </p>
         </div>
 
-        {/* Introduction */}
-        <div className="privacy-section">
-          <h2 className="privacy-section-title">Overview</h2>
-          <p className="privacy-section-text">
-            This Privacy Policy explains how our educational platform collects, uses, maintains, and discloses information obtained from users of our website and mobile applications. We are committed to protecting your privacy and ensuring you have a positive experience on our platform.
-          </p>
-          <p className="privacy-section-text">
-            Please read this policy carefully. By accessing and using our platform, you acknowledge that you have read, understood, and agree to be bound by all the terms of this Privacy Policy. If you do not agree with our policies and practices, please do not use our platform.
-          </p>
+        {/* Data we collect */}
+        <h2 className="pv-section-heading">Data We Collect</h2>
+        <div className="pv-data-grid">
+          {dataTypes.map(d => (
+            <div key={d.title} className="pv-data-card" style={{ '--accent': d.color }}>
+              <div className="pv-data-icon" style={{ background: `${d.color}18`, border: `1px solid ${d.color}30` }}>
+                <d.icon size={18} style={{ color: d.color }} />
+              </div>
+              <p className="pv-data-title">{d.title}</p>
+              <ul className="pv-data-list">
+                {d.items.map(item => <li key={item}>{item}</li>)}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        {/* Detailed Sections */}
-        <div className="privacy-sections-container">
-          {sections.map((section, index) => (
-            <div
-              key={index}
-              className={`privacy-expandable-section ${
-                expandedSection === index ? "expanded" : ""
-              }`}
-            >
-              <button
-                className="privacy-section-header"
-                onClick={() => toggleSection(index)}
-              >
-                <h3 className="privacy-section-heading">{section.title}</h3>
-                <ChevronDown
-                  className="privacy-chevron"
-                  size={24}
-                />
+        {/* Accordion */}
+        <h2 className="pv-section-heading">Full Privacy Policy</h2>
+        <div className="pv-accordion">
+          {sections.map((s, i) => (
+            <div key={i} className={`pv-acc-item ${expanded === i ? 'open' : ''}`}>
+              <button className="pv-acc-header" onClick={() => toggle(i)}>
+                <span>{s.title}</span>
+                <ChevronDown size={18} className="pv-acc-chevron" />
               </button>
-              <div className="privacy-section-content">
-                <p className="privacy-section-body">{section.content}</p>
+              <div className="pv-acc-body">
+                <p className="pv-text">{s.content}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Data Protection */}
-        <div className="privacy-section privacy-highlight-section">
-          <h2 className="privacy-section-title">Your Data Protection Rights</h2>
-          <div className="privacy-rights-grid">
-            <div className="privacy-right-card">
-              <h4 className="privacy-right-title">Right to Access</h4>
-              <p className="privacy-right-text">Request access to your personal data at any time</p>
+        {/* Rights */}
+        <h2 className="pv-section-heading">Your Data Protection Rights</h2>
+        <div className="pv-rights-grid">
+          {rights.map(r => (
+            <div key={r.title} className="pv-right-card" style={{ '--accent': r.color }}>
+              <div className="pv-right-icon" style={{ background: `${r.color}18`, border: `1px solid ${r.color}30` }}>
+                <r.icon size={16} style={{ color: r.color }} />
+              </div>
+              <p className="pv-right-title">{r.title}</p>
+              <p className="pv-right-desc">{r.desc}</p>
             </div>
-            <div className="privacy-right-card">
-              <h4 className="privacy-right-title">Right to Correction</h4>
-              <p className="privacy-right-text">Update or correct your information</p>
-            </div>
-            <div className="privacy-right-card">
-              <h4 className="privacy-right-title">Right to Deletion</h4>
-              <p className="privacy-right-text">Request deletion of your data in certain circumstances</p>
-            </div>
-            <div className="privacy-right-card">
-              <h4 className="privacy-right-title">Right to Opt-Out</h4>
-              <p className="privacy-right-text">Control how your data is used for marketing</p>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Contact Section */}
-        <div className="privacy-section privacy-contact-section">
-          <h2 className="privacy-section-title">Questions or Concerns?</h2>
-          <p className="privacy-section-text">
-            If you have any questions about this Privacy Policy or our privacy practices, please don't hesitate to contact us:
+        {/* Contact */}
+        <div className="pv-contact-card">
+          <h2 className="pv-contact-title">Questions or Concerns?</h2>
+          <p className="pv-text" style={{ marginBottom: 20 }}>
+            Reach out to our privacy team. We respond to all inquiries within 30 days.
           </p>
-          <div className="privacy-contact-info">
-            <p><strong>Email:</strong> privacy@learning.com</p>
-            <p><strong>Address:</strong> 123 Education Street, Learning City, LC 12345</p>
-            <p><strong>Response Time:</strong> We respond to all inquiries within 30 business days</p>
+          <div className="pv-contact-grid">
+            <div className="pv-contact-item"><span className="pv-contact-label">Privacy Team</span><span>privacy@techborg.com</span></div>
+            <div className="pv-contact-item"><span className="pv-contact-label">Data Protection</span><span>dpo@techborg.com</span></div>
+            <div className="pv-contact-item"><span className="pv-contact-label">Response Time</span><span>Within 30 days</span></div>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default Privacy;
+}

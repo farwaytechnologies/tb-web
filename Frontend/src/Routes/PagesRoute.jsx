@@ -85,6 +85,8 @@ import LearnDetails from '../Pages/LearnDetails';
 import AdminManageLearn from '../Dashboard/AdminManageLearn';
 import VisitorAnalytics from '../Dashboard/VisitorAnalytics';
 import NewsDetail from '../Pages/NewsDetail';
+import Community from '../Pages/Community';
+import MyLearning from '../Pages/MyLearning';
 
 // ✅ Legal / Static Pages (added)
 import Privacy from '../Legal/Privacy';
@@ -116,6 +118,8 @@ function PagesRoute() {
       <Route path="/job-alerts" element={<JobAlert />} />
       <Route path="/apply/:jobId" element={<JobApplication />} />
       <Route path="/news/:id" element={<NewsDetail />} />
+      <Route path="/community" element={<Community />} />
+      <Route path="/my-learning" element={<MyLearning />} />
 
       {/* 📘 Course Routes */}
       <Route path="/courses/:id" element={<CourseDetail />} />

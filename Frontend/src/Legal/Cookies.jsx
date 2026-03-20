@@ -1,192 +1,212 @@
-import React, { useState } from "react";
-import "../Styles/LegalStyle/Cookies.css";
-import { ChevronDown, Cookie } from "lucide-react";
+import { useState } from 'react';
+import { Cookie, Shield, BarChart2, Settings, Megaphone, ChevronDown, Check, X, Info } from 'lucide-react';
+import '../Styles/LegalStyle/Cookies.css';
 
-const Cookies = () => {
-  const [expandedSection, setExpandedSection] = useState(null);
+const cookieTypes = [
+  {
+    icon: Shield,
+    color: '#10b981',
+    name: 'Essential Cookies',
+    required: true,
+    description: 'Strictly necessary for the platform to function. Enables secure login, session management, and core features.',
+    examples: ['Session ID', 'Auth tokens', 'CSRF protection'],
+  },
+  {
+    icon: BarChart2,
+    color: '#6366f1',
+    name: 'Performance Cookies',
+    required: false,
+    description: 'Help us understand how visitors interact with the platform — page load times, error logs, and navigation patterns.',
+    examples: ['Page load time', 'Error logs', 'Navigation paths'],
+  },
+  {
+    icon: Settings,
+    color: '#f59e0b',
+    name: 'Functional Cookies',
+    required: false,
+    description: 'Remember your preferences and personalise your experience — language, display settings, and course bookmarks.',
+    examples: ['Language preference', 'Display settings', 'Course bookmarks'],
+  },
+  {
+    icon: Megaphone,
+    color: '#ec4899',
+    name: 'Marketing Cookies',
+    required: false,
+    description: 'Track behaviour across the platform to measure campaign effectiveness and deliver relevant content.',
+    examples: ['Visit duration', 'Page interactions', 'Conversion tracking'],
+  },
+];
 
-  const toggleSection = (index) => {
-    setExpandedSection(expandedSection === index ? null : index);
+const sections = [
+  {
+    title: '1. What Are Cookies?',
+    content: 'Cookies are small text files stored on your device when you visit a website. They hold information about your browsing session and preferences. Most browsers accept cookies automatically, but you can configure yours to refuse or warn you when cookies are sent.',
+  },
+  {
+    title: '2. First-Party vs Third-Party Cookies',
+    content: 'First-party cookies are set directly by TechBorg and store your preferences and login state. Third-party cookies are set by external providers — analytics platforms, payment processors, and support tools. We vet all third-party partners to ensure they meet our privacy standards.',
+  },
+  {
+    title: '3. Session vs Persistent Cookies',
+    content: 'Session cookies are temporary and deleted when you close your browser. Persistent cookies remain for a set period to remember your preferences on future visits. You can delete persistent cookies at any time through your browser settings.',
+  },
+  {
+    title: '4. Analytics & Performance Tracking',
+    content: 'We use analytics tools to understand how users interact with our platform — page views, session duration, and user flow. All analytics data is aggregated and anonymised; we cannot identify you personally through this data.',
+  },
+  {
+    title: '5. Third-Party Service Providers',
+    content: 'Our partners use cookies for analytics, payment processing, and customer support. Each partner maintains their own privacy policy. We ensure all partners comply with applicable privacy laws and data protection standards.',
+  },
+  {
+    title: '6. Managing Your Preferences',
+    content: 'You can manage cookies through your browser settings or the preference panel on this page. Blocking essential cookies may prevent core platform features from working. Non-essential cookies can be disabled without affecting basic functionality.',
+  },
+  {
+    title: '7. Updates to This Policy',
+    content: 'We may update this Cookie Policy to reflect changes in our practices or applicable law. Significant changes will be communicated via email or a notice on the platform. Continued use of the platform after updates constitutes acceptance of the revised policy.',
+  },
+];
+
+export default function Cookies() {
+  const [expanded, setExpanded] = useState(null);
+  const [prefs, setPrefs] = useState({ performance: true, functional: true, marketing: false });
+  const [saved, setSaved] = useState(false);
+
+  const toggle = (i) => setExpanded(expanded === i ? null : i);
+
+  const savePrefs = () => {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
   };
 
-  const cookieTypes = [
-    {
-      name: "Essential Cookies",
-      description: "These cookies are strictly necessary for the platform to function. They enable basic functionality like page navigation, secure access, and system security. Without these cookies, the platform cannot operate properly.",
-      examples: ["Session ID", "Authentication tokens", "Security credentials"]
-    },
-    {
-      name: "Performance Cookies",
-      description: "These cookies collect information about how you interact with our platform. They help us understand which features are most used, identify technical issues, and improve overall performance and speed.",
-      examples: ["Page load time", "Error logs", "Navigation patterns"]
-    },
-    {
-      name: "Functional Cookies",
-      description: "These cookies enable the platform to remember your preferences and provide personalized features. They improve your user experience by remembering your choices and learning patterns.",
-      examples: ["Language preference", "Display settings", "Course bookmarks"]
-    },
-    {
-      name: "Marketing & Analytics Cookies",
-      description: "These cookies track your behavior across our platform and external sites to help us understand user patterns and optimize marketing efforts. They allow us to measure campaign effectiveness.",
-      examples: ["Visit duration", "Page interactions", "Conversion tracking"]
-    }
-  ];
-
-  const sections = [
-    {
-      title: "1. What Are Cookies?",
-      content: "Cookies are small text files that are stored on your device (computer, tablet, or smartphone) when you visit a website or use an application. They contain information about your browsing and interactions with the platform. Cookies serve various purposes, including maintaining your login status, remembering preferences, and tracking how you use our services. Most web browsers automatically accept cookies, but you can configure your browser to refuse or warn you when receiving cookies."
-    },
-    {
-      title: "2. Types of Cookies We Use",
-      content: "Our platform uses four main categories of cookies: essential cookies for basic functionality, performance cookies to analyze usage, functional cookies for personalization, and marketing cookies for analytics and optimization. Each category serves specific purposes to enhance your experience and help us improve our services. Some cookies are set by our organization, while others are set by third-party providers who offer services on our behalf."
-    },
-    {
-      title: "3. First-Party vs Third-Party Cookies",
-      content: "First-party cookies are set directly by our platform and are used to store your preferences and login information. Third-party cookies are set by external service providers such as analytics platforms and advertising networks. These third parties may collect information about your online activities across different websites. We carefully select our third-party partners to ensure they maintain appropriate privacy and security standards."
-    },
-    {
-      title: "4. Session vs Persistent Cookies",
-      content: "Session cookies are temporary and are deleted when you close your browser. They help maintain your login session and secure transactions. Persistent cookies remain on your device for a specified period, even after closing your browser. These cookies help us remember your preferences and provide a more personalized experience on your next visit. You can manually delete persistent cookies through your browser settings at any time."
-    },
-    {
-      title: "5. Cookie Consent & Management",
-      content: "When you first visit our platform, we display a consent banner explaining our cookie usage. You can accept all cookies or customize your preferences. We obtain your consent before placing non-essential cookies on your device. You can change your cookie preferences at any time through your account settings or by modifying your browser settings. Disabling essential cookies may limit your ability to use certain platform features."
-    },
-    {
-      title: "6. Analytics & Performance Tracking",
-      content: "We use analytics tools like Google Analytics to understand how users interact with our platform. These tools track metrics such as page views, session duration, bounce rate, and user flow. This information helps us identify areas for improvement, optimize course content, and enhance the overall user experience. Analytics data is aggregated and anonymized; we cannot identify you personally through this data."
-    },
-    {
-      title: "7. Personalization & Preferences",
-      content: "Functional cookies allow us to remember your preferences, such as language settings, display preferences, and courses you've bookmarked. They enable features like auto-saving your progress and providing course recommendations. These cookies create a more tailored learning experience. You can clear these cookies if you prefer to reset your preferences, but this will affect your personalized experience."
-    },
-    {
-      title: "8. Third-Party Service Providers",
-      content: "We partner with service providers who use cookies for analytics, payment processing, customer support, and marketing. These partners include Google (analytics), payment processors, and communication platforms. Each partner has its own privacy policy governing their cookie usage. We ensure all partners comply with relevant privacy laws and maintain appropriate data protection standards."
-    },
-    {
-      title: "9. Managing Your Cookie Preferences",
-      content: "You can manage cookies through your browser settings. Most browsers allow you to refuse cookies or alert you when cookies are being sent. You can also delete existing cookies through your browser. Note that blocking essential cookies may prevent proper platform functionality. Some platform features may not work correctly if you disable certain cookies. You can review specific cookie categories in your privacy settings."
-    },
-    {
-      title: "10. Updates to Cookie Policy",
-      content: "We may update this Cookie Policy periodically to reflect changes in our practices or technologies. We will notify you of significant changes via email or prominent notice on the platform. Your continued use of the platform following updates indicates your acceptance of the revised policy. We encourage you to review this policy regularly to stay informed about how we use cookies."
-    }
-  ];
-
   return (
-    <div className="cookies-page">
-      <div className="cookies-container">
-        {/* Hero Section */}
-        <div className="cookies-hero">
-          <Cookie className="cookies-hero-icon" size={60} />
-          <h1 className="cookies-title">Cookie Policy</h1>
-          <div className="cookies-divider"></div>
-          <p className="cookies-subtitle">
-            Learn how we use cookies to enhance your learning experience
-          </p>
-          <p className="cookies-last-updated">Last updated: November 2024</p>
-        </div>
+    <div className="ck-page">
+      {/* Hero */}
+      <div className="ck-hero">
+        <div className="ck-hero-glow" />
+        <div className="ck-hero-icon"><Cookie size={36} /></div>
+        <h1 className="ck-hero-title">Cookie Policy</h1>
+        <p className="ck-hero-sub">How we use cookies to power your learning experience</p>
+        <span className="ck-updated">Last updated: November 2024</span>
+      </div>
 
-        {/* Introduction */}
-        <div className="cookies-section">
-          <h2 className="cookies-section-title">Understanding Our Cookie Usage</h2>
-          <p className="cookies-section-text">
-            This Cookie Policy explains how we use cookies and similar tracking technologies on our educational platform. Cookies help us provide a better user experience, understand your preferences, and improve our services. We're committed to transparency regarding our cookie practices and respecting your privacy choices.
-          </p>
-          <p className="cookies-section-text">
-            By using our platform, you consent to our use of cookies as described in this policy, unless you modify your cookie settings. We recommend reviewing this policy to understand how cookies enhance your learning experience.
+      <div className="ck-body">
+        {/* Intro */}
+        <div className="ck-card">
+          <div className="ck-card-icon-row"><Info size={18} style={{ color: '#6366f1' }} /><span>Overview</span></div>
+          <p className="ck-text">
+            This policy explains how TechBorg uses cookies and similar tracking technologies. Cookies help us keep you logged in, remember your preferences, and improve our platform. By using TechBorg, you consent to our use of cookies as described below.
           </p>
         </div>
 
-        {/* Cookie Types Grid */}
-        <div className="cookies-types-container">
-          <h2 className="cookies-section-title" style={{ marginBottom: "2rem" }}>Types of Cookies We Use</h2>
-          <div className="cookies-types-grid">
-            {cookieTypes.map((type, index) => (
-              <div key={index} className="cookies-type-card">
-                <h3 className="cookies-type-name">{type.name}</h3>
-                <p className="cookies-type-description">{type.description}</p>
-                <div className="cookies-type-examples">
-                  <strong>Examples:</strong>
-                  <ul>
-                    {type.examples.map((example, i) => (
-                      <li key={i}>{example}</li>
-                    ))}
-                  </ul>
-                </div>
+        {/* Cookie type cards */}
+        <h2 className="ck-section-heading">Types of Cookies We Use</h2>
+        <div className="ck-types-grid">
+          {cookieTypes.map((t) => (
+            <div key={t.name} className="ck-type-card" style={{ '--accent': t.color }}>
+              <div className="ck-type-icon-wrap" style={{ background: `${t.color}18`, border: `1px solid ${t.color}30` }}>
+                <t.icon size={20} style={{ color: t.color }} />
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Detailed Sections */}
-        <div className="cookies-sections-container">
-          {sections.map((section, index) => (
-            <div
-              key={index}
-              className={`cookies-expandable-section ${
-                expandedSection === index ? "expanded" : ""
-              }`}
-            >
-              <button
-                className="cookies-section-header"
-                onClick={() => toggleSection(index)}
-              >
-                <h3 className="cookies-section-heading">{section.title}</h3>
-                <ChevronDown className="cookies-chevron" size={24} />
-              </button>
-              <div className="cookies-section-content">
-                <p className="cookies-section-body">{section.content}</p>
+              <div className="ck-type-body">
+                <div className="ck-type-name-row">
+                  <h3 className="ck-type-name">{t.name}</h3>
+                  {t.required && <span className="ck-required-badge">Required</span>}
+                </div>
+                <p className="ck-type-desc">{t.description}</p>
+                <div className="ck-examples">
+                  {t.examples.map(ex => <span key={ex} className="ck-example-chip">{ex}</span>)}
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Control Panel */}
-        <div className="cookies-section cookies-control-section">
-          <h2 className="cookies-section-title">Your Cookie Controls</h2>
-          <div className="cookies-control-options">
-            <div className="cookies-control-item">
-              <h4>Essential Cookies</h4>
-              <p>Always enabled - required for platform functionality</p>
-              <input type="checkbox" disabled checked className="cookies-checkbox" />
+        {/* Preference panel */}
+        <div className="ck-prefs-card">
+          <h2 className="ck-prefs-title">Your Cookie Preferences</h2>
+          <p className="ck-text" style={{ marginBottom: '20px' }}>
+            Manage which cookies you allow. Essential cookies cannot be disabled as they are required for the platform to work.
+          </p>
+          <div className="ck-prefs-list">
+            {/* Essential — always on */}
+            <div className="ck-pref-row">
+              <div className="ck-pref-info">
+                <Shield size={16} style={{ color: '#10b981' }} />
+                <div>
+                  <p className="ck-pref-name">Essential Cookies</p>
+                  <p className="ck-pref-desc">Always enabled — required for platform functionality</p>
+                </div>
+              </div>
+              <div className="ck-toggle ck-toggle-on ck-toggle-disabled">
+                <div className="ck-toggle-thumb" />
+              </div>
             </div>
-            <div className="cookies-control-item">
-              <h4>Performance Cookies</h4>
-              <p>Help us understand how you use our platform</p>
-              <input type="checkbox" defaultChecked className="cookies-checkbox" />
-            </div>
-            <div className="cookies-control-item">
-              <h4>Functional Cookies</h4>
-              <p>Remember your preferences for a better experience</p>
-              <input type="checkbox" defaultChecked className="cookies-checkbox" />
-            </div>
-            <div className="cookies-control-item">
-              <h4>Marketing Cookies</h4>
-              <p>Track marketing effectiveness and user behavior</p>
-              <input type="checkbox" className="cookies-checkbox" />
-            </div>
+
+            {[
+              { key: 'performance', label: 'Performance Cookies', desc: 'Help us understand how you use the platform', icon: BarChart2, color: '#6366f1' },
+              { key: 'functional',  label: 'Functional Cookies',  desc: 'Remember your preferences for a better experience', icon: Settings, color: '#f59e0b' },
+              { key: 'marketing',   label: 'Marketing Cookies',   desc: 'Track marketing effectiveness and user behaviour', icon: Megaphone, color: '#ec4899' },
+            ].map(({ key, label, desc, icon: Icon, color }) => (
+              <div key={key} className="ck-pref-row">
+                <div className="ck-pref-info">
+                  <Icon size={16} style={{ color }} />
+                  <div>
+                    <p className="ck-pref-name">{label}</p>
+                    <p className="ck-pref-desc">{desc}</p>
+                  </div>
+                </div>
+                <button
+                  className={`ck-toggle ${prefs[key] ? 'ck-toggle-on' : ''}`}
+                  onClick={() => setPrefs(p => ({ ...p, [key]: !p[key] }))}
+                  aria-label={`Toggle ${label}`}
+                >
+                  <div className="ck-toggle-thumb" />
+                </button>
+              </div>
+            ))}
           </div>
-          <button className="cookies-save-button">Save Preferences</button>
+
+          <div className="ck-prefs-actions">
+            <button className="ck-btn-outline" onClick={() => setPrefs({ performance: false, functional: false, marketing: false })}>
+              <X size={14} /> Reject All
+            </button>
+            <button className="ck-btn-outline" onClick={() => setPrefs({ performance: true, functional: true, marketing: true })}>
+              Accept All
+            </button>
+            <button className="ck-btn-primary" onClick={savePrefs}>
+              {saved ? <><Check size={14} /> Saved!</> : 'Save Preferences'}
+            </button>
+          </div>
         </div>
 
-        {/* Contact Section */}
-        <div className="cookies-section cookies-contact-section">
-          <h2 className="cookies-section-title">Questions About Cookies?</h2>
-          <p className="cookies-section-text">
-            If you have any questions about our cookie practices or need assistance managing your preferences, please contact us:
-          </p>
-          <div className="cookies-contact-info">
-            <p><strong>Email:</strong> cookies@learning.com</p>
-            <p><strong>Privacy Team:</strong> privacy@learning.com</p>
-            <p><strong>Response Time:</strong> Within 24-48 hours</p>
+        {/* Accordion sections */}
+        <h2 className="ck-section-heading">Detailed Information</h2>
+        <div className="ck-accordion">
+          {sections.map((s, i) => (
+            <div key={i} className={`ck-acc-item ${expanded === i ? 'open' : ''}`}>
+              <button className="ck-acc-header" onClick={() => toggle(i)}>
+                <span>{s.title}</span>
+                <ChevronDown size={18} className="ck-acc-chevron" />
+              </button>
+              <div className="ck-acc-body">
+                <p className="ck-text">{s.content}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Contact */}
+        <div className="ck-contact-card">
+          <h2 className="ck-prefs-title">Questions About Cookies?</h2>
+          <p className="ck-text">Reach out to our privacy team and we'll respond within 24–48 hours.</p>
+          <div className="ck-contact-grid">
+            <div className="ck-contact-item"><span className="ck-contact-label">Email</span><span>privacy@techborg.com</span></div>
+            <div className="ck-contact-item"><span className="ck-contact-label">Response Time</span><span>24–48 hours</span></div>
+            <div className="ck-contact-item"><span className="ck-contact-label">Data Protection</span><span>dpo@techborg.com</span></div>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default Cookies;
+}

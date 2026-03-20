@@ -154,6 +154,7 @@ export default function Navbar() {
           <li><Link to="/blog"      className={`nb__link ${isActive('/blog')       ? 'nb__link--active' : ''}`} onClick={close}>Blog</Link></li>
           <li><Link to="/news"      className={`nb__link ${isActive('/news')       ? 'nb__link--active' : ''}`} onClick={close}>News</Link></li>
           <li><Link to="/job-alerts" className={`nb__link ${isActive('/job-alerts') ? 'nb__link--active' : ''}`} onClick={close}>Jobs</Link></li>
+          <li><Link to="/community" className={`nb__link ${isActive('/community')  ? 'nb__link--active' : ''}`} onClick={close}>Community</Link></li>
 
           {/* Mobile-only extras */}
           <li className="nb__mobile-only">
