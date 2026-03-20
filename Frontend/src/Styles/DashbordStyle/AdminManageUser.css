@@ -141,3 +141,17 @@
     font-size: 0.8rem;
   }
 }
+
+/* Referral code badge */
+.admin-ref-code {
+  font-family: monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4a7abe;
+  background: rgba(74,122,190,0.08);
+  border: 1px solid rgba(74,122,190,0.25);
+  border-radius: 5px;
+  padding: 0.15rem 0.45rem;
+  letter-spacing: 0.04em;
+}
+.admin-ref-none { color: #aaa; }
