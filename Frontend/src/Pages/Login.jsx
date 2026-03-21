@@ -50,8 +50,10 @@ export default function Login() {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Something went wrong');
-
+      if (!res.ok) {
+        if (data.banned) throw new Error(`🚫 Account banned: ${data.banReason}`);
+        throw new Error(data.message || 'Something went wrong');
+      }
       if (!isSignup) {
         if (data.user.role !== role) throw new Error(`Access denied. This account is not a ${role}.`);
         localStorage.setItem('token', data.token);

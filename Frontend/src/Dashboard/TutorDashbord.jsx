@@ -20,7 +20,6 @@ export default function TutorDashboard() {
     fetchStats(stored._id);
     fetch(`${API}/api/referral/${stored._id}`).then(r => r.json()).then(setReferral).catch(() => {});
   }, [navigate]);
-
   const fetchStats = async (tutorId) => {
     try {
       const stored = JSON.parse(localStorage.getItem('user'));
@@ -90,6 +89,21 @@ export default function TutorDashboard() {
 
   return (
     <div className="td-page">
+      {/* Banned screen */}
+      {tutor?.isBanned && (
+        <div className="td-banned-screen">
+          <div className="td-banned-icon">🚫</div>
+          <h2 className="td-banned-title">Account Suspended</h2>
+          <p className="td-banned-reason">{tutor.banReason || 'Your account has been banned by an administrator.'}</p>
+          <p className="td-banned-sub">Please contact support if you believe this is a mistake.</p>
+          <button
+            className="td-banned-logout"
+            onClick={() => { localStorage.clear(); navigate('/login'); }}
+          >
+            Sign Out
+          </button>
+        </div>
+      )}
       {/* Header */}
       <div className="td-header">
         <div className="td-header-glow" />

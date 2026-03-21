@@ -79,6 +79,14 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
+    if (user.isBanned) {
+      return res.status(403).json({
+        message: 'Your account has been banned.',
+        banReason: user.banReason || 'No reason provided.',
+        banned: true,
+      });
+    }
+
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET || 'default_secret',
@@ -255,5 +263,36 @@ exports.getBankDetails = async (req, res) => {
     res.json(user.bankDetails || {});
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch bank details' });
+  }
+};
+
+// BAN USER
+exports.banUser = async (req, res) => {
+  try {
+    const { reason } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: { isBanned: true, banReason: reason || 'Banned by admin', bannedAt: new Date() } },
+      { new: true }
+    );
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json({ message: 'User banned', isBanned: true, banReason: user.banReason });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// UNBAN USER
+exports.unbanUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: { isBanned: false, banReason: '', bannedAt: null } },
+      { new: true }
+    );
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json({ message: 'User unbanned', isBanned: false });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
   }
 };
