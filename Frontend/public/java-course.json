@@ -1,0 +1,93 @@
+[
+  {
+    "language": "Java",
+    "shortDescription": "Learn Java from scratch — from basics to OOP, collections, and real-world projects.",
+    "image": "https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg",
+    "modules": [
+      {
+        "title": "Introduction to Java",
+        "description": "What Java is, why it's used, and how to set it up.",
+        "content": "Java is a high-level, object-oriented programming language developed by Sun Microsystems in 1995. It follows the principle of 'Write Once, Run Anywhere' (WORA), meaning compiled Java code can run on any platform that supports the Java Virtual Machine (JVM).\n\nJava is widely used in web development, Android apps, enterprise software, and backend systems.\n\nTo get started, install the JDK (Java Development Kit) from https://www.oracle.com/java and set up your PATH environment variable. You can use IDEs like IntelliJ IDEA, Eclipse, or VS Code.",
+        "codeExample": "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Variables and Data Types",
+        "description": "Understanding how Java stores and manages data.",
+        "content": "Java is a statically typed language, meaning every variable must have a declared type.\n\nPrimitive types:\n- int: whole numbers (e.g. 10, -5)\n- double: decimal numbers (e.g. 3.14)\n- char: single character (e.g. 'A')\n- boolean: true or false\n- long, float, short, byte: other numeric types\n\nReference types include String, arrays, and objects.\n\nVariables must be declared before use. Java also supports type casting — converting one type to another.",
+        "codeExample": "public class DataTypes {\n    public static void main(String[] args) {\n        int age = 25;\n        double price = 99.99;\n        char grade = 'A';\n        boolean isActive = true;\n        String name = \"Alice\";\n\n        System.out.println(name + \" is \" + age + \" years old.\");\n        System.out.println(\"Grade: \" + grade + \", Active: \" + isActive);\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Operators and Expressions",
+        "description": "Arithmetic, relational, logical, and assignment operators in Java.",
+        "content": "Java supports the following operator types:\n\n1. Arithmetic: +, -, *, /, % (modulus)\n2. Relational: ==, !=, >, <, >=, <=\n3. Logical: && (AND), || (OR), ! (NOT)\n4. Assignment: =, +=, -=, *=, /=\n5. Increment/Decrement: ++, --\n6. Ternary: condition ? valueIfTrue : valueIfFalse\n\nOperator precedence follows standard math rules — use parentheses to control evaluation order.",
+        "codeExample": "public class Operators {\n    public static void main(String[] args) {\n        int a = 10, b = 3;\n\n        System.out.println(a + b);   // 13\n        System.out.println(a % b);   // 1\n        System.out.println(a > b);   // true\n        System.out.println(a == b);  // false\n\n        // Ternary\n        String result = (a > b) ? \"a is greater\" : \"b is greater\";\n        System.out.println(result);\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Control Flow — if, else, switch",
+        "description": "Making decisions in your Java programs.",
+        "content": "Control flow statements let your program make decisions.\n\nif-else: executes a block based on a condition.\nelse if: chains multiple conditions.\nswitch: matches a variable against multiple cases — cleaner than long if-else chains for fixed values.\n\nJava 14+ also supports switch expressions with arrow syntax.",
+        "codeExample": "public class ControlFlow {\n    public static void main(String[] args) {\n        int score = 75;\n\n        if (score >= 90) {\n            System.out.println(\"Grade: A\");\n        } else if (score >= 75) {\n            System.out.println(\"Grade: B\");\n        } else if (score >= 60) {\n            System.out.println(\"Grade: C\");\n        } else {\n            System.out.println(\"Grade: F\");\n        }\n\n        // Switch\n        int day = 3;\n        switch (day) {\n            case 1: System.out.println(\"Monday\"); break;\n            case 2: System.out.println(\"Tuesday\"); break;\n            case 3: System.out.println(\"Wednesday\"); break;\n            default: System.out.println(\"Other day\");\n        }\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Loops — for, while, do-while",
+        "description": "Repeating tasks efficiently with loops.",
+        "content": "Loops allow you to execute a block of code multiple times.\n\n- for loop: best when you know the number of iterations.\n- while loop: runs as long as a condition is true.\n- do-while loop: runs at least once, then checks the condition.\n- for-each loop: iterates over arrays or collections cleanly.\n\nUse break to exit a loop early and continue to skip the current iteration.",
+        "codeExample": "public class Loops {\n    public static void main(String[] args) {\n        // for loop\n        for (int i = 1; i <= 5; i++) {\n            System.out.println(\"Count: \" + i);\n        }\n\n        // while loop\n        int n = 1;\n        while (n <= 3) {\n            System.out.println(\"While: \" + n);\n            n++;\n        }\n\n        // for-each\n        int[] nums = {10, 20, 30};\n        for (int num : nums) {\n            System.out.println(\"Num: \" + num);\n        }\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Methods (Functions)",
+        "description": "Writing reusable blocks of code with methods.",
+        "content": "A method is a block of code that performs a specific task and can be called multiple times.\n\nMethod structure:\n  returnType methodName(parameters) { body }\n\n- void: method returns nothing.\n- return: sends a value back to the caller.\n- Parameters: inputs passed to the method.\n- Overloading: multiple methods with the same name but different parameters.\n\nMethods help keep code DRY (Don't Repeat Yourself).",
+        "codeExample": "public class Methods {\n\n    // Method with return value\n    static int add(int a, int b) {\n        return a + b;\n    }\n\n    // Void method\n    static void greet(String name) {\n        System.out.println(\"Hello, \" + name + \"!\");\n    }\n\n    // Overloaded method\n    static double add(double a, double b) {\n        return a + b;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(add(3, 4));       // 7\n        System.out.println(add(1.5, 2.5));   // 4.0\n        greet(\"Alice\");\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Arrays",
+        "description": "Storing and working with multiple values in a single variable.",
+        "content": "An array stores a fixed-size sequence of elements of the same type.\n\n- Declare: int[] arr = new int[5];\n- Initialize: int[] arr = {1, 2, 3, 4, 5};\n- Access: arr[0] (zero-indexed)\n- Length: arr.length\n\n2D arrays are arrays of arrays — useful for grids and matrices.\n\nFor dynamic sizing, use ArrayList from java.util instead.",
+        "codeExample": "public class Arrays {\n    public static void main(String[] args) {\n        // 1D array\n        int[] scores = {85, 92, 78, 95, 88};\n        int sum = 0;\n        for (int s : scores) sum += s;\n        System.out.println(\"Average: \" + (sum / scores.length));\n\n        // 2D array\n        int[][] matrix = {\n            {1, 2, 3},\n            {4, 5, 6},\n            {7, 8, 9}\n        };\n        System.out.println(\"Center: \" + matrix[1][1]); // 5\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Object-Oriented Programming — Classes & Objects",
+        "description": "The foundation of Java — modeling real-world entities with classes.",
+        "content": "Java is an object-oriented language. Everything revolves around classes and objects.\n\n- Class: a blueprint/template.\n- Object: an instance of a class.\n- Fields: variables that belong to a class.\n- Constructor: a special method called when an object is created.\n- this: refers to the current object.\n\nOOP makes code modular, reusable, and easier to maintain.",
+        "codeExample": "public class Car {\n    String brand;\n    int year;\n\n    // Constructor\n    Car(String brand, int year) {\n        this.brand = brand;\n        this.year = year;\n    }\n\n    void display() {\n        System.out.println(brand + \" (\" + year + \")\");\n    }\n\n    public static void main(String[] args) {\n        Car c1 = new Car(\"Toyota\", 2022);\n        Car c2 = new Car(\"Honda\", 2020);\n        c1.display();\n        c2.display();\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Inheritance and Polymorphism",
+        "description": "Reusing and extending classes with inheritance.",
+        "content": "Inheritance lets a class (child) inherit fields and methods from another class (parent) using the extends keyword.\n\n- super: calls the parent class constructor or method.\n- Method Overriding: child class redefines a parent method.\n- Polymorphism: one interface, many implementations — a parent reference can hold a child object.\n\nThis reduces code duplication and enables flexible design.",
+        "codeExample": "class Animal {\n    String name;\n    Animal(String name) { this.name = name; }\n    void speak() { System.out.println(name + \" makes a sound.\"); }\n}\n\nclass Dog extends Animal {\n    Dog(String name) { super(name); }\n\n    @Override\n    void speak() { System.out.println(name + \" barks!\"); }\n}\n\nclass Cat extends Animal {\n    Cat(String name) { super(name); }\n\n    @Override\n    void speak() { System.out.println(name + \" meows!\"); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal a1 = new Dog(\"Rex\");\n        Animal a2 = new Cat(\"Whiskers\");\n        a1.speak(); // Rex barks!\n        a2.speak(); // Whiskers meows!\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Interfaces and Abstraction",
+        "description": "Defining contracts and hiding implementation details.",
+        "content": "An interface defines a contract — a set of methods a class must implement. It contains only method signatures (no body) by default.\n\nAbstract classes are similar but can have both abstract and concrete methods.\n\nKey differences:\n- A class can implement multiple interfaces but extend only one class.\n- Use interfaces for defining capabilities (Runnable, Comparable).\n- Use abstract classes for shared base behavior.\n\nInterfaces are the backbone of Java's design patterns and frameworks.",
+        "codeExample": "interface Shape {\n    double area();\n    double perimeter();\n}\n\nclass Circle implements Shape {\n    double radius;\n    Circle(double r) { this.radius = r; }\n\n    public double area() { return Math.PI * radius * radius; }\n    public double perimeter() { return 2 * Math.PI * radius; }\n}\n\nclass Rectangle implements Shape {\n    double w, h;\n    Rectangle(double w, double h) { this.w = w; this.h = h; }\n\n    public double area() { return w * h; }\n    public double perimeter() { return 2 * (w + h); }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Shape s1 = new Circle(5);\n        Shape s2 = new Rectangle(4, 6);\n        System.out.printf(\"Circle area: %.2f%n\", s1.area());\n        System.out.printf(\"Rectangle area: %.2f%n\", s2.area());\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Exception Handling",
+        "description": "Handling runtime errors gracefully.",
+        "content": "Exceptions are runtime errors that can crash your program if unhandled. Java uses try-catch-finally blocks to handle them.\n\n- try: code that might throw an exception.\n- catch: handles the exception.\n- finally: always runs (cleanup code).\n- throw: manually throw an exception.\n- throws: declares that a method may throw an exception.\n\nCommon exceptions: NullPointerException, ArrayIndexOutOfBoundsException, NumberFormatException, IOException.",
+        "codeExample": "public class ExceptionDemo {\n    static int divide(int a, int b) {\n        if (b == 0) throw new ArithmeticException(\"Cannot divide by zero!\");\n        return a / b;\n    }\n\n    public static void main(String[] args) {\n        try {\n            System.out.println(divide(10, 2));  // 5\n            System.out.println(divide(10, 0));  // throws\n        } catch (ArithmeticException e) {\n            System.out.println(\"Error: \" + e.getMessage());\n        } finally {\n            System.out.println(\"Done.\");\n        }\n\n        // Parsing exception\n        try {\n            int n = Integer.parseInt(\"abc\");\n        } catch (NumberFormatException e) {\n            System.out.println(\"Invalid number format.\");\n        }\n    }\n}",
+        "image": ""
+      },
+      {
+        "title": "Collections — ArrayList and HashMap",
+        "description": "Working with dynamic data structures in Java.",
+        "content": "The Java Collections Framework provides ready-made data structures.\n\nArrayList: a resizable array.\n- add(), remove(), get(), size(), contains()\n\nHashMap: stores key-value pairs.\n- put(), get(), remove(), containsKey(), keySet()\n\nOther useful collections:\n- LinkedList: doubly linked list\n- HashSet: unique elements, no order\n- TreeMap: sorted key-value pairs\n\nAlways use generics (e.g. ArrayList<String>) for type safety.",
+        "codeExample": "import java.util.ArrayList;\nimport java.util.HashMap;\n\npublic class Collections {\n    public static void main(String[] args) {\n        // ArrayList\n        ArrayList<String> fruits = new ArrayList<>();\n        fruits.add(\"Apple\");\n        fruits.add(\"Banana\");\n        fruits.add(\"Mango\");\n        fruits.remove(\"Banana\");\n        for (String f : fruits) System.out.println(f);\n\n        // HashMap\n        HashMap<String, Integer> scores = new HashMap<>();\n        scores.put(\"Alice\", 95);\n        scores.put(\"Bob\", 82);\n        scores.put(\"Carol\", 88);\n        System.out.println(\"Alice: \" + scores.get(\"Alice\"));\n        for (String key : scores.keySet()) {\n            System.out.println(key + \" -> \" + scores.get(key));\n        }\n    }\n}",
+        "image": ""
+      }
+    ]
+  }
+]

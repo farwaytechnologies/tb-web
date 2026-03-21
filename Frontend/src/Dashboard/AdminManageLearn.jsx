@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Plus, Edit2, Trash2, Search, X, Save, Code, ChevronDown, ChevronUp, Eye } from 'lucide-react';
+import { BookOpen, Plus, Edit2, Trash2, Search, X, Save, Code, ChevronDown, ChevronUp, Eye, Upload, FileJson, FileText, CheckCircle, AlertCircle } from 'lucide-react';
 import '../Styles/DashbordStyle/ManageLearn.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -18,6 +18,14 @@ export default function AdminManageLearn() {
   const [saving, setSaving] = useState(false);
   const [expandedMod, setExpandedMod] = useState(0);
   const [preview, setPreview] = useState(null);
+
+  // Upload state
+  const [showUpload, setShowUpload] = useState(false);
+  const [uploadFile, setUploadFile] = useState(null);
+  const [uploadMeta, setUploadMeta] = useState({ language: '', shortDescription: '', image: '' });
+  const [uploading, setUploading] = useState(false);
+  const [uploadResult, setUploadResult] = useState(null); // { success, message }
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -68,12 +76,57 @@ export default function AdminManageLearn() {
 
   const totalMods = learns.reduce((s, l) => s + (l.modules?.length || 0), 0);
 
+  const openUpload = () => {
+    setUploadFile(null);
+    setUploadMeta({ language: '', shortDescription: '', image: '' });
+    setUploadResult(null);
+    setShowUpload(true);
+  };
+
+  const handleFileChange = (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setUploadFile(f);
+    setUploadResult(null);
+    // Pre-fill language name from filename for .docx
+    if (f.name.endsWith('.docx') && !uploadMeta.language) {
+      setUploadMeta(m => ({ ...m, language: f.name.replace(/\.docx$/i, '') }));
+    }
+  };
+
+  const handleUploadSubmit = async () => {
+    if (!uploadFile) return;
+    setUploading(true);
+    setUploadResult(null);
+    try {
+      const fd = new FormData();
+      fd.append('file', uploadFile);
+      if (uploadFile.name.endsWith('.docx')) {
+        fd.append('language', uploadMeta.language);
+        fd.append('shortDescription', uploadMeta.shortDescription);
+        fd.append('image', uploadMeta.image);
+      }
+      const res = await fetch(`${API_URL}/api/learn/upload`, { method: 'POST', body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Upload failed');
+      setUploadResult({ success: true, message: data.message });
+      fetchData();
+    } catch (err) {
+      setUploadResult({ success: false, message: err.message });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="ml-page">
       <div className="ml-header">
         <BookOpen size={26} className="ml-header-icon" />
         <div><h1>Manage Learn</h1><p>{learns.length} languages · {totalMods} modules</p></div>
-        <button className="ml-btn-add" onClick={openCreate}><Plus size={16} /> New Language</button>
+        <div className="ml-header-actions">
+          <button className="ml-btn-import" onClick={openUpload}><Upload size={16} /> Import File</button>
+          <button className="ml-btn-add" onClick={openCreate}><Plus size={16} /> New Language</button>
+        </div>
       </div>
 
       <div className="ml-stats">
@@ -223,6 +276,97 @@ export default function AdminManageLearn() {
                   {m.image && <img src={m.image} alt={m.title} style={{ width:'100%', borderRadius:'8px', marginTop:'8px' }} onError={e => e.target.style.display='none'} />}
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Upload Modal */}
+      {showUpload && (
+        <div className="ml-overlay" onClick={() => setShowUpload(false)}>
+          <div className="ml-modal ml-upload-modal" onClick={e => e.stopPropagation()}>
+            <div className="ml-modal-header">
+              <h2><Upload size={18} /> Import Course from File</h2>
+              <button onClick={() => setShowUpload(false)}><X size={18} /></button>
+            </div>
+            <div className="ml-form-scroll">
+              <div className="ml-upload-info">
+                <div className="ml-upload-format">
+                  <FileJson size={20} />
+                  <div>
+                    <strong>.json</strong>
+                    <span>Single or array of course objects with language, modules, etc.</span>
+                  </div>
+                </div>
+                <div className="ml-upload-format">
+                  <FileText size={20} />
+                  <div>
+                    <strong>.docx</strong>
+                    <span>Word doc — use H1/H2 headings for module titles, paragraphs for content.</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Drop zone */}
+              <div
+                className={`ml-dropzone ${uploadFile ? 'ml-dropzone--has-file' : ''}`}
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={e => e.preventDefault()}
+                onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { setUploadFile(f); if (f.name.endsWith('.docx') && !uploadMeta.language) setUploadMeta(m => ({ ...m, language: f.name.replace(/\.docx$/i, '') })); } }}
+              >
+                <input ref={fileInputRef} type="file" accept=".json,.docx" style={{ display: 'none' }} onChange={handleFileChange} />
+                {uploadFile ? (
+                  <div className="ml-dropzone-file">
+                    {uploadFile.name.endsWith('.json') ? <FileJson size={28} /> : <FileText size={28} />}
+                    <span>{uploadFile.name}</span>
+                    <button className="ml-dropzone-clear" onClick={e => { e.stopPropagation(); setUploadFile(null); setUploadResult(null); }}><X size={14} /></button>
+                  </div>
+                ) : (
+                  <>
+                    <Upload size={28} />
+                    <p>Click or drag & drop a <strong>.json</strong> or <strong>.docx</strong> file</p>
+                  </>
+                )}
+              </div>
+
+              {/* Extra fields for .docx */}
+              {uploadFile?.name.endsWith('.docx') && (
+                <div className="ml-form-section" style={{ marginTop: '16px' }}>
+                  <h4 className="ml-form-section-title">Course Info (for .docx)</h4>
+                  <div className="ml-form-grid">
+                    <div className="ml-field">
+                      <label>Language / Course Name *</label>
+                      <input value={uploadMeta.language} onChange={e => setUploadMeta(m => ({ ...m, language: e.target.value }))} placeholder="e.g. Python Basics" />
+                    </div>
+                    <div className="ml-field">
+                      <label>Cover Image URL</label>
+                      <input value={uploadMeta.image} onChange={e => setUploadMeta(m => ({ ...m, image: e.target.value }))} placeholder="https://..." />
+                    </div>
+                    <div className="ml-field ml-field-full">
+                      <label>Short Description</label>
+                      <textarea rows={2} value={uploadMeta.shortDescription} onChange={e => setUploadMeta(m => ({ ...m, shortDescription: e.target.value }))} placeholder="Brief overview..." />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Result feedback */}
+              {uploadResult && (
+                <div className={`ml-upload-result ${uploadResult.success ? 'ml-upload-result--ok' : 'ml-upload-result--err'}`}>
+                  {uploadResult.success ? <CheckCircle size={16} /> : <AlertCircle size={16} />}
+                  <span>{uploadResult.message}</span>
+                </div>
+              )}
+            </div>
+            <div className="ml-modal-footer">
+              <button
+                className="ml-btn-save"
+                onClick={handleUploadSubmit}
+                disabled={!uploadFile || uploading}
+              >
+                <Upload size={15} /> {uploading ? 'Importing...' : 'Import'}
+              </button>
+              <button className="ml-btn-cancel" onClick={() => setShowUpload(false)}>Cancel</button>
             </div>
           </div>
         </div>
