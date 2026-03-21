@@ -4,6 +4,7 @@ const {
   register, login, updateUser, updateSettings,
   changePassword, deleteAccount, getAllUsers,
   updateBankDetails, getBankDetails,
+  banUser, unbanUser,
 } = require('../controllers/authController');
 const { authLimiter } = require('../middleware/security');
 
@@ -23,5 +24,9 @@ router.get('/users', getAllUsers);
 // Bank details (tutors)
 router.get('/bank/:id', getBankDetails);
 router.put('/bank/:id', updateBankDetails);
+
+// Ban / Unban
+router.put('/ban/:id', banUser);
+router.put('/unban/:id', unbanUser);
 
 module.exports = router;

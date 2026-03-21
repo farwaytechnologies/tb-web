@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema({
   },
   referralCode: { type: String, unique: true, sparse: true },
   referredBy:   { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+  isBanned:     { type: Boolean, default: false },
+  banReason:    { type: String, default: '' },
+  bannedAt:     { type: Date, default: null },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

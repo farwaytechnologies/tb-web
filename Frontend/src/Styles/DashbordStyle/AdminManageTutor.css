@@ -78,3 +78,147 @@
   .amt-table th:nth-child(3), .amt-table td:nth-child(3),
   .amt-table th:nth-child(4), .amt-table td:nth-child(4) { display: none; }
 }
+
+/* Banned row highlight */
+.amt-row--banned { opacity: 0.75; background: rgba(239,68,68,0.04); }
+
+/* Status badge */
+.amt-status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.amt-status-badge.active {
+  background: rgba(16,185,129,0.1);
+  color: #34d399;
+  border: 1px solid rgba(16,185,129,0.2);
+}
+.amt-status-badge.banned {
+  background: rgba(239,68,68,0.1);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+/* Ban reason inline under name */
+.amt-ban-reason-inline {
+  display: block;
+  font-size: 0.7rem;
+  color: #f87171;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ban / Unban buttons */
+.amt-btn--ban {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #f87171;
+  border-radius: 7px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.amt-btn--ban:hover { background: rgba(239,68,68,0.2); }
+
+.amt-btn--unban {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  background: rgba(16,185,129,0.1);
+  border: 1px solid rgba(16,185,129,0.3);
+  color: #34d399;
+  border-radius: 7px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.amt-btn--unban:hover { background: rgba(16,185,129,0.2); }
+
+/* Ban modal */
+.amt-modal--ban { max-width: 440px; }
+
+.amt-ban-tutor-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  margin-bottom: 1.25rem;
+}
+.amt-ban-tutor-info img {
+  width: 40px; height: 40px;
+  border-radius: 50%; object-fit: cover;
+}
+.amt-ban-tutor-info strong { display: block; font-size: 0.9rem; color: #f1f5f9; }
+.amt-ban-tutor-info span  { font-size: 0.78rem; color: #64748b; }
+
+.amt-ban-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-bottom: 0.4rem;
+}
+.amt-ban-textarea {
+  width: 100%;
+  background: #13131a;
+  border: 1px solid #1e1e2e;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  color: #e2e8f0;
+  font-size: 0.85rem;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.amt-ban-textarea:focus { border-color: #ef4444; }
+
+.amt-ban-warning {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding: 0.6rem 0.85rem;
+  background: rgba(239,68,68,0.07);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: #f87171;
+}
+
+.amt-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.amt-btn--cancel {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #94a3b8;
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.amt-btn--confirm-ban {
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.35);
+  color: #f87171;
+  border-radius: 8px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.amt-btn--confirm-ban:hover:not(:disabled) { background: rgba(239,68,68,0.25); }
+.amt-btn--confirm-ban:disabled { opacity: 0.5; cursor: not-allowed; }
