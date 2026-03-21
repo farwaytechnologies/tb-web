@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   saveTutorRewards,
+  getTutorReward,
   getLeaderboard,
   getAllTutorRewards,
   adjustBonusPoints,
@@ -14,7 +15,8 @@ router.get('/admin/all', getAllTutorRewards);
 router.post('/admin/bonus/:tutorId', adjustBonusPoints);
 router.delete('/admin/reset/:tutorId', resetTutorReward);
 
-// Param route LAST
+// Param routes LAST
+router.get('/tutor/:tutorId', getTutorReward);
 router.post('/tutor/:tutorId', saveTutorRewards);
 
 module.exports = router;

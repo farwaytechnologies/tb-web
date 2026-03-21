@@ -149,6 +149,7 @@ exports.uploadCourse = async (req, res) => {
           language: entry.language,
           shortDescription: entry.shortDescription || '',
           image: entry.image || '',
+          createdBy: req.body.createdBy || null,
           modules: (entry.modules || []).map(m => ({
             title: m.title || '',
             description: m.description || '',
@@ -175,6 +176,7 @@ exports.uploadCourse = async (req, res) => {
         language,
         shortDescription: req.body.shortDescription || '',
         image: req.body.image || '',
+        createdBy: req.body.createdBy || null,
         modules,
       });
       await doc.save();

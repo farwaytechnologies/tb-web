@@ -3,9 +3,9 @@ const Learn = require('../models/LearnModel');
 // CREATE new language
 exports.createLanguage = async (req, res) => {
   try {
-    const { language, shortDescription, image, modules } = req.body;
+    const { language, shortDescription, image, modules, createdBy } = req.body;
 
-    const newLang = new Learn({ language, shortDescription, image, modules });
+    const newLang = new Learn({ language, shortDescription, image, modules, createdBy: createdBy || null });
     await newLang.save();
 
     res.status(201).json(newLang);

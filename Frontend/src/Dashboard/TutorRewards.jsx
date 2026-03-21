@@ -31,6 +31,7 @@ function getCurrentBadge(pts) {
 export default function TutorRewards() {
   const [breakdown, setBreakdown] = useState({ courses: 0, blogs: 0, enrollments: 0, learnContent: 0 });
   const [bonusPoints, setBonusPoints] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -42,50 +43,22 @@ export default function TutorRewards() {
 
     const load = async () => {
       try {
-        // Fetch all data independently so one failure doesn't break everything
-        const safeJson = async (url) => {
-          try {
-            const r = await fetch(url);
-            if (!r.ok) return [];
-            const d = await r.json();
-            return Array.isArray(d) ? d : [];
-          } catch { return []; }
-        };
-
-        const [allCourses, allBlogs, allEnrollments, lb] = await Promise.all([
-          safeJson(`${API_URL}/api/courses`),
-          safeJson(`${API_URL}/api/blogs`),
-          safeJson(`${API_URL}/api/enrollments`),
-          safeJson(`${API_URL}/api/rewards/leaderboard`)
+        const [rewardRes, lbRes] = await Promise.all([
+          fetch(`${API_URL}/api/rewards/tutor/${stored._id}`),
+          fetch(`${API_URL}/api/rewards/leaderboard`)
         ]);
 
-        const tutorCourses = allCourses.filter(c => c.instructor === stored.name);
-        const tutorCourseIds = tutorCourses.map(c => String(c._id));
-        const tutorBlogs = allBlogs.filter(b => b.author === stored.name);
-        const tutorEnrollments = allEnrollments.filter(e => tutorCourseIds.includes(String(e.courseId)));
+        if (rewardRes.ok) {
+          const data = await rewardRes.json();
+          setBreakdown(data.breakdown || { courses: 0, blogs: 0, enrollments: 0, learnContent: 0 });
+          setBonusPoints(data.bonusPoints || 0);
+          setTotalPoints(data.totalPoints || 0);
+        }
 
-        const counts = {
-          courses: tutorCourses.length,
-          blogs: tutorBlogs.length,
-          enrollments: tutorEnrollments.length,
-          learnContent: 0
-        };
-
-        setBreakdown(counts);
-        setLeaderboard(lb);
-
-        // Save activity points to backend, then read back bonus
-        try {
-          const rewardRes = await fetch(`${API_URL}/api/rewards/tutor/${stored._id}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(counts)
-          });
-          if (rewardRes.ok) {
-            const rewardData = await rewardRes.json();
-            setBonusPoints(rewardData.bonusPoints || 0);
-          }
-        } catch (_) {}
+        if (lbRes.ok) {
+          const lb = await lbRes.json();
+          setLeaderboard(Array.isArray(lb) ? lb : []);
+        }
       } catch (err) {
         console.error('Rewards load error:', err);
       } finally {
@@ -97,7 +70,7 @@ export default function TutorRewards() {
   }, [navigate]);
 
   const activityPoints = calcPoints(breakdown);
-  const points = activityPoints + bonusPoints;
+  const points = totalPoints;
   const currentBadge = getCurrentBadge(points);
   const nextBadge = ALL_BADGES.find(b => b.minPoints > points);
   const progressPct = nextBadge ? Math.min(100, Math.round((points / nextBadge.minPoints) * 100)) : 100;

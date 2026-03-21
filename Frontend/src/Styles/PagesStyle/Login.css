@@ -252,3 +252,26 @@
   .lp-role-card, .lp-form-card { padding: 28px 20px; border-radius: 18px; }
   .lp-role-title, .lp-form-title { font-size: 1.5rem; }
 }
+
+/* ── Forgot Password Overlay ─────────────────────────────────────────────── */
+.lp-forgot-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 1rem;
+}
+
+.lp-forgot-modal {
+  background: #12121a;
+  border: 1px solid #2a2a3e;
+  border-radius: 20px;
+  padding: 32px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}

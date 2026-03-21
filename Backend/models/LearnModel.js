@@ -14,7 +14,8 @@ const learnSchema = new mongoose.Schema({
   language: { type: String, required: true },
   shortDescription: { type: String, default: '' },
   image: { type: String, default: '' },
-  modules: [moduleSchema], // Array of module objects
+  modules: [moduleSchema],
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   createdAt: { type: Date, default: Date.now },
 });
 

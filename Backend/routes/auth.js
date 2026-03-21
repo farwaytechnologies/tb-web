@@ -5,12 +5,15 @@ const {
   changePassword, deleteAccount, getAllUsers,
   updateBankDetails, getBankDetails,
   banUser, unbanUser,
+  forgotPassword, resetPassword,
 } = require('../controllers/authController');
 const { authLimiter } = require('../middleware/security');
 
 // Public (rate limited)
 router.post('/register', authLimiter, register);
 router.post('/login',    authLimiter, login);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password',  resetPassword);
 
 // Profile
 router.put('/update/:id', updateUser);

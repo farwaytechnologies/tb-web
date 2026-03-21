@@ -2,6 +2,7 @@ const TutorReward = require('../models/TutorReward');
 const Course = require('../models/Course');
 const Blog = require('../models/Blog');
 const Enrollment = require('../models/Enrollment');
+const Learn = require('../models/LearnModel');
 const User = require('../models/user');
 
 const POINTS = { perCourse: 50, perBlog: 20, perEnrollment: 10, perLearnContent: 15 };
@@ -30,6 +31,40 @@ function computeBadges(points) {
 function getCurrentBadge(points) {
   return [...BADGES].reverse().find(b => points >= b.minPoints) || BADGES[0];
 }
+
+// GET /api/rewards/tutor/:tutorId — fetch stored reward for a single tutor (live computed)
+exports.getTutorReward = async (req, res) => {
+  try {
+    const { tutorId } = req.params;
+    const tutor = await User.findById(tutorId).select('name');
+    if (!tutor) return res.status(404).json({ message: 'Tutor not found' });
+
+    const [allCourses, allBlogs, allEnrollments, learnCount] = await Promise.all([
+      Course.find().select('instructor _id'),
+      Blog.find().select('author'),
+      Enrollment.find({ status: 'Accepted' }).select('courseId'),
+      Learn.countDocuments({ createdBy: tutorId })
+    ]);
+
+    const tutorCourseIds = allCourses.filter(c => c.instructor === tutor.name).map(c => String(c._id));
+    const breakdown = {
+      courses: allCourses.filter(c => c.instructor === tutor.name).length,
+      blogs: allBlogs.filter(b => b.author === tutor.name).length,
+      enrollments: allEnrollments.filter(e => tutorCourseIds.includes(String(e.courseId))).length,
+      learnContent: learnCount
+    };
+
+    const activityPoints = computePoints(breakdown);
+    const stored = await TutorReward.findOne({ tutorId });
+    const bonusPoints = stored?.bonusPoints || 0;
+    const totalPoints = activityPoints + bonusPoints;
+    const badges = computeBadges(totalPoints);
+
+    res.json({ tutorId, breakdown, points: activityPoints, bonusPoints, totalPoints, badges, currentBadge: getCurrentBadge(totalPoints).name });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 // POST /api/rewards/tutor/:tutorId
 // Body: { courses, blogs, enrollments, learnContent }
@@ -63,20 +98,22 @@ exports.saveTutorRewards = async (req, res) => {
 exports.getLeaderboard = async (req, res) => {
   try {
     // Fetch all tutors + all data in parallel
-    const [tutors, allCourses, allBlogs, allEnrollments] = await Promise.all([
+    const [tutors, allCourses, allBlogs, allEnrollments, allLearn] = await Promise.all([
       User.find({ role: 'tutor' }).select('_id name profilePic'),
       Course.find().select('instructor _id'),
       Blog.find().select('author'),
-      Enrollment.find().select('courseId')
+      Enrollment.find().select('courseId status'),
+      Learn.find().select('createdBy')
     ]);
 
     // Build a courseId → instructorName map
     const courseInstructorMap = {};
     allCourses.forEach(c => { courseInstructorMap[String(c._id)] = c.instructor; });
 
-    // Count enrollments per instructor name
+    // Count only accepted enrollments per instructor name
     const enrollmentsByInstructor = {};
     allEnrollments.forEach(e => {
+      if (e.status !== 'Accepted') return;
       const instructor = courseInstructorMap[String(e.courseId)];
       if (instructor) {
         enrollmentsByInstructor[instructor] = (enrollmentsByInstructor[instructor] || 0) + 1;
@@ -95,13 +132,19 @@ exports.getLeaderboard = async (req, res) => {
       if (c.instructor) coursesByInstructor[c.instructor] = (coursesByInstructor[c.instructor] || 0) + 1;
     });
 
+    // Count learn content per tutorId
+    const learnByTutor = {};
+    allLearn.forEach(l => {
+      if (l.createdBy) learnByTutor[String(l.createdBy)] = (learnByTutor[String(l.createdBy)] || 0) + 1;
+    });
+
     // Build leaderboard entries for each tutor
     const entries = tutors.map(tutor => {
       const breakdown = {
         courses: coursesByInstructor[tutor.name] || 0,
         blogs: blogsByAuthor[tutor.name] || 0,
         enrollments: enrollmentsByInstructor[tutor.name] || 0,
-        learnContent: 0
+        learnContent: learnByTutor[String(tutor._id)] || 0
       };
       const points = computePoints(breakdown);
       const currentBadge = getCurrentBadge(points);
@@ -144,11 +187,12 @@ exports.getLeaderboard = async (req, res) => {
 // Returns full reward data for every tutor (live computed)
 exports.getAllTutorRewards = async (req, res) => {
   try {
-    const [tutors, allCourses, allBlogs, allEnrollments] = await Promise.all([
+    const [tutors, allCourses, allBlogs, allEnrollments, allLearn] = await Promise.all([
       User.find({ role: 'tutor' }).select('_id name profilePic email'),
       Course.find().select('instructor _id'),
       Blog.find().select('author'),
-      Enrollment.find().select('courseId')
+      Enrollment.find().select('courseId status'),
+      Learn.find().select('createdBy')
     ]);
 
     const courseInstructorMap = {};
@@ -156,6 +200,7 @@ exports.getAllTutorRewards = async (req, res) => {
 
     const enrollmentsByInstructor = {};
     allEnrollments.forEach(e => {
+      if (e.status !== 'Accepted') return;
       const instructor = courseInstructorMap[String(e.courseId)];
       if (instructor) enrollmentsByInstructor[instructor] = (enrollmentsByInstructor[instructor] || 0) + 1;
     });
@@ -165,6 +210,9 @@ exports.getAllTutorRewards = async (req, res) => {
 
     const coursesByInstructor = {};
     allCourses.forEach(c => { if (c.instructor) coursesByInstructor[c.instructor] = (coursesByInstructor[c.instructor] || 0) + 1; });
+
+    const learnByTutor = {};
+    allLearn.forEach(l => { if (l.createdBy) learnByTutor[String(l.createdBy)] = (learnByTutor[String(l.createdBy)] || 0) + 1; });
 
     // Fetch stored reward records for bonus points
     const storedRewards = await TutorReward.find();
@@ -176,7 +224,7 @@ exports.getAllTutorRewards = async (req, res) => {
         courses: coursesByInstructor[tutor.name] || 0,
         blogs: blogsByAuthor[tutor.name] || 0,
         enrollments: enrollmentsByInstructor[tutor.name] || 0,
-        learnContent: 0
+        learnContent: learnByTutor[String(tutor._id)] || 0
       };
       const activityPoints = computePoints(breakdown);
       const bonus = bonusMap[String(tutor._id)] || 0;

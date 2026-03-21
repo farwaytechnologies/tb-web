@@ -22,7 +22,12 @@ function mongoSanitizeMiddleware(req, res, next) {
 
 function escapeHtml(str) {
   if (typeof str !== 'string') return str;
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
 }
 
 function xssClean(val) {
@@ -45,7 +50,9 @@ function xssMiddleware(req, res, next) {
 function hppMiddleware(req, res, next) {
   if (req.body && typeof req.body === 'object') {
     for (const key of Object.keys(req.body)) {
-      if (Array.isArray(req.body[key])) req.body[key] = req.body[key][req.body[key].length - 1];
+      if (Array.isArray(req.body[key])) {
+        req.body[key] = req.body[key][req.body[key].length - 1];
+      }
     }
   }
   next();
@@ -55,30 +62,46 @@ const logEvent = async (req, event, severity = 'medium', extra = {}) => {
   try {
     const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || '';
     const geo = geoip.lookup(ip);
-    await SecurityLog.create({ event, severity, ip, userAgent: req.headers['user-agent'] || '', path: req.originalUrl || req.path || '', method: req.method || '', country: geo?.country || '', ...extra });
+    await SecurityLog.create({
+      event, severity, ip,
+      userAgent: req.headers['user-agent'] || '',
+      path: req.originalUrl || req.path || '',
+      method: req.method || '',
+      country: geo?.country || '',
+      ...extra,
+    });
   } catch (_) {}
 };
 
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, max: 10, standardHeaders: true, legacyHeaders: false,
+  windowMs: 15 * 60 * 1000, max: 10,
+  standardHeaders: true, legacyHeaders: false,
   handler: async (req, res) => {
-    await logEvent(req, 'RATE_LIMITED_AUTH', 'high', { email: req.body?.email || '', blocked: true, details: 'Too many auth attempts' });
+    await logEvent(req, 'RATE_LIMITED_AUTH', 'high', {
+      email: req.body?.email || '', blocked: true, details: 'Too many auth attempts',
+    });
     res.status(429).json({ message: 'Too many attempts. Please try again in 15 minutes.' });
   },
 });
 
 const apiLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false,
+  windowMs: 10 * 60 * 1000, max: 200,
+  standardHeaders: true, legacyHeaders: false,
   handler: async (req, res) => {
-    await logEvent(req, 'RATE_LIMITED_API', 'medium', { blocked: true, details: 'API rate limit exceeded' });
+    await logEvent(req, 'RATE_LIMITED_API', 'medium', {
+      blocked: true, details: 'API rate limit exceeded',
+    });
     res.status(429).json({ message: 'Too many requests. Please slow down.' });
   },
 });
 
 const adminLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, max: 50, standardHeaders: true, legacyHeaders: false,
+  windowMs: 10 * 60 * 1000, max: 50,
+  standardHeaders: true, legacyHeaders: false,
   handler: async (req, res) => {
-    await logEvent(req, 'RATE_LIMITED_ADMIN', 'high', { blocked: true, details: 'Admin route rate limit exceeded' });
+    await logEvent(req, 'RATE_LIMITED_ADMIN', 'high', {
+      blocked: true, details: 'Admin route rate limit exceeded',
+    });
     res.status(429).json({ message: 'Too many admin requests.' });
   },
 });
@@ -92,11 +115,13 @@ const SUSPICIOUS_PATTERNS = [
 ];
 
 const suspiciousInputDetector = async (req, res, next) => {
-  // Only scan body and query values — NOT the URL path (avoids false positives on route names)
   const combined = JSON.stringify(req.body || {}) + JSON.stringify(req.query || {});
   for (const pattern of SUSPICIOUS_PATTERNS) {
     if (pattern.test(combined)) {
-      await logEvent(req, 'SUSPICIOUS_INPUT', 'critical', { blocked: true, details: `Pattern matched: ${pattern.toString().slice(0, 60)}` });
+      await logEvent(req, 'SUSPICIOUS_INPUT', 'critical', {
+        blocked: true,
+        details: `Pattern matched: ${pattern.toString().slice(0, 60)}`,
+      });
       return res.status(400).json({ message: 'Invalid request.' });
     }
   }
@@ -109,4 +134,8 @@ const logFailedLogin = async (req, email = '') => {
 
 const sanitizeInputs = [mongoSanitizeMiddleware, xssMiddleware, hppMiddleware];
 
-module.exports = { authLimiter, apiLimiter, adminLimiter, suspiciousInputDetector, sanitizeInputs, logFailedLogin, logEvent };
+module.exports = {
+  authLimiter, apiLimiter, adminLimiter,
+  suspiciousInputDetector, sanitizeInputs,
+  logFailedLogin, logEvent,
+};

@@ -296,3 +296,82 @@ exports.unbanUser = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// FORGOT PASSWORD — sends reset email
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    // Always respond OK to prevent email enumeration
+    if (!user) return res.json({ message: 'If that email exists, a reset link has been sent.' });
+
+    const token = crypto.randomBytes(32).toString('hex');
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    await user.save();
+
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+
+    const nodemailer = require('nodemailer');
+    const port = Number(process.env.EMAIL_PORT) || 587;
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port,
+      secure: port === 465,
+      requireTLS: port === 587,
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+      tls: { rejectUnauthorized: false },
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM || 'TechBorg <support@techborg.in>',
+      to: user.email,
+      subject: 'Reset your TechBorg password',
+      html: `
+        <div style="font-family:Inter,sans-serif;max-width:520px;margin:0 auto;background:#0a0a0f;color:#e2e8f0;border-radius:16px;overflow:hidden;border:1px solid #2a2a3e;">
+          <div style="background:linear-gradient(135deg,#12121a,#1a1a2e);padding:32px 36px;border-bottom:1px solid #2a2a3e;">
+            <div style="font-size:22px;font-weight:800;color:#f0f0f0;">⚡ TechBorg</div>
+          </div>
+          <div style="padding:36px;">
+            <h2 style="margin:0 0 12px;font-size:20px;color:#f0f0f0;">Reset your password</h2>
+            <p style="color:#888;font-size:14px;line-height:1.6;margin:0 0 28px;">
+              Hi ${user.name}, we received a request to reset your password. Click the button below — this link expires in 1 hour.
+            </p>
+            <a href="${resetUrl}" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;text-decoration:none;border-radius:10px;font-weight:600;font-size:14px;">
+              Reset Password
+            </a>
+            <p style="color:#555;font-size:12px;margin:24px 0 0;">
+              If you didn't request this, you can safely ignore this email.
+            </p>
+          </div>
+        </div>
+      `,
+    });
+
+    res.json({ message: 'If that email exists, a reset link has been sent.' });
+  } catch (err) {
+    console.error('Forgot password error:', err);
+    res.status(500).json({ message: 'Failed to send reset email.' });
+  }
+};
+
+// RESET PASSWORD — validates token and sets new password
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token, password } = req.body;
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: new Date() },
+    });
+    if (!user) return res.status(400).json({ message: 'Reset link is invalid or has expired.' });
+
+    user.password = await bcrypt.hash(password, 10);
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    await user.save();
+
+    res.json({ message: 'Password reset successfully. You can now log in.' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};

@@ -7,6 +7,11 @@ const API = import.meta.env.VITE_API_URL;
 export default function Login() {
   const [role, setRole] = useState(null);
   const [isSignup, setIsSignup] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotStatus, setForgotStatus] = useState(''); // 'success' | 'error' | ''
+  const [forgotMsg, setForgotMsg] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '', referralCode: '' });
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
@@ -32,6 +37,27 @@ export default function Login() {
   }, [navigate, location.search]);
 
   const handleChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleForgot = async e => {
+    e.preventDefault();
+    setForgotLoading(true);
+    setForgotStatus('');
+    try {
+      const res = await fetch(`${API}/api/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      const data = await res.json();
+      setForgotStatus('success');
+      setForgotMsg(data.message);
+    } catch {
+      setForgotStatus('error');
+      setForgotMsg('Failed to send reset email. Try again.');
+    } finally {
+      setForgotLoading(false);
+    }
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -215,6 +241,16 @@ export default function Login() {
                 {showPass ? '🙈' : '👁'}
               </button>
             </div>
+            {!isSignup && (
+              <button
+                type="button"
+                className="lp-toggle-btn"
+                style={{ color: accent, fontSize: '12px', marginTop: '6px', display: 'block', textAlign: 'right', width: '100%' }}
+                onClick={() => { setShowForgot(true); setError(''); setForgotStatus(''); setForgotMsg(''); setForgotEmail(''); }}
+              >
+                Forgot password?
+              </button>
+            )}
           </div>
 
           <button
@@ -234,6 +270,48 @@ export default function Login() {
           </button>
         </p>
       </div>
+
+      {/* Forgot Password Overlay */}
+      {showForgot && (
+        <div className="lp-forgot-overlay" onClick={() => setShowForgot(false)}>
+          <div className="lp-forgot-modal" onClick={e => e.stopPropagation()}>
+            <button className="lp-back-btn" onClick={() => setShowForgot(false)}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+              Back
+            </button>
+            <div className="lp-form-header">
+              <h2 className="lp-form-title">Forgot password?</h2>
+              <p className="lp-form-sub">Enter your email and we'll send a reset link</p>
+            </div>
+            {forgotMsg && (
+              <div className={`lp-alert ${forgotStatus === 'success' ? 'lp-alert--success' : 'lp-alert--error'}`}>
+                {forgotStatus === 'success' ? '✓' : '⚠'} {forgotMsg}
+              </div>
+            )}
+            {forgotStatus !== 'success' && (
+              <form onSubmit={handleForgot} className="lp-form">
+                <div className="lp-field">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={forgotEmail}
+                    onChange={e => setForgotEmail(e.target.value)}
+                    required
+                    style={{ '--focus-color': accent }}
+                  />
+                </div>
+                <button type="submit" className="lp-submit-btn" disabled={forgotLoading}
+                  style={{ background: `linear-gradient(135deg, ${accent}, ${isStudent ? '#8b5cf6' : '#6366f1'})` }}>
+                  {forgotLoading ? <span className="lp-btn-spinner" /> : 'Send Reset Link'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

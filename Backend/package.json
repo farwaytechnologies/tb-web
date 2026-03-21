@@ -25,6 +25,7 @@
     "mongodb": "^5.9.2",
     "mongoose": "^7.8.9",
     "multer": "^2.0.1",
+    "nodemailer": "^8.0.3",
     "razorpay": "^2.9.6"
   },
   "devDependencies": {

@@ -28,6 +28,7 @@ import Settings from '../Pages/Settings';
 import Login from '../Pages/Login';
 import TutorLogin from '../Pages/TutorLogin';
 import AdminLogin from '../Pages/AdminLogin';
+import ResetPassword from '../Pages/ResetPassword';
 
 // 🎓 Exam Guides
 import Polytechnic from '../ExamGuide/Polytechnic';
@@ -201,6 +202,7 @@ function PagesRoute() {
       <Route path="/login" element={<Login />} />
       <Route path="/tutor-login" element={<TutorLogin />} />
       <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
 
       {/* 📜 Legal / Static Pages */}
       <Route path="/privacy" element={<Privacy />} />

@@ -1,7 +1,11 @@
 const Enrollment = require('../models/Enrollment');
 const StudentReward = require('../models/StudentReward');
+const TutorReward = require('../models/TutorReward');
+const Course = require('../models/Course');
+const User = require('../models/user');
 
 const ENROLLMENT_POINTS = 50; // points awarded per accepted enrollment
+const TUTOR_ENROLLMENT_POINTS = 10; // points per enrollment for tutor
 
 // Create a new enrollment (free courses only — no invoice)
 exports.createEnrollment = async (req, res) => {
@@ -75,6 +79,32 @@ exports.updateEnrollmentStatus = async (req, res) => {
         await reward.save();
       } catch (rewardErr) {
         console.error('Reward award error:', rewardErr);
+      }
+
+      // Award points to tutor whose course was enrolled in
+      try {
+        const course = await Course.findById(enrollment.courseId).select('instructor');
+        if (course?.instructor) {
+          const tutor = await User.findOne({ name: course.instructor, role: 'tutor' }).select('_id');
+          if (tutor) {
+            let tutorReward = await TutorReward.findOne({ tutorId: tutor._id });
+            if (!tutorReward) {
+              tutorReward = new TutorReward({ tutorId: tutor._id, points: 0, bonusPoints: 0, breakdown: { courses: 0, blogs: 0, enrollments: 0, learnContent: 0 } });
+            }
+            tutorReward.breakdown.enrollments = (tutorReward.breakdown.enrollments || 0) + 1;
+            // Recompute activity points from breakdown
+            const POINTS = { perCourse: 50, perBlog: 20, perEnrollment: 10, perLearnContent: 15 };
+            tutorReward.points =
+              tutorReward.breakdown.courses * POINTS.perCourse +
+              tutorReward.breakdown.blogs * POINTS.perBlog +
+              tutorReward.breakdown.enrollments * POINTS.perEnrollment +
+              tutorReward.breakdown.learnContent * POINTS.perLearnContent;
+            tutorReward.lastUpdated = new Date();
+            await tutorReward.save();
+          }
+        }
+      } catch (tutorRewardErr) {
+        console.error('Tutor reward award error:', tutorRewardErr);
       }
     }
 
