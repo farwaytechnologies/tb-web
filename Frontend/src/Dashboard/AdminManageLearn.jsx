@@ -124,8 +124,8 @@ export default function AdminManageLearn() {
         <BookOpen size={26} className="ml-header-icon" />
         <div><h1>Manage Learn</h1><p>{learns.length} languages · {totalMods} modules</p></div>
         <div className="ml-header-actions">
-          <button className="ml-btn-import" onClick={openUpload}><Upload size={16} /> Import File</button>
-          <button className="ml-btn-add" onClick={openCreate}><Plus size={16} /> New Language</button>
+          <button className="ml-btn-import" onClick={openUpload}><Upload size={16} /> Import Course</button>
+          <button className="ml-btn-add" onClick={openCreate}><Plus size={16} /> Add Course</button>
         </div>
       </div>
 

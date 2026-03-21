@@ -60,7 +60,11 @@
 .ld-module-img { width: 100%; border-radius: 12px; object-fit: cover; max-height: 320px; }
 
 .ld-content-block { background: #f8fafc; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; }
-.ld-content-text { font-size: 15px; color: #374151; line-height: 1.8; margin: 0; white-space: pre-wrap; }
+.ld-content-text { font-size: 15px; color: #374151; line-height: 1.8; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.ld-content-para { font-size: 15px; color: #374151; line-height: 1.8; margin: 0; }
+.ld-content-subheading { font-size: 14px; font-weight: 700; color: #1e293b; margin: 10px 0 2px; }
+.ld-content-li { font-size: 15px; color: #374151; line-height: 1.8; margin: 0 0 2px 20px; list-style: disc; }
+.ld-content-li--num { list-style: decimal; }
 
 /* Code block */
 .ld-code-wrap { border-radius: 12px; overflow: hidden; border: 1px solid #1e293b; }

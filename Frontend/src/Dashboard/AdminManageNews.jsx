@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Plus, X, Edit2, Trash2, Newspaper, Search, Calendar, Tag, Image } from 'lucide-react';
 import '../Styles/DashbordStyle/AdminManageNews.css';
+import newsImages from '../assets/images/News/index.js';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const IMAGE_OPTIONS = Object.keys(newsImages);
 
 const EMPTY = { title: '', content: '', date: '', category: '', image: '' };
 
@@ -143,13 +145,32 @@ export default function AdminManageNews() {
                 </div>
                 <div className="amn-field">
                   <label>Category</label>
-                  <input value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} placeholder="e.g. Technology" />
+                  <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))}>
+                    <option value="">Select category</option>
+                    <option value="AI">AI</option>
+                    <option value="Automobile">Automobile</option>
+                    <option value="Business">Business</option>
+                    <option value="Career">Career</option>
+                    <option value="Cybersecurity">Cybersecurity</option>
+                    <option value="Education">Education</option>
+                    <option value="Health">Health</option>
+                    <option value="Innovation">Innovation</option>
+                    <option value="Other">Other</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Science">Science</option>
+                    <option value="Technology">Technology</option>
+                  </select>
                 </div>
               </div>
 
               <div className="amn-field">
-                <label>Image URL</label>
-                <input value={form.image} onChange={e => setForm(p => ({ ...p, image: e.target.value }))} placeholder="https://..." />
+                <label>Image</label>
+                <select value={form.image} onChange={e => setForm(p => ({ ...p, image: e.target.value }))}>
+                  <option value="">No image</option>
+                  {IMAGE_OPTIONS.map(name => (
+                    <option key={name} value={newsImages[name]}>{name}</option>
+                  ))}
+                </select>
                 {form.image && (
                   <div className="amn-img-preview">
                     <img src={form.image} alt="preview" onError={e => e.target.style.display='none'} />

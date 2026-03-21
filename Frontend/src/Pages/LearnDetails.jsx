@@ -133,7 +133,26 @@ export default function LearnDetails() {
               {mod.content && (
                 <div className="ld-section ld-content-block">
                   <h3 className="ld-section-title"><BookOpen size={15} style={{ color }} /> Explanation</h3>
-                  <p className="ld-content-text">{mod.content}</p>
+                  <div className="ld-content-text">
+                    {mod.content
+                      .split('\n')
+                      .filter(line => !/^\/\/.+\.(jpg|jpeg|png|gif|webp|svg)$/i.test(line.trim()))
+                      .map((line, i) => {
+                        const trimmed = line.trim();
+                        if (!trimmed) return <br key={i} />;
+                        // Bullet point
+                        if (/^[-•*]\s+/.test(trimmed))
+                          return <li key={i} className="ld-content-li">{trimmed.replace(/^[-•*]\s+/, '')}</li>;
+                        // Numbered list
+                        if (/^\d+\.\s+/.test(trimmed))
+                          return <li key={i} className="ld-content-li ld-content-li--num">{trimmed}</li>;
+                        // Sub-heading (short line ending with colon)
+                        if (trimmed.endsWith(':') && trimmed.length < 80)
+                          return <p key={i} className="ld-content-subheading">{trimmed}</p>;
+                        return <p key={i} className="ld-content-para">{trimmed}</p>;
+                      })
+                    }
+                  </div>
                 </div>
               )}
 

@@ -13,7 +13,7 @@ const { uploadCourse } = require('../controllers/learnUploadController');
 // Multer — memory storage, accept .json and .docx only
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB
   fileFilter: (req, file, cb) => {
     const allowed = [
       'application/json',

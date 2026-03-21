@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Tag, Share2, Copy, Check, Newspaper, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Calendar, Tag, Share2, Copy, Check, Newspaper, ChevronRight, ChevronLeft } from 'lucide-react';
 import '../Styles/PagesStyle/NewsDetails.css';
 import SEO from '../Components/SEO';
 
@@ -16,6 +16,7 @@ export default function NewsDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [item, setItem] = useState(null);
+  const [allNews, setAllNews] = useState([]);
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,7 +29,9 @@ export default function NewsDetail() {
       fetch(`${API_URL}/api/news`).then(r => r.json()),
     ]).then(([single, all]) => {
       setItem(single);
-      setRelated(Array.isArray(all) ? all.filter(n => n._id !== id).slice(0, 3) : []);
+      const sorted = Array.isArray(all) ? [...all].sort((a, b) => new Date(b.date) - new Date(a.date)) : [];
+      setAllNews(sorted);
+      setRelated(sorted.filter(n => n._id !== id).slice(0, 3));
       setLoading(false);
     }).catch(e => { setError(e.message); setLoading(false); });
   }, [id]);
@@ -62,6 +65,9 @@ export default function NewsDetail() {
   );
 
   const color = catColor(item.category);
+  const currentIdx = allNews.findIndex(n => n._id === id);
+  const prevItem = currentIdx > 0 ? allNews[currentIdx - 1] : null;
+  const nextItem = currentIdx < allNews.length - 1 ? allNews[currentIdx + 1] : null;
 
   return (
     <div className="nd-page">
@@ -116,6 +122,30 @@ export default function NewsDetail() {
             </div>
           </div>
         </article>
+
+        {/* Prev / Next navigation */}
+        {(prevItem || nextItem) && (
+          <div className="nd-prevnext">
+            {prevItem ? (
+              <button className="nd-prevnext-btn nd-prev" onClick={() => navigate(`/news/${prevItem._id}`)}>
+                <ChevronLeft size={18} />
+                <div className="nd-prevnext-text">
+                  <span className="nd-prevnext-label">Previous</span>
+                  <span className="nd-prevnext-title">{prevItem.title}</span>
+                </div>
+              </button>
+            ) : <div />}
+            {nextItem ? (
+              <button className="nd-prevnext-btn nd-next" onClick={() => navigate(`/news/${nextItem._id}`)}>
+                <div className="nd-prevnext-text nd-prevnext-text--right">
+                  <span className="nd-prevnext-label">Next</span>
+                  <span className="nd-prevnext-title">{nextItem.title}</span>
+                </div>
+                <ChevronRight size={18} />
+              </button>
+            ) : <div />}
+          </div>
+        )}
 
         {/* Related */}
         {related.length > 0 && (
