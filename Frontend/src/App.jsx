@@ -63,11 +63,11 @@ function VisitorTracker() {
   useEffect(() => {
     const endSession = () => {
       if (visitorId) {
-        navigator.sendBeacon(
-          `${API_URL}/api/visitors/end-session`,
-          JSON.stringify({ visitorId })
+        const blob = new Blob(
+          [JSON.stringify({ visitorId })],
+          { type: 'application/json' }
         );
-        console.log("👋 Session ended for:", visitorId);
+        navigator.sendBeacon(`${API_URL}/api/visitors/end-session`, blob);
       }
     };
     window.addEventListener("beforeunload", endSession);

@@ -157,11 +157,14 @@ export default function VisitorAnalytics() {
 
   // Fallback empty analytics shape so nothing crashes
   const a = analytics || {};
-  const totalV = a.totalVisitors ?? visitors.length;
+  const totalV = a.totalVisitors ?? visitors.filter((v, i, arr) => arr.findIndex(x => x.ip === v.ip) === i).length;
   const avgDur = a.avgDuration?.avg || 0;
   const maxPage = a.topPages?.[0]?.count || 1;
   const maxCountry = stats[0]?.count || 1;
-  const todayCount = dailyData[dailyData.length - 1]?.count || 0;
+  const todayCount = (() => {
+    const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+    return analytics?.dailyTrend?.find(d => d._id === today)?.count || 0;
+  })();
 
   // Device donut
   const deviceColors = { Desktop: '#8b5cf6', Mobile: '#06b6d4', Tablet: '#f59e0b', Other: '#64748b' };
@@ -197,10 +200,10 @@ export default function VisitorAnalytics() {
       {/* KPI Cards */}
       <div className="va-kpi-grid">
         {[
-          { icon: Users,        label: 'Total Visitors',   val: totalV,                          color: '#8b5cf6', glow: 'rgba(139,92,246,0.15)' },
+          { icon: Users,        label: 'Unique Visitors',  val: totalV,                          color: '#8b5cf6', glow: 'rgba(139,92,246,0.15)' },
           { icon: Globe,        label: 'Countries',        val: a.uniqueCountries || 0,  color: '#06b6d4', glow: 'rgba(6,182,212,0.15)'  },
           { icon: Clock,        label: 'Avg Session',      val: fmtDur(avgDur),          color: '#10b981', glow: 'rgba(16,185,129,0.15)' },
-          { icon: TrendingUp,   label: 'Today',            val: todayCount,              color: '#f59e0b', glow: 'rgba(245,158,11,0.15)' },
+          { icon: TrendingUp,   label: 'Today',            val: a.todayVisitors ?? todayCount,   color: '#f59e0b', glow: 'rgba(245,158,11,0.15)' },
           { icon: MousePointer, label: 'Bounce Rate',      val: `${a.bounceRate ?? 0}%`, color: '#f87171', glow: 'rgba(248,113,113,0.15)'},
           { icon: ArrowUpRight, label: 'New Visitors',     val: a.newVisitors || 0,      color: '#10b981', glow: 'rgba(16,185,129,0.15)' },
           { icon: RotateCcw,    label: 'Returning',        val: a.returningVisitors || 0,color:'#8b5cf6',  glow: 'rgba(139,92,246,0.15)' },
