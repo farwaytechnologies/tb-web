@@ -105,14 +105,21 @@ exports.trackPage = async (req, res) => {
 
 exports.endSession = async (req, res) => {
   try {
-    const { visitorId } = req.body;
+    // sendBeacon may send body as text/plain — handle both
+    let visitorId = req.body?.visitorId;
+    if (!visitorId && req.body) {
+      try {
+        const parsed = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+        visitorId = parsed.visitorId;
+      } catch {}
+    }
     if (!visitorId) return res.status(400).json({ success: false, message: "Missing visitorId" });
 
     const visitor = await Visitor.findById(visitorId);
     if (!visitor) return res.status(404).json({ message: "Visitor not found" });
 
     visitor.sessionEnd = new Date();
-    visitor.duration = Math.floor((visitor.sessionEnd - visitor.sessionStart) / 1000);
+    visitor.duration = Math.max(1, Math.floor((visitor.sessionEnd - visitor.sessionStart) / 1000));
     await visitor.save();
 
     res.status(200).json({ success: true, duration: visitor.duration });
@@ -154,7 +161,7 @@ exports.getAnalytics = async (req, res) => {
       dailyTrend, topPages, hourly, avgDurationArr,
       totalVisitors, uniqueCountries, recentVisitors,
       deviceBreakdown, browserBreakdown, osBreakdown,
-      referrerBreakdown, newVsReturning, bounceData,
+      referrerBreakdown, newVsReturning, bounceData, todayVisitors,
     ] = await Promise.all([
       // Daily last 30 days
       Visitor.aggregate([
@@ -173,12 +180,12 @@ exports.getAnalytics = async (req, res) => {
         { $group: { _id: { $hour: "$createdAt" }, count: { $sum: 1 } } },
         { $sort: { _id: 1 } },
       ]),
-      // Avg duration
+      // Avg duration — only sessions with a recorded duration (endSession fired)
       Visitor.aggregate([
         { $match: { duration: { $gt: 0 } } },
         { $group: { _id: null, avg: { $avg: "$duration" }, max: { $max: "$duration" } } },
       ]),
-      Visitor.countDocuments(),
+      Visitor.distinct("ip").then(ips => ips.length),
       Visitor.distinct("country").then(c => c.length),
       Visitor.find().sort({ createdAt: -1 }).limit(10)
         .select("ip country city createdAt pagesVisited duration device browser"),
@@ -206,11 +213,27 @@ exports.getAnalytics = async (req, res) => {
       Visitor.aggregate([
         { $group: { _id: "$isNew", count: { $sum: 1 } } },
       ]),
-      // Bounce rate (visited only 1 page)
+      // Bounce rate (visited only 1 page) — guard against null pagesVisited
       Visitor.aggregate([
-        { $project: { bounced: { $lte: [{ $size: "$pagesVisited" }, 1] } } },
+        {
+          $project: {
+            bounced: {
+              $lte: [
+                { $size: { $ifNull: ["$pagesVisited", []] } },
+                1
+              ]
+            }
+          }
+        },
         { $group: { _id: "$bounced", count: { $sum: 1 } } },
       ]),
+      // Today's visitor count
+      Visitor.countDocuments({
+        createdAt: {
+          $gte: new Date(new Date().setHours(0, 0, 0, 0)),
+          $lt:  new Date(new Date().setHours(23, 59, 59, 999)),
+        }
+      }),
     ]);
 
     // Compute bounce rate
@@ -229,9 +252,10 @@ exports.getAnalytics = async (req, res) => {
       deviceBreakdown, browserBreakdown, osBreakdown,
       referrerBreakdown, bounceRate,
       newVisitors: newCount, returningVisitors: returningCount,
+      todayVisitors,
     });
   } catch (err) {
-    console.error("Analytics error:", err.message);
-    res.status(500).json({ message: "Failed to fetch analytics" });
+    console.error("Analytics error:", err.message, err.stack);
+    res.status(500).json({ message: "Failed to fetch analytics", error: err.message });
   }
 };
