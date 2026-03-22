@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Award, Download, CheckCircle, XCircle, Calendar, User, BookOpen, Share2, Copy, Check } from 'lucide-react';
+import SEO from '../Components/SEO';
 import './CertificateVerify.css';
 
 const API = import.meta.env.VITE_API_URL;
@@ -90,6 +91,14 @@ export default function CertificateVerify() {
 
   return (
     <div className="cv-page">
+      <SEO
+        title={`Certificate — ${cert.fullName} | ${cert.courseId?.title || 'TechBorg'}`}
+        description={`Verified TechBorg certificate issued to ${cert.fullName} for completing ${cert.courseId?.title}. Certificate ID: ${cert.certificateId}`}
+        url={`/certificate/${certId}`}
+        article={true}
+        publishedTime={cert.completedAt}
+        keywords={`TechBorg certificate, ${cert.courseId?.title}, verified certificate, online course completion`}
+      />
       {/* Verified banner */}
       <div className="cv-verified-banner">
         <CheckCircle size={18} />

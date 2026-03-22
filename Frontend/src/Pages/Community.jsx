@@ -89,7 +89,12 @@ export default function Community() {
 
   return (
     <div className="cm-page">
-      <SEO title="Community" description="Join the TechBorg community — ask questions, share projects, and connect with fellow learners." url="/community" />
+      <SEO
+        title="Community — Ask, Share & Connect"
+        description="Join the TechBorg learner community. Ask questions, share projects, discuss tech topics, and connect with developers and students across India."
+        url="/community"
+        keywords="TechBorg community, developer forum, coding questions, tech discussion, student community India"
+      />
 
       {toast && <div className={`cm-toast cm-toast--${toast.type}`}>{toast.text}</div>}
 
