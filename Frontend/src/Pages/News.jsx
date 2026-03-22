@@ -16,11 +16,16 @@ const catColor = c => CAT_COLORS[c?.toLowerCase()] || CAT_COLORS.default;
 const fmt = (d, opts) => { try { return new Date(d).toLocaleDateString('en-US', opts); } catch { return ''; } };
 
 function NewsImg({ src, alt, className }) {
-  const [failed, setFailed] = useState(false);
-  if (!src || failed) return null;
+  const [show, setShow] = useState(!!src);
+  if (!src || !show) return null;
   return (
     <div className={className}>
-      <img src={src} alt={alt} onError={() => setFailed(true)} />
+      <img
+        src={src}
+        alt={alt}
+        onError={() => setShow(false)}
+        onLoad={e => { if (e.target.naturalWidth < 10) setShow(false); }}
+      />
     </div>
   );
 }
@@ -70,9 +75,11 @@ export default function News() {
         <div className="nws-masthead-inner">
           <div className="nws-masthead-top">
             <span className="nws-masthead-date">{fmt(new Date(), { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-            <h1 className="nws-masthead-title">TechBorg <span>Newsroom</span></h1>
+            <div className="nws-masthead-center">
+              <h1 className="nws-masthead-title">TechBorg <span>Newsroom</span></h1>
+              <p className="nws-masthead-tagline">Technology · Innovation · Future</p>
+            </div>
             <div className="nws-search-wrap">
-              <Search size={14} className="nws-search-icon" />
               <input className="nws-search" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} />
               {search && <button className="nws-search-clear" onClick={() => setSearch('')}><X size={13} /></button>}
             </div>
