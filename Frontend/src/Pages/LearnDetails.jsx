@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Circle, Copy, Check, ChevronLeft, ChevronRight, BookOpen, Code2 } from 'lucide-react';
+import SEO from '../Components/SEO';
 import '../Styles/PagesStyle/LearnDetails.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -61,6 +62,12 @@ export default function LearnDetails() {
 
   return (
     <div className="ld-page">
+      <SEO
+        title={`${language.language} Tutorial — Learn ${language.language} Online`}
+        description={`Learn ${language.language} with ${mods.length} interactive modules. Free ${language.language} tutorial with code examples on TechBorg.`}
+        url={`/learn/${id}`}
+        keywords={`${language.language} tutorial, learn ${language.language}, ${language.language} for beginners, free coding tutorial, TechBorg`}
+      />
       {/* Top bar */}
       <div className="ld-topbar" style={{ borderBottomColor: color }}>
         <Link to="/learn" className="ld-back"><ArrowLeft size={16} /> Courses</Link>

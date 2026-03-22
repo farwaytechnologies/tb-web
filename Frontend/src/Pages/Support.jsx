@@ -102,9 +102,10 @@ export default function Support() {
   return (
     <div className="sp-page">
       <SEO
-        title="Support Center - TechBorg E-Learning"
-        description="Get help with TechBorg. Browse support categories, submit a ticket, or chat with our support bot."
+        title="Support Center"
+        description="Get help with TechBorg E-Learning. Browse support categories, submit a ticket, or chat with our support bot. We reply within 2 business hours."
         url="/support"
+        keywords="TechBorg support, help center, e-learning support, contact TechBorg, submit ticket, FAQ"
       />
 
       {/* Hero */}

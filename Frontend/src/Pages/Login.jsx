@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import SEO from '../Components/SEO';
 import '../Styles/PagesStyle/Login.css';
 
 const API = import.meta.env.VITE_API_URL;
@@ -110,6 +111,7 @@ export default function Login() {
   if (!role) {
     return (
       <div className="lp-page">
+        <SEO title="Login" description="Sign in to TechBorg E-Learning as a student, tutor, or sales executive." url="/login" noindex={true} />
         <div className="lp-glow lp-glow--top" />
         <div className="lp-glow lp-glow--bottom" />
 
@@ -170,6 +172,12 @@ export default function Login() {
 
   return (
     <div className="lp-page">
+      <SEO
+        title={isSignup ? `Sign Up as ${roleLabel}` : `Sign In as ${roleLabel}`}
+        description={`${isSignup ? 'Create your TechBorg account' : 'Sign in to TechBorg'} as a ${roleDesc}. Access courses, exams, certificates and more.`}
+        url="/login"
+        noindex={true}
+      />
       <div className="lp-glow lp-glow--top" style={{ '--accent': accent }} />
       <div className="lp-glow lp-glow--bottom" />
 

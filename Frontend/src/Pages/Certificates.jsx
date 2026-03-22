@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Award, Download, X, Calendar, BookOpen, User, Copy, Check, ExternalLink, Share2 } from 'lucide-react';
+import { Award, Download, X, Calendar, User, Copy, Check, ExternalLink, Share2 } from 'lucide-react';
+import SEO from '../Components/SEO';
 import '../Styles/PagesStyle/Certificates.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -87,6 +88,13 @@ export default function Certificates() {
 
   return (
     <div className="cert-page">
+      <SEO
+        title="My Certificates"
+        description="View and download your TechBorg course completion certificates. Share your achievements with employers and on LinkedIn."
+        url="/certificates"
+        keywords="TechBorg certificates, course completion, online certificate, tech certification India"
+        noindex={true}
+      />
       {/* Hero Header */}
       <div className="cert-hero">
         <div className="cert-hero-glow" />
