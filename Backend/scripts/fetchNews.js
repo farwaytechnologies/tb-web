@@ -9,7 +9,30 @@ const mongoose = require('mongoose');
 const Parser = require('rss-parser');
 const News = require('../models/News');
 
-const parser = new Parser({ timeout: 10000 });
+const parser = new Parser({
+  timeout: 10000,
+  customFields: {
+    item: [
+      ['media:content', 'mediaContent'],
+      ['media:thumbnail', 'mediaThumbnail'],
+      ['enclosure', 'enclosure'],
+    ],
+  },
+});
+
+// Extract image from RSS item using all known locations
+function extractImage(item) {
+  // 1. media:content or media:thumbnail
+  if (item.mediaContent?.$.url) return item.mediaContent.$.url;
+  if (item.mediaThumbnail?.$.url) return item.mediaThumbnail.$.url;
+  // 2. enclosure (podcasts / some feeds)
+  if (item.enclosure?.url && /\.(jpg|jpeg|png|webp|gif)/i.test(item.enclosure.url)) return item.enclosure.url;
+  // 3. First <img> tag inside content or content:encoded
+  const html = item['content:encoded'] || item.content || '';
+  const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  if (match) return match[1];
+  return '';
+}
 
 const FEEDS = [
   { url: 'https://techcrunch.com/feed/',                     category: 'Startups'      },
@@ -52,7 +75,17 @@ async function run() {
       for (const item of result.items) {
         const title = item.title?.trim();
         if (!title) continue;
-        if (existing.has(title.toLowerCase())) { skipped++; continue; }
+
+        const image = extractImage(item);
+
+        if (existing.has(title.toLowerCase())) {
+          // Update image if it was missing before
+          if (image) {
+            await News.updateOne({ title }, { $set: { image } });
+          }
+          skipped++;
+          continue;
+        }
 
         const content = item.contentSnippet || item.content || item.summary || '';
         const category = detectCategory(title, content) || feed.category;
@@ -60,7 +93,7 @@ async function run() {
           ? new Date(item.pubDate).toISOString().slice(0, 10)
           : new Date().toISOString().slice(0, 10);
 
-        await News.create({ title, content, category, date, image: '' });
+        await News.create({ title, content, category, date, image });
         existing.add(title.toLowerCase());
         added++;
       }
