@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
     "dev": "nodemon Server.js",
-    "start": "node Server.js"
+    "start": "node Server.js",
+    "fetch-news": "node scripts/fetchNews.js"
   },
   "keywords": [],
   "author": "",
@@ -26,7 +27,8 @@
     "mongoose": "^7.8.9",
     "multer": "^2.0.1",
     "nodemailer": "^8.0.3",
-    "razorpay": "^2.9.6"
+    "razorpay": "^2.9.6",
+    "rss-parser": "^3.13.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
