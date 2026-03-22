@@ -19,6 +19,9 @@ export default function UserDashboard() {
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem('user') || 'null');
     if (!stored) { navigate('/login'); return; }
+    if (stored.role === 'sales_executive') { navigate('/sales-executive/dashboard'); return; }
+    if (stored.role === 'tutor') { navigate('/tutor/dashboard'); return; }
+    if (stored.role === 'admin') { navigate('/admin/dashboard'); return; }
     setUser(stored);
     const uid = stored._id || stored.id;
 

@@ -268,3 +268,100 @@
   .art-filters { flex-direction: column; align-items: stretch; }
   .art-header { padding: 20px; }
 }
+
+/* ── Create Referral Account button ── */
+.art-create-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color: #fff; border: none; border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: opacity 0.15s; flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(139,92,246,0.3);
+  position: relative; z-index: 1;
+}
+.art-create-btn:hover { opacity: 0.88; }
+
+/* ── Modal ── */
+.art-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.art-modal {
+  background: #12121a; border: 1px solid rgba(139,92,246,0.25);
+  border-radius: 18px; width: 100%; max-width: 460px;
+  overflow: hidden;
+}
+.art-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px; border-bottom: 1px solid #1e1e2e;
+  font-size: 15px; font-weight: 600; color: #f1f5f9;
+}
+.art-modal-close {
+  width: 30px; height: 30px; background: #1e1e2e;
+  border: 1px solid #2a2a3e; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: #64748b; cursor: pointer; transition: color 0.15s;
+}
+.art-modal-close:hover { color: #f1f5f9; }
+
+.art-modal-body { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+.art-modal-desc { font-size: 13px; color: #64748b; line-height: 1.6; margin: 0; }
+.art-modal-error {
+  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25);
+  color: #fca5a5; font-size: 13px; padding: 10px 14px; border-radius: 8px;
+}
+
+.art-modal-field { display: flex; flex-direction: column; gap: 6px; }
+.art-modal-field label { font-size: 12px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+.art-modal-field input,
+.art-modal-field select {
+  background: #0d0d14 !important; border: 1px solid #2a2a3e !important;
+  border-radius: 8px; padding: 10px 12px; color: #f1f5f9 !important;
+  font-size: 14px; outline: none; -webkit-appearance: none;
+  transition: border-color 0.15s;
+}
+.art-modal-field input:focus,
+.art-modal-field select:focus { border-color: #8b5cf6 !important; }
+.art-modal-field select option { background: #12121a; }
+
+.art-modal-submit {
+  padding: 11px; background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color: #fff; border: none; border-radius: 9px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: opacity 0.15s; margin-top: 4px;
+}
+.art-modal-submit:hover { opacity: 0.88; }
+.art-modal-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Result rows */
+.art-result-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid #1e1e2e; gap: 12px;
+}
+.art-result-row:last-of-type { border-bottom: none; }
+.art-result-label { font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0; }
+.art-result-val { font-size: 14px; color: #e2e8f0; }
+.art-result-code {
+  font-family: monospace; font-size: 13px; color: #a78bfa;
+  background: rgba(139,92,246,0.08); padding: 3px 10px;
+  border-radius: 6px; border: 1px solid rgba(139,92,246,0.2);
+}
+.art-pass-wrap { display: flex; align-items: center; gap: 8px; }
+.art-pass-toggle {
+  background: #1e1e2e; border: 1px solid #2a2a3e; border-radius: 6px;
+  padding: 4px 6px; color: #64748b; cursor: pointer; display: flex; align-items: center;
+}
+.art-pass-toggle:hover { color: #a78bfa; }
+
+.art-result-actions { display: flex; gap: 10px; flex-wrap: wrap; padding-top: 4px; }
+.art-copy-btn--primary {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;
+  color: #fff !important; border-color: transparent !important;
+}
+.art-modal-note {
+  font-size: 12px; color: #475569; line-height: 1.6;
+  background: rgba(139,92,246,0.05); border: 1px solid rgba(139,92,246,0.1);
+  border-radius: 8px; padding: 10px 12px; margin: 0;
+}

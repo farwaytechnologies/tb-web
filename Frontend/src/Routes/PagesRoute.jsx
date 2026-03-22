@@ -29,6 +29,7 @@ import Login from '../Pages/Login';
 import TutorLogin from '../Pages/TutorLogin';
 import AdminLogin from '../Pages/AdminLogin';
 import ResetPassword from '../Pages/ResetPassword';
+import CertificateVerify from '../Pages/CertificateVerify';
 
 // 🎓 Exam Guides
 import Polytechnic from '../ExamGuide/Polytechnic';
@@ -71,12 +72,18 @@ import TutorRewards from '../Dashboard/TutorRewards';
 import TutorBorgCoins from '../Dashboard/TutorBorgCoins';
 import UserReferral from '../Dashboard/UserReferral';
 import TutorReferral from '../Dashboard/TutorReferral';
+import SalesRepDashboard from '../Dashboard/SalesRepDashboard';
+import AdminManageSalesReps from '../Dashboard/AdminManageSalesReps';
+import SalesExecutiveLogin from '../Pages/SalesExecutiveLogin';
+import SalesExecutiveRewards from '../Dashboard/SalesExecutiveRewards';
+import AdminManageSEWithdrawals from '../Dashboard/AdminManageSEWithdrawals';
 
 
 // 👤 Profiles
 import AdminProfile from '../Profile/AdminProfile';
 import TutorProfile from '../Profile/TutorProfile';
 import UserProfile from '../Profile/UserProfile';
+import SalesExecutiveProfile from '../Profile/SalesExecutiveProfile';
 
 // 📝 CMS Editing
 import HomeCms from '../AdminCms/HomeCms';
@@ -169,6 +176,7 @@ function PagesRoute() {
       <Route path="/admin/invoices" element={<AdminManageInvoices />} />
       <Route path="/admin/security" element={<AdminSecurityDashboard />} />
       <Route path="/admin/referrals" element={<AdminReferralTracking />} />
+      <Route path="/admin/sales-reps" element={<AdminManageSalesReps />} />
 
       {/* 🧾 CMS Editing */}
       <Route path="/admin/edit-home" element={<HomeCms />} />
@@ -187,10 +195,17 @@ function PagesRoute() {
       <Route path="/tutor/borgcoins" element={<TutorBorgCoins />} />
       <Route path="/tutor/referral" element={<TutorReferral />} />
 
+      {/* 💼 Sales Executive */}
+      <Route path="/sales-executive/dashboard" element={<SalesRepDashboard />} />
+      <Route path="/sales-executive/rewards" element={<SalesExecutiveRewards />} />
+      <Route path="/sales-executive-login" element={<SalesExecutiveLogin />} />
+      <Route path="/admin/se-withdrawals" element={<AdminManageSEWithdrawals />} />
+
       {/* 👤 Profiles */}
       <Route path="/admin-profile" element={<AdminProfile />} />
       <Route path="/tutor-profile" element={<TutorProfile />} />
       <Route path="/user-profile" element={<UserProfile />} />
+      <Route path="/sales-executive-profile" element={<SalesExecutiveProfile />} />
 
       {/* ⚙️ General Utility Pages */}
       <Route path="/settings" element={<Settings />} />
@@ -203,6 +218,7 @@ function PagesRoute() {
       <Route path="/tutor-login" element={<TutorLogin />} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/certificate/:certId" element={<CertificateVerify />} />
 
       {/* 📜 Legal / Static Pages */}
       <Route path="/privacy" element={<Privacy />} />

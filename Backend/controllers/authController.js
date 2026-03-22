@@ -54,6 +54,9 @@ exports.register = async (req, res) => {
         reward.bonusPoints += 25;
         reward.bonusHistory.push({ bonus: 25, reason: `Referral: ${name} joined` });
         await reward.save();
+      } else if (referrer.role === 'sales_executive') {
+        const { awardReferralPoints } = require('./salesExecutiveRewardController');
+        await awardReferralPoints(referrer._id, name);
       }
     }
 
@@ -297,7 +300,43 @@ exports.unbanUser = async (req, res) => {
   }
 };
 
-// FORGOT PASSWORD — sends reset email
+// CREATE REFERRAL-ONLY ACCOUNT (admin)
+exports.createReferralAccount = async (req, res) => {
+  try {
+    const { name, email, role = 'student' } = req.body;
+    if (!name || !email) return res.status(400).json({ message: 'Name and email are required.' });
+
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(400).json({ message: 'Email already in use.' });
+
+    // Generate unique referral code
+    let code;
+    let attempts = 0;
+    do {
+      code = generateReferralCode();
+      attempts++;
+    } while (await User.findOne({ referralCode: code }) && attempts < 10);
+
+    // Random password — user can reset via forgot password
+    const rawPassword = crypto.randomBytes(8).toString('hex');
+    const hashedPassword = await bcrypt.hash(rawPassword, 10);
+
+    const newUser = new User({
+      name, email, password: hashedPassword,
+      role, referralCode: code,
+    });
+    await newUser.save();
+
+    res.status(201).json({
+      message: 'Referral account created.',
+      user: { _id: newUser._id, name, email, role, referralCode: code },
+      tempPassword: rawPassword,
+    });
+  } catch (err) {
+    console.error('Create referral account error:', err);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;

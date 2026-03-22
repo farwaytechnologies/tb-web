@@ -5,7 +5,7 @@ const Enrollment = require('../models/Enrollment');
 const Learn = require('../models/LearnModel');
 const User = require('../models/user');
 
-const POINTS = { perCourse: 50, perBlog: 20, perEnrollment: 10, perLearnContent: 15 };
+const POINTS = { perCourse: 50, perBlog: 20, perEnrollment: 10, perLearnContent: 15, perReferral: 25 };
 
 const BADGES = [
   { name: '🌱 Newcomer', minPoints: 0 },
@@ -20,7 +20,8 @@ function computePoints(breakdown) {
     breakdown.courses * POINTS.perCourse +
     breakdown.blogs * POINTS.perBlog +
     breakdown.enrollments * POINTS.perEnrollment +
-    breakdown.learnContent * POINTS.perLearnContent
+    breakdown.learnContent * POINTS.perLearnContent +
+    (breakdown.referrals || 0) * POINTS.perReferral
   );
 }
 
@@ -39,11 +40,12 @@ exports.getTutorReward = async (req, res) => {
     const tutor = await User.findById(tutorId).select('name');
     if (!tutor) return res.status(404).json({ message: 'Tutor not found' });
 
-    const [allCourses, allBlogs, allEnrollments, learnCount] = await Promise.all([
+    const [allCourses, allBlogs, allEnrollments, learnCount, referralCount] = await Promise.all([
       Course.find().select('instructor _id'),
       Blog.find().select('author'),
       Enrollment.find({ status: 'Accepted' }).select('courseId'),
-      Learn.countDocuments({ createdBy: tutorId })
+      Learn.countDocuments({ createdBy: tutorId }),
+      User.countDocuments({ referredBy: tutorId })
     ]);
 
     const tutorCourseIds = allCourses.filter(c => c.instructor === tutor.name).map(c => String(c._id));
@@ -51,7 +53,8 @@ exports.getTutorReward = async (req, res) => {
       courses: allCourses.filter(c => c.instructor === tutor.name).length,
       blogs: allBlogs.filter(b => b.author === tutor.name).length,
       enrollments: allEnrollments.filter(e => tutorCourseIds.includes(String(e.courseId))).length,
-      learnContent: learnCount
+      learnContent: learnCount,
+      referrals: referralCount
     };
 
     const activityPoints = computePoints(breakdown);
@@ -138,13 +141,21 @@ exports.getLeaderboard = async (req, res) => {
       if (l.createdBy) learnByTutor[String(l.createdBy)] = (learnByTutor[String(l.createdBy)] || 0) + 1;
     });
 
+    // Count referrals per tutorId
+    const allReferred = await User.find({ referredBy: { $in: tutors.map(t => t._id) } }).select('referredBy');
+    const referralsByTutor = {};
+    allReferred.forEach(u => {
+      if (u.referredBy) referralsByTutor[String(u.referredBy)] = (referralsByTutor[String(u.referredBy)] || 0) + 1;
+    });
+
     // Build leaderboard entries for each tutor
     const entries = tutors.map(tutor => {
       const breakdown = {
         courses: coursesByInstructor[tutor.name] || 0,
         blogs: blogsByAuthor[tutor.name] || 0,
         enrollments: enrollmentsByInstructor[tutor.name] || 0,
-        learnContent: learnByTutor[String(tutor._id)] || 0
+        learnContent: learnByTutor[String(tutor._id)] || 0,
+        referrals: referralsByTutor[String(tutor._id)] || 0
       };
       const points = computePoints(breakdown);
       const currentBadge = getCurrentBadge(points);
@@ -214,6 +225,13 @@ exports.getAllTutorRewards = async (req, res) => {
     const learnByTutor = {};
     allLearn.forEach(l => { if (l.createdBy) learnByTutor[String(l.createdBy)] = (learnByTutor[String(l.createdBy)] || 0) + 1; });
 
+    // Count referrals per tutorId
+    const allReferred = await User.find({ referredBy: { $in: tutors.map(t => t._id) } }).select('referredBy');
+    const referralsByTutor = {};
+    allReferred.forEach(u => {
+      if (u.referredBy) referralsByTutor[String(u.referredBy)] = (referralsByTutor[String(u.referredBy)] || 0) + 1;
+    });
+
     // Fetch stored reward records for bonus points
     const storedRewards = await TutorReward.find();
     const bonusMap = {};
@@ -224,7 +242,8 @@ exports.getAllTutorRewards = async (req, res) => {
         courses: coursesByInstructor[tutor.name] || 0,
         blogs: blogsByAuthor[tutor.name] || 0,
         enrollments: enrollmentsByInstructor[tutor.name] || 0,
-        learnContent: learnByTutor[String(tutor._id)] || 0
+        learnContent: learnByTutor[String(tutor._id)] || 0,
+        referrals: referralsByTutor[String(tutor._id)] || 0
       };
       const activityPoints = computePoints(breakdown);
       const bonus = bonusMap[String(tutor._id)] || 0;

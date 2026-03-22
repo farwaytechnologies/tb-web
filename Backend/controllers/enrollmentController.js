@@ -169,18 +169,18 @@ exports.completeEnrollment = async (req, res) => {
     if (enrollment.completed) return res.status(400).json({ error: 'Already completed' });
 
     const certId = 'CERT-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
-    enrollment.completed = true;
-    enrollment.completedAt = new Date();
-    enrollment.certificateId = certId;
-    await enrollment.save();
+
+    const updated = await Enrollment.findByIdAndUpdate(
+      req.params.id,
+      { $set: { completed: true, completedAt: new Date(), certificateId: certId } },
+      { new: true }
+    ).populate('courseId', 'title instructor');
 
     // Award completion bonus points
     try {
       const COMPLETION_POINTS = 100;
       let reward = await StudentReward.findOne({ userId: enrollment.userId });
-      if (!reward) {
-        reward = new StudentReward({ userId: enrollment.userId, points: 0, history: [] });
-      }
+      if (!reward) reward = new StudentReward({ userId: enrollment.userId, points: 0, history: [] });
       reward.points += COMPLETION_POINTS;
       reward.history.push({
         points: COMPLETION_POINTS,
@@ -193,7 +193,7 @@ exports.completeEnrollment = async (req, res) => {
       console.error('Completion reward error:', rewardErr);
     }
 
-    res.json({ message: 'Marked as completed', enrollment });
+    res.json({ message: 'Marked as completed', enrollment: updated });
   } catch (err) {
     console.error('Complete enrollment error:', err);
     res.status(500).json({ error: 'Failed to complete enrollment' });
@@ -209,5 +209,18 @@ exports.getUserCertificates = async (req, res) => {
     res.json(enrollments);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch certificates' });
+  }
+};
+
+// Public — verify a certificate by ID (no auth required)
+exports.verifyCertificate = async (req, res) => {
+  try {
+    const enrollment = await Enrollment.findOne({ certificateId: req.params.certId, completed: true })
+      .populate('courseId', 'title instructor image level duration')
+      .populate('userId', 'name');
+    if (!enrollment) return res.status(404).json({ error: 'Certificate not found or invalid.' });
+    res.json(enrollment);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to verify certificate' });
   }
 };

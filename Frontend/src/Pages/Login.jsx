@@ -26,6 +26,7 @@ export default function Login() {
       if (user.role === 'tutor') navigate('/tutor/dashboard');
       else if (user.role === 'student') navigate('/user/dashboard');
       else if (user.role === 'admin') navigate('/admin/dashboard');
+      else if (user.role === 'sales_executive') navigate('/sales-executive/dashboard');
     }
     // Pre-fill referral code from ?ref= query param
     const params = new URLSearchParams(location.search);
@@ -85,7 +86,9 @@ export default function Login() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         window.dispatchEvent(new Event('userLoggedIn'));
-        navigate(role === 'tutor' ? '/tutor/dashboard' : '/user/dashboard');
+        if (role === 'tutor') navigate('/tutor/dashboard');
+        else if (role === 'sales_executive') navigate('/sales-executive/dashboard');
+        else navigate('/user/dashboard');
       } else {
         setError('');
         setIsSignup(false);

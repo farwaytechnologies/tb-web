@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Trophy, Star, Zap, BookOpen, FileText, Users, Award, Coins } from 'lucide-react';
+import { Trophy, Star, Zap, BookOpen, FileText, Users, Award, Coins, GitBranch } from 'lucide-react';
 import '../Styles/DashbordStyle/TutorRewards.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -13,11 +13,12 @@ const ALL_BADGES = [
   { name: '💎 Elite Mentor', minPoints: 1000 }
 ];
 
-const PTS = { perCourse: 50, perBlog: 20, perEnrollment: 10, perLearnContent: 15 };
+const PTS = { perCourse: 50, perBlog: 20, perEnrollment: 10, perLearnContent: 15, perReferral: 25 };
 
 function calcPoints(b) {
   return b.courses * PTS.perCourse + b.blogs * PTS.perBlog +
-    b.enrollments * PTS.perEnrollment + b.learnContent * PTS.perLearnContent;
+    b.enrollments * PTS.perEnrollment + b.learnContent * PTS.perLearnContent +
+    (b.referrals || 0) * PTS.perReferral;
 }
 
 function getBadges(pts) {
@@ -29,7 +30,7 @@ function getCurrentBadge(pts) {
 }
 
 export default function TutorRewards() {
-  const [breakdown, setBreakdown] = useState({ courses: 0, blogs: 0, enrollments: 0, learnContent: 0 });
+  const [breakdown, setBreakdown] = useState({ courses: 0, blogs: 0, enrollments: 0, learnContent: 0, referrals: 0 });
   const [bonusPoints, setBonusPoints] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
   const [leaderboard, setLeaderboard] = useState([]);
@@ -50,7 +51,7 @@ export default function TutorRewards() {
 
         if (rewardRes.ok) {
           const data = await rewardRes.json();
-          setBreakdown(data.breakdown || { courses: 0, blogs: 0, enrollments: 0, learnContent: 0 });
+          setBreakdown(data.breakdown || { courses: 0, blogs: 0, enrollments: 0, learnContent: 0, referrals: 0 });
           setBonusPoints(data.bonusPoints || 0);
           setTotalPoints(data.totalPoints || 0);
         }
@@ -117,10 +118,11 @@ export default function TutorRewards() {
 
         <div className="tr-breakdown">
           {[
-            { icon: BookOpen, label: 'Courses', count: breakdown.courses, pts: PTS.perCourse, color: '#10b981' },
-            { icon: FileText, label: 'Blogs', count: breakdown.blogs, pts: PTS.perBlog, color: '#06b6d4' },
-            { icon: Users, label: 'Enrollments', count: breakdown.enrollments, pts: PTS.perEnrollment, color: '#8b5cf6' },
-            { icon: Zap, label: 'Learn Content', count: breakdown.learnContent, pts: PTS.perLearnContent, color: '#f59e0b' }
+            { icon: BookOpen,    label: 'Courses',      count: breakdown.courses,      pts: PTS.perCourse,      color: '#10b981' },
+            { icon: FileText,    label: 'Blogs',        count: breakdown.blogs,        pts: PTS.perBlog,        color: '#06b6d4' },
+            { icon: Users,       label: 'Enrollments',  count: breakdown.enrollments,  pts: PTS.perEnrollment,  color: '#8b5cf6' },
+            { icon: Zap,         label: 'Learn Content',count: breakdown.learnContent, pts: PTS.perLearnContent,color: '#f59e0b' },
+            { icon: GitBranch,   label: 'Referrals',    count: breakdown.referrals||0, pts: PTS.perReferral,    color: '#ec4899' }
           ].map(({ icon: Icon, label, count, pts, color }) => (
             <div key={label} className="tr-breakdown-card">
               <Icon size={22} style={{ color }} />

@@ -17,6 +17,7 @@ const ACTION_GROUPS = [
       { to: '/admin/users',         icon: Users,       label: 'Manage Users',    color: '#6366f1' },
       { to: '/admin/tutors',        icon: Shield,      label: 'Manage Tutors',   color: '#ec4899' },
       { to: '/admin/manage-admins', icon: UserCog,     label: 'Manage Admins',   color: '#f59e0b' },
+      { to: '/admin/sales-reps',    icon: Briefcase,   label: 'Sales Executives', color: '#06b6d4' },
     ],
   },
   {
@@ -48,7 +49,8 @@ const ACTION_GROUPS = [
       { to: '/admin/manage-notifications', icon: Bell, label: 'Notifications',   color: '#ef4444' },
       { to: '/admin/visitors',      icon: BarChart3,   label: 'Analytics',       color: '#a855f7' },
       { to: '/admin/security',      icon: Shield,      label: 'Security',         color: '#ef4444' },
-      { to: '/admin/referrals',     icon: Gift,        label: 'Referrals',        color: '#10b981' },
+      { to: '/admin/referrals',       icon: Gift,        label: 'Referrals',        color: '#10b981' },
+      { to: '/admin/se-withdrawals', icon: Coins,       label: 'SE Withdrawals',   color: '#f59e0b' },
       { to: '/admin/manage-cms',    icon: Settings,    label: 'CMS',             color: '#64748b' },
     ],
   },

@@ -99,6 +99,7 @@ export default function Navbar() {
     if (!user) return '/';
     if (user.role === 'admin') return '/admin/dashboard';
     if (user.role === 'tutor') return '/tutor/dashboard';
+    if (user.role === 'sales_executive') return '/sales-executive/dashboard';
     return '/user/dashboard';
   };
 
@@ -106,6 +107,7 @@ export default function Navbar() {
     if (!user) return '/user-profile';
     if (user.role === 'admin') return '/admin-profile';
     if (user.role === 'tutor') return '/tutor-profile';
+    if (user.role === 'sales_executive') return '/sales-executive-profile';
     return '/user-profile';
   };
 
@@ -178,7 +180,7 @@ export default function Navbar() {
           {user && (
             <Link to={dashLink()} className="nb__dash-pill" onClick={close}>
               <LayoutDashboard size={14} />
-              <span>{user.role === 'admin' ? 'Admin' : user.role === 'tutor' ? 'Tutor' : 'Student'}</span>
+              <span>{user.role === 'admin' ? 'Admin' : user.role === 'tutor' ? 'Tutor' : user.role === 'sales_executive' ? 'Sales' : 'Student'}</span>
             </Link>
           )}
 

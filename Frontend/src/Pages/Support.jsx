@@ -204,7 +204,7 @@ export default function Support() {
               <h2 className="sp-channels-title">Other ways to reach us</h2>
               <div className="sp-channels-grid">
                 {[
-                  { icon: <Mail size={22} />, label: 'Email Support', value: 'support@techborg.com', sub: 'Reply within 2 business hours', color: '#6366f1' },
+                  { icon: <Mail size={22} />, label: 'Email Support', value: 'support@techborg.in', sub: 'Reply within 2 business hours', color: '#6366f1' },
                   { icon: <Phone size={22} />, label: 'Phone Support', value: '+91 (XXX) XXX-XXXX', sub: 'Mon–Fri, 9 AM – 6 PM IST', color: '#10b981' },
                   { icon: <MessageCircle size={22} />, label: 'Live Chat', value: 'Chat with us now', sub: 'Instant bot + human handoff', color: '#f59e0b', action: () => setChatOpen(true) },
                 ].map(ch => (

@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Gift, TrendingUp, Search, Copy, Check, X, Crown } from 'lucide-react';
+import { Users, Gift, TrendingUp, Search, Copy, Check, X, Crown, Plus, Eye, EyeOff } from 'lucide-react';
 import '../Styles/DashbordStyle/AdminReferralTracking.css';
 
 const API = import.meta.env.VITE_API_URL;
@@ -12,6 +12,15 @@ export default function AdminReferralTracking() {
   const [roleFilter, setRoleFilter] = useState('all');
   const [copiedId, setCopiedId] = useState(null);
   const navigate = useNavigate();
+
+  // Create referral account modal state
+  const [showCreate, setShowCreate] = useState(false);
+  const [createForm, setCreateForm] = useState({ name: '', email: '', role: 'student' });
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createResult, setCreateResult] = useState(null); // { referralCode, tempPassword, name, email }
+  const [createError, setCreateError] = useState('');
+  const [showPass, setShowPass] = useState(false);
+  const [copiedResult, setCopiedResult] = useState('');
 
   useEffect(() => {
     const admin = JSON.parse(localStorage.getItem('user') || 'null');
@@ -25,6 +34,48 @@ export default function AdminReferralTracking() {
     navigator.clipboard.writeText(`${window.location.origin}/login?ref=${code}`);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleCreate = async e => {
+    e.preventDefault();
+    setCreateLoading(true);
+    setCreateError('');
+    setCreateResult(null);
+    try {
+      const res = await fetch(`${API}/api/auth/create-referral-account`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(createForm),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to create account.');
+      setCreateResult({
+        ...data.user,
+        tempPassword: data.tempPassword,
+        referralLink: `${window.location.origin}/login?ref=${data.user.referralCode}`,
+      });
+      // Refresh list
+      fetch(`${API}/api/referral/admin/all`)
+        .then(r => r.json()).then(d => setUsers(Array.isArray(d) ? d : []));
+    } catch (err) {
+      setCreateError(err.message);
+    } finally {
+      setCreateLoading(false);
+    }
+  };
+
+  const copyResult = (text, key) => {
+    navigator.clipboard.writeText(text);
+    setCopiedResult(key);
+    setTimeout(() => setCopiedResult(''), 2000);
+  };
+
+  const closeCreate = () => {
+    setShowCreate(false);
+    setCreateForm({ name: '', email: '', role: 'student' });
+    setCreateResult(null);
+    setCreateError('');
+    setShowPass(false);
   };
 
   const filtered = useMemo(() => users.filter(u => {
@@ -59,6 +110,9 @@ export default function AdminReferralTracking() {
             <p>Monitor referral codes and conversions across all users</p>
           </div>
         </div>
+        <button className="art-create-btn" onClick={() => setShowCreate(true)}>
+          <Plus size={15} /> Create Referral Account
+        </button>
       </div>
 
       {/* Stats */}
@@ -211,6 +265,93 @@ export default function AdminReferralTracking() {
           </table>
         </div>
       )}
+
+      {/* Create Referral Account Modal */}
+      {showCreate && (
+        <div className="art-modal-overlay" onClick={closeCreate}>
+          <div className="art-modal" onClick={e => e.stopPropagation()}>
+            <div className="art-modal-header">
+              <span>{createResult ? '✅ Account Created' : 'Create Referral Account'}</span>
+              <button className="art-modal-close" onClick={closeCreate}><X size={16} /></button>
+            </div>
+
+            {!createResult ? (
+              <form onSubmit={handleCreate} className="art-modal-body">
+                <p className="art-modal-desc">
+                  Creates a new account with a unique referral code. The user can log in with the temporary password and reset it later.
+                </p>
+                {createError && <div className="art-modal-error">⚠ {createError}</div>}
+                <div className="art-modal-field">
+                  <label>Full Name</label>
+                  <input
+                    type="text" required placeholder="e.g. John Doe"
+                    value={createForm.name}
+                    onChange={e => setCreateForm(p => ({ ...p, name: e.target.value }))}
+                  />
+                </div>
+                <div className="art-modal-field">
+                  <label>Email</label>
+                  <input
+                    type="email" required placeholder="e.g. john@example.com"
+                    value={createForm.email}
+                    onChange={e => setCreateForm(p => ({ ...p, email: e.target.value }))}
+                  />
+                </div>
+                <div className="art-modal-field">
+                  <label>Role</label>
+                  <select value={createForm.role} onChange={e => setCreateForm(p => ({ ...p, role: e.target.value }))}>
+                    <option value="student">Student</option>
+                    <option value="tutor">Tutor</option>
+                  </select>
+                </div>
+                <button type="submit" className="art-modal-submit" disabled={createLoading}>
+                  {createLoading ? 'Creating...' : 'Create Account'}
+                </button>
+              </form>
+            ) : (
+              <div className="art-modal-body">
+                <div className="art-result-row">
+                  <span className="art-result-label">Name</span>
+                  <span className="art-result-val">{createResult.name}</span>
+                </div>
+                <div className="art-result-row">
+                  <span className="art-result-label">Email</span>
+                  <span className="art-result-val">{createResult.email}</span>
+                </div>
+                <div className="art-result-row">
+                  <span className="art-result-label">Role</span>
+                  <span className={`art-role-chip art-role-chip--${createResult.role}`}>{createResult.role}</span>
+                </div>
+                <div className="art-result-row">
+                  <span className="art-result-label">Referral Code</span>
+                  <code className="art-result-code">{createResult.referralCode}</code>
+                </div>
+                <div className="art-result-row">
+                  <span className="art-result-label">Temp Password</span>
+                  <div className="art-pass-wrap">
+                    <code className="art-result-code">{showPass ? createResult.tempPassword : '••••••••••••••••'}</code>
+                    <button className="art-pass-toggle" onClick={() => setShowPass(p => !p)}>
+                      {showPass ? <EyeOff size={13} /> : <Eye size={13} />}
+                    </button>
+                  </div>
+                </div>
+                <div className="art-result-actions">
+                  <button className="art-copy-btn" onClick={() => copyResult(createResult.tempPassword, 'pass')}>
+                    {copiedResult === 'pass' ? <Check size={13} /> : <Copy size={13} />}
+                    {copiedResult === 'pass' ? 'Copied' : 'Copy Password'}
+                  </button>
+                  <button className="art-copy-btn art-copy-btn--primary" onClick={() => copyResult(createResult.referralLink, 'link')}>
+                    {copiedResult === 'link' ? <Check size={13} /> : <Copy size={13} />}
+                    {copiedResult === 'link' ? 'Copied!' : 'Copy Referral Link'}
+                  </button>
+                </div>
+                <p className="art-modal-note">Share the referral link with the user. They can reset their password via "Forgot Password" on the login page.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

@@ -6,6 +6,7 @@ const {
   updateBankDetails, getBankDetails,
   banUser, unbanUser,
   forgotPassword, resetPassword,
+  createReferralAccount,
 } = require('../controllers/authController');
 const { authLimiter } = require('../middleware/security');
 
@@ -23,6 +24,7 @@ router.delete('/delete/:id', deleteAccount);
 
 // Admin
 router.get('/users', getAllUsers);
+router.post('/create-referral-account', createReferralAccount);
 
 // Bank details (tutors)
 router.get('/bank/:id', getBankDetails);

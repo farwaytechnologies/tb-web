@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Award, Download, X, Calendar, BookOpen, User, Copy, Check, ExternalLink } from 'lucide-react';
+import { Award, Download, X, Calendar, BookOpen, User, Copy, Check, ExternalLink, Share2 } from 'lucide-react';
 import '../Styles/PagesStyle/Certificates.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -11,6 +11,7 @@ export default function Certificates() {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [copiedShare, setCopiedShare] = useState(false);
   const printRef = useRef();
 
   useEffect(() => {
@@ -30,27 +31,25 @@ export default function Certificates() {
     win.document.write(`
       <html><head><title>Certificate — ${selected?.courseId?.title || 'TechBorg'}</title>
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #f5f0e8; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: 'Inter', sans-serif; }
-        .cert-print-wrap { width: 900px; padding: 40px; }
-        .cert-print { position: relative; background: linear-gradient(135deg, #fffdf5 0%, #fef9e7 100%);
-          border: 3px solid #c9a227; padding: 60px 70px; text-align: center; border-radius: 4px; }
-        .cert-print::before { content: ''; position: absolute; inset: 10px; border: 1px solid #e8c84a; border-radius: 2px; pointer-events: none; }
-        .cert-brand { font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: #c9a227; font-weight: 600; margin-bottom: 24px; }
-        .cert-title { font-family: 'Playfair Display', Georgia, serif; font-size: 38px; color: #1a1a1a; margin-bottom: 6px; }
-        .cert-sub { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #888; margin-bottom: 32px; }
-        .cert-divider { width: 80px; height: 2px; background: #c9a227; margin: 0 auto 28px; }
-        .cert-presented { font-size: 13px; color: #888; margin-bottom: 8px; }
-        .cert-name { font-family: 'Playfair Display', Georgia, serif; font-size: 40px; color: #1a1a1a; margin-bottom: 28px; }
-        .cert-body { font-size: 15px; color: #555; line-height: 1.8; margin-bottom: 8px; }
-        .cert-course-name { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; color: #1a1a1a; margin: 4px 0 24px; }
-        .cert-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 48px; padding-top: 24px; border-top: 1px solid #e8c84a; }
-        .cert-footer-item { text-align: center; }
-        .cert-footer-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #aaa; margin-bottom: 4px; }
-        .cert-footer-value { font-size: 13px; color: #555; font-weight: 600; }
-        .cert-seal-center { font-size: 52px; margin: 16px 0; }
-        .cert-id-bottom { font-size: 10px; color: #bbb; margin-top: 16px; font-family: monospace; letter-spacing: 1px; }
+        body { background: #0a0a0f; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: 'Inter', sans-serif; }
+        .cert-print-wrap { width: 860px; padding: 40px; }
+        .cert-print { position: relative; background: linear-gradient(135deg,#0d0d18,#12121a,#0d0d18); border: 2px solid rgba(139,92,246,0.5); padding: 60px 70px; text-align: center; border-radius: 12px; overflow: hidden; }
+        .cert-print::before { content:''; position:absolute; inset:8px; border:1px solid rgba(139,92,246,0.15); border-radius:8px; pointer-events:none; }
+        .cert-brand { font-size:12px; letter-spacing:4px; text-transform:uppercase; background:linear-gradient(135deg,#8b5cf6,#06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:700; margin-bottom:20px; position:relative; z-index:1; }
+        .cert-seal-center { font-size:52px; margin-bottom:12px; position:relative; z-index:1; }
+        .cert-title { font-size:32px; color:#f1f5f9; margin-bottom:6px; font-weight:800; letter-spacing:-0.02em; position:relative; z-index:1; }
+        .cert-sub { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#64748b; margin-bottom:20px; position:relative; z-index:1; }
+        .cert-divider { width:80px; height:2px; background:linear-gradient(90deg,#8b5cf6,#06b6d4); margin:0 auto 20px; border-radius:2px; position:relative; z-index:1; }
+        .cert-name { font-size:36px; color:#f1f5f9; margin-bottom:24px; font-weight:700; position:relative; z-index:1; }
+        .cert-body { font-size:14px; color:#64748b; margin-bottom:6px; position:relative; z-index:1; }
+        .cert-course-name { font-size:20px; color:#c4b5fd; margin-bottom:28px; font-weight:700; position:relative; z-index:1; }
+        .cert-footer { display:flex; justify-content:space-between; align-items:flex-end; margin-top:48px; padding-top:24px; border-top:1px solid rgba(139,92,246,0.2); position:relative; z-index:1; }
+        .cert-footer-item { text-align:center; }
+        .cert-footer-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#475569; margin-bottom:4px; }
+        .cert-footer-value { font-size:13px; color:#94a3b8; font-weight:600; }
+        .cert-id-bottom { font-size:10px; color:#334155; margin-top:16px; font-family:monospace; letter-spacing:1px; position:relative; z-index:1; }
       </style></head>
       <body><div class="cert-print-wrap">${content}</div></body></html>
     `);
@@ -64,6 +63,14 @@ export default function Certificates() {
     navigator.clipboard.writeText(id).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const shareLink = (certId) => {
+    const url = `${window.location.origin}/certificate/${certId}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedShare(true);
+      setTimeout(() => setCopiedShare(false), 2000);
     });
   };
 
@@ -151,6 +158,14 @@ export default function Certificates() {
                 >
                   {copied ? <Check size={14} /> : <Copy size={14} />}
                   {copied ? 'Copied' : 'Copy ID'}
+                </button>
+                <button
+                  className="cert-modal-copy"
+                  onClick={() => shareLink(selected.certificateId)}
+                  title="Copy shareable link"
+                >
+                  {copiedShare ? <Check size={14} /> : <Share2 size={14} />}
+                  {copiedShare ? 'Copied!' : 'Share Link'}
                 </button>
                 <button className="cert-modal-print-btn" onClick={handlePrint}>
                   <Download size={14} /> Download

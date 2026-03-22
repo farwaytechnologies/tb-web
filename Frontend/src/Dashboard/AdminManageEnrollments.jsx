@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Users, Search, X, Download, CheckCircle, XCircle, Clock, Trash2 } from 'lucide-react';
+import { Users, Search, X, Download, CheckCircle, XCircle, Clock, Trash2, Award, Copy, Check } from 'lucide-react';
 import '../Styles/DashbordStyle/AdminManageEnrollments.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function AdminManageEnrollments() {
   const [enrollments, setEnrollments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
+  const [copiedId, setCopiedId] = useState(null);
 
   const fetchEnrollments = async () => {
     setLoading(true);
@@ -42,6 +43,20 @@ export default function AdminManageEnrollments() {
     } catch (err) { console.error(err); }
   };
 
+  const markComplete = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/api/enrollments/${id}/complete`, { method: 'PATCH' });
+      if (res.ok) fetchEnrollments();
+    } catch (err) { console.error(err); }
+  };
+
+  const copyId = (certId) => {
+    navigator.clipboard.writeText(certId).then(() => {
+      setCopiedId(certId);
+      setTimeout(() => setCopiedId(null), 2000);
+    });
+  };
+
   const downloadCSV = () => {
     if (!enrollments.length) return;
     const header = ['Full Name', 'Email', 'Phone', 'Course', 'Status', 'Message', 'Enrolled At'];
@@ -60,7 +75,8 @@ export default function AdminManageEnrollments() {
     const q = search.toLowerCase();
     const matchSearch = !q || e.fullName?.toLowerCase().includes(q) ||
       e.email?.toLowerCase().includes(q) || e.courseId?.title?.toLowerCase().includes(q);
-    const matchFilter = filter === 'All' || e.status === filter;
+    const matchFilter = filter === 'All' || 
+      (filter === 'Completed' ? e.completed : e.status === filter);
     return matchSearch && matchFilter;
   });
 
@@ -69,6 +85,7 @@ export default function AdminManageEnrollments() {
     Pending: enrollments.filter(e => e.status === 'Pending').length,
     Accepted: enrollments.filter(e => e.status === 'Accepted').length,
     Rejected: enrollments.filter(e => e.status === 'Rejected').length,
+    Completed: enrollments.filter(e => e.completed).length,
   };
 
   return (
@@ -89,10 +106,11 @@ export default function AdminManageEnrollments() {
       {/* Stats */}
       <div className="ame-stats">
         {[
-          { label: 'Total',    val: counts.All,      color: '#6366f1' },
-          { label: 'Pending',  val: counts.Pending,  color: '#f59e0b' },
-          { label: 'Accepted', val: counts.Accepted, color: '#10b981' },
-          { label: 'Rejected', val: counts.Rejected, color: '#ef4444' },
+          { label: 'Total',     val: counts.All,       color: '#6366f1' },
+          { label: 'Pending',   val: counts.Pending,   color: '#f59e0b' },
+          { label: 'Accepted',  val: counts.Accepted,  color: '#10b981' },
+          { label: 'Rejected',  val: counts.Rejected,  color: '#ef4444' },
+          { label: 'Completed', val: counts.Completed, color: '#f59e0b' },
         ].map(s => (
           <div key={s.label} className="ame-stat">
             <span className="ame-stat-val" style={{ color: s.color }}>{s.val}</span>
@@ -110,7 +128,7 @@ export default function AdminManageEnrollments() {
           {search && <button className="ame-search-clear" onClick={() => setSearch('')}><X size={13} /></button>}
         </div>
         <div className="ame-filters">
-          {['All', 'Pending', 'Accepted', 'Rejected'].map(f => (
+          {['All', 'Pending', 'Accepted', 'Rejected', 'Completed'].map(f => (
             <button key={f} className={`ame-filter-btn ${filter === f ? 'active' : ''}`}
               onClick={() => setFilter(f)}>{f} ({counts[f]})</button>
           ))}
@@ -130,6 +148,7 @@ export default function AdminManageEnrollments() {
                 <th>Course</th>
                 <th>Phone</th>
                 <th>Status</th>
+                <th>Certificate ID</th>
                 <th>Date</th>
                 <th>Actions</th>
               </tr>
@@ -154,6 +173,25 @@ export default function AdminManageEnrollments() {
                       {e.status === 'Rejected' && <XCircle size={11} />}
                       {e.status}
                     </span>
+                    {e.completed && (
+                      <span className="ame-badge ame-badge--completed" style={{ marginLeft: 4 }}>
+                        <Award size={11} /> Done
+                      </span>
+                    )}
+                  </td>
+                  <td>
+                    {e.certificateId ? (
+                      <div className="ame-cert-id-cell">
+                        <span className="ame-cert-id">{e.certificateId}</span>
+                        <button
+                          className="ame-copy-btn"
+                          title="Copy Certificate ID"
+                          onClick={() => copyId(e.certificateId)}
+                        >
+                          {copiedId === e.certificateId ? <Check size={12} /> : <Copy size={12} />}
+                        </button>
+                      </div>
+                    ) : '—'}
                   </td>
                   <td>{new Date(e.enrolledAt).toLocaleDateString()}</td>
                   <td>
@@ -167,6 +205,11 @@ export default function AdminManageEnrollments() {
                             <XCircle size={13} /> Reject
                           </button>
                         </>
+                      )}
+                      {e.status === 'Accepted' && !e.completed && (
+                        <button className="ame-btn ame-btn--complete" onClick={() => markComplete(e._id)}>
+                          <Award size={13} /> Complete
+                        </button>
                       )}
                       <button className="ame-btn ame-btn--delete" onClick={() => deleteEnrollment(e._id)}>
                         <Trash2 size={13} />

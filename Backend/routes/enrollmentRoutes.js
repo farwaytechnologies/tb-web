@@ -8,8 +8,15 @@ const {
   updateEnrollmentStatus,
   deleteEnrollment,
   completeEnrollment,
-  getUserCertificates
+  getUserCertificates,
+  verifyCertificate
 } = require('../controllers/enrollmentController');
+
+// Specific static routes FIRST (before wildcard /:id routes)
+router.get('/certificates/:userId', getUserCertificates);
+router.get('/verify/:certId', verifyCertificate);
+router.get('/user/:userId', getUserEnrollments);
+router.get('/tutor/:tutorName', getTutorEnrollments);
 
 // POST - Student enrolls
 router.post('/', createEnrollment);
@@ -17,22 +24,9 @@ router.post('/', createEnrollment);
 // GET - Admin views all
 router.get('/', getAllEnrollments);
 
-// GET - User's own enrollments
-router.get('/user/:userId', getUserEnrollments);
-
-// GET - Tutor's course enrollments
-router.get('/tutor/:tutorName', getTutorEnrollments);
-
-// PUT - Admin updates status
+// Wildcard /:id routes LAST
 router.put('/:id/status', updateEnrollmentStatus);
-
-// DELETE - Admin deletes enrollment
-router.delete('/:id', deleteEnrollment);
-
-// PATCH - Mark enrollment as completed (tutor/admin)
 router.patch('/:id/complete', completeEnrollment);
-
-// GET - User's certificates (completed enrollments)
-router.get('/certificates/:userId', getUserCertificates);
+router.delete('/:id', deleteEnrollment);
 
 module.exports = router;
