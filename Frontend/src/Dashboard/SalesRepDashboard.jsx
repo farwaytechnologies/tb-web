@@ -27,10 +27,10 @@ export default function SalesRepDashboard() {
     Promise.all([
       fetch(`${API}/api/auth/users`).then(r => r.json()),
       fetch(`${API}/api/se-rewards/${uid}`).then(r => r.json()),
-    ]).then(([users, reward]) => {
+    ]).then(([users, rewardData]) => {
       const refs = users.filter(u => String(u.referredBy) === String(uid));
       setReferrals(refs);
-      setWallet(reward);
+      setWallet(rewardData); // { wallet, withdrawals, available }
     }).catch(() => {}).finally(() => setLoading(false));
   }, [navigate]);
 
@@ -240,12 +240,12 @@ export default function SalesRepDashboard() {
             </div>
             <div className="srd-wallet-row">
               <div className="srd-wallet-mini">
-                <span className="srd-wallet-mini-val" style={{ color: '#f59e0b' }}>{loading ? '—' : wallet?.borgCoins ?? 0}</span>
+                <span className="srd-wallet-mini-val" style={{ color: '#f59e0b' }}>{loading ? '—' : wallet?.wallet?.totalEarned ?? 0}</span>
                 <span className="srd-wallet-mini-lbl">Total Earned</span>
               </div>
               <div className="srd-wallet-divider" />
               <div className="srd-wallet-mini">
-                <span className="srd-wallet-mini-val" style={{ color: '#8b5cf6' }}>{loading ? '—' : wallet?.borgCoinsWithdrawn ?? 0}</span>
+                <span className="srd-wallet-mini-val" style={{ color: '#8b5cf6' }}>{loading ? '—' : wallet?.wallet?.totalWithdrawn ?? 0}</span>
                 <span className="srd-wallet-mini-lbl">Withdrawn</span>
               </div>
               <div className="srd-wallet-divider" />

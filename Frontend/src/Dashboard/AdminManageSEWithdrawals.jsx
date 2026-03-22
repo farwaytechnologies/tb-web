@@ -10,10 +10,10 @@ const STATUS_STYLE = {
 };
 
 export default function AdminManageSEWithdrawals() {
-  const [rewards, setRewards] = useState([]);
+  const [rows, setRows]       = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter]   = useState('pending');
-  const [resolving, setResolving] = useState(null);
+  const [resolving, setResolving] = useState(null); // { withdrawId }
   const [note, setNote]       = useState('');
   const [toast, setToast]     = useState(null);
 
@@ -26,17 +26,16 @@ export default function AdminManageSEWithdrawals() {
     setLoading(true);
     fetch(`${API}/api/se-rewards/admin/all`)
       .then(r => r.json())
-      .then(d => setRewards(Array.isArray(d) ? d : []))
-      .catch(() => setRewards([]))
+      .then(d => setRows(Array.isArray(d) ? d : []))
+      .catch(() => setRows([]))
       .finally(() => setLoading(false));
   };
 
   useEffect(() => { fetchAll(); }, []);
 
   const handleResolve = async (status) => {
-    const { rewardId, withdrawId } = resolving;
     try {
-      const res = await fetch(`${API}/api/se-rewards/admin/withdraw/${rewardId}/${withdrawId}`, {
+      const res = await fetch(`${API}/api/se-rewards/admin/withdraw/${resolving.withdrawId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status, adminNote: note }),
@@ -44,8 +43,7 @@ export default function AdminManageSEWithdrawals() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
       showToast('ok', `Withdrawal ${status}.`);
-      setResolving(null);
-      setNote('');
+      setResolving(null); setNote('');
       fetchAll();
     } catch (err) {
       showToast('err', err.message);
@@ -53,19 +51,12 @@ export default function AdminManageSEWithdrawals() {
   };
 
   // Flatten all withdrawals with user info
-  const allWithdrawals = rewards.flatMap(r =>
-    (r.withdrawals || []).map(w => ({
-      ...w,
-      rewardId: r._id,
-      user: r.userId,
-      totalBorgCoins: r.borgCoins,
-      available: r.available,
-    }))
+  const allWithdrawals = rows.flatMap(r =>
+    (r.withdrawals || []).map(w => ({ ...w, user: r.userId }))
   ).filter(w => filter === 'all' || w.status === filter)
    .sort((a, b) => new Date(b.requestedAt) - new Date(a.requestedAt));
 
-  const pendingCount = rewards.flatMap(r => r.withdrawals || []).filter(w => w.status === 'pending').length;
-
+  const pendingCount = rows.flatMap(r => r.withdrawals || []).filter(w => w.status === 'pending').length;
   const fmt = d => new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
   return (
@@ -86,17 +77,13 @@ export default function AdminManageSEWithdrawals() {
       )}
 
       {/* Header */}
-      <div style={{
-        background: 'linear-gradient(135deg,#12121a,#1a1a2e)', border: '1px solid #2a2a3e',
-        borderRadius: '16px', padding: '1.5rem 2rem', marginBottom: '1.25rem',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div style={{ background: 'linear-gradient(135deg,#12121a,#1a1a2e)', border: '1px solid #2a2a3e', borderRadius: 16, padding: '1.5rem 2rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Coins size={20} style={{ color: '#f59e0b' }} />
           </div>
           <div>
-            <h1 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700 }}>SE Withdrawal Requests</h1>
+            <h1 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700 }}>SE BorgCoin Withdrawals</h1>
             <p style={{ margin: 0, fontSize: 13, color: '#64748b' }}>Manage sales executive BorgCoin withdrawals</p>
           </div>
         </div>
@@ -114,11 +101,8 @@ export default function AdminManageSEWithdrawals() {
             background: filter === f ? 'rgba(245,158,11,0.15)' : '#12121a',
             border: `1px solid ${filter === f ? 'rgba(245,158,11,0.3)' : '#1e1e2e'}`,
             color: filter === f ? '#f59e0b' : '#64748b',
-            padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer',
-            textTransform: 'capitalize',
-          }}>
-            {f}
-          </button>
+            padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer', textTransform: 'capitalize',
+          }}>{f}</button>
         ))}
       </div>
 
@@ -149,9 +133,7 @@ export default function AdminManageSEWithdrawals() {
                         <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>{w.user?.email}</p>
                       </div>
                     </div>
-                    <p style={{ margin: '0 0 4px', fontSize: 13, color: '#94a3b8' }}>
-                      {w.upiId ? `UPI: ${w.upiId}` : w.bankDetails}
-                    </p>
+                    <p style={{ margin: '0 0 4px', fontSize: 13, color: '#94a3b8' }}>{w.paymentDetails}</p>
                     {w.adminNote && <p style={{ margin: '0 0 4px', fontSize: 12, color: '#f59e0b' }}>Note: {w.adminNote}</p>}
                     <p style={{ margin: 0, fontSize: 11, color: '#475569' }}>Requested {fmt(w.requestedAt)}</p>
                   </div>
@@ -162,7 +144,7 @@ export default function AdminManageSEWithdrawals() {
                     </span>
                     {w.status === 'pending' && (
                       <button
-                        onClick={() => { setResolving({ rewardId: w.rewardId, withdrawId: w._id }); setNote(''); }}
+                        onClick={() => { setResolving({ withdrawId: w._id }); setNote(''); }}
                         style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)', color: '#f59e0b', padding: '6px 12px', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
                       >
                         Review

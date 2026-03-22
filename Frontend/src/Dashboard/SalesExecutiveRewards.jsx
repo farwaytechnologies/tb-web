@@ -13,7 +13,7 @@ const STATUS_STYLE = {
 
 export default function SalesExecutiveRewards() {
   const [user, setUser]           = useState(null);
-  const [reward, setReward]       = useState(null);
+  const [data, setData]           = useState(null);   // { wallet, withdrawals, available }
   const [loading, setLoading]     = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm]           = useState({ borgCoins: '', upiId: '', bankDetails: '' });
@@ -22,10 +22,11 @@ export default function SalesExecutiveRewards() {
   const [success, setSuccess]     = useState('');
   const navigate = useNavigate();
 
-  const fetchReward = (uid) => {
+  const fetchData = (uid) => {
+    setLoading(true);
     fetch(`${API}/api/se-rewards/${uid}`)
       .then(r => r.json())
-      .then(d => setReward(d))
+      .then(d => setData(d))
       .catch(() => {})
       .finally(() => setLoading(false));
   };
@@ -34,7 +35,7 @@ export default function SalesExecutiveRewards() {
     const stored = JSON.parse(localStorage.getItem('user') || 'null');
     if (!stored || stored.role !== 'sales_executive') { navigate('/login'); return; }
     setUser(stored);
-    fetchReward(stored._id || stored.id);
+    fetchData(stored._id || stored.id);
   }, [navigate]);
 
   const handleWithdraw = async e => {
@@ -48,12 +49,12 @@ export default function SalesExecutiveRewards() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, borgCoins: Number(form.borgCoins) }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-      setSuccess('Withdrawal request submitted successfully.');
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.message);
+      setSuccess('Withdrawal request submitted.');
       setForm({ borgCoins: '', upiId: '', bankDetails: '' });
       setShowModal(false);
-      fetchReward(uid);
+      fetchData(uid);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -65,8 +66,10 @@ export default function SalesExecutiveRewards() {
 
   if (!user) return null;
 
-  const available = reward?.available ?? 0;
-  const pendingCount = reward?.withdrawals?.filter(w => w.status === 'pending').length || 0;
+  const wallet = data?.wallet;
+  const withdrawals = data?.withdrawals ?? [];
+  const available = data?.available ?? 0;
+  const pendingCount = withdrawals.filter(w => w.status === 'pending').length;
 
   return (
     <div className="ser-page">
@@ -76,11 +79,12 @@ export default function SalesExecutiveRewards() {
         <div className="ser-header-left">
           <div className="ser-header-icon"><Coins size={22} style={{ color: '#f59e0b' }} /></div>
           <div>
-            <h1>BorgCoins & Withdrawals</h1>
-            <p>Earn 25 BorgCoins per referral. Withdraw anytime.</p>
+            <h1>BorgCoins Wallet</h1>
+            <p>Earn 25 BC per referral. Withdraw anytime.</p>
           </div>
         </div>
-        <button className="ser-withdraw-btn" onClick={() => { setShowModal(true); setError(''); setSuccess(''); }}
+        <button className="ser-withdraw-btn"
+          onClick={() => { setShowModal(true); setError(''); setSuccess(''); }}
           disabled={available < 1}>
           <Send size={14} /> Request Withdrawal
         </button>
@@ -93,7 +97,7 @@ export default function SalesExecutiveRewards() {
           <div className="ser-stat-icon" style={{ background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)' }}>
             <Coins size={18} style={{ color: '#f59e0b' }} />
           </div>
-          <span className="ser-stat-val" style={{ color: '#f59e0b' }}>{loading ? '—' : reward?.borgCoins ?? 0}</span>
+          <span className="ser-stat-val" style={{ color: '#f59e0b' }}>{loading ? '—' : wallet?.totalEarned ?? 0}</span>
           <span className="ser-stat-lbl">Total Earned</span>
         </div>
         <div className="ser-stat">
@@ -107,7 +111,7 @@ export default function SalesExecutiveRewards() {
           <div className="ser-stat-icon" style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)' }}>
             <CheckCircle size={18} style={{ color: '#8b5cf6' }} />
           </div>
-          <span className="ser-stat-val" style={{ color: '#8b5cf6' }}>{loading ? '—' : reward?.borgCoinsWithdrawn ?? 0}</span>
+          <span className="ser-stat-val" style={{ color: '#8b5cf6' }}>{loading ? '—' : wallet?.totalWithdrawn ?? 0}</span>
           <span className="ser-stat-lbl">Withdrawn</span>
         </div>
         <div className="ser-stat">
@@ -121,37 +125,41 @@ export default function SalesExecutiveRewards() {
 
       <div className="ser-two-col">
 
+        {/* Wallet Summary */}
         <div className="ser-card">
-          <h2 className="ser-card-title">Earnings History</h2>
+          <h2 className="ser-card-title">Wallet Summary</h2>
           {loading ? (
             <div className="ser-loading"><div className="ser-spinner" /></div>
-          ) : !reward?.history?.length ? (
-            <div className="ser-empty"><Coins size={28} /><p>No earnings yet.</p></div>
           ) : (
-            <div className="ser-history-list">
-              {[...reward.history].reverse().map((h, i) => (
-                <div key={i} className="ser-history-item">
-                  <div className="ser-history-dot" />
-                  <div className="ser-history-body">
-                    <p className="ser-history-reason">{h.reason}</p>
-                    <p className="ser-history-date">{fmt(h.date)}</p>
-                  </div>
-                  <span className="ser-history-pts">+{h.borgCoins} BC</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[
+                { label: 'Total Earned', val: wallet?.totalEarned ?? 0, color: '#f59e0b' },
+                { label: 'Available Balance', val: available, color: '#10b981' },
+                { label: 'Total Withdrawn', val: wallet?.totalWithdrawn ?? 0, color: '#8b5cf6' },
+                { label: 'Pending Requests', val: pendingCount, color: '#06b6d4' },
+              ].map(row => (
+                <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', background: '#0a0a0f', borderRadius: 10, border: '1px solid #1e1e2e' }}>
+                  <span style={{ fontSize: 13, color: '#94a3b8' }}>{row.label}</span>
+                  <span style={{ fontWeight: 700, color: row.color }}>{row.val} BC</span>
                 </div>
               ))}
+              <p style={{ fontSize: 12, color: '#475569', margin: 0, textAlign: 'center' }}>
+                1 BC = $0.50 USD · Earn 25 BC per referral
+              </p>
             </div>
           )}
         </div>
 
+        {/* Withdrawal Requests */}
         <div className="ser-card">
           <h2 className="ser-card-title">Withdrawal Requests</h2>
           {loading ? (
             <div className="ser-loading"><div className="ser-spinner" /></div>
-          ) : !reward?.withdrawals?.length ? (
+          ) : !withdrawals.length ? (
             <div className="ser-empty"><Send size={28} /><p>No withdrawal requests yet.</p></div>
           ) : (
             <div className="ser-withdraw-list">
-              {[...reward.withdrawals].reverse().map((w, i) => {
+              {withdrawals.map((w, i) => {
                 const s = STATUS_STYLE[w.status];
                 const Icon = s.icon;
                 return (
@@ -162,9 +170,7 @@ export default function SalesExecutiveRewards() {
                         <Icon size={11} /> {w.status}
                       </span>
                     </div>
-                    <p className="ser-withdraw-meta">
-                      {w.upiId ? `UPI: ${w.upiId}` : w.bankDetails}
-                    </p>
+                    <p className="ser-withdraw-meta">{w.paymentDetails}</p>
                     {w.adminNote && <p className="ser-withdraw-note">Note: {w.adminNote}</p>}
                     <p className="ser-withdraw-date">Requested {fmt(w.requestedAt)}</p>
                   </div>
@@ -176,6 +182,7 @@ export default function SalesExecutiveRewards() {
 
       </div>
 
+      {/* Withdraw Modal */}
       {showModal && (
         <div className="ser-overlay" onClick={() => setShowModal(false)}>
           <div className="ser-modal" onClick={e => e.stopPropagation()}>

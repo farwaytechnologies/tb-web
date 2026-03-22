@@ -143,6 +143,17 @@ export default function Login() {
                 <path d="M9 18l6-6-6-6" />
               </svg>
             </button>
+
+            <button className="lp-role-btn lp-role-btn--se" onClick={() => setRole('sales_executive')}>
+              <div className="lp-role-btn-icon">💼</div>
+              <div className="lp-role-btn-body">
+                <span className="lp-role-btn-label">Sales Executive</span>
+                <span className="lp-role-btn-desc">Track referrals & manage BorgCoins</span>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="lp-role-btn-arrow">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
@@ -150,9 +161,12 @@ export default function Login() {
   }
 
   // ── Login / Signup form ───────────────────────────────────────────────────
+  const isSE      = role === 'sales_executive';
   const isStudent = role === 'student';
-  const accent    = isStudent ? '#6366f1' : '#8b5cf6';
-  const accentRgb = isStudent ? '99,102,241' : '139,92,246';
+  const accent    = isSE ? '#f59e0b' : isStudent ? '#6366f1' : '#8b5cf6';
+  const accentRgb = isSE ? '245,158,11' : isStudent ? '99,102,241' : '139,92,246';
+  const roleLabel = isSE ? '💼 Sales Executive' : isStudent ? '🎓 Student' : '📚 Tutor';
+  const roleDesc  = isSE ? 'sales executive' : isStudent ? 'student' : 'tutor';
 
   return (
     <div className="lp-page">
@@ -171,10 +185,10 @@ export default function Login() {
         {/* Header */}
         <div className="lp-form-header">
           <div className="lp-role-pill" style={{ background: `rgba(${accentRgb},0.12)`, border: `1px solid rgba(${accentRgb},0.3)`, color: accent }}>
-            {isStudent ? '🎓 Student' : '📚 Tutor'}
+            {roleLabel}
           </div>
           <h2 className="lp-form-title">{isSignup ? 'Create account' : 'Sign in'}</h2>
-          <p className="lp-form-sub">{isSignup ? `Join as a ${role}` : `Welcome back, ${role}`}</p>
+          <p className="lp-form-sub">{isSignup ? `Join as a ${roleDesc}` : `Welcome back, ${roleDesc}`}</p>
         </div>
 
         {/* Alert */}
@@ -260,18 +274,20 @@ export default function Login() {
             type="submit"
             className="lp-submit-btn"
             disabled={loading}
-            style={{ background: `linear-gradient(135deg, ${accent}, ${isStudent ? '#8b5cf6' : '#6366f1'})` }}
+            style={{ background: `linear-gradient(135deg, ${accent}, ${isSE ? '#d97706' : isStudent ? '#8b5cf6' : '#6366f1'})` }}
           >
             {loading ? <span className="lp-btn-spinner" /> : (isSignup ? 'Create Account' : 'Sign In')}
           </button>
         </form>
 
+        {!isSE && (
         <p className="lp-toggle">
           {isSignup ? 'Already have an account?' : "Don't have an account?"}
           <button className="lp-toggle-btn" style={{ color: accent }} onClick={() => { setIsSignup(p => !p); setError(''); }}>
             {isSignup ? 'Sign In' : 'Sign Up'}
           </button>
         </p>
+        )}
       </div>
 
       {/* Forgot Password Overlay */}
@@ -307,7 +323,7 @@ export default function Login() {
                   />
                 </div>
                 <button type="submit" className="lp-submit-btn" disabled={forgotLoading}
-                  style={{ background: `linear-gradient(135deg, ${accent}, ${isStudent ? '#8b5cf6' : '#6366f1'})` }}>
+                  style={{ background: `linear-gradient(135deg, ${accent}, ${isSE ? '#d97706' : isStudent ? '#8b5cf6' : '#6366f1'})` }}>
                   {forgotLoading ? <span className="lp-btn-spinner" /> : 'Send Reset Link'}
                 </button>
               </form>

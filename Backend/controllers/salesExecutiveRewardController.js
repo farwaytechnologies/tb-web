@@ -1,15 +1,18 @@
-const SalesExecutiveReward = require('../models/SalesExecutiveReward');
+const { BorgCoinWallet, Withdrawal } = require('../models/BorgCoin');
 
 const BORGCOINS_PER_REFERRAL = 25;
 
 // Award BorgCoins when a referral signs up (called from authController register)
 exports.awardReferralPoints = async (referrerId, refereeName) => {
   try {
-    let reward = await SalesExecutiveReward.findOne({ userId: referrerId });
-    if (!reward) reward = new SalesExecutiveReward({ userId: referrerId });
-    reward.borgCoins += BORGCOINS_PER_REFERRAL;
-    reward.history.push({ borgCoins: BORGCOINS_PER_REFERRAL, reason: `Referral: ${refereeName} joined` });
-    await reward.save();
+    let wallet = await BorgCoinWallet.findOne({ tutorId: referrerId });
+    if (!wallet) {
+      wallet = new BorgCoinWallet({ tutorId: referrerId, borgCoins: 0, totalEarned: 0, totalWithdrawn: 0 });
+    }
+    wallet.borgCoins += BORGCOINS_PER_REFERRAL;
+    wallet.totalEarned += BORGCOINS_PER_REFERRAL;
+    wallet.lastSynced = new Date();
+    await wallet.save();
   } catch (err) {
     console.error('Award SE BorgCoins error:', err);
   }
@@ -18,13 +21,15 @@ exports.awardReferralPoints = async (referrerId, refereeName) => {
 // GET /api/se-rewards/:userId
 exports.getReward = async (req, res) => {
   try {
-    let reward = await SalesExecutiveReward.findOne({ userId: req.params.userId });
-    if (!reward) reward = new SalesExecutiveReward({ userId: req.params.userId });
-    const pendingLocked = reward.withdrawals
-      .filter(w => w.status === 'pending')
-      .reduce((s, w) => s + w.borgCoins, 0);
-    const available = reward.borgCoins - reward.borgCoinsWithdrawn - pendingLocked;
-    res.json({ ...reward.toObject(), available });
+    const uid = req.params.userId;
+    let wallet = await BorgCoinWallet.findOne({ tutorId: uid });
+    if (!wallet) wallet = { tutorId: uid, borgCoins: 0, totalEarned: 0, totalWithdrawn: 0, withdrawals: [] };
+
+    const withdrawals = await Withdrawal.find({ tutorId: uid }).sort({ requestedAt: -1 });
+    const pendingLocked = withdrawals.filter(w => w.status === 'pending').reduce((s, w) => s + w.borgCoins, 0);
+    const available = (wallet.borgCoins ?? 0);
+
+    res.json({ wallet, withdrawals, available, pendingLocked });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -33,56 +38,97 @@ exports.getReward = async (req, res) => {
 // POST /api/se-rewards/:userId/withdraw
 exports.requestWithdrawal = async (req, res) => {
   try {
+    const uid = req.params.userId;
     const { borgCoins, upiId, bankDetails } = req.body;
     if (!borgCoins || borgCoins < 1) return res.status(400).json({ message: 'Invalid amount.' });
     if (!upiId && !bankDetails) return res.status(400).json({ message: 'Provide UPI ID or bank details.' });
 
-    let reward = await SalesExecutiveReward.findOne({ userId: req.params.userId });
-    if (!reward) reward = new SalesExecutiveReward({ userId: req.params.userId });
+    const wallet = await BorgCoinWallet.findOne({ tutorId: uid });
+    if (!wallet || wallet.borgCoins < borgCoins)
+      return res.status(400).json({ message: `Insufficient BorgCoins. Available: ${wallet?.borgCoins ?? 0}` });
 
-    const pendingLocked = reward.withdrawals
-      .filter(w => w.status === 'pending')
-      .reduce((s, w) => s + w.borgCoins, 0);
-    const available = reward.borgCoins - reward.borgCoinsWithdrawn - pendingLocked;
-    if (borgCoins > available) return res.status(400).json({ message: `Insufficient BorgCoins. Available: ${available}` });
+    // Deduct immediately (hold)
+    wallet.borgCoins -= borgCoins;
+    wallet.totalWithdrawn += borgCoins;
+    wallet.lastSynced = new Date();
+    await wallet.save();
 
-    reward.withdrawals.push({ borgCoins, upiId: upiId || '', bankDetails: bankDetails || '' });
-    await reward.save();
-    res.json({ message: 'Withdrawal request submitted.', available: available - borgCoins });
+    // paymentDetails = upiId or bankDetails string
+    const paymentDetails = upiId || bankDetails;
+    const paymentMethod = upiId ? 'mobile' : 'bank';
+
+    const withdrawal = await Withdrawal.create({
+      tutorId: uid,
+      borgCoins,
+      pointsSpent: borgCoins,
+      amountUSD: parseFloat((borgCoins * 0.5).toFixed(2)),
+      paymentMethod,
+      paymentDetails,
+    });
+
+    res.json({ message: 'Withdrawal request submitted.', withdrawal });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-// GET /api/se-rewards/admin/all
+// GET /api/se-rewards/admin/all  — all SE wallets with pending withdrawals
 exports.getAllRewards = async (req, res) => {
   try {
-    const rewards = await SalesExecutiveReward.find().populate('userId', 'name email referralCode');
-    res.json(rewards);
+    // Get all sales_executive users
+    const User = require('../models/user');
+    const seUsers = await User.find({ role: 'sales_executive' }).select('_id name email referralCode');
+    const seIds = seUsers.map(u => u._id);
+
+    const [wallets, withdrawals] = await Promise.all([
+      BorgCoinWallet.find({ tutorId: { $in: seIds } }),
+      Withdrawal.find({ tutorId: { $in: seIds } }).sort({ requestedAt: -1 }),
+    ]);
+
+    const walletMap = Object.fromEntries(wallets.map(w => [String(w.tutorId), w]));
+    const withdrawalMap = {};
+    withdrawals.forEach(w => {
+      const key = String(w.tutorId);
+      if (!withdrawalMap[key]) withdrawalMap[key] = [];
+      withdrawalMap[key].push(w);
+    });
+
+    const result = seUsers.map(u => ({
+      userId: u,
+      wallet: walletMap[String(u._id)] || { borgCoins: 0, totalEarned: 0, totalWithdrawn: 0 },
+      withdrawals: withdrawalMap[String(u._id)] || [],
+    }));
+
+    res.json(result);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-// PUT /api/se-rewards/admin/withdraw/:rewardId/:withdrawId
+// PUT /api/se-rewards/admin/withdraw/:withdrawId
 exports.resolveWithdrawal = async (req, res) => {
   try {
     const { status, adminNote } = req.body;
     if (!['approved', 'rejected'].includes(status))
       return res.status(400).json({ message: 'Invalid status.' });
 
-    const reward = await SalesExecutiveReward.findById(req.params.rewardId);
-    if (!reward) return res.status(404).json({ message: 'Reward not found.' });
-
-    const w = reward.withdrawals.id(req.params.withdrawId);
+    const w = await Withdrawal.findById(req.params.withdrawId);
     if (!w) return res.status(404).json({ message: 'Withdrawal not found.' });
     if (w.status !== 'pending') return res.status(400).json({ message: 'Already resolved.' });
+
+    // If rejected, refund coins
+    if (status === 'rejected') {
+      await BorgCoinWallet.findOneAndUpdate(
+        { tutorId: w.tutorId },
+        { $inc: { borgCoins: w.borgCoins, totalWithdrawn: -w.borgCoins } }
+      );
+    }
 
     w.status = status;
     w.adminNote = adminNote || '';
     w.resolvedAt = new Date();
-    if (status === 'approved') reward.borgCoinsWithdrawn += w.borgCoins;
-    await reward.save();
+    await w.save();
+
     res.json({ message: `Withdrawal ${status}.` });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });

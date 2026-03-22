@@ -84,7 +84,8 @@
 }
 .lp-role-btn:hover { transform: translateY(-2px); }
 .lp-role-btn--student:hover { border-color: rgba(99,102,241,0.4); background: rgba(99,102,241,0.06); }
-.lp-role-btn--tutor:hover  { border-color: rgba(139,92,246,0.4); background: rgba(139,92,246,0.06); }
+.lp-role-btn--tutor:hover   { border-color: rgba(139,92,246,0.4); background: rgba(139,92,246,0.06); }
+.lp-role-btn--se:hover      { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.06); }
 
 .lp-role-btn-icon { font-size: 1.6rem; flex-shrink: 0; }
 .lp-role-btn-body { flex: 1; display: flex; flex-direction: column; gap: 3px; }

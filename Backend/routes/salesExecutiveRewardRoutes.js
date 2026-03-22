@@ -9,7 +9,7 @@ const {
 
 // Admin
 router.get('/admin/all', getAllRewards);
-router.put('/admin/withdraw/:rewardId/:withdrawId', resolveWithdrawal);
+router.put('/admin/withdraw/:withdrawId', resolveWithdrawal);
 
 // Sales executive
 router.get('/:userId', getReward);
