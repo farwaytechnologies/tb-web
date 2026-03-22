@@ -104,7 +104,7 @@ export default function VisitorAnalytics() {
   const PER_PAGE = 15;
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [hoveredCountry, setHoveredCountry] = useState(null);
-  const [activeTab, setActiveTab] = useState('overview'); // overview | traffic | geo | visitors
+  const [activeTab, setActiveTab] = useState('overview'); // overview | traffic | geo | sessions | unique
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
@@ -220,9 +220,9 @@ export default function VisitorAnalytics() {
 
       {/* Tabs */}
       <div className="va-tabs">
-        {['overview', 'traffic', 'geo', 'visitors'].map(t => (
+        {['overview', 'traffic', 'geo', 'sessions', 'unique'].map(t => (
           <button key={t} className={`va-tab${activeTab === t ? ' active' : ''}`} onClick={() => setActiveTab(t)}>
-            {t.charAt(0).toUpperCase() + t.slice(1)}
+            {t === 'unique' ? 'Visitors' : t === 'sessions' ? 'All Sessions' : t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
         ))}
       </div>
@@ -411,11 +411,11 @@ export default function VisitorAnalytics() {
         </>
       )}
 
-      {/* ── VISITORS TAB ── */}
-      {activeTab === 'visitors' && (
+      {/* ── ALL SESSIONS TAB ── */}
+      {activeTab === 'sessions' && (
         <div className="va-card va-card-full">
           <div className="va-table-header">
-            <h3>All Visitors <span className="va-badge">{filtered.length}</span></h3>
+            <h3>All Sessions <span className="va-badge">{filtered.length}</span></h3>
             <div className="va-table-controls">
               <div className="va-search">
                 <Search size={13} />
@@ -479,6 +479,92 @@ export default function VisitorAnalytics() {
           )}
         </div>
       )}
+
+      {/* ── UNIQUE VISITORS TAB ── */}
+      {activeTab === 'unique' && (() => {
+        const ipMap = new Map();
+        visitors.forEach(v => {
+          const existing = ipMap.get(v.ip);
+          if (!existing) {
+            ipMap.set(v.ip, { ...v, visitCount: 1 });
+          } else {
+            existing.visitCount += 1;
+            if (new Date(v.createdAt) > new Date(existing.createdAt)) {
+              ipMap.set(v.ip, { ...v, visitCount: existing.visitCount });
+            }
+          }
+        });
+        const uniqueList = Array.from(ipMap.values())
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        const uFiltered = uniqueList.filter(v => {
+          const q = search.toLowerCase();
+          return !q || [v.ip, v.country, v.city, v.device, v.browser].some(f => f?.toLowerCase().includes(q));
+        });
+
+        const uTotalPages = Math.ceil(uFiltered.length / PER_PAGE);
+        const uPageData   = uFiltered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+        return (
+          <div className="va-card va-card-full">
+            <div className="va-table-header">
+              <h3>Visitors <span className="va-badge">{uFiltered.length}</span></h3>
+              <div className="va-table-controls">
+                <div className="va-search">
+                  <Search size={13} />
+                  <input placeholder="Search IP, country, device..." value={search}
+                    onChange={e => { setSearch(e.target.value); setPage(1); }} />
+                  {search && <button onClick={() => { setSearch(''); setPage(1); }}><X size={12} /></button>}
+                </div>
+              </div>
+            </div>
+            <div className="va-table-wrap">
+              <table className="va-table">
+                <thead>
+                  <tr>
+                    <th>#</th><th>IP</th><th>Country</th><th>City</th>
+                    <th>Device</th><th>Browser</th><th>Visits</th><th>Last Seen</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {uPageData.length ? uPageData.map((v, i) => (
+                    <tr key={v.ip}>
+                      <td className="va-muted">{(page - 1) * PER_PAGE + i + 1}</td>
+                      <td className="va-ip">{v.ip || '—'}</td>
+                      <td>{v.country || '—'}</td>
+                      <td>{v.city || '—'}</td>
+                      <td>
+                        <span className="va-device-chip">
+                          {v.device === 'Mobile' ? <Smartphone size={11} /> : v.device === 'Tablet' ? <Tablet size={11} /> : <Monitor size={11} />}
+                          {v.device || '—'}
+                        </span>
+                      </td>
+                      <td>{v.browser || '—'}</td>
+                      <td className="va-center" style={{ color: '#8b5cf6', fontWeight: 700 }}>{v.visitCount}</td>
+                      <td className="va-muted">{fmtDate(v.createdAt)}</td>
+                    </tr>
+                  )) : (
+                    <tr><td colSpan="8" className="va-empty-cell">No visitors found</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            {uTotalPages > 1 && (
+              <div className="va-pagination">
+                <span className="va-page-info">Page {page} of {uTotalPages}</span>
+                <button disabled={page === 1} onClick={() => setPage(1)}>«</button>
+                <button disabled={page === 1} onClick={() => setPage(p => p - 1)}><ChevronLeft size={13} /></button>
+                {Array.from({ length: Math.min(5, uTotalPages) }, (_, i) => {
+                  const p = Math.max(1, Math.min(page - 2, uTotalPages - 4)) + i;
+                  return <button key={p} className={page === p ? 'active' : ''} onClick={() => setPage(p)}>{p}</button>;
+                })}
+                <button disabled={page === uTotalPages} onClick={() => setPage(p => p + 1)}><ChevronRight size={13} /></button>
+                <button disabled={page === uTotalPages} onClick={() => setPage(uTotalPages)}>»</button>
+              </div>
+            )}
+          </div>
+        );
+      })()}
     </div>
   );
 }
