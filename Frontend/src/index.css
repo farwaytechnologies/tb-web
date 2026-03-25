@@ -1,7 +1,84 @@
+/* ── TechBorg Global Design Tokens ── */
+:root {
+  /* Brand palette */
+  --clr-teal:        #2d7d7d;
+  --clr-teal-dark:   #1f5c5c;
+  --clr-teal-light:  #3a9e9e;
+  --clr-teal-muted:  rgba(45,125,125,0.12);
+
+  --clr-amber:       #f0a030;
+  --clr-amber-light: #f0c080;
+  --clr-amber-muted: rgba(240,160,48,0.12);
+
+  --clr-red:         #d03010;
+  --clr-red-dark:    #a82508;
+  --clr-red-muted:   rgba(208,48,16,0.12);
+
+  /* Neutrals */
+  --clr-black:       #1a1a1a;
+  --clr-dark:        #111111;
+  --clr-surface:     #1e1e1e;
+  --clr-surface-2:   #252525;
+  --clr-border:      rgba(255,255,255,0.08);
+  --clr-white:       #ffffff;
+  --clr-off-white:   #fdf6ee;
+  --clr-text-muted:  #94a3b8;
+  --clr-text-dim:    #64748b;
+
+  /* Semantic roles */
+  --primary:         var(--clr-teal);
+  --primary-dark:    var(--clr-teal-dark);
+  --primary-light:   var(--clr-teal-light);
+  --primary-muted:   var(--clr-teal-muted);
+
+  --accent:          var(--clr-amber);
+  --accent-light:    var(--clr-amber-light);
+  --accent-muted:    var(--clr-amber-muted);
+
+  --cta:             var(--clr-red);
+  --cta-dark:        var(--clr-red-dark);
+  --cta-muted:       var(--clr-red-muted);
+
+  --bg:              var(--clr-white);
+  --bg-warm:         var(--clr-off-white);
+  --bg-dark:         var(--clr-black);
+  --text:            var(--clr-black);
+  --text-muted:      var(--clr-text-muted);
+
+  /* Gradients */
+  --grad-primary:    linear-gradient(135deg, var(--clr-teal), var(--clr-teal-dark));
+  --grad-accent:     linear-gradient(135deg, var(--clr-amber), var(--clr-red));
+  --grad-hero:       linear-gradient(135deg, var(--clr-teal-dark) 0%, var(--clr-black) 60%);
+
+  /* Shadows */
+  --shadow-sm:       0 2px 8px rgba(0,0,0,0.12);
+  --shadow-md:       0 4px 20px rgba(0,0,0,0.18);
+  --shadow-lg:       0 8px 40px rgba(0,0,0,0.25);
+  --shadow-primary:  0 4px 20px rgba(45,125,125,0.3);
+  --shadow-cta:      0 4px 20px rgba(208,48,16,0.3);
+
+  /* Radius */
+  --radius-sm:       6px;
+  --radius-md:       10px;
+  --radius-lg:       16px;
+  --radius-xl:       24px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
   margin: 0;
   padding: 0;
-}.nqc-vh{
-min-height: 100vh;
-background: linear-gradient(135deg, #62a8ef, #854ef4);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+img, video, iframe { max-width: 100%; }
+
+.nqc-vh {
+  min-height: 100vh;
+  background: var(--grad-hero);
 }

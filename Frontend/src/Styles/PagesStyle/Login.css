@@ -250,8 +250,11 @@
 @keyframes lp-spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 480px) {
-  .lp-role-card, .lp-form-card { padding: 28px 20px; border-radius: 18px; }
-  .lp-role-title, .lp-form-title { font-size: 1.5rem; }
+  .lp-page { padding: 16px; }
+  .lp-role-card, .lp-form-card { padding: 22px 16px; border-radius: 16px; }
+  .lp-role-title, .lp-form-title { font-size: 1.4rem; }
+  .lp-role-btn { padding: 14px 16px; }
+  .lp-submit-btn { width: 100%; }
 }
 
 /* ── Forgot Password Overlay ─────────────────────────────────────────────── */

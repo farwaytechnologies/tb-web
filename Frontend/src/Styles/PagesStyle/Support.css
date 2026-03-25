@@ -122,4 +122,9 @@
   .sp-chat { width: calc(100vw - 32px); right: 16px; bottom: 80px; }
   .sp-chat-fab { bottom: 20px; right: 20px; }
   .sp-submit-btn { width: 100%; }
+  .sp-hero { padding: 60px 16px 40px; }
+  .sp-container { padding: 0 16px 60px; }
+  .sp-tabs-wrap { padding: 0 16px 16px; }
+  .sp-tabs { width: 100%; justify-content: stretch; }
+  .sp-tab { flex: 1; justify-content: center; padding: 8px 10px; font-size: 0.82rem; }
 }

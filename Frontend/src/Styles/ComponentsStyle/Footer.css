@@ -233,13 +233,13 @@
 /* Mobile Layout */
 @media (max-width: 640px) {
   .techborg-footer {
-    padding: 3rem 1.5rem 1.5rem;
+    padding: 2.5rem 1rem 1.5rem;
   }
 
   .techborg-footer__content {
-    gap: 2.5rem;
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
   .techborg-footer__brand-title {
@@ -247,8 +247,8 @@
   }
 
   .techborg-footer__nav {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
   }
 
   .techborg-footer__nav-column {
@@ -269,11 +269,15 @@
 /* Small Mobile */
 @media (max-width: 380px) {
   .techborg-footer {
-    padding: 2.5rem 1rem 1.5rem;
+    padding: 2rem 0.75rem 1.25rem;
   }
 
   .techborg-footer__brand-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+
+  .techborg-footer__nav {
+    grid-template-columns: 1fr;
   }
 
   .techborg-footer__social-link {

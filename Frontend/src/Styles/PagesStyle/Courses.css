@@ -195,9 +195,16 @@
 @media (max-width: 768px) {
   .crs-hero { padding: 80px 16px 48px; }
   .crs-body { padding: 28px 16px 60px; }
-  .crs-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .crs-grid { grid-template-columns: 1fr; }
   .crs-filters { flex-direction: column; align-items: flex-start; }
+  .crs-hero-stats { gap: 0; }
+  .crs-stat { padding: 0 16px; }
 }
 @media (max-width: 480px) {
+  .crs-hero { padding: 70px 12px 36px; }
   .crs-grid { grid-template-columns: 1fr; }
+  .crs-hero h1 { font-size: 1.8rem; }
+  .crs-stat-divider { display: none; }
+  .crs-hero-stats { flex-wrap: wrap; gap: 12px; }
+  .crs-stat { width: 45%; padding: 0 8px; }
 }

@@ -87,8 +87,11 @@
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .ld-sidebar { position: fixed; top: 57px; left: 0; height: calc(100vh - 57px); z-index: 200; box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
+  .ld-sidebar { position: fixed; top: 56px; left: 0; height: calc(100vh - 56px); z-index: 200; box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
   .ld-sidebar.closed { width: 0; }
-  .ld-main { padding: 20px 16px 40px; }
-  .ld-module-title { font-size: 22px; }
+  .ld-main { padding: 16px 12px 40px; }
+  .ld-module-title { font-size: 20px; }
+  .ld-topbar { padding: 10px 12px; }
+  .ld-nav-footer { flex-wrap: wrap; gap: 8px; }
+  .ld-nav-btn { flex: 1; justify-content: center; min-width: 120px; }
 }

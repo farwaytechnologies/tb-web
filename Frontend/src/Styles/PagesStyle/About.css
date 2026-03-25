@@ -512,7 +512,7 @@
 }
 
 @media (max-width: 768px) {
-  .ab-hero        { padding: 7rem 1.5rem 5rem; }
+  .ab-hero        { padding: 5rem 1.25rem 3.5rem; }
   .ab-hero-title  { font-size: 2.5rem; }
   .ab-stats       { grid-template-columns: repeat(2, 1fr) !important; }
   .ab-stat        { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
@@ -525,15 +525,17 @@
   .ab-why-grid    { grid-template-columns: 1fr !important; }
   .ab-team        { padding: 0 1.25rem; margin-bottom: 3rem; }
   .ab-team-grid   { grid-template-columns: repeat(2, 1fr) !important; }
-  .ab-cta         { padding: 5rem 1.5rem; }
+  .ab-cta         { padding: 4rem 1.25rem; }
   .ab-cta h2      { font-size: 2rem; }
 }
 
 @media (max-width: 480px) {
-  .ab-hero-title  { font-size: 2rem; letter-spacing: -0.5px; }
+  .ab-hero-title  { font-size: 1.9rem; letter-spacing: -0.5px; }
   .ab-hero-sub    { font-size: 1rem; }
   .ab-stats       { grid-template-columns: repeat(2, 1fr) !important; }
   .ab-stat-val    { font-size: 2rem; }
   .ab-team-grid   { grid-template-columns: 1fr 1fr !important; }
   .ab-section-head h2 { font-size: 1.75rem; }
+  .ab-cta-btns    { flex-direction: column; align-items: center; }
+  .ab-btn         { width: 100%; justify-content: center; }
 }

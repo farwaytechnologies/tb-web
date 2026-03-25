@@ -261,11 +261,14 @@
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
-  .cert-hero { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .cert-page { padding: 24px 12px 60px; }
+  .cert-hero { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px; }
   .cert-grid { grid-template-columns: 1fr; }
-  .cert-print { padding: 32px 20px; }
-  .cert-title { font-size: 22px; }
-  .cert-name { font-size: 26px; }
+  .cert-print { padding: 28px 16px; }
+  .cert-title { font-size: 20px; }
+  .cert-name { font-size: 24px; }
   .cert-footer { flex-direction: column; gap: 16px; align-items: center; }
   .cert-modal-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .cert-modal-actions { flex-wrap: wrap; gap: 8px; }
+  .cert-modal-body { padding: 16px; }
 }
