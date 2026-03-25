@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Newspaper, Search, X, Calendar } from 'lucide-react';
+import { Newspaper, X, Clock } from 'lucide-react';
 import '../Styles/PagesStyle/News.css';
 import SEO from '../Components/SEO';
 
@@ -13,20 +13,52 @@ const CAT_COLORS = {
   software: '#6366f1', default: '#64748b',
 };
 const catColor = c => CAT_COLORS[c?.toLowerCase()] || CAT_COLORS.default;
-const fmt = (d, opts) => { try { return new Date(d).toLocaleDateString('en-US', opts); } catch { return ''; } };
 
-function NewsImg({ src, alt, className }) {
-  const [show, setShow] = useState(!!src);
-  if (!src || !show) return null;
+function timeAgo(dateStr) {
+  try {
+    const diff = (Date.now() - new Date(dateStr)) / 1000;
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  } catch { return ''; }
+}
+
+function NewsCard({ item, size = 'normal', onClick }) {
+  const [imgOk, setImgOk] = useState(!!item.image);
+  const color = catColor(item.category);
+
   return (
-    <div className={className}>
-      <img
-        src={src}
-        alt={alt}
-        onError={() => setShow(false)}
-        onLoad={e => { if (e.target.naturalWidth < 10) setShow(false); }}
-      />
-    </div>
+    <article className={`nc nc--${size}`} onClick={onClick}>
+      {imgOk && item.image ? (
+        <div className="nc__img">
+          <img
+            src={item.image}
+            alt={item.title}
+            onError={() => setImgOk(false)}
+            onLoad={e => { if (e.target.naturalWidth < 10) setImgOk(false); }}
+          />
+          {item.category && (
+            <span className="nc__cat-badge" style={{ background: color }}>{item.category}</span>
+          )}
+        </div>
+      ) : (
+        item.category && (
+          <div className="nc__no-img">
+            <span className="nc__cat-badge nc__cat-badge--inline" style={{ background: color }}>{item.category}</span>
+          </div>
+        )
+      )}
+      <div className="nc__body">
+        {item.source && <span className="nc__source">{item.source}</span>}
+        <h3 className="nc__title">{item.title}</h3>
+        {(size === 'hero' || size === 'featured') && item.content && (
+          <p className="nc__excerpt">{item.content}</p>
+        )}
+        <span className="nc__time"><Clock size={11} />{timeAgo(item.date)}</span>
+      </div>
+    </article>
   );
 }
 
@@ -57,109 +89,86 @@ export default function News() {
 
   const go = id => navigate(`/news/${id}`);
 
-  // Layout: [0]=hero, [1..3]=featured trio, [4..]=rest in repeating pattern
-  const hero      = filtered[0];
-  const trio      = filtered.slice(1, 4);
-  const rest      = filtered.slice(4);
+  const hero     = filtered[0];
+  const featured = filtered.slice(1, 5);   // 4 featured cards beside/below hero
+  const rest     = filtered.slice(5);
 
   if (loading) return (
-    <div className="nws-page"><div className="nws-loading"><div className="nws-spinner" /><p>Loading newsroom...</p></div></div>
+    <div className="nws-page nws-page--dark">
+      <div className="nws-loading"><div className="nws-spinner" /><p>Loading newsroom...</p></div>
+    </div>
   );
 
   return (
-    <div className="nws-page">
-      <SEO title="Tech Newsroom" description="Latest technology news from TechBorg." url="/news" />
+    <div className="nws-page nws-page--dark">
+      <SEO title="Tech Newsroom — TechBorg" description="Latest technology news from TechBorg." url="/news" />
 
-      {/* Masthead */}
-      <div className="nws-masthead">
-        <div className="nws-masthead-inner">
-          <div className="nws-masthead-top">
-            <span className="nws-masthead-date">{fmt(new Date(), { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-            <div className="nws-masthead-center">
-              <h1 className="nws-masthead-title">TechBorg <span>Newsroom</span></h1>
-              <p className="nws-masthead-tagline">Technology · Innovation · Future</p>
-            </div>
-            <div className="nws-search-wrap">
-              <input className="nws-search" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} />
-              {search && <button className="nws-search-clear" onClick={() => setSearch('')}><X size={13} /></button>}
-            </div>
+      {/* ── Header ── */}
+      <header className="nws-header">
+        <div className="nws-header__inner">
+          <div className="nws-header__brand">
+            <Newspaper size={20} />
+            <span>TechBorg <strong>Newsroom</strong></span>
           </div>
+          <div className="nws-search-wrap">
+            <input
+              className="nws-search"
+              placeholder="Search news..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            {search && <button className="nws-search-clear" onClick={() => setSearch('')}><X size={13} /></button>}
+          </div>
+        </div>
+        {/* Category tabs */}
+        <div className="nws-cats-wrap">
           <div className="nws-cats">
             {categories.map(c => (
-              <button key={c}
+              <button
+                key={c}
                 className={`nws-cat-btn${activeCategory === c ? ' active' : ''}`}
                 style={activeCategory === c && c !== 'All' ? { color: catColor(c), borderBottomColor: catColor(c) } : {}}
-                onClick={() => setActiveCategory(c)}>{c}
-              </button>
+                onClick={() => setActiveCategory(c)}
+              >{c}</button>
             ))}
           </div>
         </div>
-      </div>
+      </header>
 
+      {/* ── Body ── */}
       <div className="nws-body">
         {filtered.length === 0 ? (
-          <div className="nws-empty"><Newspaper size={48} /><p>{search ? `No results for "${search}"` : 'No news available yet.'}</p></div>
-        ) : (<>
+          <div className="nws-empty">
+            <Newspaper size={48} />
+            <p>{search ? `No results for "${search}"` : 'No news available yet.'}</p>
+          </div>
+        ) : (
+          <>
+            {/* ── TOP SECTION: hero + 4 featured ── */}
+            {hero && (
+              <section className="nws-top">
+                <NewsCard item={hero} size="hero" onClick={() => go(hero._id)} />
+                <div className="nws-top__side">
+                  {featured.map(item => (
+                    <NewsCard key={item._id} item={item} size="featured" onClick={() => go(item._id)} />
+                  ))}
+                </div>
+              </section>
+            )}
 
-          {/* ── HERO ── */}
-          {hero && (
-            <article className="nws-hero" onClick={() => go(hero._id)}>
-              <NewsImg src={hero.image} alt={hero.title} className="nws-hero__img" />
-              <div className="nws-hero__body">
-                {hero.category && <span className="nws-label" style={{ color: catColor(hero.category) }}>{hero.category}</span>}
-                <h2 className="nws-hero__title">{hero.title}</h2>
-                {hero.content && <p className="nws-hero__excerpt">{hero.content}</p>}
-                <span className="nws-byline"><Calendar size={11} />{fmt(hero.date, { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-              </div>
-            </article>
-          )}
-
-          {/* ── FEATURED TRIO ── */}
-          {trio.length > 0 && (
-            <>
-              <div className="nws-rule"><span>Latest</span></div>
-              <div className="nws-trio">
-                {trio.map((item, i) => (
-                  <article key={item._id} className={`nws-trio__item${i === 0 ? ' nws-trio__item--wide' : ''}`} onClick={() => go(item._id)}>
-                    <NewsImg src={item.image} alt={item.title} className="nws-trio__img" />
-                    <div className="nws-trio__body">
-                      {item.category && <span className="nws-label" style={{ color: catColor(item.category) }}>{item.category}</span>}
-                      <h3 className="nws-trio__title">{item.title}</h3>
-                      {item.content && <p className="nws-trio__excerpt">{item.content}</p>}
-                      <span className="nws-byline"><Calendar size={11} />{fmt(item.date, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </>
-          )}
-
-          {/* ── REST: newspaper grid ── */}
-          {rest.length > 0 && (
-            <>
-              <div className="nws-rule"><span>More Stories</span></div>
-              <div className="nws-grid">
-                {rest.map((item, i) => {
-                  // Every 7th item (0-indexed) is a wide card, every 3rd is medium, rest are small
-                  const size = i % 7 === 0 ? 'wide' : i % 3 === 0 ? 'medium' : 'small';
-                  return (
-                    <article key={item._id} className={`nws-card nws-card--${size}`} onClick={() => go(item._id)}>
-                      <NewsImg src={item.image} alt={item.title} className="nws-card__img" />
-                      <div className="nws-card__body">
-                        {item.category && <span className="nws-label" style={{ color: catColor(item.category) }}>{item.category}</span>}
-                        <h4 className="nws-card__title">{item.title}</h4>
-                        {(size === 'wide' || size === 'medium') && item.content &&
-                          <p className="nws-card__excerpt">{item.content}</p>}
-                        <span className="nws-byline"><Calendar size={11} />{fmt(item.date, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-            </>
-          )}
-
-        </>)}
+            {/* ── GRID: rest of stories ── */}
+            {rest.length > 0 && (
+              <section className="nws-grid-section">
+                <div className="nws-section-label">More Stories</div>
+                <div className="nws-grid">
+                  {rest.map(item => (
+                    <NewsCard key={item._id} item={item} size="normal" onClick={() => go(item._id)} />
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
