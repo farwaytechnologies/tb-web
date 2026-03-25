@@ -285,20 +285,29 @@
   .hp-stats-banner-inner { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
-  .hp-hero { padding: 6rem 1rem 4rem; }
+  .hp-wrapper { overflow-x: hidden; }
+  .hp-hero { padding: 5rem 1rem 3rem; min-height: auto; }
   .hp-hero-visual { display: none; }
-  .hp-features, .hp-courses, .hp-testimonials, .hp-cta, .hp-how { padding: 4rem 1rem; }
+  .hp-features, .hp-courses, .hp-testimonials, .hp-cta, .hp-how { padding: 3rem 1rem; }
   .hp-how-grid { grid-template-columns: 1fr; }
   .hp-testimonial-dots { margin-top: 17rem; }
   .hp-stats-banner-inner { grid-template-columns: repeat(2, 1fr); }
+  .hp-features-grid { grid-template-columns: 1fr; }
+  .hp-courses-grid { grid-template-columns: 1fr; }
+  .hp-hero-actions { flex-direction: column; align-items: center; width: 100%; }
+  .hp-btn { width: 100%; justify-content: center; }
+  .hp-stats-row { padding: 1rem; }
 }
 @media (max-width: 480px) {
+  .hp-hero { padding: 4.5rem 0.75rem 2.5rem; }
   .hp-stats-row { flex-direction: column; gap: 1rem; }
-  .hp-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .hp-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 0.5rem; }
   .hp-stat:last-child { border-bottom: none; }
   .hp-cta-checks { flex-direction: column; gap: 0.75rem; }
   .hp-testimonial-dots { margin-top: 20rem; }
   .hp-stats-banner-inner { grid-template-columns: 1fr; }
+  .hp-section-head { padding: 0 0.5rem; }
+  .hp-features, .hp-courses, .hp-testimonials, .hp-cta, .hp-how { padding: 2.5rem 0.75rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }

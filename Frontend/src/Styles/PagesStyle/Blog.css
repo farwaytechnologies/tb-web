@@ -92,10 +92,14 @@
 @media (max-width: 768px) {
   .blg-featured { grid-template-columns: 1fr; }
   .blg-featured-img { min-height: 220px; }
-  .blg-featured-body { padding: 24px; }
+  .blg-featured-body { padding: 20px; }
   .blg-featured-title { font-size: 20px; }
+  .blg-content { padding: 24px 16px 48px; }
+  .blg-hero { padding: 48px 16px 36px; }
 }
 @media (max-width: 600px) {
   .blg-grid { grid-template-columns: 1fr; }
-  .blg-hero { padding: 48px 16px 40px; }
+  .blg-hero { padding: 40px 12px 28px; }
+  .blg-cats { gap: 6px; }
+  .blg-cat-btn { padding: 6px 12px; font-size: 12px; }
 }

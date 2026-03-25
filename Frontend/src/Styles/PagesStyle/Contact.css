@@ -243,9 +243,10 @@
   .ct-info-col { order: -1; }
 }
 @media (max-width: 560px) {
-  .ct-hero { padding: 60px 20px 40px; }
-  .ct-body { padding: 0 16px 60px; }
-  .ct-form-card, .ct-info-card { padding: 22px; }
+  .ct-hero { padding: 60px 16px 36px; }
+  .ct-body { padding: 0 12px 48px; }
+  .ct-form-card, .ct-info-card { padding: 18px; border-radius: 14px; }
   .ct-row { grid-template-columns: 1fr; }
   .ct-submit { width: 100%; justify-content: center; }
+  .ct-hero-title { font-size: clamp(1.8rem, 6vw, 2.8rem); letter-spacing: -1px; }
 }

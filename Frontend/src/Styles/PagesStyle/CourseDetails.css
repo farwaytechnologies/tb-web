@@ -158,8 +158,11 @@
   .cd-sidebar { position: static; }
 }
 @media (max-width: 640px) {
-  .cd-hero-content { padding: 28px 20px; }
-  .cd-layout { padding: 24px 16px 48px; }
-  .cd-section { padding: 20px; }
+  .cd-hero-content { padding: 20px 16px; }
+  .cd-hero { min-height: 300px; }
+  .cd-layout { padding: 16px 12px 40px; }
+  .cd-section { padding: 16px; }
   .cd-objectives { grid-template-columns: 1fr; }
+  .cd-hero-title { font-size: clamp(1.2rem, 5vw, 2rem); }
+  .cd-hero-meta { gap: 12px; flex-wrap: wrap; }
 }

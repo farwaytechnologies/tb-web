@@ -314,8 +314,11 @@
   .cm-sidebar-card h4 { display: none; }
 }
 @media (max-width: 600px) {
-  .cm-layout { padding: 1rem; }
-  .cm-hero { padding: 4rem 1rem 2rem; }
+  .cm-layout { padding: 0.75rem; }
+  .cm-hero { padding: 3.5rem 1rem 1.5rem; }
   .cm-topbar { flex-wrap: wrap; }
-  .cm-detail-modal, .cm-modal { padding: 1.25rem; }
+  .cm-new-btn { width: 100%; justify-content: center; }
+  .cm-detail-modal, .cm-modal { padding: 1rem; border-radius: 1rem; }
+  .cm-hero-stats { gap: 1rem; flex-wrap: wrap; }
+  .cm-post-card { padding: 1rem; }
 }
