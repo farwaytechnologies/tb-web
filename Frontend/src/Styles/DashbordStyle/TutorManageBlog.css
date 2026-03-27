@@ -13,7 +13,7 @@
 
 /* FORM STYLING */
 .techborg-tutor-blog-form {
-  background: #fff;
+  background: #13131a;
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
@@ -89,7 +89,7 @@
 }
 
 .techborg-tutor-blog-card {
-  background-color: #ffffff;
+  background-color: #13131a;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);

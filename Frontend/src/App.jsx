@@ -20,6 +20,11 @@ function VisitorTracker() {
   const [visitorId, setVisitorId] = useState(null);
   const location = useLocation();
 
+  // 🔹 Scroll to top on every route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   // 🔹 Start session on first load
   useEffect(() => {
     const startSession = async () => {

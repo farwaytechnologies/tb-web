@@ -280,7 +280,7 @@
 .anm-field input:focus,
 .anm-field textarea:focus { border-color: #6366f1; }
 .anm-field input::placeholder,
-.anm-field textarea::placeholder { color: #475569; }
+.anm-field textarea::placeholder { color: #94a3b8; }
 
 .anm-form-actions {
   display: flex;

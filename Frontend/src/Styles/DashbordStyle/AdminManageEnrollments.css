@@ -3,7 +3,7 @@
   margin: 0 auto;
   padding: 2rem 1rem 4rem;
   font-family: 'Segoe UI', sans-serif;
-  color: #1f2937;
+  color: #f1f5f9;
 }
 .ame-page *, .ame-page *::before, .ame-page *::after { box-sizing: border-box; }
 
@@ -42,8 +42,8 @@
   margin-bottom: 1.5rem;
 }
 .ame-stat {
-  background: #fff;
-  border: 1.5px solid #e5e7eb;
+  background: #13131a;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 10px;
   padding: 1rem;
   display: flex;
@@ -70,10 +70,10 @@
 .ame-search {
   width: 100%;
   padding: 0.6rem 2.2rem;
-  border: 1.5px solid #d1d5db;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 8px;
   font-size: 0.88rem;
-  background: #fff;
+  background: #13131a;
 }
 .ame-search:focus { outline: none; border-color: #8b5cf6; }
 .ame-search-clear { position: absolute; right: 8px; background: none; border: none; cursor: pointer; color: #9ca3af; }
@@ -81,13 +81,13 @@
 .ame-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .ame-filter-btn {
   padding: 0.45rem 0.9rem;
-  border: 1.5px solid #d1d5db;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 20px;
-  background: #fff;
+  background: #13131a;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  color: #374151;
+  color: #e2e8f0;
   transition: all 0.15s;
 }
 .ame-filter-btn.active, .ame-filter-btn:hover {
@@ -97,8 +97,8 @@
 }
 
 .ame-table-wrap {
-  background: #fff;
-  border: 1.5px solid #e5e7eb;
+  background: #13131a;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 12px;
   overflow: hidden;
   overflow-x: auto;
@@ -110,7 +110,7 @@
   min-width: 700px;
 }
 .ame-table th {
-  background: #f9fafb;
+  background: #0a0a0f;
   padding: 0.75rem 1rem;
   text-align: left;
   font-size: 0.75rem;
@@ -118,12 +118,12 @@
   color: #6b7280;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  border-bottom: 1.5px solid #e5e7eb;
+  border-bottom: 1.5px solid rgba(255,255,255,0.1);
 }
 .ame-table td {
   padding: 0.85rem 1rem;
   border-bottom: 1px solid #f3f4f6;
-  color: #374151;
+  color: #e2e8f0;
   vertical-align: middle;
 }
 .ame-table tr:last-child td { border-bottom: none; }
@@ -168,8 +168,8 @@
   text-align: center;
   color: #9ca3af;
   padding: 3rem;
-  background: #fff;
-  border: 1.5px solid #e5e7eb;
+  background: #13131a;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 12px;
 }
 

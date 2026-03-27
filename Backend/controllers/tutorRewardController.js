@@ -70,13 +70,13 @@ exports.getTutorReward = async (req, res) => {
 };
 
 // POST /api/rewards/tutor/:tutorId
-// Body: { courses, blogs, enrollments, learnContent }
+// Body: { courses, blogs, enrollments, learnContent, referrals }
 exports.saveTutorRewards = async (req, res) => {
   try {
     const { tutorId } = req.params;
-    const { courses = 0, blogs = 0, enrollments = 0, learnContent = 0 } = req.body;
+    const { courses = 0, blogs = 0, enrollments = 0, learnContent = 0, referrals = 0 } = req.body;
 
-    const breakdown = { courses, blogs, enrollments, learnContent };
+    const breakdown = { courses, blogs, enrollments, learnContent, referrals };
     const activityPoints = computePoints(breakdown);
     const badges = computeBadges(activityPoints);
 
@@ -275,6 +275,13 @@ exports.adjustBonusPoints = async (req, res) => {
   try {
     const { tutorId } = req.params;
     const { bonus = 0, reason = '' } = req.body;
+
+    // Prevent bonus going negative
+    const existing = await TutorReward.findOne({ tutorId });
+    const currentBonus = existing?.bonusPoints || 0;
+    if (currentBonus + bonus < 0) {
+      return res.status(400).json({ message: `Cannot reduce bonus below 0. Current bonus: ${currentBonus}` });
+    }
 
     const reward = await TutorReward.findOneAndUpdate(
       { tutorId },
