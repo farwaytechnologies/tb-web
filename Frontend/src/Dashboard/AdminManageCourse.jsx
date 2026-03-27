@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { showToast } from '../Components/Toast';
 import { useNavigate } from 'react-router-dom';
 import {
   BookOpen, Plus, Pencil, Trash2, Search, X, ChevronDown, ChevronUp,
@@ -147,11 +148,11 @@ export default function AdminManageCourse() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Save failed.');
-      setMsg({ type: 'ok', text: editId ? 'Course updated.' : 'Course created.' });
+      showToast(editId ? 'Course updated successfully.' : 'New course has been successfully added!', 'ok');
       setShowForm(false); setEditId(null);
       fetchAll();
     } catch (err) {
-      setMsg({ type: 'err', text: err.message });
+      showToast(err.message, 'err');
     } finally { setSaving(false); }
   };
 
@@ -160,8 +161,8 @@ export default function AdminManageCourse() {
     try {
       await fetch(`${API_URL}/api/courses/${id}`, { method: 'DELETE' });
       setCourses(c => c.filter(x => x._id !== id));
-      setMsg({ type: 'ok', text: 'Course deleted.' });
-    } catch { setMsg({ type: 'err', text: 'Delete failed.' }); }
+      showToast(`Course "${title}" has been deleted.`, 'ok');
+    } catch { showToast('Delete failed.', 'err'); }
   };
 
   return (
@@ -179,15 +180,6 @@ export default function AdminManageCourse() {
           <Plus size={16} /> New Course
         </button>
       </div>
-
-      {/* Toast */}
-      {msg && (
-        <div className={`acm-toast ${msg.type}`}>
-          {msg.type === 'ok' ? <CheckCircle size={15} /> : <AlertCircle size={15} />}
-          {msg.text}
-          <button onClick={() => setMsg(null)}><X size={13} /></button>
-        </div>
-      )}
 
       {/* Stats */}
       <div className="acm-stats">

@@ -6,6 +6,7 @@ import {
   Eye, EyeOff, Shield, CreditCard,
 } from 'lucide-react';
 import './ProfilePage.css';
+import { useTheme } from '../context/ThemeContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -26,6 +27,7 @@ const ROLE_COLORS = {
 export default function ProfilePage({ requiredRole }) {
   const navigate = useNavigate();
   const fileRef = useRef();
+  const { theme, update, reset } = useTheme();
   const [user, setUser] = useState(null);
   const [tab, setTab] = useState('overview');
   const [form, setForm] = useState({});
@@ -419,6 +421,70 @@ export default function ProfilePage({ requiredRole }) {
             </div>
           )}
 
+          {/* THEME CONFIG */}
+          {tab === 'theme' && (
+            <div className="pp-section">
+              <h3 className="pp-section-title">Theme Configuration</h3>
+
+              {/* Mode toggle */}
+              <div className="pp-theme-mode-row">
+                <button
+                  className={`pp-theme-mode-btn ${theme.mode === 'dark' ? 'active' : ''}`}
+                  onClick={() => update('mode', 'dark')}>
+                  <Moon size={18} /> Dark
+                </button>
+                <button
+                  className={`pp-theme-mode-btn ${theme.mode === 'light' ? 'active' : ''}`}
+                  onClick={() => update('mode', 'light')}>
+                  <Sun size={18} /> Light
+                </button>
+              </div>
+
+              {/* Color pickers — only meaningful in light mode */}
+              <div className="pp-theme-section">
+                <h4 className="pp-subsection" style={{ marginTop: 0 }}>Colors</h4>
+                <div className="pp-theme-grid">
+                  <ColorPicker label="Page Background"  val={theme.bgPage}   onChange={v => update('bgPage', v)}   disabled={theme.mode === 'dark'} />
+                  <ColorPicker label="Card Background"  val={theme.bgCard}   onChange={v => update('bgCard', v)}   disabled={theme.mode === 'dark'} />
+                  <ColorPicker label="Navbar Background" val={theme.bgNav}   onChange={v => update('bgNav', v)}    disabled={theme.mode === 'dark'} />
+                  <ColorPicker label="Primary / Teal"   val={theme.primary}  onChange={v => update('primary', v)} />
+                  <ColorPicker label="Accent / Amber"   val={theme.accent}   onChange={v => update('accent', v)} />
+                  <ColorPicker label="CTA / Red"        val={theme.cta}      onChange={v => update('cta', v)} />
+                  <ColorPicker label="Main Text"        val={theme.textMain} onChange={v => update('textMain', v)} disabled={theme.mode === 'dark'} />
+                  <ColorPicker label="Muted Text"       val={theme.textMuted} onChange={v => update('textMuted', v)} disabled={theme.mode === 'dark'} />
+                  <ColorPicker label="Border Color"     val={theme.border}   onChange={v => update('border', v)}   disabled={theme.mode === 'dark'} />
+                </div>
+              </div>
+
+              {/* Border radius */}
+              <div className="pp-theme-section">
+                <h4 className="pp-subsection" style={{ marginTop: 0 }}>Border Radius</h4>
+                <div className="pp-theme-slider-row">
+                  <input type="range" min="0" max="24" value={theme.radius}
+                    onChange={e => update('radius', e.target.value)} className="pp-theme-slider" />
+                  <span className="pp-theme-slider-val">{theme.radius}px</span>
+                  <div className="pp-theme-radius-preview" style={{ borderRadius: `${theme.radius}px` }} />
+                </div>
+              </div>
+
+              {/* Font scale */}
+              <div className="pp-theme-section">
+                <h4 className="pp-subsection" style={{ marginTop: 0 }}>Font Size</h4>
+                <div className="pp-theme-slider-row">
+                  <input type="range" min="80" max="120" step="5" value={theme.fontScale}
+                    onChange={e => update('fontScale', e.target.value)} className="pp-theme-slider" />
+                  <span className="pp-theme-slider-val">{theme.fontScale}%</span>
+                </div>
+              </div>
+
+              <div className="pp-form-actions">
+                <button className="pp-btn pp-btn--ghost" onClick={reset}>
+                  Reset to Defaults
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* BANK DETAILS — tutor only */}
           {tab === 'bank' && (
             <div className="pp-section">
@@ -519,5 +585,20 @@ function Toggle({ label, desc, checked, onChange }) {
         <div className="pp-toggle-thumb" />
       </div>
     </label>
+  );
+}
+
+function ColorPicker({ label, val, onChange, disabled }) {
+  return (
+    <div className={`pp-color-item ${disabled ? 'pp-color-item--disabled' : ''}`}>
+      <label className="pp-color-label">{label}</label>
+      <div className="pp-color-row">
+        <input type="color" value={val} disabled={disabled}
+          onChange={e => onChange(e.target.value)}
+          className="pp-color-swatch" />
+        <span className="pp-color-hex">{val}</span>
+        {disabled && <span className="pp-color-note">dark mode only</span>}
+      </div>
+    </div>
   );
 }

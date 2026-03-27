@@ -82,3 +82,58 @@ img, video, iframe { max-width: 100%; }
   min-height: 100vh;
   background: var(--grad-hero);
 }
+
+/* ── Light mode global overrides (applied via data-theme="light" on <html>) ── */
+[data-theme="light"] body {
+  background: var(--bg, #f8fafc);
+  color: var(--text, #1a1a1a);
+}
+
+[data-theme="light"] .nb {
+  background: var(--bg-nav, #ffffff);
+  border-bottom-color: var(--border-color, #e2e8f0);
+}
+[data-theme="light"] .nb__link { color: #475569; }
+[data-theme="light"] .nb__link:hover { color: #1a1a1a; background: rgba(0,0,0,0.04); }
+[data-theme="light"] .nb__link--active { color: #1a1a1a; }
+[data-theme="light"] .nb__user-btn { background: #f1f5f9; border-color: #e2e8f0; color: #1a1a1a; }
+[data-theme="light"] .nb__bell { background: #f1f5f9; border-color: #e2e8f0; color: #475569; }
+[data-theme="light"] .nb__burger { background: #f1f5f9; border-color: #e2e8f0; color: #475569; }
+[data-theme="light"] .nb__submenu { background: #fff; border-color: #e2e8f0; }
+[data-theme="light"] .nb__user-menu { background: #fff; border-color: #e2e8f0; }
+[data-theme="light"] .nb__menu-item { color: #475569; }
+[data-theme="light"] .nb__menu-item:hover { background: #f8fafc; color: #1a1a1a; }
+[data-theme="light"] .nb__menu-head strong { color: #1a1a1a; }
+
+/* Cards / surfaces */
+[data-theme="light"] .hp-feature-card,
+[data-theme="light"] .hp-how-card,
+[data-theme="light"] .hp-course-card,
+[data-theme="light"] .hp-testimonial-card,
+[data-theme="light"] .crs-card,
+[data-theme="light"] .blg-card,
+[data-theme="light"] .learn-card,
+[data-theme="light"] .nc {
+  background: var(--bg-card, #ffffff);
+  border-color: var(--border-color, #e2e8f0);
+  color: var(--text, #1a1a1a);
+}
+
+/* Page backgrounds */
+[data-theme="light"] .hp-wrapper,
+[data-theme="light"] .crs-page,
+[data-theme="light"] .blg-page,
+[data-theme="light"] .learn-page,
+[data-theme="light"] .nws-page--dark,
+[data-theme="light"] .sp-page,
+[data-theme="light"] .cm-page,
+[data-theme="light"] .ct-page,
+[data-theme="light"] .ab-page {
+  background: var(--bg, #f8fafc);
+  color: var(--text, #1a1a1a);
+}
+
+/* Footer */
+[data-theme="light"] .techborg-footer {
+  background: #1a1a1a;
+}

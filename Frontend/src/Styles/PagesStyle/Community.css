@@ -299,12 +299,15 @@
 /* ── Toast ── */
 .cm-toast {
   position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
-  padding: 0.75rem 1.25rem; border-radius: 0.75rem; font-size: 0.88rem; font-weight: 600;
+  padding: 1rem 1.5rem; border-radius: 12px; font-size: 0.95rem; font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   animation: cm-slide-in 0.3s ease;
+  min-width: 260px;
 }
 .cm-toast--ok  { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
 .cm-toast--err { background: rgba(239,68,68,0.15);  border: 1px solid rgba(239,68,68,0.3);  color: #f87171; }
-@keyframes cm-slide-in { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+@keyframes cm-slide-in { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
