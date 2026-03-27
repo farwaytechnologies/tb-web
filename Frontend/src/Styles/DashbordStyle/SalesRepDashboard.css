@@ -120,7 +120,7 @@
   min-height: 4px;
 }
 .srd-bar-val { font-size: 11px; font-weight: 600; color: #8b5cf6; }
-.srd-bar-label { font-size: 10px; color: #475569; }
+.srd-bar-label { font-size: 10px; color: #94a3b8; }
 
 /* Target Ring */
 .srd-target-body { display: flex; align-items: center; gap: 1.25rem; }
@@ -167,7 +167,7 @@
   margin-bottom: 10px;
   line-height: 1.5;
 }
-.srd-link-hint { font-size: 12px; color: #475569; margin: 8px 0 0; line-height: 1.5; }
+.srd-link-hint { font-size: 12px; color: #94a3b8; margin: 8px 0 0; line-height: 1.5; }
 
 /* Copy Buttons */
 .srd-copy-btn {
@@ -206,7 +206,7 @@
 .srd-search-wrap {
   position: relative; display: flex; align-items: center;
 }
-.srd-search-icon { position: absolute; left: 10px; color: #475569; pointer-events: none; }
+.srd-search-icon { position: absolute; left: 10px; color: #94a3b8; pointer-events: none; }
 .srd-search {
   background: #12121a;
   border: 1px solid #1e1e2e;
@@ -218,7 +218,7 @@
 .srd-search:focus { border-color: #8b5cf6; }
 .srd-search-clear {
   position: absolute; right: 8px;
-  background: none; border: none; color: #475569; cursor: pointer; padding: 2px;
+  background: none; border: none; color: #94a3b8; cursor: pointer; padding: 2px;
 }
 .srd-role-tabs { display: flex; gap: 4px; }
 .srd-role-tab {
@@ -233,7 +233,7 @@
 }
 .srd-sort-btn {
   display: inline-flex; align-items: center; gap: 4px;
-  background: none; border: none; color: #475569;
+  background: none; border: none; color: #94a3b8;
   font-size: 11px; font-weight: 600; text-transform: uppercase;
   letter-spacing: 0.05em; cursor: pointer; padding: 0;
 }
@@ -245,7 +245,7 @@
 .srd-table th {
   padding: 12px 16px; text-align: left;
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
-  color: #475569; border-bottom: 1px solid #1e1e2e;
+  color: #94a3b8; border-bottom: 1px solid #1e1e2e;
 }
 .srd-table td { padding: 12px 16px; border-bottom: 1px solid #1a1a2a; font-size: 13px; }
 .srd-table tbody tr:last-child td { border-bottom: none; }
@@ -315,5 +315,5 @@
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
 }
 .srd-wallet-mini-val { font-size: 1.1rem; font-weight: 700; }
-.srd-wallet-mini-lbl { font-size: 10px; color: #475569; text-align: center; }
+.srd-wallet-mini-lbl { font-size: 10px; color: #94a3b8; text-align: center; }
 .srd-wallet-divider { width: 1px; height: 28px; background: #1e1e2e; }

@@ -48,20 +48,24 @@ exports.requestWithdrawal = async (req, res) => {
       return res.status(400).json({ message: `Insufficient BorgCoins. Available: ${wallet?.borgCoins ?? 0}` });
 
     // Deduct immediately (hold)
-    wallet.borgCoins -= borgCoins;
-    wallet.totalWithdrawn += borgCoins;
-    wallet.lastSynced = new Date();
-    await wallet.save();
+    await BorgCoinWallet.findOneAndUpdate(
+      { tutorId: uid },
+      { $inc: { borgCoins: -borgCoins, totalWithdrawn: borgCoins }, $set: { lastSynced: new Date() } }
+    );
 
-    // paymentDetails = upiId or bankDetails string
     const paymentDetails = upiId || bankDetails;
     const paymentMethod = upiId ? 'mobile' : 'bank';
+
+    // Use BorgCoinSettings for USD rate if available
+    const { BorgCoinSettings } = require('../models/BorgCoin');
+    const usdSetting = await BorgCoinSettings.findOne({ key: 'usdPerCoin' });
+    const usdRate = usdSetting?.value ?? 0.5;
 
     const withdrawal = await Withdrawal.create({
       tutorId: uid,
       borgCoins,
       pointsSpent: borgCoins,
-      amountUSD: parseFloat((borgCoins * 0.5).toFixed(2)),
+      amountUSD: parseFloat((borgCoins * usdRate).toFixed(2)),
       paymentMethod,
       paymentDetails,
     });

@@ -82,7 +82,7 @@
 }
 .ser-history-body { flex: 1; }
 .ser-history-reason { font-size: 13px; margin: 0 0 2px; }
-.ser-history-date   { font-size: 11px; color: #475569; margin: 0; }
+.ser-history-date   { font-size: 11px; color: #94a3b8; margin: 0; }
 .ser-history-pts    { font-size: 13px; font-weight: 700; color: #10b981; white-space: nowrap; }
 
 /* Withdrawals */
@@ -99,7 +99,7 @@
 }
 .ser-withdraw-meta { font-size: 12px; color: #64748b; margin: 0 0 3px; }
 .ser-withdraw-note { font-size: 12px; color: #f59e0b; margin: 0 0 3px; }
-.ser-withdraw-date { font-size: 11px; color: #475569; margin: 0; }
+.ser-withdraw-date { font-size: 11px; color: #94a3b8; margin: 0; }
 
 /* Modal */
 .ser-overlay {
@@ -132,7 +132,7 @@
 .ser-form { display: flex; flex-direction: column; gap: 14px; }
 .ser-field { display: flex; flex-direction: column; gap: 5px; }
 .ser-field label { font-size: 12px; color: #94a3b8; font-weight: 500; }
-.ser-optional { color: #475569; font-weight: 400; }
+.ser-optional { color: #94a3b8; font-weight: 400; }
 .ser-field input,
 .ser-field textarea {
   background: #0a0a0f !important;

@@ -38,7 +38,7 @@
 .ami-search:focus-within { border-color: #6366f1; }
 .ami-search svg { color: #64748b; flex-shrink: 0; }
 .ami-search input { background: none; border: none; outline: none; color: #e2e8f0; font-size: 0.875rem; width: 100%; }
-.ami-search input::placeholder { color: #475569; }
+.ami-search input::placeholder { color: #94a3b8; }
 
 .ami-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 .ami-tab {
@@ -75,7 +75,7 @@
 .ami-table th {
   padding: 14px 16px; text-align: left;
   font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.05em; color: #475569; white-space: nowrap;
+  letter-spacing: 0.05em; color: #94a3b8; white-space: nowrap;
 }
 .ami-table tbody tr {
   border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -136,7 +136,7 @@
 .ami-modal-section { display: flex; flex-direction: column; gap: 10px; }
 .ami-modal-section-title {
   font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.08em; color: #475569; margin: 0;
+  letter-spacing: 0.08em; color: #94a3b8; margin: 0;
 }
 .ami-modal-row {
   display: flex; justify-content: space-between; align-items: center;

@@ -42,7 +42,7 @@
 .amu-subtitle { font-size: 0.82rem; color: #64748b; margin: 0.15rem 0 0; }
 
 .amu-search-wrap { position: relative; }
-.amu-search-icon { position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); color: #475569; }
+.amu-search-icon { position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); color: #94a3b8; }
 .amu-search {
   background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px; padding: 0.5rem 0.75rem 0.5rem 2.1rem;
@@ -78,14 +78,14 @@
 }
 .amu-tab-count {
   background: rgba(255,255,255,0.07); border-radius: 20px;
-  padding: 0.05rem 0.4rem; font-size: 0.7rem; color: #475569;
+  padding: 0.05rem 0.4rem; font-size: 0.7rem; color: #94a3b8;
 }
 .amu-role-tab.active .amu-tab-count { background: rgba(99,102,241,0.2); color: #a5b4fc; }
 
 /* State */
 .amu-state {
   display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 1rem; padding: 4rem; color: #475569;
+  justify-content: center; gap: 1rem; padding: 4rem; color: #94a3b8;
 }
 .amu-spinner {
   width: 36px; height: 36px;
@@ -176,7 +176,7 @@
 .amu-modal-header h3 { font-size: 1rem; font-weight: 700; color: #f1f5f9; margin: 0; }
 .amu-modal-close {
   background: transparent !important; border: none !important;
-  color: #475569; cursor: pointer; display: flex; align-items: center;
+  color: #94a3b8; cursor: pointer; display: flex; align-items: center;
   border-radius: 6px; padding: 0.2rem; transition: color 0.2s;
 }
 .amu-modal-close:hover { color: #e2e8f0; }

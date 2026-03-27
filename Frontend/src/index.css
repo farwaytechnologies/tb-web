@@ -39,10 +39,10 @@
   --cta-dark:        var(--clr-red-dark);
   --cta-muted:       var(--clr-red-muted);
 
-  --bg:              var(--clr-white);
+  --bg:              #0a0a0f;
   --bg-warm:         var(--clr-off-white);
   --bg-dark:         var(--clr-black);
-  --text:            var(--clr-black);
+  --text:            #e2e8f0;
   --text-muted:      var(--clr-text-muted);
 
   /* Gradients */

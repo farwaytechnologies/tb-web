@@ -9,8 +9,8 @@
   margin: 0 auto;
   padding: 2rem 1rem 4rem;
   font-family: 'Segoe UI', sans-serif;
-  color: #1f2937;
-  background: #f9fafb;
+  color: #f1f5f9;
+  background: #0a0a0f;
   min-height: 100vh;
 }
 
@@ -33,7 +33,7 @@
   font-size: 1.6rem;
   font-weight: 700;
   margin: 0;
-  color: #1f2937;
+  color: #f1f5f9;
 }
 .tcm-sub {
   font-size: 0.82rem;
@@ -97,8 +97,8 @@
   margin-bottom: 1.5rem;
 }
 .tcm-stat {
-  background: #fff;
-  border: 1.5px solid #e5e7eb;
+  background: #13131a;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 10px;
   padding: 1rem;
   display: flex;
@@ -135,11 +135,11 @@
 .tcm-search {
   width: 100%;
   padding: 0.6rem 2.2rem;
-  border: 1.5px solid #d1d5db;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 8px;
   font-size: 0.88rem;
-  background: #fff;
-  color: #1f2937;
+  background: #13131a;
+  color: #f1f5f9;
   box-sizing: border-box;
 }
 .tcm-search:focus {
@@ -157,8 +157,8 @@
 
 /* ── Form Wrapper ── */
 .tcm-form-wrap {
-  background: #fff;
-  border: 1.5px solid #e5e7eb;
+  background: #13131a;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 14px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -207,17 +207,17 @@
 .tcm-field label {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #374151;
+  color: #e2e8f0;
 }
 .tcm-field input,
 .tcm-field select,
 .tcm-field textarea {
   padding: 0.6rem 0.85rem;
-  border: 1.5px solid #d1d5db;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 8px;
   font-size: 0.88rem;
-  color: #1f2937;
-  background: #fff;
+  color: #f1f5f9;
+  background: #13131a;
   font-family: inherit;
   transition: border-color 0.2s;
   box-sizing: border-box;
@@ -267,7 +267,7 @@
 }
 
 .tcm-module {
-  border: 1.5px solid #e5e7eb;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 10px;
   margin-bottom: 0.75rem;
   overflow: hidden;
@@ -277,7 +277,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.85rem 1rem;
-  background: #f9fafb;
+  background: #0a0a0f;
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -288,7 +288,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #374151;
+  color: #e2e8f0;
 }
 .tcm-module-num {
   font-size: 0.78rem;
@@ -327,7 +327,7 @@
 
 /* ── Sub Sections (Videos / Learning Content) ── */
 .tcm-sub-section {
-  background: #f9fafb;
+  background: #0a0a0f;
   border-radius: 8px;
   padding: 0.85rem;
 }
@@ -338,20 +338,20 @@
   margin-bottom: 0.75rem;
   font-size: 0.82rem;
   font-weight: 700;
-  color: #374151;
+  color: #e2e8f0;
 }
 .tcm-add-sub-btn {
   margin-left: auto;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  background: #fff;
-  border: 1px solid #d1d5db;
+  background: #13131a;
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 6px;
   padding: 0.3rem 0.65rem;
   font-size: 0.78rem;
   cursor: pointer;
-  color: #374151;
+  color: #e2e8f0;
 }
 .tcm-add-sub-btn:hover {
   border-color: #8b5cf6;
@@ -363,8 +363,8 @@
   gap: 0.75rem;
   align-items: flex-start;
   margin-bottom: 0.75rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: #13131a;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px;
   padding: 0.75rem;
 }
@@ -392,11 +392,11 @@
 .tcm-sub-item-fields textarea {
   width: 100%;
   padding: 0.5rem 0.75rem;
-  border: 1.5px solid #d1d5db;
+  border: 1.5px solid rgba(255,255,255,0.1);
   border-radius: 7px;
   font-size: 0.85rem;
-  color: #1f2937;
-  background: #fff;
+  color: #f1f5f9;
+  background: #13131a;
   font-family: inherit;
   box-sizing: border-box;
 }
@@ -456,8 +456,8 @@
   display: inline-flex !important;
   align-items: center !important;
   background: #f3f4f6 !important;
-  color: #374151 !important;
-  border: 1.5px solid #d1d5db !important;
+  color: #e2e8f0 !important;
+  border: 1.5px solid rgba(255,255,255,0.1) !important;
   border-radius: 8px !important;
   padding: 0.65rem 1.25rem !important;
   font-size: 0.9rem !important;
@@ -498,8 +498,8 @@
 
 /* ── Course Card ── */
 .tcm-card {
-  background: #fff !important;
-  border: 1.5px solid #e5e7eb !important;
+  background: #13131a !important;
+  border: 1.5px solid rgba(255,255,255,0.1) !important;
   border-radius: 12px !important;
   overflow: hidden;
   display: flex !important;
@@ -548,7 +548,7 @@
   font-size: 0.95rem !important;
   font-weight: 700 !important;
   margin: 0 !important;
-  color: #1f2937 !important;
+  color: #f1f5f9 !important;
   line-height: 1.3;
 }
 .tcm-card-desc {

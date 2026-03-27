@@ -148,7 +148,10 @@ exports.transferPointsToCoins = async (req, res) => {
     } else {
       wallet = await BorgCoinWallet.findOneAndUpdate(
         { tutorId },
-        { $inc: { borgCoins: newCoins, totalEarned: newCoins }, $set: { lastSynced: new Date() } },
+        {
+          $inc: { borgCoins: newCoins },
+          $set: { totalEarned: totalEarnableCoins, lastSynced: new Date() }
+        },
         { new: true }
       );
     }

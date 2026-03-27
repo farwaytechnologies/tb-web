@@ -40,23 +40,27 @@ exports.register = async (req, res) => {
     });
     await newUser.save();
 
-    // Award referrer points
+    // Award referrer points (non-blocking — user registration succeeds regardless)
     if (referrer) {
-      if (referrer.role === 'student') {
-        let reward = await StudentReward.findOne({ userId: referrer._id });
-        if (!reward) reward = new StudentReward({ userId: referrer._id, points: 0, history: [] });
-        reward.points += 25;
-        reward.history.push({ points: 25, reason: `Referral: ${name} joined` });
-        await reward.save();
-      } else if (referrer.role === 'tutor') {
-        let reward = await TutorReward.findOne({ tutorId: referrer._id });
-        if (!reward) reward = new TutorReward({ tutorId: referrer._id, points: 0, bonusPoints: 0 });
-        reward.bonusPoints += 25;
-        reward.bonusHistory.push({ bonus: 25, reason: `Referral: ${name} joined` });
-        await reward.save();
-      } else if (referrer.role === 'sales_executive') {
-        const { awardReferralPoints } = require('./salesExecutiveRewardController');
-        await awardReferralPoints(referrer._id, name);
+      try {
+        if (referrer.role === 'student') {
+          let reward = await StudentReward.findOne({ userId: referrer._id });
+          if (!reward) reward = new StudentReward({ userId: referrer._id, points: 0, history: [] });
+          reward.points += 25;
+          reward.history.push({ points: 25, reason: `Referral: ${name} joined` });
+          await reward.save();
+        } else if (referrer.role === 'tutor') {
+          let reward = await TutorReward.findOne({ tutorId: referrer._id });
+          if (!reward) reward = new TutorReward({ tutorId: referrer._id, points: 0, bonusPoints: 0 });
+          reward.bonusPoints += 25;
+          reward.bonusHistory.push({ bonus: 25, reason: `Referral: ${name} joined` });
+          await reward.save();
+        } else if (referrer.role === 'sales_executive') {
+          const { awardReferralPoints } = require('./salesExecutiveRewardController');
+          await awardReferralPoints(referrer._id, name);
+        }
+      } catch (rewardErr) {
+        console.error('Referral reward award failed (non-fatal):', rewardErr.message);
       }
     }
 
