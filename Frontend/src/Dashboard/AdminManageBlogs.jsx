@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { showToast } from '../Components/Toast';
 import {
   FileText, Plus, Edit2, Trash2, Search, X, Save,
   Tag, Image, ChevronDown, ChevronUp, Eye
@@ -67,16 +68,18 @@ export default function AdminManageBlogs() {
     if (!window.confirm('Delete this blog?')) return;
     await fetch(`${API_URL}/api/blogs/${id}`, { method: 'DELETE' });
     setBlogs(prev => prev.filter(b => b._id !== id));
+    showToast('Blog post deleted.', 'ok');
   };
 
   const handleSave = async () => {
-    if (!form.title.trim() || !form.content.trim()) return alert('Title and content are required.');
+    if (!form.title.trim() || !form.content.trim()) return showToast('Title and content are required.', 'err');
     setSaving(true);
     const method = editId ? 'PUT' : 'POST';
     const url = editId ? `${API_URL}/api/blogs/${editId}` : `${API_URL}/api/blogs`;
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
     setSaving(false);
-    if (!res.ok) return alert('Save failed');
+    if (!res.ok) return showToast('Save failed. Please try again.', 'err');
+    showToast(editId ? 'Blog post updated successfully.' : 'New blog post has been successfully published!', 'ok');
     setShowForm(false);
     fetchBlogs();
   };

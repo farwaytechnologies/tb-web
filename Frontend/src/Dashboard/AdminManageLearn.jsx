@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Plus, Edit2, Trash2, Search, X, Save, Code, ChevronDown, ChevronUp, Eye, Upload, FileJson, FileText, CheckCircle, AlertCircle } from 'lucide-react';
+import { showToast } from '../Components/Toast';
+import { BookOpen, Plus, Edit2, Trash2, Search, X, Save, Code, ChevronDown, ChevronUp, Eye, Upload, FileJson, FileText } from 'lucide-react';
 import '../Styles/DashbordStyle/ManageLearn.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -54,17 +55,19 @@ export default function AdminManageLearn() {
     if (!window.confirm('Delete this learn module?')) return;
     await fetch(`${API_URL}/api/learn/${id}`, { method: 'DELETE' });
     setLearns(prev => prev.filter(l => l._id !== id));
+    showToast('Learning module deleted.', 'ok');
   };
 
   const handleSave = async () => {
-    if (!form.language.trim()) return alert('Language name is required.');
-    if (form.modules.some(m => !m.title.trim())) return alert('All modules need a title.');
+    if (!form.language.trim()) return showToast('Language name is required.', 'err');
+    if (form.modules.some(m => !m.title.trim())) return showToast('All modules need a title.', 'err');
     setSaving(true);
     const method = editId ? 'PUT' : 'POST';
     const url = editId ? `${API_URL}/api/learn/${editId}` : `${API_URL}/api/learn`;
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
     setSaving(false);
-    if (!res.ok) return alert('Save failed');
+    if (!res.ok) return showToast('Save failed. Please try again.', 'err');
+    showToast(editId ? `"${form.language}" updated successfully.` : `New learning course "${form.language}" has been successfully added!`, 'ok');
     setShowForm(false);
     fetchData();
   };
@@ -110,6 +113,7 @@ export default function AdminManageLearn() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Upload failed');
       setUploadResult({ success: true, message: data.message });
+      showToast('Learning content imported successfully!', 'ok');
       fetchData();
     } catch (err) {
       setUploadResult({ success: false, message: err.message });

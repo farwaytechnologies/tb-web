@@ -4,9 +4,10 @@ import {
   Menu, X, Bell, ArrowLeft, ChevronDown,
   User, FileText, Award, Receipt, LogOut,
   BookOpen, GraduationCap, Newspaper, Briefcase,
-  LayoutDashboard, Zap,
+  LayoutDashboard, Zap, Palette, Sun, Moon,
 } from 'lucide-react';
 import '../Styles/ComponentsStyle/Navbar.css';
+import { useTheme } from '../context/ThemeContext';
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -23,6 +24,8 @@ export default function Navbar() {
   const [learningOpen, setLearningOpen]       = useState(false);
   const [scrolled, setScrolled]               = useState(false);
   const [notifCount, setNotifCount]           = useState(0);
+  const [themeOpen, setThemeOpen]             = useState(false);
+  const { theme, update, reset }              = useTheme();
 
   const navigate  = useNavigate();
   const location  = useLocation();
@@ -229,6 +232,10 @@ export default function Navbar() {
                     <User size={15} /> My Profile
                   </Link>
 
+                  <button className="nb__menu-item" onClick={() => { setThemeOpen(true); setDropdownOpen(false); }}>
+                    <Palette size={15} /> Theme
+                  </button>
+
                   {user.role !== 'admin' && (
                     <>
                       <Link to="/certificates" className="nb__menu-item" onClick={close}>
@@ -263,6 +270,79 @@ export default function Navbar() {
           </button>
         </div>
       </div>
+
+      {/* ── Theme Panel ── */}
+      {themeOpen && (
+        <div className="nb__theme-overlay" onClick={() => setThemeOpen(false)}>
+          <div className="nb__theme-panel" onClick={e => e.stopPropagation()}>
+            <div className="nb__theme-header">
+              <span><Palette size={16} /> Theme</span>
+              <button onClick={() => setThemeOpen(false)}><X size={16} /></button>
+            </div>
+
+            {/* Mode */}
+            <div className="nb__theme-row">
+              <span className="nb__theme-label">Mode</span>
+              <div className="nb__theme-mode">
+                <button className={`nb__theme-mode-btn ${theme.mode === 'dark' ? 'active' : ''}`}
+                  onClick={() => update('mode', 'dark')}>
+                  <Moon size={14} /> Dark
+                </button>
+                <button className={`nb__theme-mode-btn ${theme.mode === 'light' ? 'active' : ''}`}
+                  onClick={() => update('mode', 'light')}>
+                  <Sun size={14} /> Light
+                </button>
+              </div>
+            </div>
+
+            <div className="nb__theme-divider" />
+
+            {/* Colors */}
+            <p className="nb__theme-section-title">Colors {theme.mode === 'dark' && <span className="nb__theme-note">(light mode only)</span>}</p>
+            <div className="nb__theme-colors">
+              {[
+                { label: 'Page BG',    key: 'bgPage',    lightOnly: true },
+                { label: 'Card BG',    key: 'bgCard',    lightOnly: true },
+                { label: 'Navbar BG',  key: 'bgNav',     lightOnly: true },
+                { label: 'Primary',    key: 'primary',   lightOnly: false },
+                { label: 'Accent',     key: 'accent',    lightOnly: false },
+                { label: 'CTA',        key: 'cta',       lightOnly: false },
+                { label: 'Text',       key: 'textMain',  lightOnly: true },
+                { label: 'Border',     key: 'border',    lightOnly: true },
+              ].map(({ label, key, lightOnly }) => (
+                <div key={key} className={`nb__theme-color-item ${lightOnly && theme.mode === 'dark' ? 'nb__theme-color-item--dim' : ''}`}>
+                  <input type="color" value={theme[key]}
+                    disabled={lightOnly && theme.mode === 'dark'}
+                    onChange={e => update(key, e.target.value)}
+                    className="nb__theme-swatch" title={label} />
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="nb__theme-divider" />
+
+            {/* Radius */}
+            <div className="nb__theme-row">
+              <span className="nb__theme-label">Radius <b>{theme.radius}px</b></span>
+              <input type="range" min="0" max="24" value={theme.radius}
+                onChange={e => update('radius', e.target.value)}
+                className="nb__theme-slider" />
+            </div>
+
+            {/* Font */}
+            <div className="nb__theme-row">
+              <span className="nb__theme-label">Font <b>{theme.fontScale}%</b></span>
+              <input type="range" min="80" max="120" step="5" value={theme.fontScale}
+                onChange={e => update('fontScale', e.target.value)}
+                className="nb__theme-slider" />
+            </div>
+
+            <div className="nb__theme-divider" />
+            <button className="nb__theme-reset" onClick={reset}>Reset to Defaults</button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

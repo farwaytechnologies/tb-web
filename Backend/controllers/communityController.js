@@ -66,7 +66,8 @@ exports.createPost = async (req, res) => {
       tags: (tags || []).slice(0, 5),
     });
     await post.populate('author', 'name profilePic role');
-    res.status(201).json(post);
+    // Return with commentCount so frontend state is consistent with getPosts
+    res.status(201).json({ ...post.toObject(), commentCount: 0 });
   } catch (err) {
     res.status(400).json({ message: err.message || 'Failed to create post' });
   }

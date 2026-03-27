@@ -5,6 +5,8 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import PagesRout from "./Routes/PagesRoute";
 import PopupAd from "./PopupAd";
+import { ThemeProvider } from "./context/ThemeContext";
+import ToastContainer from "./Components/Toast";
 
 
 // 🌍 API base URL (Render for production or localhost)
@@ -87,15 +89,16 @@ function VisitorTracker() {
 */
 function App() {
   return (
-    <BrowserRouter>
-      {/* Track visitors silently */}
-      <VisitorTracker />
-      <PopupAd />
-      {/* Layout */}
-      <Navbar />
-      <PagesRout />
-      <Footer />
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <VisitorTracker />
+        <PopupAd />
+        <ToastContainer />
+        <Navbar />
+        <PagesRout />
+        <Footer />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

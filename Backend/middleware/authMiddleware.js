@@ -32,8 +32,11 @@ exports.authenticateUser = async (req, res, next) => {
     if (!user) return res.status(401).json({ message: 'User not found.' });
     req.user = user;
     next();
-  } catch {
-    return res.status(401).json({ message: 'Invalid token.' });
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Session expired. Please log in again.' });
+    }
+    return res.status(401).json({ message: 'Invalid token. Please log in again.' });
   }
 };
 

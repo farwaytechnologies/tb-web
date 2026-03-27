@@ -21,6 +21,17 @@ function authHeader() {
   return t ? { Authorization: `Bearer ${t}`, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
 }
 
+// Handle 401 — clear session and redirect to login
+function handleAuthError(status, message) {
+  if (status === 401) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+    return true;
+  }
+  return false;
+}
+
 function Avatar({ user, size = 32 }) {
   if (user?.profilePic) return <div className="cm-avatar" style={{ width: size, height: size }}><img src={user.profilePic} alt={user.name} /></div>;
   return <div className="cm-avatar" style={{ width: size, height: size, fontSize: size * 0.4 }}>{user?.name?.[0]?.toUpperCase() || '?'}</div>;
@@ -49,9 +60,9 @@ export default function Community() {
   const [toast, setToast]           = useState(null);
   const currentUser = JSON.parse(localStorage.getItem('user') || 'null');
 
-  const showToast = (type, text) => {
+  const showToast = (type, text, duration = 3000) => {
     setToast({ type, text });
-    setTimeout(() => setToast(null), 3000);
+    setTimeout(() => setToast(null), duration);
   };
 
   const fetchPosts = useCallback(async () => {
@@ -135,7 +146,7 @@ export default function Community() {
               <input placeholder="Search posts..." value={searchInput}
                 onChange={e => setSearchInput(e.target.value)} />
             </form>
-            {currentUser ? (
+      {currentUser ? (
               <button className="cm-new-btn" onClick={() => setShowNew(true)}>
                 <Plus size={15} /> New Post
               </button>
@@ -183,7 +194,16 @@ export default function Community() {
       {/* New Post Modal */}
       {showNew && (
         <NewPostModal onClose={() => setShowNew(false)}
-          onCreated={(post) => { setPosts(ps => [post, ...ps]); setShowNew(false); showToast('ok', 'Post created!'); }} />
+          onCreated={(post) => {
+            setShowNew(false);
+            // Reset to All Posts page 1 so new post is visible
+            setPage(1);
+            setCategory('all');
+            setSearch('');
+            setSearchInput('');
+            setPosts(ps => [post, ...ps]);
+            showToast('ok', '🎉 Post published! Showing in All Posts.', 4000);
+          }} />
       )}
 
       {/* Post Detail Modal */}
@@ -244,26 +264,34 @@ function PostCard({ post, currentUser, onOpen, onLiked, showToast }) {
 function NewPostModal({ onClose, onCreated }) {
   const [form, setForm] = useState({ title: '', body: '', category: 'general', tags: '' });
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   const submit = async (e) => {
     e.preventDefault();
     if (!form.title.trim() || !form.body.trim()) return;
+    setError('');
     setSaving(true);
     try {
       const res = await fetch(`${API}/api/community/posts`, {
         method: 'POST', headers: authHeader(),
         body: JSON.stringify({ ...form, tags: form.tags.split(',').map(t => t.trim()).filter(Boolean) }),
       });
-      if (!res.ok) throw new Error();
-      onCreated(await res.json());
-    } catch { /* silent */ }
-    setSaving(false);
-  };
+      const data = await res.json();
+      if (!res.ok) {
+        if (handleAuthError(res.status, data.message)) return;
+        throw new Error(data.message || 'Failed to create post');
+      }
+      onCreated(data);
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Are you logged in?');
+    }
+    setSaving(false);  };
 
   return (
     <div className="cm-modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="cm-modal">
         <h2>Create Post</h2>
+        {error && <div style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171', borderRadius: 8, padding: '10px 14px', fontSize: 13, marginBottom: 12 }}>{error}</div>}
         <form onSubmit={submit}>
           <div className="cm-form-group">
             <label>Title</label>
