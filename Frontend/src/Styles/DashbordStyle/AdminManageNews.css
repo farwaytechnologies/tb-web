@@ -1,5 +1,5 @@
 /* ── Base ── */
-.amn-page { padding: 28px; font-family: inherit; min-height: 100vh; background: #0a0a0f; }
+.amn-page { padding: 28px; font-family: inherit; min-height: 100vh; background: var(--bg, #0a0a0f); }
 .amn-page *, .amn-page *::before, .amn-page *::after { box-sizing: border-box; }
 
 /* ── Header ── */
@@ -15,7 +15,7 @@
 .amn-toolbar { margin-bottom: 24px; }
 .amn-search-wrap { position: relative; max-width: 360px; }
 .amn-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
-.amn-search { width: 100%; padding: 10px 36px 10px 36px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px; font-size: 14px; outline: none; background: #13131a; color: #f1f5f9; }
+.amn-search { width: 100%; padding: 10px 36px 10px 36px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px; font-size: 14px; outline: none; background: var(--bg-card, #13131a); color: #f1f5f9; }
 .amn-search:focus { border-color: #6366f1; }
 .amn-search-clear { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #94a3b8; display: flex; }
 
@@ -29,7 +29,7 @@
 /* ── Grid ── */
 .amn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 
-.amn-card { background: #13131a; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; transition: box-shadow 0.2s, transform 0.2s; }
+.amn-card { background: var(--bg-card, #13131a); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; transition: box-shadow 0.2s, transform 0.2s; }
 .amn-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.09); }
 
 .amn-card-img { position: relative; height: 160px; overflow: hidden; background: #f1f5f9; }
@@ -52,7 +52,7 @@
 
 /* ── Modal ── */
 .amn-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.amn-modal { background: #13131a; border-radius: 16px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+.amn-modal { background: var(--bg-card, #13131a); border-radius: 16px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
 
 .amn-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #f1f5f9; }
 .amn-modal-header h2 { font-size: 18px; font-weight: 800; color: #f1f5f9; margin: 0; }
@@ -68,7 +68,7 @@
 
 .amn-field { display: flex; flex-direction: column; gap: 6px; }
 .amn-field label { font-size: 13px; font-weight: 700; color: #e2e8f0; }
-.amn-field input, .amn-field textarea, .amn-field select { padding: 10px 12px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 9px; font-size: 14px; color: #f1f5f9; outline: none; font-family: inherit; resize: vertical; background: #13131a; }
+.amn-field input, .amn-field textarea, .amn-field select { padding: 10px 12px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 9px; font-size: 14px; color: #f1f5f9; outline: none; font-family: inherit; resize: vertical; background: var(--bg-card, #13131a); }
 .amn-field input:focus, .amn-field textarea:focus, .amn-field select:focus { border-color: #6366f1; }
 
 .amn-img-preview { margin-top: 8px; border-radius: 10px; overflow: hidden; max-height: 160px; border: 1px solid rgba(255,255,255,0.08); }

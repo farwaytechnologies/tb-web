@@ -1,5 +1,5 @@
 /* AdminSecurityDashboard.css */
-.asd-page { padding: 2rem; background: #0a0a0f; min-height: 100vh; color: #e2e8f0; font-family: inherit; }
+.asd-page { padding: 2rem; background: var(--bg, #0a0a0f); min-height: 100vh; color: #e2e8f0; font-family: inherit; }
 
 /* Toast */
 .asd-toast { position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; padding: 0.75rem 1.25rem; border-radius: 10px; font-size: 0.875rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
@@ -25,20 +25,20 @@
 
 /* KPI */
 .asd-kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-.asd-kpi { background: #13131a; border: 1px solid #1e1e2e; border-radius: 14px; padding: 1.25rem; display: flex; align-items: center; gap: 0.875rem; transition: border-color 0.2s; }
+.asd-kpi { background: var(--bg-card, #13131a); border: 1px solid #1e1e2e; border-radius: 14px; padding: 1.25rem; display: flex; align-items: center; gap: 0.875rem; transition: border-color 0.2s; }
 .asd-kpi:hover { border-color: var(--kc, #8b5cf6); }
 .asd-kpi-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .asd-kpi-val { display: block; font-size: 1.6rem; font-weight: 900; line-height: 1; }
 .asd-kpi-lbl { display: block; font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.2rem; }
 
 /* Tabs */
-.asd-tabs { display: flex; gap: 0.25rem; margin-bottom: 1.5rem; background: #13131a; border: 1px solid #1e1e2e; border-radius: 12px; padding: 0.35rem; width: fit-content; }
+.asd-tabs { display: flex; gap: 0.25rem; margin-bottom: 1.5rem; background: var(--bg-card, #13131a); border: 1px solid #1e1e2e; border-radius: 12px; padding: 0.35rem; width: fit-content; }
 .asd-tab { padding: 0.5rem 1.25rem; border-radius: 8px; border: none; background: none; color: #64748b; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .asd-tab.active { background: rgba(139,92,246,0.15); color: #a78bfa; }
 .asd-tab:hover:not(.active) { color: #94a3b8; }
 
 /* Cards */
-.asd-card { background: #13131a; border: 1px solid #1e1e2e; border-radius: 16px; padding: 1.5rem; }
+.asd-card { background: var(--bg-card, #13131a); border: 1px solid #1e1e2e; border-radius: 16px; padding: 1.5rem; }
 .asd-card h3 { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 700; color: #94a3b8; margin: 0 0 1.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .asd-card--full { grid-column: 1 / -1; }
 .asd-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
@@ -87,12 +87,12 @@
 
 /* Logs */
 .asd-filters { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
-.asd-filters select, .asd-filters input { background: #13131a; border: 1px solid #1e1e2e; border-radius: 8px; padding: 0.55rem 0.875rem; color: #e2e8f0; font-size: 0.82rem; outline: none; transition: border-color 0.2s; }
+.asd-filters select, .asd-filters input { background: var(--bg-card, #13131a); border: 1px solid #1e1e2e; border-radius: 8px; padding: 0.55rem 0.875rem; color: #e2e8f0; font-size: 0.82rem; outline: none; transition: border-color 0.2s; }
 .asd-filters select:focus, .asd-filters input:focus { border-color: #8b5cf6; }
 .asd-filters input { width: 180px; }
 
 .asd-log-list { display: flex; flex-direction: column; gap: 0.5rem; }
-.asd-log-item { background: #13131a; border: 1px solid #1e1e2e; border-left: 3px solid #8b5cf6; border-radius: 10px; overflow: hidden; }
+.asd-log-item { background: var(--bg-card, #13131a); border: 1px solid #1e1e2e; border-left: 3px solid #8b5cf6; border-radius: 10px; overflow: hidden; }
 .asd-log-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; cursor: pointer; flex-wrap: wrap; }
 .asd-log-row:hover { background: rgba(255,255,255,0.02); }
 .asd-log-sev { font-size: 0.65rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 5px; text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }

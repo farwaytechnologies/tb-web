@@ -15,7 +15,7 @@
 .ame-empty { text-align: center; color: #94a3b8; padding: 60px; }
 
 .ame-list { display: flex; flex-direction: column; gap: 14px; }
-.ame-card { background: #13131a; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; }
+.ame-card { background: var(--bg-card, #13131a); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; }
 .ame-card-top { display: flex; align-items: flex-start; justify-content: space-between; padding: 18px 20px; gap: 12px; }
 .ame-card-info h3 { font-size: 16px; font-weight: 700; color: #f1f5f9; margin: 0 0 4px; }
 .ame-meta { font-size: 12px; color: #64748b; display: block; margin-bottom: 6px; }
@@ -24,7 +24,7 @@
 .ame-badge.inactive { background: #fee2e2; color: #991b1b; }
 
 .ame-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
-.ame-icon-btn { width: 32px; height: 32px; border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; background: #0a0a0f; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #94a3b8; }
+.ame-icon-btn { width: 32px; height: 32px; border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; background: var(--bg, #0a0a0f); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #94a3b8; }
 .ame-icon-btn:hover { background: #f1f5f9; }
 .ame-icon-btn.danger { color: #ef4444; }
 .ame-icon-btn.danger:hover { background: #fef2f2; }
@@ -33,7 +33,7 @@
 .ame-attempts strong { display: block; font-size: 13px; color: #e2e8f0; margin: 12px 0 8px; }
 .ame-no-attempts { font-size: 13px; color: #94a3b8; }
 .ame-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.ame-table th { text-align: left; padding: 6px 10px; background: #0a0a0f; color: #64748b; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+.ame-table th { text-align: left; padding: 6px 10px; background: var(--bg, #0a0a0f); color: #64748b; font-weight: 600; font-size: 11px; text-transform: uppercase; }
 .ame-table td { padding: 8px 10px; border-top: 1px solid #f1f5f9; color: #e2e8f0; }
 .ame-result { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
 .ame-result.pass { background: #d1fae5; color: #065f46; }
@@ -41,7 +41,7 @@
 
 /* Modal */
 .ame-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; display: flex; align-items: flex-start; justify-content: center; padding: 24px 16px; overflow-y: auto; }
-.ame-modal { background: #13131a; border-radius: 16px; width: 100%; max-width: 700px; padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+.ame-modal { background: var(--bg-card, #13131a); border-radius: 16px; width: 100%; max-width: 700px; padding: 28px; display: flex; flex-direction: column; gap: 20px; }
 .ame-modal-header { display: flex; align-items: center; justify-content: space-between; }
 .ame-modal-header h2 { font-size: 20px; font-weight: 700; color: #f1f5f9; margin: 0; }
 .ame-modal-header button { background: #f1f5f9; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #94a3b8; }
@@ -66,14 +66,14 @@
 .ame-btn-ghost { display: flex; align-items: center; gap: 5px; padding: 6px 14px; background: #f1f5f9; border: none; border-radius: 7px; font-size: 13px; font-weight: 600; color: #94a3b8; cursor: pointer; }
 .ame-btn-ghost:hover { background: #e2e8f0; }
 
-.ame-question { background: #0a0a0f; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.ame-question { background: var(--bg, #0a0a0f); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .ame-q-top { display: flex; align-items: center; justify-content: space-between; }
 .ame-q-num { font-size: 12px; font-weight: 700; color: #6366f1; background: #eef2ff; padding: 2px 10px; border-radius: 20px; }
-.ame-q-input { padding: 8px 12px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; color: #f1f5f9; outline: none; font-family: inherit; background: #13131a; }
+.ame-q-input { padding: 8px 12px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 14px; color: #f1f5f9; outline: none; font-family: inherit; background: var(--bg-card, #13131a); }
 .ame-q-input:focus { border-color: #6366f1; }
 
 .ame-options { display: flex; flex-direction: column; gap: 8px; }
-.ame-option { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.1); background: #13131a; cursor: pointer; }
+.ame-option { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.1); background: var(--bg-card, #13131a); cursor: pointer; }
 .ame-option.correct { border-color: #10b981; background: #ecfdf5; }
 .ame-option input[type="radio"] { cursor: pointer; flex-shrink: 0; }
 .ame-opt-input { flex: 1; border: none; outline: none; font-size: 13px; color: #f1f5f9; background: transparent; font-family: inherit; }

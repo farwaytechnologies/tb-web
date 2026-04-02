@@ -1,5 +1,5 @@
 /* ── Base ── */
-.cd-page { min-height: 100vh; background: #0a0a0f; color: #e2e8f0; font-family: inherit; }
+.cd-page { min-height: 100vh; background: var(--bg, #0a0a0f); color: #e2e8f0; font-family: inherit; }
 .cd-page *, .cd-page *::before, .cd-page *::after { box-sizing: border-box; }
 
 /* ── States ── */

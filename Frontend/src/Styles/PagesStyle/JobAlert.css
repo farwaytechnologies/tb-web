@@ -1,4 +1,4 @@
-.ja-page { background: #0a0a0f; min-height: 100vh; color: #e2e8f0; }
+.ja-page { background: var(--bg, #0a0a0f); min-height: 100vh; color: #e2e8f0; }
 
 /* Hero */
 .ja-hero {

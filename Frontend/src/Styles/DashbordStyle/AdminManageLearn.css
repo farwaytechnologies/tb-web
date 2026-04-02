@@ -18,7 +18,7 @@
 }
 
 .admin-learn-form {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -233,7 +233,7 @@ hr {
 }
 
 .learn-card-admin {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);

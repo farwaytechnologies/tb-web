@@ -1,5 +1,5 @@
 .srd-page {
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   min-height: 100vh;
   padding: 2rem 1.5rem 4rem;
   color: #f1f5f9;
@@ -157,7 +157,7 @@
 
 /* Referral Link Card */
 .srd-link-url-box {
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   border: 1px solid #2a2a3e;
   border-radius: 8px;
   padding: 10px 12px;

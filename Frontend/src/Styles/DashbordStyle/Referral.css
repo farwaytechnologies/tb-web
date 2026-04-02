@@ -1,7 +1,7 @@
 /* ── Page ── */
 .ref-page {
   min-height: 100vh;
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   color: #e2e8f0;
   padding: 2rem 1.5rem 4rem;
 }
@@ -165,7 +165,7 @@
 }
 .ref-link-row {
   display: flex; align-items: center; gap: 10px;
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   border: 1px solid #2a2a3e;
   border-radius: 10px;
   padding: 10px 14px;

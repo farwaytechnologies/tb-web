@@ -1,6 +1,6 @@
 .amr-page {
   padding: 2rem;
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
   color: #f1f5f9;
@@ -20,7 +20,7 @@
 .amr-title { font-size: 1.6rem; font-weight: 700; margin: 0; color: #f1f5f9; }
 .amr-subtitle { font-size: 0.85rem; color: #6b7280; margin: 0; }
 .amr-refresh-btn {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px;
   padding: 0.5rem 1rem;
@@ -55,7 +55,7 @@
 }
 @media (max-width: 768px) { .amr-stats-bar { grid-template-columns: repeat(2, 1fr); } }
 .amr-stat {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border-radius: 12px;
   padding: 1rem 1.25rem;
   border: 1px solid rgba(255,255,255,0.08);
@@ -85,7 +85,7 @@
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px;
   font-size: 0.9rem;
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   box-sizing: border-box;
 }
 .amr-sort {
@@ -93,14 +93,14 @@
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px;
   font-size: 0.9rem;
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   cursor: pointer;
 }
 
 /* Table */
 .amr-loading { text-align: center; padding: 3rem; color: #6b7280; }
 .amr-table-wrap { overflow-x: auto; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 2rem; }
-.amr-table { width: 100%; border-collapse: collapse; background: #13131a; }
+.amr-table { width: 100%; border-collapse: collapse; background: var(--bg-card, #13131a); }
 .amr-table thead { background: #4a7abe; }
 .amr-table th { padding: 12px 14px; text-align: left; color: #fff; font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
 .amr-table td { padding: 12px 14px; font-size: 0.88rem; color: #e2e8f0; border-bottom: 1px solid rgba(255,255,255,0.06); }
@@ -150,7 +150,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 10px;
   padding: 0.65rem 1rem;
@@ -167,7 +167,7 @@
 .amr-badges-ref { margin-bottom: 2rem; }
 .amr-badges-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 .amr-badge-ref-card {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 10px;
   padding: 0.65rem 1rem;
@@ -190,7 +190,7 @@
   z-index: 1000;
 }
 .amr-modal {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border-radius: 16px;
   padding: 2rem;
   width: 100%;

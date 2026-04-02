@@ -1,5 +1,5 @@
 /* Home.css — dark theme */
-.hp-wrapper { background: #0a0a0f; color: #e2e8f0; overflow-x: hidden; font-family: inherit; }
+.hp-wrapper { background: var(--bg, #0a0a0f); color: #e2e8f0; overflow-x: hidden; font-family: inherit; }
 .hp-wrapper *, .hp-wrapper *::before, .hp-wrapper *::after { box-sizing: border-box; }
 
 .hp-bg-grid {
@@ -9,7 +9,7 @@
 }
 
 /* Loading */
-.hp-loading { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; background: #0a0a0f; color: #64748b; }
+.hp-loading { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; background: var(--bg, #0a0a0f); color: #64748b; }
 .hp-loader { width: 44px; height: 44px; border: 3px solid #1e1e2e; border-top-color: #8b5cf6; border-radius: 50%; animation: hp-spin 0.8s linear infinite; }
 @keyframes hp-spin { to { transform: rotate(360deg); } }
 
@@ -73,7 +73,7 @@
 .hp-hero-visual { position: relative; height: 380px; }
 
 .hp-visual-card {
-  background: #13131a; border: 1px solid #1e1e2e; border-radius: 20px;
+  background: var(--bg-card, #13131a); border: 1px solid #1e1e2e; border-radius: 20px;
   box-shadow: 0 24px 60px rgba(0,0,0,0.5);
 }
 .hp-vc-main { padding: 1.25rem; width: 100%; }
@@ -153,7 +153,7 @@
 .hp-features { position: relative; z-index: 1; padding: 6rem 1.5rem; background: linear-gradient(180deg, #0a0a0f 0%, #0d0d18 100%); }
 .hp-features-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
 .hp-feature-card {
-  position: relative; background: #13131a; border: 1px solid #1e1e2e;
+  position: relative; background: var(--bg-card, #13131a); border: 1px solid #1e1e2e;
   border-radius: 18px; padding: 2rem; overflow: hidden;
   transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
 }
@@ -167,7 +167,7 @@
 .hp-how { position: relative; z-index: 1; padding: 6rem 1.5rem; background: #0d0d14; }
 .hp-how-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; position: relative; }
 .hp-how-card {
-  position: relative; background: #13131a; border: 1px solid #1e1e2e;
+  position: relative; background: var(--bg-card, #13131a); border: 1px solid #1e1e2e;
   border-radius: 18px; padding: 2rem 1.5rem; text-align: center;
   transition: transform 0.25s, border-color 0.25s;
 }
@@ -185,7 +185,7 @@
 .hp-courses { position: relative; z-index: 1; padding: 6rem 1.5rem; background: linear-gradient(180deg, #0a0a0f 0%, #0d0d14 100%); }
 .hp-courses-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
 .hp-course-card {
-  background: #13131a; border: 1px solid #1e1e2e; border-radius: 16px;
+  background: var(--bg-card, #13131a); border: 1px solid #1e1e2e; border-radius: 16px;
   overflow: hidden; text-decoration: none; color: inherit;
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   display: flex; flex-direction: column;
@@ -230,7 +230,7 @@
 .hp-testimonial-track { max-width: 700px; margin: 0 auto; position: relative; min-height: 240px; }
 .hp-testimonial-card {
   position: absolute; inset: 0;
-  background: #13131a; border: 1px solid #1e1e2e; border-radius: 20px;
+  background: var(--bg-card, #13131a); border: 1px solid #1e1e2e; border-radius: 20px;
   padding: 2rem 2.25rem;
   opacity: 0; transform: translateY(16px) scale(0.97);
   transition: opacity 0.5s, transform 0.5s; pointer-events: none;

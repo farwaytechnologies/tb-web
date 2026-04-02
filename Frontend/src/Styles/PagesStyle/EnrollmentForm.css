@@ -1,10 +1,10 @@
-.enroll-page { min-height: 100vh; background: #0a0a0f; padding: 40px 16px; }
+.enroll-page { min-height: 100vh; background: var(--bg, #0a0a0f); padding: 40px 16px; }
 
 .enroll-container {
   max-width: 500px;
   margin: 40px auto;
   padding: 30px;
-  background-color: #13131a;
+  background-color: var(--bg-card, #13131a);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 14px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);

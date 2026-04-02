@@ -1,7 +1,7 @@
 /* ── Page ── */
 .cert-page {
   min-height: 100vh;
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   padding: 40px 20px 80px;
   font-family: 'Inter', 'Segoe UI', sans-serif;
 }
