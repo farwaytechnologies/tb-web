@@ -1,5 +1,5 @@
 .exam-page {
-  background: #0a0a0f; max-width: 860px; margin: 0 auto; padding: 40px 16px 60px; font-family: inherit; }
+  background: var(--bg, #0a0a0f); max-width: 860px; margin: 0 auto; padding: 40px 16px 60px; font-family: inherit; }
 .exam-page *, .exam-page *::before, .exam-page *::after { box-sizing: border-box; }
 .exam-loading { text-align: center; color: #94a3b8; padding: 60px; }
 .exam-empty   { text-align: center; color: #94a3b8; padding: 40px; }

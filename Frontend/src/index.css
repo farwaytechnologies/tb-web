@@ -40,10 +40,12 @@
   --cta-muted:       var(--clr-red-muted);
 
   --bg:              #0a0a0f;
+  --bg-card:         #13131a;
   --bg-warm:         var(--clr-off-white);
   --bg-dark:         var(--clr-black);
   --text:            #e2e8f0;
   --text-muted:      var(--clr-text-muted);
+  --border-color:    rgba(255,255,255,0.08);
 
   /* Gradients */
   --grad-primary:    linear-gradient(135deg, var(--clr-teal), var(--clr-teal-dark));
@@ -85,17 +87,48 @@ img, video, iframe { max-width: 100%; }
 
 /* ── Light mode global overrides (applied via data-theme="light" on <html>) ── */
 [data-theme="light"] body {
-  background: var(--bg, #f8fafc);
-  color: var(--text, #1a1a1a);
+  background: var(--bg, #f8fafc) !important;
+  color: var(--text, #1a1a1a) !important;
 }
 
+/* ── All page roots switch to --bg in light mode ── */
+[data-theme="light"] .hp-wrapper,
+[data-theme="light"] .crs-page,
+[data-theme="light"] .blg-page,
+[data-theme="light"] .bd-page,
+[data-theme="light"] .learn-page,
+[data-theme="light"] .ld-page,
+[data-theme="light"] .nws-page--dark,
+[data-theme="light"] .nd-page,
+[data-theme="light"] .sp-page,
+[data-theme="light"] .cm-page,
+[data-theme="light"] .ct-page,
+[data-theme="light"] .ab-page,
+[data-theme="light"] .lp-page,
+[data-theme="light"] .cert-page,
+[data-theme="light"] .cd-page,
+[data-theme="light"] .ja-page,
+[data-theme="light"] .pp-page,
+[data-theme="light"] .adm-page,
+[data-theme="light"] .va-page,
+[data-theme="light"] .amr-page,
+[data-theme="light"] .acm-page,
+[data-theme="light"] .ml-page,
+[data-theme="light"] .mb-page,
+[data-theme="light"] .aj-page {
+  background: var(--bg, #f8fafc) !important;
+  color: var(--text, #1a1a1a) !important;
+}
+
+/* ── Navbar ── */
 [data-theme="light"] .nb {
-  background: var(--bg-nav, #ffffff);
+  background: var(--bg-nav, #ffffff) !important;
   border-bottom-color: var(--border-color, #e2e8f0);
 }
 [data-theme="light"] .nb__link { color: #475569; }
 [data-theme="light"] .nb__link:hover { color: #1a1a1a; background: rgba(0,0,0,0.04); }
 [data-theme="light"] .nb__link--active { color: #1a1a1a; }
+[data-theme="light"] .nb__logo-t { color: #1a1a1a; }
 [data-theme="light"] .nb__user-btn { background: #f1f5f9; border-color: #e2e8f0; color: #1a1a1a; }
 [data-theme="light"] .nb__bell { background: #f1f5f9; border-color: #e2e8f0; color: #475569; }
 [data-theme="light"] .nb__burger { background: #f1f5f9; border-color: #e2e8f0; color: #475569; }
@@ -104,36 +137,114 @@ img, video, iframe { max-width: 100%; }
 [data-theme="light"] .nb__menu-item { color: #475569; }
 [data-theme="light"] .nb__menu-item:hover { background: #f8fafc; color: #1a1a1a; }
 [data-theme="light"] .nb__menu-head strong { color: #1a1a1a; }
+[data-theme="light"] .nb__theme-panel { background: #fff; border-color: #e2e8f0; }
+[data-theme="light"] .nb__theme-header { color: #1a1a1a; border-bottom-color: #e2e8f0; }
+[data-theme="light"] .nb__theme-divider { background: #e2e8f0; }
+[data-theme="light"] .nb__theme-label { color: #475569; }
+[data-theme="light"] .nb__theme-mode-btn { background: #f1f5f9; border-color: #e2e8f0; color: #475569; }
+[data-theme="light"] .nb__theme-reset { background: #f8fafc; color: #475569; border-top-color: #e2e8f0; }
+[data-theme="light"] .nb__theme-color-item { color: #475569; }
 
-/* Cards / surfaces */
+/* ── Cards / surfaces ── */
 [data-theme="light"] .hp-feature-card,
 [data-theme="light"] .hp-how-card,
 [data-theme="light"] .hp-course-card,
 [data-theme="light"] .hp-testimonial-card,
+[data-theme="light"] .hp-visual-card,
 [data-theme="light"] .crs-card,
 [data-theme="light"] .blg-card,
+[data-theme="light"] .blg-featured,
 [data-theme="light"] .learn-card,
-[data-theme="light"] .nc {
-  background: var(--bg-card, #ffffff);
-  border-color: var(--border-color, #e2e8f0);
-  color: var(--text, #1a1a1a);
+[data-theme="light"] .nc,
+[data-theme="light"] .cert-card,
+[data-theme="light"] .cm-post-card,
+[data-theme="light"] .cm-sidebar-card,
+[data-theme="light"] .pp-sidebar,
+[data-theme="light"] .pp-main,
+[data-theme="light"] .pp-info-item,
+[data-theme="light"] .ct-form-card,
+[data-theme="light"] .ct-info-card,
+[data-theme="light"] .sp-card,
+[data-theme="light"] .cd-section,
+[data-theme="light"] .cd-sidebar-card {
+  background: var(--bg-card, #ffffff) !important;
+  border-color: var(--border-color, #e2e8f0) !important;
+  color: var(--text, #1a1a1a) !important;
 }
 
-/* Page backgrounds */
-[data-theme="light"] .hp-wrapper,
-[data-theme="light"] .crs-page,
-[data-theme="light"] .blg-page,
-[data-theme="light"] .learn-page,
-[data-theme="light"] .nws-page--dark,
-[data-theme="light"] .sp-page,
-[data-theme="light"] .cm-page,
-[data-theme="light"] .ct-page,
-[data-theme="light"] .ab-page {
-  background: var(--bg, #f8fafc);
-  color: var(--text, #1a1a1a);
+/* ── Text colors in light mode ── */
+[data-theme="light"] .hp-hero-title,
+[data-theme="light"] .hp-section-head h2,
+[data-theme="light"] .hp-feature-card h3,
+[data-theme="light"] .hp-how-card h3,
+[data-theme="light"] .crs-hero h1,
+[data-theme="light"] .blg-hero h1,
+[data-theme="light"] .blg-card-title,
+[data-theme="light"] .blg-featured-title,
+[data-theme="light"] .learn-card-title,
+[data-theme="light"] .pp-section-title,
+[data-theme="light"] .pp-sidebar-name {
+  color: var(--text, #1a1a1a) !important;
 }
 
-/* Footer */
+/* ── Inputs in light mode ── */
+[data-theme="light"] .pp-field input,
+[data-theme="light"] .pp-field select,
+[data-theme="light"] .pp-field textarea,
+[data-theme="light"] .pp-settings-select,
+[data-theme="light"] .ct-input,
+[data-theme="light"] .sp-field input,
+[data-theme="light"] .sp-field select,
+[data-theme="light"] .sp-field textarea {
+  background: #fff !important;
+  border-color: #e2e8f0 !important;
+  color: #1a1a1a !important;
+}
+
+/* ── Hero sections stay dark even in light mode (intentional contrast) ── */
+[data-theme="light"] .hp-hero,
+[data-theme="light"] .blg-hero,
+[data-theme="light"] .crs-hero,
+[data-theme="light"] .learn-hero,
+[data-theme="light"] .sp-hero,
+[data-theme="light"] .cm-hero,
+[data-theme="light"] .ct-hero,
+[data-theme="light"] .ab-hero {
+  /* keep dark gradient heroes as-is — they look good on both themes */
+}
+
+/* ── Footer always dark ── */
 [data-theme="light"] .techborg-footer {
   background: #1a1a1a;
 }
+
+/* ── Dashboard cards in light mode ── */
+[data-theme="light"] .adm-stat,
+[data-theme="light"] .acm-card,
+[data-theme="light"] .ml-card,
+[data-theme="light"] .mb-card,
+[data-theme="light"] .aj-card,
+[data-theme="light"] .amr-stat,
+[data-theme="light"] .amr-lb-row,
+[data-theme="light"] .amr-badge-ref-card,
+[data-theme="light"] .va-card {
+  background: var(--bg-card, #ffffff) !important;
+  border-color: var(--border-color, #e2e8f0) !important;
+  color: var(--text, #1a1a1a) !important;
+}
+
+[data-theme="light"] .adm-page,
+[data-theme="light"] .acm-page,
+[data-theme="light"] .ml-page,
+[data-theme="light"] .mb-page,
+[data-theme="light"] .aj-page,
+[data-theme="light"] .amr-page,
+[data-theme="light"] .va-page {
+  background: var(--bg, #f8fafc) !important;
+  color: var(--text, #1a1a1a) !important;
+}
+
+/* ── Tables in light mode ── */
+[data-theme="light"] .amr-table { background: #fff !important; }
+[data-theme="light"] .amr-table td { border-bottom-color: #f1f5f9 !important; color: #1a1a1a !important; }
+[data-theme="light"] .amr-table tbody tr:hover { background: #f8fafc !important; }

@@ -35,16 +35,14 @@ export function ThemeProvider({ children }) {
       r.style.removeProperty('--text');
       r.style.removeProperty('--text-muted');
       r.style.removeProperty('--border-color');
-    } else {
-      r.setAttribute('data-theme', 'light');
+    } else {      r.setAttribute('data-theme', 'light');
       r.style.setProperty('--bg',           theme.bgPage);
       r.style.setProperty('--bg-card',      theme.bgCard);
       r.style.setProperty('--bg-nav',       theme.bgNav);
       r.style.setProperty('--text',         theme.textMain);
       r.style.setProperty('--text-muted',   theme.textMuted);
       r.style.setProperty('--border-color', theme.border);
-    }
-    // Always apply these regardless of mode
+    }    // Always apply these regardless of mode
     r.style.setProperty('--primary',       theme.primary);
     r.style.setProperty('--primary-light', lighten(theme.primary));
     r.style.setProperty('--primary-dark',  darken(theme.primary));

@@ -1,5 +1,5 @@
 .inv-page {
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1rem 4rem;

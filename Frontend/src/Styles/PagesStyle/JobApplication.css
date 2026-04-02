@@ -1,7 +1,7 @@
 /* JobApplication.css */
 .jap-page {
   min-height: 100vh;
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   color: #e2e8f0;
   padding: 2rem 1.5rem 4rem;
 }
@@ -36,7 +36,7 @@
 .jap-sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
 
 .jap-job-card {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border: 1px solid #1e1e2e;
   border-radius: 16px;
   padding: 1.75rem;
@@ -92,7 +92,7 @@
 
 /* Tips */
 .jap-tips {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border: 1px solid #1e1e2e;
   border-radius: 16px;
   padding: 1.5rem;
@@ -118,7 +118,7 @@
 
 /* Form wrapper */
 .jap-form-wrap {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border: 1px solid #1e1e2e;
   border-radius: 20px;
   padding: 2.5rem;
@@ -184,7 +184,7 @@
   background-size: 18px;
   padding-right: 2.5rem;
 }
-.jap-field select option { background: #13131a; }
+.jap-field select option { background: var(--bg-card, #13131a); }
 .jap-field textarea { resize: vertical; min-height: 120px; }
 
 /* Dropzone */
@@ -265,7 +265,7 @@
   max-width: 480px;
   margin: 8rem auto;
   text-align: center;
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border: 1px solid #1e1e2e;
   border-radius: 20px;
   padding: 3rem 2rem;

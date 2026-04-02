@@ -5,7 +5,7 @@
   padding: 2rem 1.5rem 4rem;
   color: #e2e8f0;
   font-family: inherit;
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   min-height: 100vh;
 }
 .va-page *, .va-page *::before, .va-page *::after { box-sizing: border-box; }
@@ -38,7 +38,7 @@
 .va-refresh-btn {
   display: flex; align-items: center; gap: 0.4rem;
   padding: 0.55rem 1.1rem;
-  background: #13131a; border: 1px solid #1e1e2e;
+  background: var(--bg-card, #13131a); border: 1px solid #1e1e2e;
   border-radius: 8px; font-size: 0.82rem; font-weight: 600;
   color: #94a3b8; cursor: pointer; transition: border-color 0.2s, color 0.2s;
 }
@@ -51,7 +51,7 @@
   gap: 0.875rem; margin-bottom: 1.5rem;
 }
 .va-kpi-card {
-  background: #13131a; border: 1px solid #1e1e2e; border-radius: 14px;
+  background: var(--bg-card, #13131a); border: 1px solid #1e1e2e; border-radius: 14px;
   padding: 1rem 1.1rem; display: flex; align-items: center; gap: 0.875rem;
   transition: box-shadow 0.2s;
 }
@@ -77,7 +77,7 @@
 .va-tab.active { color: #8b5cf6; border-bottom-color: #8b5cf6; }
 
 .va-card {
-  background: #13131a; border: 1px solid #1e1e2e;
+  background: var(--bg-card, #13131a); border: 1px solid #1e1e2e;
   border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem;
 }
 .va-card-full { width: 100%; }
@@ -189,7 +189,7 @@
 .va-pagination button {
   min-width: 30px; height: 30px; padding: 0 0.5rem;
   border: 1px solid #1e1e2e; border-radius: 6px;
-  background: #13131a; color: #64748b; font-size: 0.8rem;
+  background: var(--bg-card, #13131a); color: #64748b; font-size: 0.8rem;
   cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: border-color 0.2s, color 0.2s;
 }

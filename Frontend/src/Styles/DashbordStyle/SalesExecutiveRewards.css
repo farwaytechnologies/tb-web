@@ -1,5 +1,5 @@
 .ser-page {
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   min-height: 100vh;
   padding: 2rem 1.5rem 4rem;
   color: #f1f5f9;
@@ -88,7 +88,7 @@
 /* Withdrawals */
 .ser-withdraw-list { display: flex; flex-direction: column; gap: 10px; }
 .ser-withdraw-item {
-  background: #0a0a0f; border: 1px solid #1e1e2e; border-radius: 10px; padding: 12px;
+  background: var(--bg, #0a0a0f); border: 1px solid #1e1e2e; border-radius: 10px; padding: 12px;
 }
 .ser-withdraw-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
 .ser-withdraw-amt  { font-size: 15px; font-weight: 700; }

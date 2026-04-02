@@ -1,5 +1,5 @@
 /* ── Base ── */
-.bd-page { min-height: 100vh; background: #0a0a0f; font-family: inherit; }
+.bd-page { min-height: 100vh; background: var(--bg, #0a0a0f); font-family: inherit; }
 .bd-page *, .bd-page *::before, .bd-page *::after { box-sizing: border-box; }
 
 /* ── Loading / Error ── */
@@ -34,7 +34,7 @@
 .bd-main { display: flex; flex-direction: column; gap: 40px; }
 
 /* ── Article ── */
-.bd-article { background: #13131a; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); padding: 36px; display: flex; flex-direction: column; gap: 24px; }
+.bd-article { background: var(--bg-card, #13131a); border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); padding: 36px; display: flex; flex-direction: column; gap: 24px; }
 
 .bd-lead { font-size: 18px; color: #cbd5e1; line-height: 1.8; margin: 0; padding: 20px 24px; background: rgba(45,125,125,0.08); border-left: 4px solid var(--primary); border-radius: 0 10px 10px 0; font-weight: 500; }
 .bd-content-text { font-size: 16px; color: #94a3b8; line-height: 1.85; margin: 0; white-space: pre-wrap; }
@@ -78,7 +78,7 @@
 .bd-related-heading { font-size: 20px; font-weight: 800; color: #f1f5f9; margin: 0 0 20px; }
 .bd-related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
 
-.bd-related-card { background: #13131a; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+.bd-related-card { background: var(--bg-card, #13131a); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
 .bd-related-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.4); border-color: rgba(45,125,125,0.3); }
 
 .bd-related-img { position: relative; height: 130px; overflow: hidden; background: #1e1e2e; }
@@ -94,7 +94,7 @@
 
 /* ── Sidebar ── */
 .bd-sidebar { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 16px; }
-.bd-sidebar-card { background: #13131a; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); padding: 20px; }
+.bd-sidebar-card { background: var(--bg-card, #13131a); border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); padding: 20px; }
 .bd-sidebar-card h4 { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 800; color: #f1f5f9; margin: 0 0 14px; }
 
 .bd-author { display: flex; align-items: center; gap: 12px; }

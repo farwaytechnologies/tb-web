@@ -1,5 +1,5 @@
 /* ── Base ── */
-.blg-page { min-height: 100vh; background: #0a0a0f; font-family: inherit; }
+.blg-page { min-height: 100vh; background: var(--bg, #0a0a0f); font-family: inherit; }
 .blg-page *, .blg-page *::before, .blg-page *::after { box-sizing: border-box; }
 
 /* ── Loading ── */
@@ -45,7 +45,7 @@
 .blg-tag { font-size: 11px; background: rgba(255,255,255,0.07); color: #94a3b8; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
 
 /* ── Featured ── */
-.blg-featured { display: grid; grid-template-columns: 1fr 1fr; border-radius: 20px; overflow: hidden; background: #13131a; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.3); text-decoration: none; color: inherit; margin-bottom: 40px; transition: transform 0.2s, box-shadow 0.2s; }
+.blg-featured { display: grid; grid-template-columns: 1fr 1fr; border-radius: 20px; overflow: hidden; background: var(--bg-card, #13131a); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.3); text-decoration: none; color: inherit; margin-bottom: 40px; transition: transform 0.2s, box-shadow 0.2s; }
 .blg-featured:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
 
 .blg-featured-img { position: relative; min-height: 340px; overflow: hidden; background: #1e293b; }
@@ -70,7 +70,7 @@
 .blg-count { font-size: 13px; color: #64748b; margin: 0 0 20px; }
 .blg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
 
-.blg-card { background: #13131a; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; animation: blg-fade-in 0.4s ease both; }
+.blg-card { background: var(--bg-card, #13131a); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; animation: blg-fade-in 0.4s ease both; }
 .blg-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); border-color: rgba(45,125,125,0.3); }
 @keyframes blg-fade-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 

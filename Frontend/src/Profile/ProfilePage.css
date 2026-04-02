@@ -1,7 +1,7 @@
 /* ── Layout ── */
 .pp-page {
   min-height: 100vh;
-  background: #0a0a0f;
+  background: var(--bg, #0a0a0f);
   padding: 24px 16px;
   font-family: inherit;
   position: relative;
@@ -37,7 +37,7 @@
 
 /* ── Sidebar ── */
 .pp-sidebar {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
   padding: 28px 20px;
@@ -85,7 +85,7 @@
 
 /* ── Main ── */
 .pp-main {
-  background: #13131a;
+  background: var(--bg-card, #13131a);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
   padding: 32px;
@@ -145,7 +145,7 @@
 .pp-field textarea:focus { border-color: var(--primary); }
 .pp-field input:disabled { background: rgba(255,255,255,0.03); color: #475569; cursor: not-allowed; }
 .pp-field textarea { resize: vertical; }
-.pp-field select option { background: #13131a; color: #e2e8f0; }
+.pp-field select option { background: var(--bg-card, #13131a); color: #e2e8f0; }
 
 .pp-field-icon-wrap { position: relative; }
 .pp-field-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #64748b; display: flex; }

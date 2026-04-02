@@ -1,5 +1,5 @@
 /* ── Base ── */
-.crs-page { min-height: 100vh; background: #0a0a0f; color: #e2e8f0; font-family: inherit; }
+.crs-page { min-height: 100vh; background: var(--bg, #0a0a0f); color: #e2e8f0; font-family: inherit; }
 .crs-page *, .crs-page *::before, .crs-page *::after { box-sizing: border-box; }
 
 /* ── Hero ── */
