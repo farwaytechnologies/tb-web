@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "build": "cd Frontend && npm run build",
+    "dev": "cd Backend && npm run dev"
+  },
   "dependencies": {
     "react-helmet": "^6.1.0",
     "react-helmet-async": "^2.0.5"
