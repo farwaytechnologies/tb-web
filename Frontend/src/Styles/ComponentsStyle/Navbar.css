@@ -25,15 +25,44 @@ html, body { overflow-x: hidden; max-width: 100%; }
 }
 
 /* ── Brand ── */
-.nb__brand { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+.nb__brand { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
 
-.nb__back {
-  width: 32px; height: 32px; border-radius: 8px;
-  background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2);
-  color: #94a3b8; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
+/* Browser-style nav controls */
+.nb__nav-controls {
+  display: flex; align-items: center; gap: 2px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 4px;
 }
-.nb__back:hover { background: rgba(139,92,246,0.2); color: #fff; transform: translateX(-2px); }
+.nb__nav-btn {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: transparent; border: none;
+  color: #64748b; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  flex-shrink: 0;
+}
+.nb__nav-btn:hover {
+  background: rgba(45,125,125,0.15);
+  color: var(--primary-light, #3a9e9e);
+  box-shadow: 0 0 8px rgba(45,125,125,0.2);
+}
+.nb__nav-btn:active { transform: scale(0.9); }
+
+/* Separator between nav controls and logo */
+.nb__brand-sep {
+  width: 1px; height: 20px;
+  background: rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+/* Standalone refresh on right side */
+.nb__refresh {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
 
 .nb__logo {
   display: flex; align-items: center; gap: 0; text-decoration: none;
@@ -41,16 +70,15 @@ html, body { overflow-x: hidden; max-width: 100%; }
 }
 .nb__logo-t { color: #f1f5f9; }
 .nb__logo-b {
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .nb__logo-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: #8b5cf6;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--primary);
   position: absolute; bottom: 4px; right: -8px;
   animation: nb-pulse 2s ease-in-out infinite;
 }
-@keyframes nb-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(139,92,246,0.6)} 50%{box-shadow:0 0 0 6px rgba(139,92,246,0)} }
-.nb__logo:hover .nb__logo-t { color: #fff; }
+@keyframes nb-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(45,125,125,0.6)} 50%{box-shadow:0 0 0 6px rgba(45,125,125,0)} }
 
 /* ── Nav links ── */
 .nb__links {
@@ -62,7 +90,11 @@ html, body { overflow-x: hidden; max-width: 100%; }
 .nb__link {
   display: flex; align-items: center; gap: 0.4rem;
   padding: 0.5rem 0.9rem; border-radius: 8px;
-  color: #94a3b8; font-size: 0.875rem; font-weight: 500;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, sans-serif;
   text-decoration: none; background: none; border: none; cursor: pointer;
   transition: color 0.2s, background 0.2s; white-space: nowrap;
   position: relative;
@@ -72,7 +104,7 @@ html, body { overflow-x: hidden; max-width: 100%; }
 .nb__link--active::after {
   content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%);
   width: 20px; height: 2px; border-radius: 2px;
-  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
 }
 
 /* Learning dropdown */
@@ -284,10 +316,10 @@ html, body { overflow-x: hidden; max-width: 100%; }
 @media (max-width: 480px) {
   .nb__inner { padding: 0 0.75rem; }
   .nb__logo { font-size: 1.2rem; }
-  .nb__back { width: 30px; height: 30px; flex-shrink: 0; }
-  .nb__actions { gap: 0.4rem; }
+  .nb__nav-controls { display: none; }
   .nb__login-btn span { display: none; }
   .nb__login-btn { padding: 0.45rem; border-radius: 8px; }
+  .nb__actions { gap: 0.4rem; }
 }
 
 /* Focus */

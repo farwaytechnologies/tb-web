@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
-  Menu, X, Bell, ArrowLeft, ChevronDown,
+  Menu, X, Bell, ArrowLeft, ArrowRight, RefreshCw, ChevronDown,
   User, FileText, Award, Receipt, LogOut,
   BookOpen, GraduationCap, Newspaper, Briefcase,
   LayoutDashboard, Zap, Palette, Sun, Moon,
@@ -123,11 +123,15 @@ export default function Navbar() {
 
         {/* ── Brand ── */}
         <div className="nb__brand">
-          {location.pathname !== '/' && (
-            <button className="nb__back" onClick={() => navigate(-1)} aria-label="Go back">
-              <ArrowLeft size={16} />
+          <div className="nb__nav-controls">
+            <button className="nb__nav-btn" onClick={() => navigate(-1)} aria-label="Go back">
+              <ArrowLeft size={15} />
             </button>
-          )}
+            <button className="nb__nav-btn" onClick={() => navigate(1)} aria-label="Go forward">
+              <ArrowRight size={15} />
+            </button>
+          </div>
+          <div className="nb__brand-sep" />
           <Link to="/" className="nb__logo" onClick={close}>
             <span className="nb__logo-t">Tech</span><span className="nb__logo-b">Borg</span>
             <span className="nb__logo-dot" />
@@ -186,6 +190,11 @@ export default function Navbar() {
               <span>{user.role === 'admin' ? 'Admin' : user.role === 'tutor' ? 'Tutor' : user.role === 'sales_executive' ? 'Sales' : 'Student'}</span>
             </Link>
           )}
+
+          {/* Refresh */}
+          <button className="nb__nav-btn nb__refresh" onClick={() => window.location.reload()} aria-label="Refresh page">
+            <RefreshCw size={15} />
+          </button>
 
           {/* Bell */}
           <Link to="/notifications" className="nb__bell" aria-label="Notifications">
