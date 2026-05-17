@@ -77,6 +77,8 @@ import AdminManageSalesReps from '../Dashboard/AdminManageSalesReps';
 import SalesExecutiveLogin from '../Pages/SalesExecutiveLogin';
 import SalesExecutiveRewards from '../Dashboard/SalesExecutiveRewards';
 import AdminManageSEWithdrawals from '../Dashboard/AdminManageSEWithdrawals';
+import SalesExecutiveReport from '../Dashboard/SalesExecutiveReport';
+import AdminSEReportTracking from '../Dashboard/AdminSEReportTracking';
 
 
 // 👤 Profiles
@@ -198,8 +200,10 @@ function PagesRoute() {
       {/* 💼 Sales Executive */}
       <Route path="/sales-executive/dashboard" element={<SalesRepDashboard />} />
       <Route path="/sales-executive/rewards" element={<SalesExecutiveRewards />} />
+      <Route path="/sales-executive/report" element={<SalesExecutiveReport />} />
       <Route path="/sales-executive-login" element={<SalesExecutiveLogin />} />
       <Route path="/admin/se-withdrawals" element={<AdminManageSEWithdrawals />} />
+      <Route path="/admin/se-report-tracking" element={<AdminSEReportTracking />} />
 
       {/* 👤 Profiles */}
       <Route path="/admin-profile" element={<AdminProfile />} />

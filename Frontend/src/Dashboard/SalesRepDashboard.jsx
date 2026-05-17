@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   TrendingUp, Users, Gift, Copy, Check, Briefcase,
-  Target, Award, Search, X, Calendar, ChevronUp, ChevronDown, Coins
+  Target, Award, Search, X, Calendar, ChevronUp, ChevronDown, Coins, FileBarChart
 } from 'lucide-react';
 import '../Styles/DashbordStyle/SalesRepDashboard.css';
 
@@ -264,6 +264,23 @@ export default function SalesRepDashboard() {
               <Coins size={14} /> Manage Wallet
             </Link>
           </div>
+        </div>
+
+        <div className="srd-card">
+          <div className="srd-card-header">
+            <FileBarChart size={15} style={{ color: '#06b6d4' }} />
+            <span>My Report</span>
+          </div>
+          <p style={{ fontSize: 13, color: '#64748b', margin: '0.5rem 0 1rem' }}>
+            Full performance report — monthly breakdown, referral history, and withdrawal log.
+          </p>
+          <Link
+            to="/sales-executive/report"
+            className="srd-copy-btn srd-copy-btn--full"
+            style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.3)', color: '#06b6d4' }}
+          >
+            <FileBarChart size={14} /> View Report
+          </Link>
         </div>
 
       </div>

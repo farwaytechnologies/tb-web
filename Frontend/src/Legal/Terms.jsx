@@ -158,7 +158,7 @@ export default function Terms() {
           <h2 className="tm-qr-title">Questions About These Terms?</h2>
           <p className="tm-text" style={{ marginBottom: 20 }}>Reach out to our legal team and we'll respond within 5 business days.</p>
           <div className="tm-contact-grid">
-            <div className="tm-contact-item"><span className="tm-contact-label">Legal</span><span>legal@techborg.com</span></div>
+            <div className="tm-contact-item"><span className="tm-contact-label">Legal</span><span>mail@techborg.in</span></div>
             <div className="tm-contact-item"><span className="tm-contact-label">Support Hours</span><span>Mon–Fri, 9am–5pm</span></div>
             <div className="tm-contact-item"><span className="tm-contact-label">Response Time</span><span>Within 5 business days</span></div>
           </div>

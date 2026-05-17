@@ -140,8 +140,8 @@ export default function Privacy() {
             Reach out to our privacy team. We respond to all inquiries within 30 days.
           </p>
           <div className="pv-contact-grid">
-            <div className="pv-contact-item"><span className="pv-contact-label">Privacy Team</span><span>privacy@techborg.com</span></div>
-            <div className="pv-contact-item"><span className="pv-contact-label">Data Protection</span><span>dpo@techborg.com</span></div>
+            <div className="pv-contact-item"><span className="pv-contact-label">Privacy Team</span><span>support@techborg.in</span></div>
+            <div className="pv-contact-item"><span className="pv-contact-label">Data Protection</span><span>mail@techborg.in</span></div>
             <div className="pv-contact-item"><span className="pv-contact-label">Response Time</span><span>Within 30 days</span></div>
           </div>
         </div>

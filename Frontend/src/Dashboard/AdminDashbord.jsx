@@ -5,7 +5,7 @@ import {
   Users, BookOpen, Shield, FileText, CheckCircle, Lightbulb,
   GraduationCap, UserCog, Bell, Newspaper, Code, Briefcase,
   MessageSquare, BarChart3, Settings, TrendingUp, Trophy,
-  Coins, ClipboardList, Receipt, ChevronRight, Gift
+  Coins, ClipboardList, Receipt, ChevronRight, Gift, FileBarChart
 } from 'lucide-react';
 
 const API = import.meta.env.VITE_API_URL;
@@ -50,7 +50,8 @@ const ACTION_GROUPS = [
       { to: '/admin/visitors',      icon: BarChart3,   label: 'Analytics',       color: '#a855f7' },
       { to: '/admin/security',      icon: Shield,      label: 'Security',         color: '#ef4444' },
       { to: '/admin/referrals',       icon: Gift,        label: 'Referrals',        color: '#10b981' },
-      { to: '/admin/se-withdrawals', icon: Coins,       label: 'SE Withdrawals',   color: '#f59e0b' },
+      { to: '/admin/se-withdrawals',      icon: Coins,         label: 'SE Withdrawals',    color: '#f59e0b' },
+      { to: '/admin/se-report-tracking',  icon: FileBarChart,  label: 'SE Report Tracking', color: '#06b6d4' },
       { to: '/admin/manage-cms',    icon: Settings,    label: 'CMS',             color: '#64748b' },
     ],
   },

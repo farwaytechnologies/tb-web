@@ -201,9 +201,9 @@ export default function Cookies() {
           <h2 className="ck-prefs-title">Questions About Cookies?</h2>
           <p className="ck-text">Reach out to our privacy team and we'll respond within 24–48 hours.</p>
           <div className="ck-contact-grid">
-            <div className="ck-contact-item"><span className="ck-contact-label">Email</span><span>privacy@techborg.com</span></div>
+            <div className="ck-contact-item"><span className="ck-contact-label">Email</span><span>support@techborg.in</span></div>
             <div className="ck-contact-item"><span className="ck-contact-label">Response Time</span><span>24–48 hours</span></div>
-            <div className="ck-contact-item"><span className="ck-contact-label">Data Protection</span><span>dpo@techborg.com</span></div>
+            <div className="ck-contact-item"><span className="ck-contact-label">Data Protection</span><span>mail@techborg.in</span></div>
           </div>
         </div>
       </div>
