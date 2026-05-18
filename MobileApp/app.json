@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "TechBorg",
+    "slug": "techborg-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#0f172a",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0f172a"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "in.techborg.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0f172a"
+      },
+      "package": "in.techborg.mobile"
+    }
+  }
+}

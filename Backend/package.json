@@ -5,9 +5,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
-    "dev": "nodemon Server.js",
     "start": "node Server.js",
-    "fetch-news": "node scripts/fetchNews.js"
+    "fetch-news": "node scripts/fetchNews.js",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "express-rate-limit": "^8.3.1",
     "geoip-lite": "^1.4.10",
     "helmet": "^8.1.0",
+    "hono": "^4.12.19",
     "jsonwebtoken": "^9.0.2",
     "mammoth": "^1.12.0",
     "mongodb": "^5.9.2",
@@ -29,8 +31,5 @@
     "nodemailer": "^8.0.3",
     "razorpay": "^2.9.6",
     "rss-parser": "^3.13.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
   }
 }

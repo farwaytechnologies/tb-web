@@ -30,5 +30,6 @@ router.use('/progress', require('../routes/progressRoutes'));
 router.use('/student-rewards', require('../routes/studentRewardRoutes'));
 router.use('/referral', require('../routes/referralRoutes'));
 router.use('/se-rewards', require('../routes/salesExecutiveRewardRoutes'));
+router.use('/se-report', require('../routes/seReportRoutes'));
 
 module.exports = router;

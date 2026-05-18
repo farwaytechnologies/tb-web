@@ -1,0 +1,6 @@
+name = "tb-backend"
+main = "src/index.js"
+compatibility_date = "2026-05-17"
+
+[observability]
+enabled = true
